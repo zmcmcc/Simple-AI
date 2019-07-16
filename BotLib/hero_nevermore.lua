@@ -1,0 +1,370 @@
+----------------------------------------------------------------------------------------------------
+--- The Creation Come From: BOT EXPERIMENT Credit:FURIOUSPUPPY
+--- BOT EXPERIMENT Author: Arizona Fauzie 2018.11.21
+--- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=837040016
+--- Update by: 决明子 Email: dota2jmz@163.com 微博@Dota2_决明子
+--- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1573671599
+--- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1627071163
+----------------------------------------------------------------------------------------------------
+local X = {}
+local npcBot = GetBot()
+
+local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
+local minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
+local sTalentList = J.Skill.GetTalentList(npcBot)
+local sAbilityList = J.Skill.GetAbilityList(npcBot)
+local sOutfit = J.Skill.GetOutfitName(npcBot)
+
+local tTalentTreeList = {
+						['t25'] = {10, 0},
+						['t20'] = {10, 0},
+						['t15'] = {10, 0},
+						['t10'] = {0, 10},
+}
+
+local tAllAbilityBuildList = {
+						{4,1,1,4,1,4,1,4,5,6,6,5,5,5,6},
+}
+
+local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
+
+local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
+
+X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
+X['items'] = {
+				sOutfit,
+				"item_yasha",
+				"item_black_king_bar",
+				"item_manta",
+				"item_skadi",
+				"item_sphere",
+				"item_sheepstick",	
+}
+
+X['bDeafaultAbility'] = false
+X['bDeafaultItem'] = true
+
+function X.MinionThink(hMinionUnit)
+
+	if minion.IsValidUnit(hMinionUnit) 
+	then
+		if hMinionUnit:IsIllusion() 
+		then 
+			minion.IllusionThink(hMinionUnit)	
+		end
+	end
+
+end
+
+local abilityZ = npcBot:GetAbilityByName( sAbilityList[1] )
+local abilityX = npcBot:GetAbilityByName( sAbilityList[2] )
+local abilityC = npcBot:GetAbilityByName( sAbilityList[3] )
+local abilityR = npcBot:GetAbilityByName( sAbilityList[6] )
+local talent6 = npcBot:GetAbilityByName( sTalentList[6] )
+
+local castZDesire
+local castXDesire
+local castCDesire
+local castRDesire
+
+local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
+local talentDamage = 0
+
+
+function X.SkillsComplement()
+
+	
+	J.ConsiderTarget();
+	
+	
+	
+	if J.CanNotUseAbility(npcBot) or npcBot:IsInvisible() then return end
+	
+	
+	
+	nKeepMana = 340
+	talentDamage = 0
+	nLV = npcBot:GetLevel();
+	nMP = npcBot:GetMana()/npcBot:GetMaxMana();
+	nHP = npcBot:GetHealth()/npcBot:GetMaxHealth();
+	hEnemyHeroList = npcBot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
+	
+	
+	
+	if talent6:IsTrained() then talentDamage = talentDamage + talent6:GetSpecialValueInt("value") end
+	
+	
+	
+	
+	castCDesire   = X.Consider(abilityC, 700)
+	if castCDesire > 0
+	then
+				
+		J.SetQueuePtToINT(npcBot, false)
+				
+		npcBot:ActionQueue_UseAbility( abilityC );
+		return;
+	end
+	
+	castXDesire  = X.Consider(abilityX,450);	
+	if castXDesire > 0
+	then
+			
+		J.SetQueuePtToINT(npcBot, false)
+				
+		npcBot:ActionQueue_UseAbility( abilityX );
+		return;
+	end
+	
+	castZDesire  = X.Consider(abilityZ,200);	
+	if castZDesire > 0
+	then
+				
+		J.SetQueuePtToINT(npcBot, false)
+	
+		npcBot:ActionQueue_UseAbility( abilityZ );
+		return;	
+
+	end
+		
+	castRDesire  = X.ConsiderR();	
+	if castRDesire > 0
+	then
+	
+		J.SetQueuePtToINT(npcBot, false)
+	
+		npcBot:ActionQueue_UseAbility ( abilityR );
+		return;	
+							
+	end
+end
+
+
+function X.ConsiderR()
+
+	-- Make sure it's castable
+	if  not abilityR:IsFullyCastable() 
+	   or ( npcBot:WasRecentlyDamagedByAnyHero(1.5) and not npcBot:HasModifier("modifier_black_king_bar_immune") and nHP < 0.62)
+	then return 0; end
+
+	-- Get some of its values 
+	local nRadius = 1000;                          
+	
+	local nEnemysHerosInLong       = J.GetEnemyList(npcBot,1400); 
+	local nEnemysHerosInSkillRange = J.GetEnemyList(npcBot,850); 
+	local nEnemysHerosNearby       = J.GetEnemyList(npcBot,400); 
+	
+	for _,enemy in pairs(nEnemysHerosNearby)
+	do
+		if J.IsValidHero(enemy)
+		   and enemy:HasModifier("modifier_brewmaster_storm_cyclone")
+		   and J.GetModifierTime(enemy,"modifier_brewmaster_storm_cyclone") < 1.66
+		   and enemy:GetHealth() > 800
+		then
+			return BOT_ACTION_DESIRE_HIGH;
+		end			
+	end
+	
+	if J.IsInTeamFight(npcBot,1200) or J.IsGoingOnSomeone(npcBot)
+	then
+		if #nEnemysHerosInSkillRange >= 3
+			or (#nEnemysHerosNearby >= 1 and #nEnemysHerosInSkillRange >= 2)
+			or (#nEnemysHerosInLong >= 3 and #nEnemysHerosInSkillRange >= 2)
+			or (#nEnemysHerosInLong >= 4 and #nEnemysHerosNearby >= 1)
+		then
+			return BOT_ACTION_DESIRE_HIGH;
+		end		
+		
+		local nAoe = npcBot:FindAoELocation( true, true, npcBot:GetLocation(), 100, 800, 1.67, 0 );
+		if nAoe.count >= 3
+		then
+			return BOT_ACTION_DESIRE_HIGH;
+		end	
+		
+		local npcTarget = J.GetProperTarget(npcBot);		
+		if J.IsValidHero(npcTarget) 
+			and J.CanCastOnNonMagicImmune(npcTarget) 
+			and not J.IsDisabled(true, npcTarget)
+			and GetUnitToUnitDistance(npcTarget,npcBot) <= 400
+			and npcTarget:GetHealth() > 800
+			and nHP > 0.38
+		then
+			return BOT_ACTION_DESIRE_HIGH;
+		end
+		
+	end
+	
+	return 0;
+end
+
+
+function X.Consider(nAbility,nDistance)
+	
+	-- Make sure it's castable
+	if  not nAbility:IsFullyCastable() then 
+		return BOT_ACTION_DESIRE_NONE, 0;
+	end
+	
+	-- Get some of its values
+	local nRadius       = 248;
+	local nCastLocation = J.GetFaceTowardDistanceLocation(npcBot,nDistance);					
+	local nCastPoint    = nAbility:GetCastPoint();			    
+	local nDamageType   = DAMAGE_TYPE_MAGICAL;
+	local nSkillLV      = nAbility:GetLevel();
+	local nDamage       = nAbility:GetSpecialValueInt('shadowraze_damage') + talentDamage;
+	local nBonus        = nAbility:GetSpecialValueInt('stack_bonus_damage');
+	local keyWord       = "ranged";
+	local nEnemyHeroes  = npcBot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);
+	local npcTarget     = J.GetProperTarget(npcBot);
+	
+		
+	if J.IsValidHero(npcTarget)
+		and J.CanCastOnNonMagicImmune(npcTarget)
+		and X.IsUnitNearLoc(npcTarget,nCastLocation,nRadius -20,nCastPoint)
+		and not ( npcBot:GetMana() <= nKeepMana *(1 - nSkillLV/4) )
+	then
+		return BOT_ACTION_DESIRE_HIGH;
+	end
+	if J.IsValid(npcTarget)
+	then
+		for _,enemy in pairs(nEnemyHeroes)
+		do
+			if J.IsValidHero(enemy)
+				and J.CanCastOnNonMagicImmune(enemy)
+				and X.IsUnitNearLoc(enemy,nCastLocation,nRadius -30,nCastPoint)
+				and (not ( npcBot:GetMana() <= nKeepMana *(1 - nSkillLV/4) ) 
+					 or X.IsUnitCanBeKill(enemy,nDamage,nBonus,nCastPoint))
+			then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		end
+	end
+	
+	if nLV <= 12
+	then
+		local nLaneCreeps = npcBot:GetNearbyLaneCreeps(1000,true);
+		local keyCount = 0;
+		for _,creep in pairs(nLaneCreeps)
+		do
+			if J.IsValid(creep)
+				and not creep:HasModifier("modifier_fountain_glyph")
+				and J.IsKeyWordUnit(keyWord,creep)
+				and X.IsUnitNearLoc(creep,nCastLocation,nRadius,nCastPoint)
+				and X.IsUnitCanBeKill(creep,nDamage,nBonus,nCastPoint)			
+			then
+				keyCount = keyCount + 1;
+			end
+		end
+		if keyCount >= 2
+		then
+			J.PrintAndReport("十二级下可击杀二远程:",keyCount);
+			return BOT_ACTION_DESIRE_HIGH;
+		end
+	end
+		
+	if not J.IsRetreating(npcBot) 
+	then
+		local nEnemysCreeps = npcBot:GetNearbyCreeps(1200,true);
+		local tableLaneCreeps = npcBot:GetNearbyLaneCreeps(nDistance + nRadius * 1.5,true);
+		local nCanHurtCount = 0;
+		local nCanKillCount = 0;
+		for _,creep in pairs(nEnemysCreeps)
+		do
+			if J.IsValid(creep)
+				and not creep:HasModifier("modifier_fountain_glyph")
+				and ( creep:GetMagicResist() < 0.4 or nMP > 0.9 )
+				and X.IsUnitNearLoc(creep,nCastLocation,nRadius,nCastPoint)				
+			then
+				nCanHurtCount = nCanHurtCount +1;
+				if X.IsUnitCanBeKill(creep,nDamage,nBonus,nCastPoint)
+				then
+					nCanKillCount = nCanKillCount +1;
+				end
+			end
+		end
+		
+		if nLV >= 8 and nEnemyHeroes[1] == nil
+		then
+			if  (nCanHurtCount >= 4 and nMP > 0.6)
+				or (nCanHurtCount >= 3 and npcBot:GetActiveMode() ~= BOT_MODE_LANING)
+				or (nCanKillCount >= 2 and nCanHurtCount == #tableLaneCreeps )
+				or (nCanHurtCount >= 2 and nMP > 0.8 and nLV > 10 and #nEnemysCreeps == 2)
+				or (nCanHurtCount >= 2 and nLV > 24 and #nEnemysCreeps == 2 and J.IsAllowedToSpam(npcBot, 180))
+			then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		end
+		
+		if nLV <= 10
+		then
+			if nCanKillCount >= 2 and ( nCanHurtCount == #tableLaneCreeps or nMP > 0.8 )
+			then
+				J.PrintAndReport("十级下可击杀二小兵:",nCanKillCount)
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		end
+		
+		if nCanKillCount >= 3
+		then
+			J.PrintAndReport("可击杀3小兵:",nCanKillCount)
+			return BOT_ACTION_DESIRE_HIGH;
+		end
+	end
+	
+	return 0;
+end
+
+
+function X.IsUnitNearLoc(nUnit,vLoc,nRange,nDely)
+	
+	if GetUnitToLocationDistance(nUnit,vLoc) > 256
+	then
+		return false;
+	end
+	
+	local nMoveSta = nUnit:GetMovementDirectionStability();
+	if nMoveSta < 0.98 then nRange = nRange - 4; end
+	if nMoveSta < 0.91 then nRange = nRange - 6; end
+	if nMoveSta < 0.81 then nRange = nRange - 10; end
+	
+	local fLoc = J.GetCorrectLoc(nUnit, nDely);	
+	if J.GetLocationToLocationDistance(fLoc,vLoc) < nRange
+	then
+		return true;
+	end	
+	
+	return false;
+	
+end
+
+
+function X.IsUnitCanBeKill(nUnit,nDamage,nBonus,nCastPoint)
+
+	local nDamageType = DAMAGE_TYPE_MAGICAL;
+	
+	local nStack = 0;
+	local nUnitModifier = nUnit:NumModifiers();
+	
+	if nUnitModifier >= 1
+	then
+		for i = 0, nUnitModifier 
+		do
+			if nUnit:GetModifierName(i) == "modifier_nevermore_shadowraze_debuff" 
+			then
+				nStack = nUnit:GetModifierStackCount(i);
+				break;
+			end
+		end
+	end
+	
+	local nRealDamage = nDamage + nStack * nBonus;
+	
+
+	return J.WillKillTarget(nUnit, nRealDamage, nDamageType, nCastPoint);
+	
+end
+
+
+return X
+-- dota2jmz@163.com QQ:2462331592.
