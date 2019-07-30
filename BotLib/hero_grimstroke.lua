@@ -279,13 +279,13 @@ end
 
 function X.ConsiderW()
 
-	if not abilityE:IsFullyCastable() then return 0 end
+	if not abilityW:IsFullyCastable() then return 0 end
 	
-	local nSkillLV    = abilityE:GetLevel()
-	local nCastRange  = abilityE:GetCastRange()
-	local nCastPoint  = abilityE:GetCastPoint()
-	local nManaCost   = abilityE:GetManaCost()
-	local nDamage     = abilityE:GetAbilityDamage()
+	local nSkillLV    = abilityW:GetLevel()
+	local nCastRange  = abilityW:GetCastRange()
+	local nCastPoint  = abilityW:GetCastPoint()
+	local nManaCost   = abilityW:GetManaCost()
+	local nDamage     = abilityW:GetAbilityDamage()
 	local nDamageType = DAMAGE_TYPE_MAGICAL
 	local nInRangeEnemyHeroList = npcBot:GetNearbyHeroes(nCastRange +50, true, BOT_MODE_NONE);
            
@@ -379,7 +379,7 @@ function X.ConsiderW()
 	
 	if  npcBot:GetActiveMode() == BOT_MODE_ROSHAN 
 	    and npcBot:GetMana() >= 1200
-		and abilityE:GetLevel() >= 3
+		and abilityW:GetLevel() >= 3
 	then
 		if  J.IsRoshan(hBotTarget) 
 			and J.IsInRange(hBotTarget, npcBot, nCastRange)
@@ -395,10 +395,10 @@ end
 
 function X.ConsiderE()
 
-	if not abilityQ:IsFullyCastable() then return 0 end
+	if not abilityE:IsFullyCastable() then return 0 end
 
     local nRadius = 300
-	local castRange = abilityQ:GetCastRange() 
+	local castRange = abilityE:GetCastRange() 
 	local target  = J.GetProperTarget(npcBot);
     local aTarget = npcBot:GetAttackTarget(); 
 	local enemies = npcBot:GetNearbyHeroes(castRange, true, BOT_MODE_NONE);
@@ -537,10 +537,10 @@ function X.ConsiderD()
 	end
 
 	--获取一些参数
-	local nCastRange = abilityW:GetCastRange();		--施法范围
-	local nCastPoint = abilityW:GetCastPoint();		--施法点
-	local nManaCost   = abilityW:GetManaCost();		--魔法消耗
-	local nSkillLV    = abilityW:GetLevel();    	--技能等级 
+	local nCastRange = abilityD:GetCastRange();		--施法范围
+	local nCastPoint = abilityD:GetCastPoint();		--施法点
+	local nManaCost   = abilityD:GetManaCost();		--魔法消耗
+	local nSkillLV    = abilityD:GetLevel();    	--技能等级 
 
 	local nEnemysHerosInRange = npcBot:GetNearbyHeroes(nCastRange ,true,BOT_MODE_NONE); --获得施法范围内敌人
 	
@@ -612,9 +612,9 @@ function X.ConsiderR()
 
 	-- Get some of its values
 	local nRadius    = 550;
-	local nCastRange = abilityW:GetCastRange();
-	local nCastPoint = abilityW:GetCastPoint();
-	local nManaCost  = abilityW:GetManaCost();
+	local nCastRange = abilityR:GetCastRange();
+	local nCastPoint = abilityR:GetCastPoint();
+	local nManaCost  = abilityR:GetManaCost();
 	
 	local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
 

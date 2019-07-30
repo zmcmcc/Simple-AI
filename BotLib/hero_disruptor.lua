@@ -285,10 +285,10 @@ function X.ConsiderE()
 
 	if not abilityE:IsFullyCastable() then return BOT_ACTION_DESIRE_NONE, 0; end
 
-    local nCastRange = abilityW:GetCastRange() + aetherRange;
-    local nCastPoint = abilityW:GetCastPoint();
-    local nDelay	 = abilityW:GetSpecialValueFloat( 'delay' );
-    local nManaCost  = abilityW:GetManaCost();
+    local nCastRange = abilityE:GetCastRange() + aetherRange;
+    local nCastPoint = abilityE:GetCastPoint();
+    local nDelay	 = abilityE:GetSpecialValueFloat( 'delay' );
+    local nManaCost  = abilityE:GetManaCost();
 	local nRadius = 340
 
     local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
@@ -377,11 +377,11 @@ function X.ConsiderR()
 
 	-- Get some of its values
 	local nRadius    = 450;
-	local nCastRange = abilityW:GetCastRange() + aetherRange;
-	local nCastPoint = abilityW:GetCastPoint();
-	local nDelay	 = abilityW:GetSpecialValueFloat( 'delay' );
-	local nManaCost  = abilityW:GetManaCost();
-	local nDamage    = abilityW:GetSpecialValueInt('damage');
+	local nCastRange = abilityR:GetCastRange() + aetherRange;
+	local nCastPoint = abilityR:GetCastPoint();
+	local nDelay	 = abilityR:GetSpecialValueFloat( 'delay' );
+	local nManaCost  = abilityR:GetManaCost();
+	local nDamage    = abilityR:GetSpecialValueInt('damage');
 	
 	local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
 	local tableNearbyAllyHeroes = npcBot:GetNearbyHeroes( 800, false, BOT_MODE_NONE );

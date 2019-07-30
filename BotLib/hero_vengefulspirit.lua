@@ -130,13 +130,13 @@ function X.SkillsComplement()
 		return;
 	end
 
-	castWDesire, castWTarget = X.ConsiderW();
+	castWDesire, castWLocation = X.ConsiderW();
 	if ( castWDesire > 0 ) 
 	then
 	
 		J.SetQueuePtToINT(npcBot, false)
 	
-		npcBot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
+		npcBot:ActionQueue_UseAbilityOnLocation( abilityW, castWLocation )
 		return;
 	end
 

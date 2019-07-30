@@ -256,12 +256,6 @@ function X.ConsiderR()
 	
 	if not abilityR:IsFullyCastable() then return BOT_ACTION_DESIRE_NONE, nil;	end
 	
-	if abilityQ:IsFullyCastable()
-	then
-		return BOT_ACTION_DESIRE_NONE, nil;
-	end
-	
-	
 	local nCastPoint = abilityR:GetCastPoint();
 	local manaCost   = abilityR:GetManaCost();
 	local nRadius    = abilityR:GetAOERadius();
