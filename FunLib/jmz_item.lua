@@ -10,8 +10,8 @@
 
 local ItemModule = {}
 
-local sBotVersion = 'New';
---local sBotVersion = "Mid";
+--local sBotVersion = 'New';
+local sBotVersion = "Mid";
 local sVersionDate = "7.22,2019/07/30."
 
 function ItemModule.GetBotVersion()
@@ -566,6 +566,8 @@ ItemModule['item_brewmaster_outfit']       = { 'item_tango', 'item_tango', 'item
 ItemModule['item_dragon_knight_outfit']    = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_soul_ring', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
 ItemModule['item_abaddon_outfit']          = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_soul_ring', 'item_phase_boots', 'item_blade_mail', 'item_mjollnir', 'item_sange_and_yasha', 'item_radiance', 'item_satanic', 'item_heart' }
+
+ItemModule['item_axe_outfit']              = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_magic_stick', 'item_phase_boots', 'item_vanguard' , 'item_blink' , 'item_blade_mail', 'item_manta', 'item_mjollnir', 'item_octarine_core'}
 
 ItemModule['item_bristleback_outfit']      = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_stick_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 

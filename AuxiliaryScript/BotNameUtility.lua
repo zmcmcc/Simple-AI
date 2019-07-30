@@ -1,6 +1,8 @@
 local U = {}
 
-local dota2team = {
+local allowsHeroData = require(GetScriptDirectory() .. "/AuxiliaryScript/GetAllowHeroData")
+local dota2team = allowsHeroData.team
+--[[{
 
 	[1] = {
 		['name'] = "Team Liquid";
@@ -363,14 +365,11 @@ local dota2team = {
 		['sponsorship'] = 'G2A';
 	}
 	
-}
-
-local sponsorship = {"GG.bet", "gg.bet", "VPGAME", "LOOT.bet", "loot.bet", "", "Esports.bet", "G2A", "Dota2.net"};
+}]]
 
 function U.GetDota2Team()
 	local bot_names = {};
 	local rand = RandomInt(1, #dota2team); 
-	local srand = RandomInt(1, #sponsorship); 
 	if GetTeam() == TEAM_RADIANT then
 		while rand%2 ~= 0 do
 			rand = RandomInt(1, #dota2team); 
@@ -382,10 +381,8 @@ function U.GetDota2Team()
 	end
 	local team = dota2team[rand];
 	for _,player in pairs(team.players) do
-		if sponsorship[srand] == "" then
-			table.insert(bot_names, team.alias.."."..player);
-		else
-			table.insert(bot_names, team.alias.."."..player.."."..sponsorship[srand]);
+		if #bot_names < 5 then
+			table.insert(bot_names, player);
 		end
 	end
 	return bot_names;

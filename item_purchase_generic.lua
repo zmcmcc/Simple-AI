@@ -372,9 +372,7 @@ function ItemPurchaseThink()
 	   and bot == GetTeamMember(5)
 	then
 		local fMessage ;
-			fMessage = "Simple AI ";
-		end
-	
+		fMessage = "Simple AI ";	
 
 		bot:ActionImmediate_Chat( fMessage..versionDate, true);
 		bPushNoticeDone = true

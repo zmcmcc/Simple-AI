@@ -7,7 +7,7 @@ local banList = {}
 
 local X = {}
 
-X["allows_hero"] = allowsHeroData--[[{
+X["allows_hero"] = allowsHeroData.hero--[[{
     ----冥界亚龙
 	["npc_dota_hero_viper"] = {
         ['hero_name'] = '冥界亚龙',
@@ -63,18 +63,19 @@ X["allows_hero"] = allowsHeroData--[[{
 }]]
 
 X["test_hero"] = {
-    --'npc_dota_hero_vengefulspirit',
-    'npc_dota_hero_grimstroke',
-    'npc_dota_hero_tidehunter'
+    --'npc_dota_hero_axe',
+    --'npc_dota_hero_grimstroke',
+    --'npc_dota_hero_tidehunter'
 }
 
 X["onlyCM_hero"] = {
-    --'npc_dota_hero_vengefulspirit',
-    --'npc_dota_hero_abaddon',
-    --'npc_dota_hero_disruptor',
-    --'npc_dota_hero_shadow_demon'
-    --'npc_dota_hero_grimstroke',
-    --'npc_dota_hero_tidehunter'
+    'npc_dota_hero_vengefulspirit',
+    'npc_dota_hero_abaddon',
+    'npc_dota_hero_disruptor',
+    'npc_dota_hero_shadow_demon'
+    'npc_dota_hero_grimstroke',
+    'npc_dota_hero_tidehunter',
+    'npc_dota_hero_axe',
 }
 
 function X.CounterWeightList(hero) --获取推荐阵容列表
