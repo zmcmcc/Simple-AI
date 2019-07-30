@@ -1239,6 +1239,7 @@ function X.IsVeryHighFarmerr(bot)
 	local botName = bot:GetUnitName();
 	
 	return botName == "npc_dota_hero_nevermore"
+		or botName == "npc_dota_hero_axe"
 		or botName == "npc_dota_hero_luna"
 		or botName == "npc_dota_hero_antimage"
 		or botName == "npc_dota_hero_medusa"

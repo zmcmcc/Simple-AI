@@ -240,19 +240,16 @@ function X.ConsiderW()
 
 	if not abilityW:IsFullyCastable() then return 0 end
 
-	local castRange = abilityW:GetCastRange() + aetherRange;
+	local nCastRange = abilityW:GetCastRange() + aetherRange;
+	local gEnemies = GetUnitList(UNIT_LIST_ENEMY_HEROES);
 
-	if castRange >= 1800 then castRange = 1750 end
-	
-	local npcMostAoeEnemy = nil;
-	local nAllEnemyUnits = npcBot:GetNearbyHeroes(castRange,true,BOT_MODE_NONE);
-	
 	local npcMostDangerousEnemy = nil;
 	local nMostDangerousDamage = 0;	
 
-	for _,npcEnemy in pairs( nAllEnemyUnits )
+	for _,npcEnemy in pairs( gEnemies )
 	do
 		if  J.IsValid(npcEnemy)
+			and J.IsInRange(npcEnemy, npcBot, nCastRange)
 			and J.CanCastOnNonMagicImmune(npcEnemy)
 			and not J.IsAllyCanKill(npcEnemy)
 		then
@@ -285,10 +282,10 @@ function X.ConsiderE()
 
 	if not abilityE:IsFullyCastable() then return BOT_ACTION_DESIRE_NONE, 0; end
 
-    local nCastRange = abilityW:GetCastRange() + aetherRange;
-    local nCastPoint = abilityW:GetCastPoint();
-    local nDelay	 = abilityW:GetSpecialValueFloat( 'delay' );
-    local nManaCost  = abilityW:GetManaCost();
+    local nCastRange = abilityE:GetCastRange() + aetherRange;
+    local nCastPoint = abilityE:GetCastPoint();
+    local nDelay	 = abilityE:GetSpecialValueFloat( 'delay' );
+    local nManaCost  = abilityE:GetManaCost();
 	local nRadius = 340
 
     local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
