@@ -371,6 +371,7 @@ function Site.IsSpecialFarmer(bot)
 			or botName == "npc_dota_hero_luna"
 			or botName == 'npc_dota_hero_sven'
 			or botName == 'npc_dota_hero_antimage'
+			or botName == 'npc_dota_hero_abaddon'
 			or botName == 'npc_dota_hero_phantom_assassin'
 			or botName == "npc_dota_hero_templar_assassin"
 end
@@ -387,6 +388,8 @@ function Site.IsShouldFarmHero(bot)
 		or botName == 'npc_dota_hero_axe'
 		or botName == 'npc_dota_hero_antimage'
 		or botName == "npc_dota_hero_arc_warden"
+		or botName == 'npc_dota_hero_omniknight'
+		or botName == 'npc_dota_hero_vengefulspirit'
 		or botName == "npc_dota_hero_bloodseeker"
 		or botName == "npc_dota_hero_medusa"
 		or botName == 'npc_dota_hero_phantom_assassin'
@@ -578,6 +581,7 @@ function Site.FindFarmNeutralTarget(Creeps)
 	
 	if botName == "npc_dota_hero_templar_assassin"
 	   or botName == "npc_dota_hero_sven"
+	   or botName == "npc_dota_hero_abaddon"
 	   or botName == "npc_dota_hero_drow_ranger"
 	   or ( botName == "npc_dota_hero_phantom_assassin" 
 	        and Site.IsHaveItem(bot,"item_bfury") and bot:GetLevel() >= 15 )

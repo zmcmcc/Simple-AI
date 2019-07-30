@@ -1,17 +1,3 @@
-----------------------------------------------------------------------------------------------------
---- The Creation Come From: BOT EXPERIMENT Credit:FURIOUSPUPPY
---- BOT EXPERIMENT Author: Arizona Fauzie 2018.11.21
---- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=837040016
---- Update by: 决明子 Email: dota2jmz@163.com 微博@Dota2_决明子
---- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1573671599
---- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1627071163
-----------------------------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------
---- 代码解析注释 Alcedo
---- Alcedo@alcedo.site
----------------------------------------------------------------------------------------------------
-
 local X = {}
 local npcBot = GetBot() --获取当前电脑
 
@@ -41,8 +27,8 @@ local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 --将装备信息和额外出装加入装备方案
 X['items'] = {
+				"item_stout_shield",
 				sOutfit,
-				"item_blade_mail",
 				"item_sange_and_yasha",
 				"item_radiance",
 				"item_assault",
@@ -82,6 +68,7 @@ function X.SkillsComplement()
 	--如果当前英雄无法使用技能或英雄处于隐形状态，则不做操作。
 	if J.CanNotUseAbility(npcBot) or npcBot:IsInvisible() then return end
 	
+	
 	--设定一些必要条件
 	nKeepMana = 160 --魔法储量 160
 	nLV = npcBot:GetLevel(); --当前英雄等级
@@ -93,6 +80,7 @@ function X.SkillsComplement()
 	
 	
 	castQDesire, castQTarget = X.ConsiderQ();--索引第一个技能（快捷键Q）
+
 	if ( castQDesire > 0 ) 
 	then
 	
@@ -109,6 +97,36 @@ function X.SkillsComplement()
 		J.SetQueuePtToINT(npcBot, true) --临时补充魔法，使用魂戒
 	
 		npcBot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
+
+		local nEnemysHerosInRange = npcBot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);
+		if nHP >= 0.5
+			and #nEnemysHerosInRange < 4 
+			then --血量大于0.5就追击附近强者
+				local npcMostDangerousEnemy = nil;
+				local nMostDangerousDamage = 0;		
+				
+				for _,npcEnemy in pairs( nEnemysHerosInRange )
+				do
+					if  J.IsValid(npcEnemy)
+						and not J.IsDisabled(true, npcEnemy)
+						and not npcEnemy:IsDisarmed()
+						and npcEnemy:IsHero()
+					then
+						local npcEnemyDamage = npcEnemy:GetEstimatedDamageToTarget( false, npcBot, 3.0, DAMAGE_TYPE_PHYSICAL );
+						if ( npcEnemyDamage > nMostDangerousDamage )
+						then
+							nMostDangerousDamage = npcEnemyDamage;
+							npcMostDangerousEnemy = npcEnemy;
+						end
+					end
+				end
+				
+				if ( npcMostDangerousEnemy ~= nil )
+				then
+					npcBot:SetTarget(npcMostDangerousEnemy);
+					--npcBot:Action_AttackUnit(npcMostDangerousEnemy, false);
+				end	
+			end
 		return;
 	
 	end
@@ -119,7 +137,8 @@ function X.ConsiderQ()--使用Q技能的欲望
 
 	-- 确保技能可以使用
 	if not abilityQ:IsFullyCastable()
-	   or X.ShouldSaveMana(abilityQ) --是否应当节省魔法不去使用技能
+		or npcBot:IsRooted()
+		or X.ShouldSaveMana(abilityQ) --是否应当节省魔法不去使用技能
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
@@ -202,7 +221,7 @@ function X.ConsiderQ()--使用Q技能的欲望
 	end
 	
 	--对线期间对敌方英雄使用
-	if npcBot:GetActiveMode() == BOT_MODE_LANING or nLV <= 5
+	if npcBot:GetActiveMode() == BOT_MODE_LANING
 	then
 		for _,npcEnemy in pairs( nEnemysHerosInBonus )
 		do
@@ -217,14 +236,16 @@ function X.ConsiderQ()--使用Q技能的欲望
 	end
 	
 	--对线期间对自己使用
-	if npcBot:GetActiveMode() == BOT_MODE_LANING or nLV <= 5
+	if npcBot:GetActiveMode() == BOT_MODE_LANING
+		and J.IsValid(npcBot)
+		and J.CanCastOnNonMagicImmune(npcBot) 
 	then
 		if  nHP <= 0.2
-			and J.IsValid(npcBot)
-		    and J.CanCastOnNonMagicImmune(npcBot) 
-			and not J.IsDisabled(true, npcBot)
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcBot;
+		elseif nHP <= 0.6
+		then
+			return BOT_ACTION_DESIRE_MODERATE, npcBot;
 		end
 	end
 	
@@ -245,31 +266,31 @@ function X.ConsiderQ()--使用Q技能的欲望
 		end
 	end
 	
-	--撤退时战术输出和撑血
-	if J.IsRetreating(npcBot) 
-		and not npcBot:IsInvisible()
-	then
-		for _,npcEnemy in pairs( nEnemysHerosInRange )
-		do
-			if J.IsValid(npcEnemy)
-				and nHP < 0.3
-				and GetUnitToUnitDistance(npcBot,npcEnemy) >= 100
-			then
-				return BOT_ACTION_DESIRE_HIGH, npcBot;
-			end
+	--撤退时战术输出和撑血 抬手太长
+	--if J.IsRetreating(npcBot) 
+	--	and not npcBot:IsInvisible()
+	--then
+	--	for _,npcEnemy in pairs( nEnemysHerosInRange )
+	--	do
+	--		if J.IsValid(npcEnemy)
+	--			and nHP < 0.3
+	--			and GetUnitToUnitDistance(npcBot,npcEnemy) >= 100
+	--		then
+	--			return BOT_ACTION_DESIRE_HIGH, npcBot;
+	--		end
 
-			if J.IsValid(npcEnemy)
-			    and ( npcBot:WasRecentlyDamagedByHero( npcEnemy, 5.0 ) 
-						or nMP > 0.8
-						or GetUnitToUnitDistance(npcBot,npcEnemy) <= 400 )
-				and J.CanCastOnNonMagicImmune(npcEnemy) 
-				and not J.IsDisabled(true, npcEnemy) 
-				and not npcEnemy:IsDisarmed()
-			then
-				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
-			end
-		end
-	end
+	--		if J.IsValid(npcEnemy)
+	--		    and ( npcBot:WasRecentlyDamagedByHero( npcEnemy, 5.0 ) 
+	--					or nMP > 0.8
+	--					or GetUnitToUnitDistance(npcBot,npcEnemy) <= 400 )
+	--			and J.CanCastOnNonMagicImmune(npcEnemy) 
+	--			and not J.IsDisabled(true, npcEnemy) 
+	--			and not npcEnemy:IsDisarmed()
+	--		then
+	--			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+	--		end
+	--	end
+	--end
 	
 	if  J.IsFarming(npcBot) 
 		and nSkillLV >= 3
@@ -328,6 +349,14 @@ function X.ConsiderQ()--使用Q技能的欲望
 			end
 		end
 	end
+
+	--if npcBot:GetMaxMana() - npcBot:GetMana() >= nDamage --魔法充裕时给自己回满血
+	--	and J.IsValid(npcBot)
+	--	and J.CanCastOnNonMagicImmune(npcBot) 
+	--	and nMP > 0.9
+	--then
+	--	return BOT_ACTION_DESIRE_HIGH, npcBot;
+	--end
 	
 	return 0;
 
@@ -336,7 +365,10 @@ end
 function X.ConsiderW()
 	-- 确保技能可以使用
 	if not abilityW:IsFullyCastable()
+	   or npcBot:IsRooted()
 	   or X.ShouldSaveMana(abilityW) --是否应当节省魔法不去使用技能
+	   or npcBot:HasModifier("modifier_abaddon_aphotic_shield") --有盾了
+	   or npcBot:HasModifier("modifier_abaddon_borrowed_time") --开大了
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
@@ -344,12 +376,13 @@ function X.ConsiderW()
 	--获取一些参数
 	local nCastRange = abilityW:GetCastRange();		--施法范围
 	local nCastPoint = abilityW:GetCastPoint();		--施法点
-	local nManaCost   = abilityQ:GetManaCost();		--魔法消耗
-	local nSkillLV    = abilityQ:GetLevel();    	--技能等级 
+	local nManaCost   = abilityW:GetManaCost();		--魔法消耗
+	local nSkillLV    = abilityW:GetLevel();    	--技能等级 
 
 	--一些单位
 	local nAlleys =  npcBot:GetNearbyHeroes(nCastRange,false,BOT_MODE_NONE); --获取技能范围内盟友
 	local nEnemysHerosInView  = npcBot:GetNearbyHeroes(1200,true,BOT_MODE_NONE); --获取1200范围内敌人
+	local nEnemysHerosInRange = npcBot:GetNearbyHeroes(nCastRange ,true,BOT_MODE_NONE); --获得施法范围内敌人
 	
 	--在团战中
 	if J.IsInTeamFight(npcBot, 1200)
@@ -369,7 +402,7 @@ function X.ConsiderW()
 			then
 			return BOT_ACTION_DESIRE_HIGH, npcBot;
 		end
-		--团队有人血量较低，自己血量充沛，给队友报名
+		--团队有人血量较低，自己血量充沛，给队友保命
 		for _,npcEnemy in pairs( nAlleys )
 		do
 			npcEnemyHP = npcEnemy:GetHealth()/npcEnemy:GetMaxHealth();--队友血量比
@@ -382,10 +415,7 @@ function X.ConsiderW()
 			end
 		end
 		--魔法充裕，给自己套个套子
-		if J.IsValid(npcBot)
-			and J.CanCastOnNonMagicImmune(npcBot)
-			and nMP > 0.7
-			then
+		if nMP > 0.7 then
 				if nHP >= 0.7
 					and #nEnemysHerosInView < 4 then --血量大于0.7就追击附近强者
 					local npcMostDangerousEnemy = nil;
@@ -409,7 +439,7 @@ function X.ConsiderW()
 					
 					if ( npcMostDangerousEnemy ~= nil )
 					then
-						npcBot:Action_AttackUnit(npcMostDangerousEnemy, false);
+						npcBot:SetTarget(npcMostDangerousEnemy, false);
 					end	
 				end
 			return BOT_ACTION_DESIRE_HIGH, npcBot;
@@ -453,34 +483,27 @@ function X.ConsiderW()
 		    and J.CanCastOnNonMagicImmune(npcBot) 
 			and not J.IsDisabled(true, npcBot)
 		then
-			if nHP >= 0.7
-				and #nEnemysHerosInRange < 4 
-			then --血量大于0.7就追击附近强者
-				local npcMostDangerousEnemy = nil;
-				local nMostDangerousDamage = 0;		
-				
-				for _,npcEnemy in pairs( nEnemysHerosInRange )
-				do
-					if  J.IsValid(npcEnemy)
-						and J.CanCastOnNonMagicImmune(npcEnemy) 
-						and not J.IsDisabled(true, npcEnemy)
-						and not npcEnemy:IsDisarmed()
-					then
-						local npcEnemyDamage = npcEnemy:GetEstimatedDamageToTarget( false, npcBot, 3.0, DAMAGE_TYPE_PHYSICAL );
-						if ( npcEnemyDamage > nMostDangerousDamage )
-						then
-							nMostDangerousDamage = npcEnemyDamage;
-							npcMostDangerousEnemy = npcEnemy;
-						end
-					end
-				end
-				
-				if ( npcMostDangerousEnemy ~= nil )
-				then
-					npcBot:Action_AttackUnit(npcMostDangerousEnemy, false);
-				end	
-			end
 			return BOT_ACTION_DESIRE_HIGH, npcBot;
+		end
+	end
+
+	--受到伤害时保护自己
+	if npcBot:WasRecentlyDamagedByAnyHero(3.0) 
+		and npcBot:GetActiveMode() ~= BOT_MODE_RETREAT
+		and not npcBot:IsInvisible()
+		and #nEnemysHerosInRange >= 1
+		and nLV >= 6
+	then
+		for _,npcEnemy in pairs( nEnemysHerosInRange )
+		do
+			if  J.IsValid(npcEnemy)
+			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and not J.IsDisabled(true, npcEnemy)
+                and not npcEnemy:IsDisarmed()				
+				and npcBot:IsFacingLocation(npcEnemy:GetLocation(),45)
+			then
+				return BOT_ACTION_DESIRE_HIGH, npcEnemy
+			end
 		end
 	end
 
@@ -523,6 +546,4 @@ function X.ShouldSaveMana(nAbility)
 	
 	return false;
 end
-
 return X
--- dota2jmz@163.com QQ:2462331592.

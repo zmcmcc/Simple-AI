@@ -1588,6 +1588,7 @@ X['mid'] = {
 	'npc_dota_hero_clinkz',
 	'npc_dota_hero_death_prophet',
 	'npc_dota_hero_dragon_knight',
+	'npc_dota_hero_abaddon',
 	'npc_dota_hero_ember_spirit',
 	'npc_dota_hero_huskar',
 	'npc_dota_hero_invoker',
@@ -1648,6 +1649,8 @@ X['safe'] = {
 X['supp'] = {
 	'npc_dota_hero_ancient_apparition',
 	'npc_dota_hero_bane',
+	'npc_dota_hero_vengefulspirit',
+	'npc_dota_hero_omniknight',
 	'npc_dota_hero_bounty_hunter',
 	'npc_dota_hero_chen',
 	'npc_dota_hero_crystal_maiden',
@@ -1921,6 +1924,7 @@ function X.IsSpecialCarry(bot)
 		 or botName == "npc_dota_hero_drow_ranger"
 		 or botName == "npc_dota_hero_viper" 
 		 or botName == "npc_dota_hero_dragon_knight"
+		 or botName == "npc_dota_hero_abaddon"
 		 or botName == "npc_dota_hero_shredder"
 		 or botName == "npc_dota_hero_weaver"
 		 or botName == "npc_dota_hero_axe"

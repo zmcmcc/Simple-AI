@@ -300,6 +300,7 @@ if unitName == "npc_dota_hero_viper"
 	or unitName == "npc_dota_hero_phantom_assassin"
 	or unitName == "npc_dota_hero_templar_assassin"
 	or unitName == "npc_dota_hero_sven"
+	or unitName == "npc_dota_hero_abaddon"
 	or unitName == "npc_dota_hero_medusa"
 	or unitName == "npc_dota_hero_arc_warden"
 	or unitName == "npc_dota_hero_chaos_knight"
@@ -370,22 +371,12 @@ function ItemPurchaseThink()
 	   and bot:GetGold() < 200 
 	   and bot == GetTeamMember(5)
 	then
-		local fMessage, sMessage ;
-		if botVersion == "Mid"
-		then
-			fMessage = "(Version)A Beginner AI:Mid Lane ";
-			sMessage = "If you have suggestions,contact us by Email: dota2jmz@163.c o m"
-			if RandomInt(1,9) > 7 then sMessage = "如果你有建议的话,可以加群与我们联系." end;
-		else
-			fMessage = "(Version)A Beginner AI:New Lane ";
-			sMessage = "If you have suggestions,contact us by Email: dota2jmz@163.c o m"
-			if RandomInt(1,9) > 7 then sMessage = "如果你有建议的话,可以加群与我们联系." end;
+		local fMessage ;
+			fMessage = "Simple AI ";
 		end
 	
 
 		bot:ActionImmediate_Chat( fMessage..versionDate, true);
-		bot:ActionImmediate_Chat( sMessage, true);
-		bot:ActionImmediate_Chat("QQqun:632117330, Copyright©2019 weibo@Dota2_决明子",true);
 		bPushNoticeDone = true
 	end
 	

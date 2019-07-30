@@ -469,124 +469,6 @@ function X.IsBanByChat( sHero )
 	return false;
 end
 
-
-local sTianStarList =
-{
-"天罡星",
-"天魁星",
-"天机星",
-"天闲星",
-"天勇星",
-"天雄星",
-"天猛星",
-"天英星",
-"天贵星",
-"天富星",
-"天满星",
-"天孤星",
-"天伤星",
-"天立星",
-"天捷星",
-"天暗星",
-"天佑星",
-"天空星",
-"天速星",
-"天异星",
-"天杀星",
-"天微星",
-"天究星",
-"天退星",
-"天寿星",
-"天剑星",
-"天平星",
-"天罪星",
-"天损星",
-"天牢星",
-"天慧星",
-"天暴星",
-"天巧星",
---"天威星",
---"天哭星",
---"天败星",
-}
-
-
-local sDiStarsList = 
-{
-"地煞星",
-"地魁星",
-"地勇星",
-"地杰星",
-"地雄星",
-"地英星",
-"地奇星",
-"地猛星",
-"地文星",
-"地正星",
-"地阔星",
-"地阖星",
-"地强星",
-"地暗星",
-"地轴星",
-"地会星",
-"地佐星",
-"地佑星",
-"地灵星",
-"地兽星",
-"地微星",
-"地慧星",
-"地暴星",
-"地然星",
-"地猖星",
-"地狂星",
-"地飞星",
-"地走星",
-"地巧星",
-"地明星",
-"地进星",
-"地退星",
-"地满星",
-"地遂星",
-"地周星",
-"地隐星",
-"地异星",
-"地理星",
-"地俊星",
-"地乐星",
-"地捷星",
-"地速星",
-"地镇星",
-"地嵇星",
-"地魔星",
-"地妖星",
-"地幽星",
-"地伏星",
-"地僻星",
-"地空星",
-"地孤星",
-"地全星",
-"地短星",
-"地角星",
-"地平星",
-"地察星",
-"地数星",
-"地阴星",
-"地刑星",
-"地壮星",
-"地健星",
-"地耗星",
---"地贼星",
---"地狗星",
---"地威星",
---"地劣星",
---"地劣星",
---"地损星",
---"地奴星",
---"地囚星",
---"地藏星",
-}
-
-
 function X.GetRandNameList(sStarList)
 	
 	local sNameList = {};
@@ -652,13 +534,6 @@ function AllPickLogic()
 			--end
 			--新版英雄选择策略
 			sSelectHero = targetdata.getApHero();
-			
-			-------******************************----测试用例
-			--if GetTeam() ~= TEAM_DIRE and i == nHumanCount +2 then sSelectHero = "npc_dota_hero_skywrath_mage" end 
-			--if i == nHumanCount +5 then sSelectHero = "npc_dota_hero_medusa" end 
-			--sSelectHero = "npc_dota_hero_antimage"
-			-----------------------------------------
-			
 
 			fLastSlectTime = GameTime();
 			fLastRand = RandomFloat(0.8,2.8);
@@ -669,17 +544,6 @@ function AllPickLogic()
 end
 
 function GetBotNames()
-
-	--名字太土了
-    --local bot_names = {};
-	--	
-    --if GetTeam() == TEAM_RADIANT then
-	--	bot_names = X.GetRandNameList(sTianStarList);
-    --else
-	--	bot_names = X.GetRandNameList(sDiStarsList);
-    --end
-
-	--return bot_names;
 	return targetdata.GetDota2Team();
 end
 

@@ -63,19 +63,19 @@ function GetDesire()
 	
 	if not bInitDone
 	then
-		bInitDone = true
+		bInitDone = true --设置初始化状态
 		beNormalFarmer = X.IsNormalFarmer(bot);
 		beHighFarmer = X.IsHighFarmer(bot);
 		beVeryHighFarmer = X.IsVeryHighFarmerr(bot);
 	end
 	
-	if DotaTime() < 50 then return 0.0 end
+	if DotaTime() < 50 then return 0.0 end --50秒之前不进行此函数
 		
-	if X.IsUnitAroundLocation(GetAncient(GetTeam()):GetLocation(), 3000) then
+	if X.IsUnitAroundLocation(GetAncient(GetTeam()):GetLocation(), 3000) then --在家不执行
 		return BOT_MODE_DESIRE_NONE;
 	end
 	
-	if teamPlayers == nil then teamPlayers = GetTeamPlayers(GetTeam()) end
+	if teamPlayers == nil then teamPlayers = GetTeamPlayers(GetTeam()) end --初始电脑池
 	
 	if bot:IsAlive() --For sometime to run
 	then
@@ -1200,13 +1200,16 @@ function X.IsNormalFarmer(bot)
 		 or botName == "npc_dota_hero_shredder"
 		 or botName == "npc_dota_hero_bristleback" 
 		 or botName == "npc_dota_hero_skeleton_king"
-		 or botName == "npc_dota_hero_abaddon"
 		 or botName == "npc_dota_hero_kunkka"
 		 or botName == "npc_dota_hero_sniper"
 		 or botName == "npc_dota_hero_clinkz"
 		 or botName == "npc_dota_hero_queenofpain"
 		 or botName == "npc_dota_hero_viper" 
 		 or botName == "npc_dota_hero_axe"
+		 or botName == "npc_dota_hero_disruptor"
+		 or botName == "npc_dota_hero_shadow_demon"
+		 or botName == "npc_dota_hero_vengefulspirit"
+		 or botName == "npc_dota_hero_omniknight"	 
 end
 
 
@@ -1224,7 +1227,10 @@ function X.IsHighFarmer(bot)
 		or botName == "npc_dota_hero_arc_warden"
 		or botName == "npc_dota_hero_bloodseeker"
 		or botName == "npc_dota_hero_medusa"
-		
+		or botName == "npc_dota_hero_abaddon"
+		or botName == "npc_dota_hero_tidehunter"
+		or botName == "npc_dota_hero_grimstroke"
+
 end
 
 
@@ -1239,5 +1245,4 @@ function X.IsVeryHighFarmerr(bot)
 		
 end
 
--- dota2jmz@163.com QQ:2462331592.
 -- dota2jmz@163.com QQ:2462331592.

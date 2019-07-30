@@ -163,7 +163,7 @@ J.Skill = require(GetScriptDirectory()..'/FunLib/jmz_skill')
 -------------------------------------
 if bDebugTeam
 then
-	print(GBotTeam..': A Beginner AI: Function Init Successful!')
+	print(GBotTeam..': Simple AI: Function Init Successful!')
 end
 ------------------------------------
 -------变量部分完成,下面开始函数部分
@@ -186,7 +186,7 @@ function J.PrintInitStatus(nFlag, nNum, sMessage1, sMessage2)
 	then return nFlag end
 	
 	local botName = string.gsub(string.sub(npcBot:GetUnitName(), 15),'_','');
-	print('A Beginner AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
+	print('Simple AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
 	return nNum
 	
 end
@@ -1189,7 +1189,8 @@ function J.IsUnitTargetProjectileIncoming(npcBot, range)
 		   and ( p.ability ~= nil 
 		         and ( p.ability:GetName() ~= "medusa_mystic_snake" 
 				       or p.caster == nil 
-					   or p.caster:GetUnitName() == "npc_dota_hero_medusa" ) ) 
+					   or p.caster:GetUnitName() == "npc_dota_hero_medusa"
+					   or p.caster:GetUnitName() == "npc_dota_hero_abaddon" ) ) 
 		   and ( p.ability:GetBehavior() == ABILITY_BEHAVIOR_UNIT_TARGET 
 				 or not J.IsOnlyProjectileSpell(p.ability:GetName()))
 		then
@@ -2212,6 +2213,8 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_clinkz"
 			or botName == "npc_dota_hero_chaos_knight" 
 			or botName == "npc_dota_hero_dragon_knight"
+			or botName == "npc_dota_hero_abaddon"
+			or botName == "npc_dota_hero_vengefulspirit"
 			or botName == "npc_dota_hero_drow_ranger"
 			or botName == "npc_dota_hero_kunkka"
 			or botName == "npc_dota_hero_luna"
@@ -2246,6 +2249,7 @@ function J.IsSpecialSupport(bot)
 			or botName == "npc_dota_hero_necrolyte"
 			or botName == "npc_dota_hero_ogre_magi"
 			or botName == "npc_dota_hero_oracle"
+			or botName == "npc_dota_hero_omniknight"
 			or botName == "npc_dota_hero_silencer"
 			or botName == "npc_dota_hero_shadow_shaman"
 			or botName == "npc_dota_hero_skywrath_mage"
