@@ -514,9 +514,9 @@ function DangerousTarget(target)
 		end
 	end
 	
-	--if target:DistanceFromFountain() < npcBot:DistanceFromFountain() then
-	--	return true;
-	--end
+	if J.GetDistanceFromAllyFountain(target) < J.GetDistanceFromAllyFountain(npcBot) then
+		return true;
+	end
 
 	if targets ~= nil then
 		if #targets >= 4 then

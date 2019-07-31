@@ -241,6 +241,8 @@ function X.ConsiderW()
 	if not abilityW:IsFullyCastable() then return 0 end
 
 	local nCastRange = abilityW:GetCastRange() + aetherRange;
+
+	if nCastRange > 1600 then nCastRange = 1600 end
 	local gEnemies = GetUnitList(UNIT_LIST_ENEMY_HEROES);
 
 	local npcMostDangerousEnemy = nil;

@@ -82,8 +82,8 @@ function GetDesire()
 		if runTime ~= 0 
 			and DotaTime() < runTime + shouldRunTime
 		then
-			return BOT_MODE_DESIRE_ABSOLUTE * 1.03;
-		else
+			return BOT_MODE_DESIRE_ABSOLUTE * 1.03; --最高欲望
+		else --尚未就绪
 			runTime = 0;
 			runMode = false;
 		end
@@ -803,22 +803,22 @@ function X.ShouldRun(bot)
 		return 0;
 	end
 	
-	if bot:IsChanneling() 
+	if bot:IsChanneling() --检查状态
 	   or not bot:IsAlive()
 	then
 		return 0;
 	end	   
 	
-	local botLevel    = bot:GetLevel();
-	local botMode     = bot:GetActiveMode();
-	local botTarget   = J.GetProperTarget(bot);
-	local EnemyHeroes = J.GetEnemyList(bot,1600);
-	local AllyHeroes  = J.GetAllyList(bot,1600);
-	local enemyFountainDistance = J.GetDistanceFromEnemyFountain(bot);
-	local enemyAncient = GetAncient(GetOpposingTeam());
-	local enemyAncientDistance = GetUnitToUnitDistance(bot,enemyAncient);
-	local aliveEnemyCount = J.GetNumOfAliveHeroes(true)
-	local rushEnemyTowerDistance = 250;
+	local botLevel    = bot:GetLevel(); --等级
+	local botMode     = bot:GetActiveMode(); --活动模式
+	local botTarget   = J.GetProperTarget(bot); --当前目标
+	local EnemyHeroes = J.GetEnemyList(bot,1600); --敌人列表
+	local AllyHeroes  = J.GetAllyList(bot,1600); --队友列表
+	local enemyFountainDistance = J.GetDistanceFromEnemyFountain(bot);--敌方泉水距离
+	local enemyAncient = GetAncient(GetOpposingTeam());--敌人基地
+	local enemyAncientDistance = GetUnitToUnitDistance(bot,enemyAncient);--敌人基地距离
+	local aliveEnemyCount = J.GetNumOfAliveHeroes(true)--敌方或者的英雄数
+	local rushEnemyTowerDistance = 250;--冲塔距离
 	
 	--禁止冲泉
 	if enemyFountainDistance < 1200

@@ -80,11 +80,7 @@ function X.SkillsComplement()
 	
 		J.SetQueuePtToINT(npcBot, true)
 
-<<<<<<< HEAD
 		npcBot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget)
-=======
-		npcBot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
->>>>>>> 5589e97fd27f4d6cf7cc685f5408a5178eaf4e90
 		return;
 	end
 

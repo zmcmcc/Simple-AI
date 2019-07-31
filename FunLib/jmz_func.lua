@@ -1505,14 +1505,14 @@ end
 
 ----------------------------------------------------new functions 2018.12.7
 
-function J.GetDistanceFromEnemyFountain(npcBot)
-	local EnemyFountain = J.GetEnemyFountain();
-	local Distance = GetUnitToLocationDistance(npcBot,EnemyFountain);
+function J.GetDistanceFromEnemyFountain(npcBot)--和敌人泉水的距离
+	local EnemyFountain = J.GetEnemyFountain();--敌人泉水
+	local Distance = GetUnitToLocationDistance(npcBot,EnemyFountain);--距离敌人泉水
 	return Distance;
 end
 
 
-function J.GetDistanceFromAllyFountain(npcBot)
+function J.GetDistanceFromAllyFountain(npcBot)--和我方泉水的距离
 	local OurFountain = J.GetTeamFountain();
 	local Distance = GetUnitToLocationDistance(npcBot,OurFountain);
 	return Distance;
@@ -2336,8 +2336,8 @@ function J.GetAllyCount(bot,nRange)
 end
 
 
-function J.GetEnemyList(bot,nRange)
-	if nRange > 1600 then nRange = 1600 end
+function J.GetEnemyList(bot,nRange) --获取敌人列表
+	if nRange > 1600 then nRange = 1600 end --最大1600
 	local nRealEnemys = {};
 	local nCandidate = bot:GetNearbyHeroes(nRange,true,BOT_MODE_NONE);
 	if nCandidate[1] == nil then return nCandidate end
@@ -2593,7 +2593,7 @@ end
 function J.GetNumOfAliveHeroes(bEnemy)
 	local count = 0;
 	local nTeam = GetTeam();
-	if bEnemy then nTeam = GetOpposingTeam() end;
+	if bEnemy then nTeam = GetOpposingTeam() end;--敌方或我方
 	
 	for i,id in pairs(GetTeamPlayers(nTeam)) 
 	do
