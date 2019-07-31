@@ -80,7 +80,11 @@ function X.SkillsComplement()
 	
 		J.SetQueuePtToINT(npcBot, true)
 
+<<<<<<< HEAD
 		npcBot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget)
+=======
+		npcBot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
+>>>>>>> 5589e97fd27f4d6cf7cc685f5408a5178eaf4e90
 		return;
 	end
 
@@ -137,7 +141,8 @@ function X.ConsiderW()
 				return BOT_ACTION_DESIRE_HIGH, castRTarget;
 			end
 			
-			if J.IsValidHero(npcTarget)                        
+			if J.IsValidHero(npcTarget) and
+				not npcTarget:HasModifier("modifier_axe_battle_hunger")
 			then
 				if J.IsInRange(npcTarget, npcBot, nCastRange + 80)   
 					and J.CanCastOnMagicImmune(npcTarget)
@@ -151,7 +156,8 @@ function X.ConsiderW()
 			end	
 		end
 		
-		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1])
+		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1]) and
+			not nEnemysHerosInCastRange[1]:HasModifier("modifier_axe_battle_hunger")
 		then
 			castRTarget = nEnemysHerosInCastRange[1];   
 			return BOT_ACTION_DESIRE_HIGH,castRTarget;
@@ -162,7 +168,8 @@ function X.ConsiderW()
 	if npcBot:GetActiveMode() == BOT_MODE_ROSHAN and npcBot:HasScepter()
 	then
 	    local nAttackTarget = npcBot:GetAttackTarget();
-		if  nAttackTarget ~= nil and nAttackTarget:IsAlive()
+		if  nAttackTarget ~= nil and nAttackTarget:IsAlive() and
+		not nAttackTarget:HasModifier("modifier_axe_battle_hunger")
 		then
 			return BOT_ACTION_DESIRE_HIGH,nAttackTarget;
 		end
@@ -225,7 +232,7 @@ function X.ConsiderR()
 	end
 
 	-- Get some of its values
-	local nCastRange = abilityR:GetCastRange();
+	local nCastRange = abilityR:GetCastRange() + 600;
 	local nSkillLV   = abilityR:GetLevel();
 	local nKillHealth = 75 * nSkillLV + 175;
 
@@ -238,7 +245,8 @@ function X.ConsiderR()
 		   and not J.IsHaveAegis(npcTarget)
 		   and J.IsInRange(npcTarget, npcBot, nCastRange + 200)
 		then
-			if J.CanKillTarget(npcTarget, nKillHealth, DAMAGE_TYPE_MAGICAL ) 
+			if --J.CanKillTarget(npcTarget, nKillHealth, DAMAGE_TYPE_MAGICAL ) 
+			npcTarget:GetHealth() < nKillHealth
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			end
@@ -256,7 +264,8 @@ function X.ConsiderR()
 			   and J.CanCastOnNonMagicImmune(npcEnemy)
 			   and not J.IsHaveAegis(npcEnemy) 
 			then
-				if J.CanKillTarget(npcEnemy, nKillHealth, DAMAGE_TYPE_MAGICAL )
+				if --J.CanKillTarget(npcEnemy, nKillHealth, DAMAGE_TYPE_MAGICAL )
+				npcEnemy:GetHealth() < nKillHealth
 				then
 					npcToKill = npcEnemy;
 					break;
@@ -275,7 +284,8 @@ function X.ConsiderR()
 		if J.IsValidHero(npcEnemy) 
 		   and not J.IsHaveAegis(npcEnemy) 
 		then
-			if J.CanCastOnNonMagicImmune(npcEnemy) and J.CanKillTarget(npcEnemy, nKillHealth, DAMAGE_TYPE_MAGICAL )
+			if J.CanCastOnNonMagicImmune(npcEnemy) and --J.CanKillTarget(npcEnemy, nKillHealth, DAMAGE_TYPE_MAGICAL )
+			npcEnemy:GetHealth() < nKillHealth
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
