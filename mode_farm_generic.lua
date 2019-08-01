@@ -89,7 +89,8 @@ function GetDesire()
 	         or nPushNoticeTime == nil
 			 or nPushNoticeTime +3 < DotaTime())
 	then
-		local fMessage ;
+		local fMessage , yMessage ;
+		yMessage = "This script is adapted from A Beginner AI: "..sVersionDate;
 		if sBotVersion ~= "1V5"
 		then
 			fMessage = "Simple AI: "..sVersionDate;
@@ -98,6 +99,7 @@ function GetDesire()
 		end
 	    
 		bot:ActionImmediate_Chat( fMessage, true);
+		bot:ActionImmediate_Chat( yMessage, true);
 		bPushNoticeDone = true
 	end
 
