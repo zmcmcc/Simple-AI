@@ -24,13 +24,14 @@ local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 X['sBuyList'] = {
 				sOutfit,
-				"item_dragon_lance",
-				"item_desolator",
-				"item_black_king_bar",
-				"item_hurricane_pike",
-				"item_satanic",
-				"item_lesser_crit",
+				"item_rod_of_atos",
+				"item_glimmer_cape",
+				"item_ultimate_scepter",
+				"item_cyclone",
+				"item_sheepstick",
+				"item_force_staff",
 				"item_bloodthorn",
+				"item_necronomicon_3",
 }
 
 X['sSellList'] = {
@@ -479,7 +480,7 @@ function X.ConsiderE()
 			if  J.IsValid(npcEnemy)
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
 				and not J.IsDisabled(true, npcEnemy)
-				and J.GetEnemyUnitCountAroundTarget(npcEnemy, 600) >= 4
+				and J.GetAroundTargetEnemyHeroCount(npcEnemy, 600) >= 4
 			then
 				for _,npcAlly in pairs( npcEnemy:GetNearbyHeroes(castRange, true, BOT_MODE_NONE) )
 				do

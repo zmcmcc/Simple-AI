@@ -99,7 +99,7 @@ function GetDesire()
 		end
 	    
 		bot:ActionImmediate_Chat( fMessage, true);
-		bot:ActionImmediate_Chat( yMessage, true);
+		bot:ActionImmediate_Chat( yMessage, false);
 		bPushNoticeDone = true
 	end
 

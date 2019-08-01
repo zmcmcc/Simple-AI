@@ -24,14 +24,13 @@ local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 X['sBuyList'] = {
 				sOutfit,
-				"item_mekansm",
 				"item_urn_of_shadows",
 				"item_glimmer_cape",
-				"item_rod_of_atos",
-				"item_guardian_greaves",
-				"item_spirit_vessel",
+				"item_force_staff",
 				"item_ultimate_scepter",
-				"item_shivas_guard",
+				"item_sheepstick",
+				"item_spirit_vessel",
+				"item_aeon_disk",
 }
 
 X['sSellList'] = {
@@ -90,8 +89,14 @@ function X.SkillsComplement()
 	then
 	
 		J.SetQueuePtToINT(npcBot, false)
+
+		if npcBot:HasScepter() 
+		then
+			npcBot:ActionQueue_UseAbilityOnLocation( abilityW, castWTarget:GetLocation() )
+		else
+			npcBot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
+		end
 	
-		npcBot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
 		return;
 	end
 	
@@ -182,28 +187,46 @@ function X.ConsiderE()
 	if not abilityE:IsFullyCastable() then return 0 end
 	
 	local nCastRange = abilityE:GetCastRange();
-	local nArrysHerosInCastRange = npcBot:GetNearbyHeroes(nCastRange + 80 ,false,BOT_MODE_NONE);
+	local nAllysHerosInCastRange = npcBot:GetNearbyHeroes(nCastRange + 80 ,false,BOT_MODE_NONE);
+	local Enemys = 0;
+	local targetally = nil
 
-	for _,npcArry in pairs( nArrysHerosInCastRange )
+	for _,npcAlly in pairs( nAllysHerosInCastRange )
 	do
-		local tableNearbyEnemyHeroes = npcArry:GetNearbyHeroes( 185, true, BOT_MODE_NONE );
-		local arryHP = npcArry:GetHealth()/npcArry:GetMaxHealth();
+		local tableNearbyEnemyHeroes = J.GetAroundTargetEnemyUnitCount(npcAlly, 185);
+		local allyHP = npcAlly:GetHealth()/npcAlly:GetMaxHealth();
 
 		if tableNearbyEnemyHeroes ~= nil and
-		 #tableNearbyEnemyHeroes > 1 or
-		 arryHP <= 0.6
+		 tableNearbyEnemyHeroes > 1 or
+		 allyHP <= 0.6
 		then
-			return BOT_ACTION_DESIRE_MODERATE, npcArry;
+			if targetally == nil then
+				targetally = npcAlly;
+			end
+			Enemys = Enemys + 1
 		end
 
-		if tableNearbyEnemyHeroes ~= nil and #tableNearbyEnemyHeroes >= 3
+		if tableNearbyEnemyHeroes ~= nil and tableNearbyEnemyHeroes >= 2
 		then
-			return BOT_ACTION_DESIRE_HIGH, npcArry;
+			if targetally == nil then
+				targetally = npcAlly;
+			end
+			Enemys = Enemys + 2
 		end
 
-		if arryHP <= 0.3
+		if allyHP <= 0.3
 		then
-			return BOT_ACTION_DESIRE_HIGH, npcArry;
+			return BOT_ACTION_DESIRE_HIGH, npcAlly;
+		end
+	end
+
+	if targetally ~= nil and nMP > 0.15 then
+		if Enemys > 7 then
+			return BOT_ACTION_DESIRE_VERYHIGH, targetally;
+		elseif Enemys > 4 then
+			return BOT_ACTION_DESIRE_HIGH, targetally;
+		elseif Enemys > 3 then
+			return BOT_ACTION_DESIRE_MODERATE, targetally;
 		end
 	end
 
@@ -215,15 +238,15 @@ function X.ConsiderW()
 	if not abilityW:IsFullyCastable() then return 0 end
 
 	local nCastRange = abilityE:GetCastRange();
-	local nArrysHerosInCastRange = npcBot:GetNearbyHeroes(nCastRange + 80 ,false,BOT_MODE_NONE);
+	local nAllysHerosInCastRange = npcBot:GetNearbyHeroes(nCastRange + 80 ,false,BOT_MODE_NONE);
 
-	for _,npcArry in pairs( nArrysHerosInCastRange )
+	for _,npcAlly in pairs( nAllysHerosInCastRange )
 	do
-		local arryHP = npcArry:GetHealth()/npcArry:GetMaxHealth();
+		local allyHP = npcAlly:GetHealth()/npcAlly:GetMaxHealth();
 
-		if arryHP <= 0.2
+		if allyHP <= 0.25
 		then
-			return BOT_ACTION_DESIRE_HIGH, npcArry;
+			return BOT_ACTION_DESIRE_HIGH, npcAlly;
 		end
 	end
 
