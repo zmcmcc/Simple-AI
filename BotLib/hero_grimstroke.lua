@@ -15,7 +15,7 @@ local tTalentTreeList = {
 }
 
 local tAllAbilityBuildList = {
-						{3,1,1,2,1,6,1,3,3,6,2,2,2,6},
+						{3,1,1,2,1,6,1,3,3,3,6,2,2,2,6},
 }
 
 local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
@@ -34,7 +34,8 @@ X['sBuyList'] = {
 }
 
 X['sSellList'] = {
-	"item_hand_of_midas",
+	"item_crimson_guard",
+	"item_quelling_blade",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);

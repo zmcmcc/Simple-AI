@@ -3287,7 +3287,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_monkey_king",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["bot"] = true,},
 ["npc_dota_hero_leshrac"] = {
   ["hero_name"] = "leshrac",
   ["proposal"] = {

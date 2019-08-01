@@ -590,6 +590,8 @@ ItemModule['item_silencer_outfit']         = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_necrolyte_outfit']        = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
+ItemModule['item_dazzle_outfit']           = { 'item_tango', 'item_enchanted_mango', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_arcane_boots', 'item_urn_of_shadows' , 'item_glimmer_cape' , 'item_force_staff' , 'item_ultimate_scepter' , 'item_sheepstick' }
+
 ItemModule['item_warlock_outfit']          = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
 ItemModule['item_jakiro_outfit']           = { 'item_tango', 'item_flask', 'item_double_branches', 'item_branches', 'item_magic_stick', 'item_crown', 'item_arcane_boots', 'item_recipe_magic_wand' }

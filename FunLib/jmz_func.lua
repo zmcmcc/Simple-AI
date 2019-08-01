@@ -166,7 +166,7 @@ J.Chat  = require(GetScriptDirectory()..'/FunLib/jmz_chat')
 -------------------------------------
 if bDebugTeam
 then
-	print(GBotTeam..': A Beginner AI: Function Init Successful!')
+	print(GBotTeam..': Simple AI: Function Init Successful!')
 end
 ------------------------------------
 -------变量部分完成,下面开始函数部分
@@ -213,7 +213,7 @@ function J.PrintInitStatus(nFlag, nNum, sMessage1, sMessage2)
 	then return nFlag end
 	
 	local botName = string.gsub(string.sub(npcBot:GetUnitName(), 15),'_','');
-	print('A Beginner AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
+	print('Simple AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
 	return nNum
 	
 end
