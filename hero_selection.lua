@@ -9,7 +9,7 @@
 --I'm the author of this file,but other file is based on BOT EXPERIMENT Credit:FURIOUSPUPPY.
 --As you know,I'm come from china,and I'm studing English.
 --My E-mail:dota2jmz@163.come,just have fun!  \o(∩_∩)o /
-------------------------------- 来自一名兴趣使然的开发者.
+-------------------------------
 local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
 local cMod = require(GetScriptDirectory() .. "/AuxiliaryScript/CaptainMode");
 
@@ -23,6 +23,14 @@ local sSelectList = {};
 local tSelectPoolList = {};
 local tLaneAssignList = {};
 local bInitLineUpDone = false;
+
+local bSelfMode = false;
+
+local BotsInit = require( "game/botsinit" );
+
+local Role = require( GetScriptDirectory()..'/FunLib/jmz_role')
+local Chat = require( GetScriptDirectory()..'/FunLib/jmz_chat')
+local HeroSet = nil
 
 local tAllLineUpList = {	
 				[1]={	"npc_dota_hero_viper",
@@ -266,6 +274,34 @@ sSelectList = {
 }
 
 
+if BotsInit["ABATiYanMa"] ~= nil
+then 
+	bSelfMode = true
+
+	--设置全局语种环境
+	Chat.SetRawLanguage(BotsInit["ABATiYanMa"]);
+	
+	--初始策略位置
+	if GetTeam() ~= TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(1))..(Chat.GetLocalWord(5)) ) end
+	if GetTeam() == TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(3))..(Chat.GetLocalWord(6)) ) end
+	
+	--修改策略位置
+	if Chat.GetRawGameWord(HeroSet['QiYongKeChang']) == true 
+	then
+		Role["bHostSet"] = false;
+		if GetTeam() ~= TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(2))..(Chat.GetLocalWord(5)) ) end
+		if GetTeam() == TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(4))..(Chat.GetLocalWord(6)) ) end
+	end
+	
+	--根据策略内容决定模式
+	Role["nUserMode"] = Chat.GetRawGameWord(HeroSet['JiHuoCeLue']) == true and Role.GetUserLV(BotsInit["ABATiYanMa"]) or 0
+	Role["sUserName"] = HeroSet['ZhanDuiJunShi'];
+	
+	if Chat.GetRawGameWord(HeroSet['ShuBuQi']) ~= false then Role["nUserMode"] = -1 end
+
+	if Role["nUserMode"] <= 0 then bSelfMode = false end
+end
+
 --For Random LineUp-------------
 local sTempList = sSelectList;
 nRand = RandomInt(1,(#tAllLineUpList) *1.4 ); 
@@ -314,7 +350,7 @@ end
 --初始分路
 if GetTeam() == TEAM_RADIANT 
 then
-	local RadiantLane = {
+	local nRadiantLane = {
 							[1] = LANE_BOT,
 							[2] = LANE_TOP,
 							[3] = LANE_TOP,
@@ -322,10 +358,10 @@ then
 							[5] = LANE_MID,
 						};
 
-	tLaneAssignList = X.GetRandomChangeLane(RadiantLane);
+	tLaneAssignList = X.GetRandomChangeLane(nRadiantLane);
 	
 else
-	local DireLane = {
+	local nDireLane = {
 						[1] = LANE_TOP,
 						[2] = LANE_BOT,
 						[3] = LANE_BOT,
@@ -333,16 +369,28 @@ else
 						[5] = LANE_MID,
 					 }
 
-	tLaneAssignList = X.GetRandomChangeLane(DireLane);
-	
+	tLaneAssignList = X.GetRandomChangeLane(nDireLane);
 end
 				
-
+--根据用户配置初始列表
 --根据人类玩家数量初始化英雄池,英雄表,英雄分路
--- tSelectPoolList, sSelectList, tLaneAssignList
+--tSelectPoolList, sSelectList, tLaneAssignList
 function X.SetLaneUpInit()
 
 	if bInitLineUpDone then return end
+	
+	if bSelfMode 
+	then 
+		if Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
+		then
+			sSelectList = Chat.GetHeroSelectList(HeroSet['ZhenRong'])
+		end
+		
+		if Chat.GetRawGameWord(HeroSet['FenLuShengXiao']) == true
+		then
+			tLaneAssignList = Chat.GetLaneAssignList(HeroSet['FenLu']) 
+		end
+	end
 
 	local IDs = GetTeamPlayers(GetTeam());
 	for i,id in pairs(IDs) do
@@ -355,6 +403,7 @@ function X.SetLaneUpInit()
 		end
 	end
 
+	
 	bInitLineUpDone = true;
 	
 end
@@ -448,9 +497,9 @@ function X.IsRepeatHero(sHero)
 end
 
 
-function X.SetChatHeroBan( ChatText )
+function X.SetChatHeroBan( sChatText )
 	
-	sBanList[#sBanList + 1] = string.lower(ChatText);
+	sBanList[#sBanList + 1] = string.lower(sChatText);
 	
 end
 
@@ -485,11 +534,44 @@ end
 
 
 function Think()
+
+
+--###############################
+--[[---For Test-------------------
+	-- sSelectList={ 
+	-- "npc_dota_hero_necrolyte",
+	-- "npc_dota_hero_jakiro",
+	-- "npc_dota_hero_phantom_assassin",
+	-- "npc_dota_hero_skeleton_king",
+	-- "npc_dota_hero_templar_assassin",
+	-- }
+
+	-- if GetTeam() == TEAM_DIRE then
+	-- sSelectList={ 
+	-- "npc_dota_hero_warlock",
+	-- "npc_dota_hero_zuus",
+	-- "npc_dota_hero_antimage",
+	-- "npc_dota_hero_dragon_knight",
+	-- "npc_dota_hero_viper",
+	-- }
+	-- end
+	
+	-- local IDs = GetTeamPlayers(GetTeam());
+	-- for i,id in pairs(IDs) 
+	-- do
+		-- if IsPlayerBot(id) then
+			-- SelectHero(id,sSelectList[i]);
+			--SelectHero(id,'npc_dota_hero_antimage')
+		-- end
+	-- end
+--##############################]]--
+--------------------------------------------
+
 	if not bInitLineUpDone then X.SetLaneUpInit() return end
 
 	if GetGameMode() == 1 then
 		if GetGameState() == GAME_STATE_HERO_SELECTION then
-			InstallChatCallback(function ( chat ) X.SetChatHeroBan( chat.string ); end);
+			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
 		end
 		AllPickLogic();
 	elseif GetGameMode() == 2 then
@@ -497,7 +579,7 @@ function Think()
 		cMod.AddToList();
 	else
 		if GetGameState() == GAME_STATE_HERO_SELECTION then
-			InstallChatCallback(function ( chat ) X.SetChatHeroBan( chat.string ); end);
+			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
 		end
 		AllPickLogic();
 	end
@@ -516,7 +598,18 @@ function AllPickLogic()
 	----------------------------------------------------------------------------------------
 	------设置挑选延迟完毕------------------------------------------------------------------
 	----------------------------------------------------------------------------------------
-	
+	--自定义挑选逻辑
+	if bSelfMode and Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
+	then
+		local IDs = GetTeamPlayers(GetTeam());
+		for i,id in pairs(IDs) 
+		do
+			if IsPlayerBot(id) then
+				SelectHero(id,sSelectList[i]);
+			end
+		end
+		return;
+	end
 	
 	--常规挑选逻辑
 	local IDs = GetTeamPlayers(GetTeam());
@@ -534,7 +627,7 @@ function AllPickLogic()
 			--end
 			--新版英雄选择策略
 			sSelectHero = targetdata.getApHero();
-
+			
 			fLastSlectTime = GameTime();
 			fLastRand = RandomFloat(0.8,2.8);
 			SelectHero(id,sSelectHero);
@@ -544,17 +637,22 @@ function AllPickLogic()
 end
 
 function GetBotNames()
+
+	if bSelfMode then return HeroSet['ZhanDuiMing'] end
+
 	return targetdata.GetDota2Team();
 end
 
+local sBotVersion = Role.GetBotVersion()
+if bSelfMode or sBotVersion == 'Mid'
+then
 
----[[------------------------------ 
--------***********************-----
 function UpdateLaneAssignments()  
 
 	return tLaneAssignList;
 	
 end
--------**********************-----
-----------------------------------]]
---aaxxxxop@163.com QQ:2462331592.
+
+end
+
+--dota2jmz@163.com QQ:2462331592.

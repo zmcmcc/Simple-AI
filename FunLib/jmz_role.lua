@@ -9,6 +9,14 @@
 
 local X = {}
 
+--local sBotVersion = "New";
+local sBotVersion = "Mid";
+local sVersionDate = sBotVersion.." 7.22,2019/08/01."
+
+function X.GetBotVersion()
+	return sBotVersion,sVersionDate;
+end
+
 ----------------------------------------------------------------------------------------------------
 
 -- ["carry"] will become more useful later in the game if they gain a significant gold advantage.
@@ -550,7 +558,7 @@ X["hero_roles"] = {
 		['pusher'] = 1
 	},
 
-	["npc_dota_dark_willow"] = {
+	["npc_dota_hero_dark_willow"] = {
 		['carry'] = 0,
 		['disabler'] = 3,
 		['durable'] = 0,
@@ -1588,7 +1596,6 @@ X['mid'] = {
 	'npc_dota_hero_clinkz',
 	'npc_dota_hero_death_prophet',
 	'npc_dota_hero_dragon_knight',
-	'npc_dota_hero_abaddon',
 	'npc_dota_hero_ember_spirit',
 	'npc_dota_hero_huskar',
 	'npc_dota_hero_invoker',
@@ -1649,8 +1656,6 @@ X['safe'] = {
 X['supp'] = {
 	'npc_dota_hero_ancient_apparition',
 	'npc_dota_hero_bane',
-	'npc_dota_hero_vengefulspirit',
-	'npc_dota_hero_omniknight',
 	'npc_dota_hero_bounty_hunter',
 	'npc_dota_hero_chen',
 	'npc_dota_hero_crystal_maiden',
@@ -1732,18 +1737,22 @@ function X.CanBeSupport(hero)
 end	
 
 function X.GetCurrentSuitableRole(bot, hero)
+
+	if X.IsUserMode() 
+	  
+	   and X.IsUserSetSup(bot)
+	then
+		return "support";
+	end
+
 	local lane = bot:GetAssignedLane();
-	if X.CanBeSupport(hero) and lane ~= LANE_MID then
+	if X.CanBeSupport(hero) and lane ~= LANE_MID and (not X.IsUserMode() or #X["sUserSupList"] == 0) then
 		return "support";
 	elseif X.CanBeMidlaner(hero) and lane == LANE_MID then
 		return "midlaner";
 	elseif X.CanBeSafeLaneCarry(hero) and ((GetTeam() == TEAM_RADIANT and lane == LANE_BOT) or (GetTeam() == TEAM_DIRE and lane == LANE_TOP) ) then
 		return "carry";
 	elseif X.CanBeOfflaner(hero) and ((GetTeam() == TEAM_RADIANT and lane == LANE_TOP) or (GetTeam() == TEAM_DIRE and lane == LANE_BOT) ) then
-		return "offlaner";
-	elseif hero == "npc_dota_hero_wisp" then
-		return "support";
-	elseif hero == "npc_dota_hero_elder_titan" then
 		return "offlaner";
 	else
 		return "unknown";
@@ -1894,6 +1903,116 @@ function X.GetRuneActionTime()
 	return X['nStopWaitTime'];
 end
 
+function X.GetUserLV(sString)
+
+	if sString == 'RGNXWA-IZCYGF-NGGXXQ-BHDCXD-YYHBUG-WHZRTZ' then return 2 end
+	if sString == 'GDDYYN-MQBYGK-FXHPJT-YMYBYS-YBRFXD-TYM3QU' then return 3 end
+    
+	return 1
+	
+end
+
+X["nUserMode"] = 0
+function X.IsUserMode()
+	return X["nUserMode"] > 0
+end
+
+local sZhongHeroList = {
+	'npc_dota_hero_medusa',
+	'npc_dota_hero_arc_warden',
+	'npc_dota_hero_jakiro',
+	'npc_dota_hero_warlock',
+	'npc_dota_hero_zuus',
+}
+
+local sGaoHeroList = {
+	'npc_dota_hero_antimage',
+	'npc_dota_hero_sven',
+	'npc_dota_hero_sniper',
+	'npc_dota_hero_bristleback',
+	'npc_dota_hero_viper',
+}
+
+function X.IsUserHero()
+
+	local sBotName = GetBot():GetUnitName();
+	
+	if X["nUserMode"] <= 2 
+	then
+		for _,s in pairs(sGaoHeroList)
+		do	
+			if s == sBotName then return false end
+		end
+	end
+	
+	if X["nUserMode"] <= 1 
+	then
+		for _,s in pairs(sZhongHeroList)
+		do	
+			if s == sBotName then return false end
+		end
+	end
+	
+	return true
+
+end
+
+function X.IsShuBuQi()
+	return X["nUserMode"] < 0
+end
+
+X["bHostSet"] = true
+function X.GetDirType()
+	if GetTeam() == TEAM_RADIANT
+	then
+		return X["bHostSet"] and 1 or 2
+	else
+		return X["bHostSet"] and 3 or 4
+	end
+end
+
+X["sUserName"] = "Null"
+function X.GetUserName()
+	return X["sUserName"]
+end
+
+function X.GetUserType()
+	
+	if X["bHostSet"]
+	then
+		if X["nUserMode"] == 1
+		then
+			return 7
+		elseif X["nUserMode"] == 2
+			then
+				return 8
+		else
+			return 9
+		end
+	else
+		return 10
+	end
+
+end
+
+X["sUserSupList"] = {}
+function X.SetUserSup(bot)
+	table.insert(X["sUserSupList"],bot:GetUnitName());
+end
+
+function X.IsUserSetSup(bot)
+	
+	for _,s in pairs(X["sUserSupList"])
+	do
+		if s == bot:GetUnitName()
+		then
+			return true
+		end
+	end
+
+	return false;
+end
+
 
 function X.GetHighestValueRoles(bot)
 	local maxVal = -1;
@@ -1907,53 +2026,6 @@ function X.GetHighestValueRoles(bot)
 		end
 	end
 	print("Highest value role => "..role.." : "..tostring(maxVal))
-end
-
-
-function X.IsSpecialCarry(bot)
-    
-	local botName = bot:GetUnitName();
-	
-	return  botName == "npc_dota_hero_abaddon" 
-		 or botName == "npc_dota_hero_omniknight"
-		 or botName == "npc_dota_hero_chaos_knight" 
-		 or botName == 'npc_dota_hero_sven'
-		 or botName == 'npc_dota_hero_antimage'
-		 or botName == "npc_dota_hero_clinkz"
-		 or botName == "npc_dota_hero_templar_assassin"
-		 or botName == "npc_dota_hero_drow_ranger"
-		 or botName == "npc_dota_hero_viper" 
-		 or botName == "npc_dota_hero_dragon_knight"
-		 or botName == "npc_dota_hero_abaddon"
-		 or botName == "npc_dota_hero_shredder"
-		 or botName == "npc_dota_hero_weaver"
-		 or botName == "npc_dota_hero_axe"
-		 or botName == "npc_dota_hero_bristleback"  
-		 or botName == "npc_dota_hero_kunkka"
-		 or botName == "npc_dota_hero_sniper"
-		 or botName == "npc_dota_hero_phantom_assassin"
-		 or botName == "npc_dota_hero_skeleton_king"
-		 or botName == "npc_dota_hero_bloodseeker"
-		 or botName == "npc_dota_hero_luna"
-		 or botName == "npc_dota_hero_nevermore"
-		 or botName == "npc_dota_hero_medusa"
-		 or botName == "npc_dota_hero_terrorblade"
-		 or botName == "npc_dota_hero_razor"
-		 or botName == "npc_dota_hero_queenofpain"
-		 or botName == "npc_dota_hero_arc_warden"
-end
-
-function X.IsSpecialSupport(bot)
-    
-	local botName = bot:GetUnitName();
-	
-	return  botName == "npc_dota_hero_zuus" 
-		 or botName == "npc_dota_hero_jakiro"
-		 or botName == "npc_dota_hero_necrolyte" 
-		 or botName == "npc_dota_hero_warlock"	
-		 or botName == "npc_dota_hero_silencer"			 
-		 or botName == "npc_dota_hero_crystal_maiden"
-
 end
 
 

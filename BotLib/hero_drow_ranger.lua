@@ -30,9 +30,8 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+X['sBuyList'] = {
 				sOutfit,
 				'item_dragon_lance', 
 				'item_yasha', 
@@ -44,6 +43,15 @@ X['items'] = {
 				"item_butterfly",
 }
 
+X['sSellList'] = {
+	"item_hurricane_pike",
+	"item_magic_wand",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = false
 
@@ -51,10 +59,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -593,4 +598,4 @@ end
 
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

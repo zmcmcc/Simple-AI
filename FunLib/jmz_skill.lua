@@ -29,8 +29,6 @@ function X.GetAbilityList(npcBot)
 	do
 		table.insert(sAbilityList, npcBot:GetAbilityInSlot(slot):GetName());
 	end
-	-- local hAbility7 = npcBot:GetAbilityInSlot(6);
-	-- if hAbility7 ~= nil then table.insert(sAbilityList, hAbility7:GetName()) end
 	return sAbilityList;
 end
 
@@ -104,4 +102,4 @@ end
 
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

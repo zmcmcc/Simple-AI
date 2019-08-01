@@ -30,9 +30,7 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
-
-X['items'] = {
+X['sBuyList'] = {
 				sOutfit,
 				"item_soul_ring",
 				"item_pipe",
@@ -43,6 +41,15 @@ X['items'] = {
 				"item_sheepstick",
 }
 
+X['sSellList'] = {
+	"item_ultimate_scepter",
+	"item_arcane_boots",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
@@ -50,10 +57,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -155,6 +159,16 @@ function X.SkillsComplement()
 		return;
 	end
 	
+	
+	castDDesire, castDLocation = X.ConsiderD();
+	if ( castDDesire > 0 ) 
+	then
+	
+		J.SetQueuePtToINT(npcBot, true)
+	
+		npcBot:ActionQueue_UseAbilityOnLocation( abilityD, castDLocation )
+		return;
+	end
 
 end
 
@@ -546,4 +560,4 @@ function X.GetRanged(npcBot,nRadius)
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

@@ -10,11 +10,11 @@ end
 
 dofile( GetScriptDirectory().."/bot_test")
 
-local botBuild = dofile(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
-if botBuild == nil then return end
+local BotBuild = dofile(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
+if BotBuild == nil then return end
 
 function MinionThink(hMinionUnit)
 
-	botBuild.MinionThink(hMinionUnit)
+	BotBuild.MinionThink(hMinionUnit)
 	
 end

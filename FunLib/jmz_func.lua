@@ -22,8 +22,11 @@
   需要进行多个条件逻辑运算时,每个条件块单独一行.
 4,函数参数中包含了 bot(句柄) 的话, 将其放在第一位, 同一文件内,要么均为npcBot, 要么均为bot
 如有遗漏或矛盾的情况以文件内同类代码的主流规范为准.
-附:常用词汇  放最后: 表示布尔值 bDone bError bSuccess bFound  bReady  如: bUpdateDone
-   表修饰时(放最后) Total、 Sum、 Average、 Max、 Min、 Record、 String、 Pointer、 First、 Last、 Lim  如: creepCountMax
+附: 常用词汇  放最后: 表示布尔值 bDone bError bSuccess bFound  bReady  如: bUpdateDone
+    表修饰时(放最后) Total、 Sum、 Average、 Max、 Min、 Record、 String、 Pointer、 First、 Last、 Lim  如: creepCountMax
+	句柄handle = h, 坐标矢量vector = v, 布尔值bool = b,  字符串string = s, 
+	一般的数量normal = n, 特殊的小数float = f, 全局命名空间变量goble = g, 未确定类型的单位unknow = u,
+	表名以表内容类型....List命名,即 'sBotList' 表示内容为英雄名的线性表,非线性表或表中表table = t,
 --]]
 
 --[[计划二:
@@ -72,7 +75,7 @@ local nPrintTime   = 9999
 local nDebugTime   = 9999
 local bDebugMode   = false
 local bDebugTeam   = (GBotTeam == TEAM_RADIANT)
-local sDebugHero   = 'luna'
+local sDebugHero   = 'npc_dota_hero_luna'
 local tAllyIDList    = GetTeamPlayers(GBotTeam)
 local tAllyHeroList = {}
 local tAllyHumanList  = {}
@@ -157,17 +160,41 @@ J.Item  = require(GetScriptDirectory()..'/FunLib/jmz_item')
 J.Buff  = require(GetScriptDirectory()..'/FunLib/jmz_buff')
 J.Role  = require(GetScriptDirectory()..'/FunLib/jmz_role')
 J.Skill = require(GetScriptDirectory()..'/FunLib/jmz_skill')
---J.Chat  = require(GetScriptDirectory()..'/FunLib/jmz_chat')
+J.Chat  = require(GetScriptDirectory()..'/FunLib/jmz_chat')
 
 ---[[--------------------------------
 -------------------------------------
 if bDebugTeam
 then
-	print(GBotTeam..': Simple AI: Function Init Successful!')
+	print(GBotTeam..': A Beginner AI: Function Init Successful!')
 end
 ------------------------------------
 -------变量部分完成,下面开始函数部分
 -----------------------------------]]
+function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellList)
+
+	local bot = GetBot()
+	
+	if J.Role.IsUserMode() and J.Role.IsUserHero()
+	then
+		local nDirType = J.Role.GetDirType()
+		local sBotDir = J.Chat.GetHeroDirName(bot, nDirType)
+		local BotSet = require( sBotDir );
+		if J.Chat.GetRawGameWord(BotSet['ShiFouShengXiao']) == true
+		then
+			nAbilityBuildList = BotSet['JiNeng'];
+			nTalentBuildList = J.Chat.GetTalentBuildList(BotSet['TianFu'])
+			sBuyList = J.Chat.GetItemBuildList(BotSet['ChuZhuang'])
+			sSellList = J.Chat.GetItemBuildList(BotSet['GuoDuZhuang'])
+			if J.Chat.GetRawGameWord(BotSet['ShiFouDaFuZhu']) == true
+			then J.Role.SetUserSup(bot) end
+		end
+	end
+
+	return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
+	
+end
+
 
 --在这里更新全局变量
 function J.ConsiderUpdateEnvironment(bot)
@@ -186,7 +213,7 @@ function J.PrintInitStatus(nFlag, nNum, sMessage1, sMessage2)
 	then return nFlag end
 	
 	local botName = string.gsub(string.sub(npcBot:GetUnitName(), 15),'_','');
-	print('Simple AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
+	print('A Beginner AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
 	return nNum
 	
 end
@@ -249,7 +276,7 @@ end
 
 
 --敌军生物数量
-function J.GetEnemyUnitCountAroundTarget(target, nRadius)
+function J.GetAroundTargetEnemyUnitCount(target, nRadius)
 
 	local targetLoc  = target:GetLocation();
 	local heroCount  = J.GetNearbyAroundLocationUnitCount(true, true, nRadius, targetLoc);
@@ -1033,6 +1060,10 @@ function J.IsAllyUnitSpell(sAbilityName)
 					"omniknight_purification",
 					"omniknight_repel",
 					"medusa_mana_shield",
+					"grimstroke_spirit_walk",
+					"dazzle_shallow_grave",
+					"ogre_magi_bloodlust",
+					"lich_frost_shield",
 					};
 	for _,name in pairs(nSpell)
 	do
@@ -1049,13 +1080,17 @@ end
 
 function J.IsProjectileUnitSpell(sAbilityName)
 
-	local  nSpell = {
-					"sven_storm_bolt",
-					"skywrath_mage_arcane_bolt",
-					"medusa_mystic_snake",
+	local nSpell = {
 					"chaos_knight_chaos_bolt",
-					"skeleton_king_hellfire_blast",
+					"grimstroke_ink_creature",
+					"lich_chain_frost",
+					"medusa_mystic_snake",
 					"phantom_assassin_stifling_dagger",
+					"skeleton_king_hellfire_blast",
+					"skywrath_mage_arcane_bolt",
+					"sven_storm_bolt",
+					"viper_viper_strike",
+					"witch_doctor_paralyzing_cask",
 					};
 					
 	for _,name in pairs(nSpell)
@@ -1096,6 +1131,8 @@ end
 
 
 function J.IsWillBeCastUnitTargetSpell(npcBot,nRange)
+	
+	if nRange > 1600 then nRange = 1600 end
 	
 	local nEnemys = npcBot:GetNearbyHeroes(nRange,true,BOT_MODE_NONE);
 	for _,npcEnemy in pairs(nEnemys)
@@ -1189,8 +1226,7 @@ function J.IsUnitTargetProjectileIncoming(npcBot, range)
 		   and ( p.ability ~= nil 
 		         and ( p.ability:GetName() ~= "medusa_mystic_snake" 
 				       or p.caster == nil 
-					   or p.caster:GetUnitName() == "npc_dota_hero_medusa"
-					   or p.caster:GetUnitName() == "npc_dota_hero_abaddon" ) ) 
+					   or p.caster:GetUnitName() == "npc_dota_hero_medusa" ) ) 
 		   and ( p.ability:GetBehavior() == ABILITY_BEHAVIOR_UNIT_TARGET 
 				 or not J.IsOnlyProjectileSpell(p.ability:GetName()))
 		then
@@ -1505,14 +1541,14 @@ end
 
 ----------------------------------------------------new functions 2018.12.7
 
-function J.GetDistanceFromEnemyFountain(npcBot)--和敌人泉水的距离
-	local EnemyFountain = J.GetEnemyFountain();--敌人泉水
-	local Distance = GetUnitToLocationDistance(npcBot,EnemyFountain);--距离敌人泉水
+function J.GetDistanceFromEnemyFountain(npcBot)
+	local EnemyFountain = J.GetEnemyFountain();
+	local Distance = GetUnitToLocationDistance(npcBot,EnemyFountain);
 	return Distance;
 end
 
 
-function J.GetDistanceFromAllyFountain(npcBot)--和我方泉水的距离
+function J.GetDistanceFromAllyFountain(npcBot)
 	local OurFountain = J.GetTeamFountain();
 	local Distance = GetUnitToLocationDistance(npcBot,OurFountain);
 	return Distance;
@@ -1905,7 +1941,7 @@ end
 
 function J.IsHumanPlayer(nUnit)
 
-    return not IsPlayerBot(nUnit:GetPlayerID())
+    return not nUnit:IsBot() --not IsPlayerBot(nUnit:GetPlayerID())
 
 end
 
@@ -2213,8 +2249,6 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_clinkz"
 			or botName == "npc_dota_hero_chaos_knight" 
 			or botName == "npc_dota_hero_dragon_knight"
-			or botName == "npc_dota_hero_abaddon"
-			or botName == "npc_dota_hero_vengefulspirit"
 			or botName == "npc_dota_hero_drow_ranger"
 			or botName == "npc_dota_hero_kunkka"
 			or botName == "npc_dota_hero_luna"
@@ -2249,7 +2283,6 @@ function J.IsSpecialSupport(bot)
 			or botName == "npc_dota_hero_necrolyte"
 			or botName == "npc_dota_hero_ogre_magi"
 			or botName == "npc_dota_hero_oracle"
-			or botName == "npc_dota_hero_omniknight"
 			or botName == "npc_dota_hero_silencer"
 			or botName == "npc_dota_hero_shadow_shaman"
 			or botName == "npc_dota_hero_skywrath_mage"
@@ -2336,8 +2369,8 @@ function J.GetAllyCount(bot,nRange)
 end
 
 
-function J.GetEnemyList(bot,nRange) --获取敌人列表
-	if nRange > 1600 then nRange = 1600 end --最大1600
+function J.GetEnemyList(bot,nRange)
+	if nRange > 1600 then nRange = 1600 end
 	local nRealEnemys = {};
 	local nCandidate = bot:GetNearbyHeroes(nRange,true,BOT_MODE_NONE);
 	if nCandidate[1] == nil then return nCandidate end
@@ -2593,7 +2626,7 @@ end
 function J.GetNumOfAliveHeroes(bEnemy)
 	local count = 0;
 	local nTeam = GetTeam();
-	if bEnemy then nTeam = GetOpposingTeam() end;--敌方或我方
+	if bEnemy then nTeam = GetOpposingTeam() end;
 	
 	for i,id in pairs(GetTeamPlayers(nTeam)) 
 	do
@@ -2810,447 +2843,420 @@ function J.GetMagicToPhysicalDamage(bot,nUnit,nMagicDamage)
 end
 
 
-
 return J
 
 --[[
-CanAbilityBeUpgraded( ) : bool
-CanBeDisassembled( ) : bool
-GetAOERadius( ) : int
-GetAbilityDamage( ) : int
-GetAutoCastState( ) : bool
-GetBehavior( ) : int
-GetCastPoint( ) : float
-GetCastRange( ) : int
-GetCaster( ) : handle
-GetChannelTime( ) : float
-GetChannelledManaCostPerSecond( ) : int
-GetCooldown( ) : float
-GetCooldownTimeRemaining( ) : float
-GetCurrentCharges( ) : int
-GetDamageType( ) : int
-GetDuration( ) : float
-GetEstimatedDamageToTarget( handle hTarget, float fDuration, int nDamageTypes ) : int
-GetHeroLevelRequiredToUpgrade( ) : int
-GetInitialCharges( ) : int
-GetLevel( ) : int
-GetManaCost( ) : int
-GetMaxLevel( ) : int
-GetName( ) : cstring
-GetPowerTreadsStat( ) : int
-GetSecondaryCharges( ) : int
-GetSpecialValueFloat( cstring pszKey ) : float
-GetSpecialValueInt( cstring pszKey ) : int
-GetTargetFlags( ) : int
-GetTargetTeam( ) : int
-GetTargetType( ) : int
-GetToggleState( ) : bool
-IsActivated( ) : bool
-IsChanneling( ) : bool
-IsCombineLocked( ) : bool
-IsCooldownReady( ) : bool
-IsFullyCastable( ) : bool
-IsHidden( ) : bool
-IsInAbilityPhase( ) : bool
-IsItem( ) : bool
-IsOwnersManaEnough( ) : bool
-IsPassive( ) : bool
-IsStealable( ) : bool
-IsStolen( ) : bool
-IsTalent( ) : bool
-IsToggle( ) : bool
-IsTrained( ) : bool
-IsUltimate( ) : bool
-ProcsMagicStick( ) : bool
-ToggleAutoCast( ) : void
-CDOTA_Bot_Script
-ActionImmediate_Buyback( ) : void
-ActionImmediate_Chat( cstring pszMessage, bool bAllChat ) : void
-ActionImmediate_Courier( handle hCourier, int eAction ) : bool
-ActionImmediate_DisassembleItem( handle hItem ) : void
-ActionImmediate_Glyph( ) : void
-ActionImmediate_LevelAbility( cstring pszAbilityName ) : void
-ActionImmediate_Ping( float x, float y, bool bNormalPing ) : void
-ActionImmediate_PurchaseItem( cstring pszItemName ) :
-ActionImmediate_SellItem( handle hItem ) : void
-ActionImmediate_SetItemCombineLock( handle hItem, bool bLocked ) : void
-ActionImmediate_SwapItems( int nSlot1, int nSlot2 ) : void
-ActionPush_AttackMove( vector location ) : void
-ActionPush_AttackUnit( handle hTarget, bool bOnce ) : void
-ActionPush_Delay( float fDelay ) : void
-ActionPush_DropItem( handle hItem, vector location ) : void
-ActionPush_MoveDirectly( vector location ) : void
-ActionPush_MovePath( handle hPathTable ) : void
-ActionPush_MoveToLocation( vector location ) : void
-ActionPush_MoveToUnit( handle hTarget ) : void
-ActionPush_PickUpItem( handle hItem ) : void
-ActionPush_PickUpRune( int nRune ) : void
-ActionPush_UseAbility( handle hAbility ) : void
-ActionPush_UseAbilityOnEntity( handle hAbility, handle hTarget ) : void
-ActionPush_UseAbilityOnLocation( handle hAbility, vector location ) : void
-ActionPush_UseAbilityOnTree( handle hAbility, int iTree ) : void
-ActionPush_UseShrine( handle hShrine ) : void
-ActionQueue_AttackMove( vector location ) : void
-ActionQueue_AttackUnit( handle hTarget, bool bOnce ) : void
-ActionQueue_Delay( float fDelay ) : void
-ActionQueue_DropItem( handle hItem, vector location ) : void
-ActionQueue_MoveDirectly( vector location ) : void
-ActionQueue_MovePath( handle hPathTable ) : void
-ActionQueue_MoveToLocation( vector location ) : void
-ActionQueue_MoveToUnit( handle hTarget ) : void
-ActionQueue_PickUpItem( handle hItem ) : void
-ActionQueue_PickUpRune( int nRune ) : void
-ActionQueue_UseAbility( handle hAbility ) : void
-ActionQueue_UseAbilityOnEntity( handle hAbility, handle hTarget ) : void
-ActionQueue_UseAbilityOnLocation( handle hAbility, vector location ) : void
-ActionQueue_UseAbilityOnTree( handle hAbility, int iTree ) : void
-ActionQueue_UseShrine( handle hShrine ) : void
-Action_AttackMove( vector location ) : void
-Action_AttackUnit( handle hTarget, bool bOnce ) : void
-Action_ClearActions( bool bStop ) : void
-Action_Delay( float fDelay ) : void
-Action_DropItem( handle hItem, vector location ) : void
-Action_MoveDirectly( vector location ) : void
-Action_MovePath( handle hPathTable ) : void
-Action_MoveToLocation( vector location ) : void
-Action_MoveToUnit( handle hTarget ) : void
-Action_PickUpItem( handle hItem ) : void
-Action_PickUpRune( int nRune ) : void
-Action_UseAbility( handle hAbility ) : void
-Action_UseAbilityOnEntity( handle hAbility, handle hTarget ) : void
-Action_UseAbilityOnLocation( handle hAbility, vector location ) : void
-Action_UseAbilityOnTree( handle hAbility, int iTree ) : void
-Action_UseShrine( handle hShrine ) : void
-CanBeSeen( ) : bool
-DistanceFromFountain( ) : int
-DistanceFromSecretShop( ) : int
-DistanceFromSideShop( ) : int
-FindAoELocation( bool bEnemies, bool bHeroes, vector vBaseLocation, int nMaxDistanceFromBase, int nRadius, float fTimeInFuture, int nMaxHealth ) : variant
-FindItemSlot( cstring pszItemName ) : int
-GetAbilityByName( cstring pszAbilityName ) : handle
-GetAbilityInSlot( int iAbility ) : handle
-GetAbilityPoints( ) : int
-GetAbilityTarget( ) : handle
-GetAcquisitionRange( ) : int
-GetActiveMode( ) : int
-GetActiveModeDesire( ) : float
-GetActualIncomingDamage( int nDamage, int eDamageType ) : int
-GetAnimActivity( ) : int
-GetAnimCycle( ) : float
-GetArmor( ) : float
-GetAssignedLane( ) : int
-GetAttackCombatProficiency( handle hTarget ) : float
-GetAttackDamage( ) : float
-GetAttackPoint( ) : float
-GetAttackProjectileSpeed( ) : int
-GetAttackRange( ) : int
-GetAttackSpeed( ) : float
-GetAttackTarget( ) : handle
-GetAttributeValue( int nAttribute ) : int
-GetBaseDamage( ) : float
-GetBaseDamageVariance( ) : float
-GetBaseHealthRegen( ) : float
-GetBaseManaRegen( ) : float
-GetBaseMovementSpeed( ) : int
-GetBoundingRadius( ) : float
-GetBountyGoldMax( ) : int
-GetBountyGoldMin( ) : int
-GetBountyXP( ) : int
-GetBuybackCooldown( ) : float
-GetBuybackCost( ) : int
-GetCourierValue( ) : int
-GetCurrentActionType( ) : int
-GetCurrentActiveAbility( ) : handle
-GetCurrentMovementSpeed( ) : int
-GetCurrentVisionRange( ) : int
-GetDayTimeVisionRange( ) : int
-GetDefendCombatProficiency( handle hAttacker ) : float
-GetDenies( ) : int
-GetDifficulty( ) : int
-GetEstimatedDamageToTarget( bool bCurrentlyAvailable, handle hTarget, float fDuration, int nDamageTypes ) : int
-GetEvasion( ) : float
-GetExtrapolatedLocation( float fDelay ) : vector
-GetFacing( ) : int
-GetGold( ) : int
-GetGroundHeight( ) : int
-GetHealth( ) : int
-GetHealthRegen( ) : float
-GetHealthRegenPerStr( ) : float
-GetIncomingTrackingProjectiles( ) : variant
-GetItemInSlot( int nSlot ) : handle
-GetItemSlotType( int nSlot ) : int
-GetLastAttackTime( ) : float
-GetLastHits( ) : int
-GetLevel( ) : int
-GetLocation( ) : vector
-GetMagicResist( ) : float
-GetMana( ) : int
-GetManaRegen( ) : float
-GetManaRegenPerInt( ) : float
-GetMaxHealth( ) : int
-GetMaxMana( ) : int
-GetModifierAuxiliaryUnits( int nModifier ) : variant
-GetModifierByName( cstring pszModifierName ) : int
-GetModifierList( ) : variant
-GetModifierName( int nModifier ) : cstring
-GetModifierRemainingDuration( int nModifier ) : float
-GetModifierStackCount( int nModifier ) : int
-GetMostRecentPing( ) : variant
-GetMovementDirectionStability( ) : float
-GetNearbyBarracks( int nRadius, bool bEnemies ) : variant
-GetNearbyCreeps( int nRadius, bool bEnemies ) : variant
-GetNearbyFillers( int nRadius, bool bEnemies ) : variant
-GetNearbyHeroes( int nRadius, bool bEnemies, int eBotMode ) : variant
-GetNearbyLaneCreeps( int nRadius, bool bEnemies ) : variant
-GetNearbyNeutralCreeps( int nRadius ) : variant
-GetNearbyShrines( int nRadius, bool bEnemies ) : variant
-GetNearbyTowers( int nRadius, bool bEnemies ) : variant
-GetNearbyTrees( int nRadius ) : variant
-GetNetWorth( ) : int
-GetNextItemPurchaseValue( ) : int
-GetNightTimeVisionRange( ) : int
-GetOffensivePower( ) : float
-GetPlayerID( ) : int
-GetPrimaryAttribute( ) : int
-GetQueuedActionType( int nQueuedAction ) : int
-GetRawOffensivePower( ) : float
-GetRemainingLifespan( ) : float
-GetRespawnTime( ) : float
-GetSecondsPerAttack( ) : float
-GetSlowDuration( bool bCurrentlyAvailable ) : float
-GetSpellAmp( ) : float
-GetStashValue( ) : int
-GetStunDuration( bool bCurrentlyAvailable ) : float
-GetTalent( int nLevel, int nSide ) : handle
-GetTarget( ) : handle
-GetTeam( ) : int
-GetUnitName( ) : cstring
-GetVelocity( ) : vector
-GetXPNeededToLevel( ) : int
-HasBlink( bool bCurrentlyAvailable ) : bool
-HasBuyback( ) : bool
-HasInvisibility( bool bCurrentlyAvailable ) : bool
-HasMinistunOnAttack( ) : bool
-HasModifier( cstring pszModifierName ) : bool
-HasScepter( ) : bool
-HasSilence( bool bCurrentlyAvailable ) : bool
-IsAlive( ) : bool
-IsAncientCreep( ) : bool
-IsAttackImmune( ) : bool
-IsBlind( ) : bool
-IsBlockDisabled( ) : bool
-IsBot( ) : bool
-IsBuilding( ) : bool
-IsCastingAbility( ) : bool
-IsChanneling( ) : bool
-IsCourier( ) : bool
-IsCreep( ) : bool
-IsDisarmed( ) : bool
-IsDominated( ) : bool
-IsEvadeDisabled( ) : bool
-IsFacingLocation( vector vLocation, int nDegrees ) : bool
-IsFort( ) : bool
-IsHero( ) : bool
-IsHexed( ) : bool
-IsIllusion( ) : bool
-IsInvisible( ) : bool
-IsInvulnerable( ) : bool
-IsMagicImmune( ) : bool
-IsMinion( ) : bool
-IsMuted( ) : bool
-IsNightmared( ) : bool
-IsRooted( ) : bool
-IsSilenced( ) : bool
-IsSpeciallyDeniable( ) : bool
-IsStunned( ) : bool
-IsTower( ) : bool
-IsUnableToMiss( ) : bool
-IsUsingAbility( ) : bool
-NumModifiers( ) : int
-NumQueuedActions( ) : int
-SetNextItemPurchaseValue( int nGold ) : void
-SetTarget( handle ) : void
-TimeSinceDamagedByAnyHero( ) : float
-TimeSinceDamagedByCreep( ) : float
-TimeSinceDamagedByHero( handle hHero ) : float
-TimeSinceDamagedByPlayer( int nPlayerID ) : float
-TimeSinceDamagedByTower( ) : float
-UsingItemBreaksInvisibility( ) : bool
-WasRecentlyDamagedByAnyHero( float fTime ) : bool
-WasRecentlyDamagedByCreep( float fTime ) : bool
-WasRecentlyDamagedByHero( handle hHero, float fTime ) : bool
-WasRecentlyDamagedByPlayer( int nPlayerID, float fTime ) : bool
-WasRecentlyDamagedByTower( float fTime ) : bool
-CDOTA_TeamCommander
-AddAvoidanceZone( vector, float ) : int
-AddConditionalAvoidanceZone( vector, handle ) : int
-CMBanHero( cstring ) : void
-CMPickHero( cstring ) : void
-Clamp( float, float, float ) : float
-CreateHTTPRequest( cstring ) : handle
-CreateRemoteHTTPRequest( cstring ) : handle
-DebugDrawCircle( vector, float, int, int, int ) : void
-DebugDrawLine( vector, vector, int, int, int ) : void
-DebugDrawText( float, float, cstring, int, int, int ) : void
-DebugPause( ) : void
-DotaTime( ) : float
-GameTime( ) : float
-GeneratePath( vector, vector, handle, handle ) : int
-GetAllTrees( ) : variant
-GetAmountAlongLane( int, vector ) : variant
-GetAncient( int ) : handle
-GetAvoidanceZones( ) : variant
-GetBarracks( int, int ) : handle
-GetBot( ) : handle
-GetBotAbilityByHandle( uint ) : handle
-GetBotByHandle( uint ) : handle
-GetCMCaptain( ) : int
-GetCMPhaseTimeRemaining( ) : float
-GetCourier( int ) : handle
-GetCourierState( handle ) : int
-GetDefendLaneDesire( int ) : float
-GetDroppedItemList( ) : variant
-GetFarmLaneDesire( int ) : float
-GetGameMode( ) : int
-GetGameState( ) : int
-GetGameStateTimeRemaining( ) : float
-GetGlyphCooldown( ) : float
-GetHeightLevel( vector ) : int
-GetHeroAssists( int ) : int
-GetHeroDeaths( int ) : int
-GetHeroKills( int ) : int
-GetHeroLastSeenInfo( int ) : variant
-GetHeroLevel( int ) : int
-GetHeroPickState( ) : int
-GetIncomingTeleports( ) : variant
-GetItemComponents( cstring ) : variant
-GetItemCost( cstring ) : int
-GetItemStockCount( cstring ) : int
-GetLaneFrontAmount( int, int, bool ) : float
-GetLaneFrontLocation( int, int, float ) : vector
-GetLinearProjectileByHandle( int ) : variant
-GetLinearProjectiles( ) : variant
-GetLocationAlongLane( int, float ) : vector
-GetNeutralSpawners( ) : variant
-GetNumCouriers( ) : int
-GetOpposingTeam( ) : int
-GetPushLaneDesire( int ) : float
-GetRoamDesire( ) : float
-GetRoamTarget( ) : handle
-GetRoshanDesire( ) : float
-GetRoshanKillTime( ) : float
-GetRuneSpawnLocation( int ) : vector
-GetRuneStatus( int ) :
-GetRuneTimeSinceSeen( int ) : float
-GetRuneType( int ) : int
-GetScriptDirectory( ) : cstring
-GetSelectedHeroName( int ) : cstring
-GetShopLocation( int, int ) : vector
-GetShrine( int, int ) : handle
-GetShrineCooldown( handle ) : float
-GetTeam( ) : int
-GetTeamForPlayer( int ) : int
-GetTeamMember( int ) : handle
-GetTeamPlayers( int ) : variant
-GetTimeOfDay( ) : float
-GetTower( int, int ) : handle
-GetTowerAttackTarget( int, int ) : handle
-GetTreeLocation( int ) : vector
-GetUnitList( int ) : variant
-GetUnitPotentialValue( handle, vector, float ) : int
-GetUnitToLocationDistance( handle, vector ) : float
-GetUnitToLocationDistanceSqr( handle, vector ) : float
-GetUnitToUnitDistance( handle, handle ) : float
-GetUnitToUnitDistanceSqr( handle, handle ) : float
-GetWorldBounds( ) : variant
-InstallCastCallback( int, handle ) : void
-InstallChatCallback( handle ) : void
-InstallCourierDeathCallback( handle ) : void
-InstallDamageCallback( int, handle ) : void
-InstallRoshanDeathCallback( handle ) : void
-IsCMBannedHero( cstring ) : bool
-IsCMPickedHero( int, cstring ) : bool
-IsCourierAvailable( ) : bool
-IsFlyingCourier( handle ) : bool
-IsHeroAlive( int ) : bool
-IsInCMBanPhase( ) : bool
-IsInCMPickPhase( ) : bool
-IsItemPurchasedFromSecretShop( cstring ) : bool
-IsItemPurchasedFromSideShop( cstring ) : bool
-IsLocationPassable( vector ) : bool
-IsLocationVisible( vector ) : bool
-IsPlayerBot( int ) : bool
-IsPlayerInHeroSelectionControl( int ) : bool
-IsRadiusVisible( vector, float ) : bool
-IsShrineHealing( handle ) : bool
-IsTeamPlayer( int ) : bool
-Max( float, float ) : float
-Min( float, float ) : float
-PointToLineDistance( vector, vector, vector ) : variant
-RandomFloat( float, float ) : float
-RandomInt( int, int ) : int
-RandomVector( float ) : vector
-RealTime( ) : float
-RemapVal( float, float, float, float, float ) : float
-RemapValClamped( float, float, float, float, float ) : float
-RemoveAvoidanceZone( int ) : void
-RollPercentage( int ) : bool
-SelectHero( int, cstring ) : void
-SetCMCaptain( int ) : void
 
-句柄handle = h, 坐标矢量vector = v, 布尔值bool = b,  字符串string = s, 
-一般的数量normal = n, 特殊的小数float = f, 全局命名空间变量goble = g, 未确定类型的单位unknow = u,
-表名以表内容类型....List命名,即 'sBotList' 表示内容为英雄名的线性表,非线性表或表中表table = t,
-----------------------------------------------------------------------------------------------------
--- Constants - Bot Modes 常量-机器人模式
-----------------------------------------------------------------------------------------------------
+[[
+CanAbilityBeUpgraded(): bool
+CanBeDisassembled(): bool
+GetAOERadius(): int
+GetAbilityDamage(): int
+GetAutoCastState(): bool
+GetBehavior(): int
+GetCastPoint(): float
+GetCastRange(): int
+GetCaster(): handle
+GetChannelTime(): float
+GetChannelledManaCostPerSecond(): int
+GetCooldown(): float
+GetCooldownTimeRemaining(): float
+GetCurrentCharges(): int
+GetDamageType(): int
+GetDuration(): float
+GetEstimatedDamageToTarget(handlehTarget, floatfDuration, intnDamageTypes): int
+GetHeroLevelRequiredToUpgrade(): int
+GetInitialCharges(): int
+GetLevel(): int
+GetManaCost(): int
+GetMaxLevel(): int
+GetName(): cstring
+GetPowerTreadsStat(): int
+GetSecondaryCharges(): int
+GetSpecialValueFloat(cstringpszKey): float
+GetSpecialValueInt(cstringpszKey): int
+GetTargetFlags(): int
+GetTargetTeam(): int
+GetTargetType(): int
+GetToggleState(): bool
+IsActivated(): bool
+IsChanneling(): bool
+IsCombineLocked(): bool
+IsCooldownReady(): bool
+IsFullyCastable(): bool
+IsHidden(): bool
+IsInAbilityPhase(): bool
+IsItem(): bool
+IsOwnersManaEnough(): bool
+IsPassive(): bool
+IsStealable(): bool
+IsStolen(): bool
+IsTalent(): bool
+IsToggle(): bool
+IsTrained(): bool
+IsUltimate(): bool
+ProcsMagicStick(): bool
+ToggleAutoCast(): void
+CDOTA_Bot_Script
+ActionImmediate_Buyback(): void
+ActionImmediate_Chat(cstringpszMessage, boolbAllChat): void
+ActionImmediate_Courier(handlehCourier, inteAction): bool
+ActionImmediate_DisassembleItem(handlehItem): void
+ActionImmediate_Glyph(): void
+ActionImmediate_LevelAbility(cstringpszAbilityName): void
+ActionImmediate_Ping(floatx, floaty, boolbNormalPing): void
+ActionImmediate_PurchaseItem(cstringpszItemName): 
+ActionImmediate_SellItem(handlehItem): void
+ActionImmediate_SetItemCombineLock(handlehItem, boolbLocked): void
+ActionImmediate_SwapItems(intnSlot1, intnSlot2): void
+ActionPush_AttackMove(vectorlocation): void
+ActionPush_AttackUnit(handlehTarget, boolbOnce): void
+ActionPush_Delay(floatfDelay): void
+ActionPush_DropItem(handlehItem, vectorlocation): void
+ActionPush_MoveDirectly(vectorlocation): void
+ActionPush_MovePath(handlehPathTable): void
+ActionPush_MoveToLocation(vectorlocation): void
+ActionPush_MoveToUnit(handlehTarget): void
+ActionPush_PickUpItem(handlehItem): void
+ActionPush_PickUpRune(intnRune): void
+ActionPush_UseAbility(handlehAbility): void
+ActionPush_UseAbilityOnEntity(handlehAbility, handlehTarget): void
+ActionPush_UseAbilityOnLocation(handlehAbility, vectorlocation): void
+ActionPush_UseAbilityOnTree(handlehAbility, intiTree): void
+ActionPush_UseShrine(handlehShrine): void
+ActionQueue_AttackMove(vectorlocation): void
+ActionQueue_AttackUnit(handlehTarget, boolbOnce): void
+ActionQueue_Delay(floatfDelay): void
+ActionQueue_DropItem(handlehItem, vectorlocation): void
+ActionQueue_MoveDirectly(vectorlocation): void
+ActionQueue_MovePath(handlehPathTable): void
+ActionQueue_MoveToLocation(vectorlocation): void
+ActionQueue_MoveToUnit(handlehTarget): void
+ActionQueue_PickUpItem(handlehItem): void
+ActionQueue_PickUpRune(intnRune): void
+ActionQueue_UseAbility(handlehAbility): void
+ActionQueue_UseAbilityOnEntity(handlehAbility, handlehTarget): void
+ActionQueue_UseAbilityOnLocation(handlehAbility, vectorlocation): void
+ActionQueue_UseAbilityOnTree(handlehAbility, intiTree): void
+ActionQueue_UseShrine(handlehShrine): void
+Action_AttackMove(vectorlocation): void
+Action_AttackUnit(handlehTarget, boolbOnce): void
+Action_ClearActions(boolbStop): void
+Action_Delay(floatfDelay): void
+Action_DropItem(handlehItem, vectorlocation): void
+Action_MoveDirectly(vectorlocation): void
+Action_MovePath(handlehPathTable): void
+Action_MoveToLocation(vectorlocation): void
+Action_MoveToUnit(handlehTarget): void
+Action_PickUpItem(handlehItem): void
+Action_PickUpRune(intnRune): void
+Action_UseAbility(handlehAbility): void
+Action_UseAbilityOnEntity(handlehAbility, handlehTarget): void
+Action_UseAbilityOnLocation(handlehAbility, vectorlocation): void
+Action_UseAbilityOnTree(handlehAbility, intiTree): void
+Action_UseShrine(handlehShrine): void
+CanBeSeen(): bool
+DistanceFromFountain(): int
+DistanceFromSecretShop(): int
+DistanceFromSideShop(): int
+FindAoELocation(boolbEnemies, boolbHeroes, vectorvBaseLocation, intnMaxDistanceFromBase, intnRadius, floatfTimeInFuture, intnMaxHealth): variant
+FindItemSlot(cstringpszItemName): int
+GetAbilityByName(cstringpszAbilityName): handle
+GetAbilityInSlot(intiAbility): handle
+GetAbilityPoints(): int
+GetAbilityTarget(): handle
+GetAcquisitionRange(): int
+GetActiveMode(): int
+GetActiveModeDesire(): float
+GetActualIncomingDamage(intnDamage, inteDamageType): int
+GetAnimActivity(): int
+GetAnimCycle(): float
+GetArmor(): float
+GetAssignedLane(): int
+GetAttackCombatProficiency(handlehTarget): float
+GetAttackDamage(): float
+GetAttackPoint(): float
+GetAttackProjectileSpeed(): int
+GetAttackRange(): int
+GetAttackSpeed(): float
+GetAttackTarget(): handle
+GetAttributeValue(intnAttribute): int
+GetBaseDamage(): float
+GetBaseDamageVariance(): float
+GetBaseHealthRegen(): float
+GetBaseManaRegen(): float
+GetBaseMovementSpeed(): int
+GetBoundingRadius(): float
+GetBountyGoldMax(): int
+GetBountyGoldMin(): int
+GetBountyXP(): int
+GetBuybackCooldown(): float
+GetBuybackCost(): int
+GetCourierValue(): int
+GetCurrentActionType(): int
+GetCurrentActiveAbility(): handle
+GetCurrentMovementSpeed(): int
+GetCurrentVisionRange(): int
+GetDayTimeVisionRange(): int
+GetDefendCombatProficiency(handlehAttacker): float
+GetDenies(): int
+GetDifficulty(): int
+GetEstimatedDamageToTarget(boolbCurrentlyAvailable, handlehTarget, floatfDuration, intnDamageTypes): int
+GetEvasion(): float
+GetExtrapolatedLocation(floatfDelay): vector
+GetFacing(): int
+GetGold(): int
+GetGroundHeight(): int
+GetHealth(): int
+GetHealthRegen(): float
+GetHealthRegenPerStr(): float
+GetIncomingTrackingProjectiles(): variant
+GetItemInSlot(intnSlot): handle
+GetItemSlotType(intnSlot): int
+GetLastAttackTime(): float
+GetLastHits(): int
+GetLevel(): int
+GetLocation(): vector
+GetMagicResist(): float
+GetMana(): int
+GetManaRegen(): float
+GetManaRegenPerInt(): float
+GetMaxHealth(): int
+GetMaxMana(): int
+GetModifierAuxiliaryUnits(intnModifier): variant
+GetModifierByName(cstringpszModifierName): int
+GetModifierList(): variant
+GetModifierName(intnModifier): cstring
+GetModifierRemainingDuration(intnModifier): float
+GetModifierStackCount(intnModifier): int
+GetMostRecentPing(): variant
+GetMovementDirectionStability(): float
+GetNearbyBarracks(intnRadius, boolbEnemies): variant
+GetNearbyCreeps(intnRadius, boolbEnemies): variant
+GetNearbyFillers(intnRadius, boolbEnemies): variant
+GetNearbyHeroes(intnRadius, boolbEnemies, inteBotMode): variant
+GetNearbyLaneCreeps(intnRadius, boolbEnemies): variant
+GetNearbyNeutralCreeps(intnRadius): variant
+GetNearbyShrines(intnRadius, boolbEnemies): variant
+GetNearbyTowers(intnRadius, boolbEnemies): variant
+GetNearbyTrees(intnRadius): variant
+GetNetWorth(): int
+GetNextItemPurchaseValue(): int
+GetNightTimeVisionRange(): int
+GetOffensivePower(): float
+GetPlayerID(): int
+GetPrimaryAttribute(): int
+GetQueuedActionType(intnQueuedAction): int
+GetRawOffensivePower(): float
+GetRemainingLifespan(): float
+GetRespawnTime(): float
+GetSecondsPerAttack(): float
+GetSlowDuration(boolbCurrentlyAvailable): float
+GetSpellAmp(): float
+GetStashValue(): int
+GetStunDuration(boolbCurrentlyAvailable): float
+GetTalent(intnLevel, intnSide): handle
+GetTarget(): handle
+GetTeam(): int
+GetUnitName(): cstring
+GetVelocity(): vector
+GetXPNeededToLevel(): int
+HasBlink(boolbCurrentlyAvailable): bool
+HasBuyback(): bool
+HasInvisibility(boolbCurrentlyAvailable): bool
+HasMinistunOnAttack(): bool
+HasModifier(cstringpszModifierName): bool
+HasScepter(): bool
+HasSilence(boolbCurrentlyAvailable): bool
+IsAlive(): bool
+IsAncientCreep(): bool
+IsAttackImmune(): bool
+IsBlind(): bool
+IsBlockDisabled(): bool
+IsBot(): bool
+IsBuilding(): bool
+IsCastingAbility(): bool
+IsChanneling(): bool
+IsCourier(): bool
+IsCreep(): bool
+IsDisarmed(): bool
+IsDominated(): bool
+IsEvadeDisabled(): bool
+IsFacingLocation(vectorvLocation, intnDegrees): bool
+IsFort(): bool
+IsHero(): bool
+IsHexed(): bool
+IsIllusion(): bool
+IsInvisible(): bool
+IsInvulnerable(): bool
+IsMagicImmune(): bool
+IsMinion(): bool
+IsMuted(): bool
+IsNightmared(): bool
+IsRooted(): bool
+IsSilenced(): bool
+IsSpeciallyDeniable(): bool
+IsStunned(): bool
+IsTower(): bool
+IsUnableToMiss(): bool
+IsUsingAbility(): bool
+NumModifiers(): int
+NumQueuedActions(): int
+SetNextItemPurchaseValue(intnGold): void
+SetTarget(handle): void
+TimeSinceDamagedByAnyHero(): float
+TimeSinceDamagedByCreep(): float
+TimeSinceDamagedByHero(handlehHero): float
+TimeSinceDamagedByPlayer(intnPlayerID): float
+TimeSinceDamagedByTower(): float
+UsingItemBreaksInvisibility(): bool
+WasRecentlyDamagedByAnyHero(floatfTime): bool
+WasRecentlyDamagedByCreep(floatfTime): bool
+WasRecentlyDamagedByHero(handlehHero, floatfTime): bool
+WasRecentlyDamagedByPlayer(intnPlayerID, floatfTime): bool
+WasRecentlyDamagedByTower(floatfTime): bool
+CDOTA_TeamCommander
+AddAvoidanceZone(vector, float): int
+AddConditionalAvoidanceZone(vector, handle): int
+CMBanHero(cstring): void
+CMPickHero(cstring): void
+Clamp(float, float, float): float
+CreateHTTPRequest(cstring): handle
+CreateRemoteHTTPRequest(cstring): handle
+DebugDrawCircle(vector, float, int, int, int): void
+DebugDrawLine(vector, vector, int, int, int): void
+DebugDrawText(float, float, cstring, int, int, int): void
+DebugPause(): void
+DotaTime(): float
+GameTime(): float
+GeneratePath(vector, vector, handle, handle): int
+GetAllTrees(): variant
+GetAmountAlongLane(int, vector): variant
+GetAncient(int): handle
+GetAvoidanceZones(): variant
+GetBarracks(int, int): handle
+GetBot(): handle
+GetBotAbilityByHandle(uint): handle
+GetBotByHandle(uint): handle
+GetCMCaptain(): int
+GetCMPhaseTimeRemaining(): float
+GetCourier(int): handle
+GetCourierState(handle): int
+GetDefendLaneDesire(int): float
+GetDroppedItemList(): variant
+GetFarmLaneDesire(int): float
+GetGameMode(): int
+GetGameState(): int
+GetGameStateTimeRemaining(): float
+GetGlyphCooldown(): float
+GetHeightLevel(vector): int
+GetHeroAssists(int): int
+GetHeroDeaths(int): int
+GetHeroKills(int): int
+GetHeroLastSeenInfo(int): variant
+GetHeroLevel(int): int
+GetHeroPickState(): int
+GetIncomingTeleports(): variant
+GetItemComponents(cstring): variant
+GetItemCost(cstring): int
+GetItemStockCount(cstring): int
+GetLaneFrontAmount(int, int, bool): float
+GetLaneFrontLocation(int, int, float): vector
+GetLinearProjectileByHandle(int): variant
+GetLinearProjectiles(): variant
+GetLocationAlongLane(int, float): vector
+GetNeutralSpawners(): variant
+GetNumCouriers(): int
+GetOpposingTeam(): int
+GetPushLaneDesire(int): float
+GetRoamDesire(): float
+GetRoamTarget(): handle
+GetRoshanDesire(): float
+GetRoshanKillTime(): float
+GetRuneSpawnLocation(int): vector
+GetRuneStatus(int): 
+GetRuneTimeSinceSeen(int): float
+GetRuneType(int): int
+GetScriptDirectory(): cstring
+GetSelectedHeroName(int): cstring
+GetShopLocation(int, int): vector
+GetShrine(int, int): handle
+GetShrineCooldown(handle): float
+GetTeam(): int
+GetTeamForPlayer(int): int
+GetTeamMember(int): handle
+GetTeamPlayers(int): variant
+GetTimeOfDay(): float
+GetTower(int, int): handle
+GetTowerAttackTarget(int, int): handle
+GetTreeLocation(int): vector
+GetUnitList(int): variant
+GetUnitPotentialValue(handle, vector, float): int
+GetUnitToLocationDistance(handle, vector): float
+GetUnitToLocationDistanceSqr(handle, vector): float
+GetUnitToUnitDistance(handle, handle): float
+GetUnitToUnitDistanceSqr(handle, handle): float
+GetWorldBounds(): variant
+InstallCastCallback(int, handle): void
+InstallChatCallback(handle): void
+InstallCourierDeathCallback(handle): void
+InstallDamageCallback(int, handle): void
+InstallRoshanDeathCallback(handle): void
+IsCMBannedHero(cstring): bool
+IsCMPickedHero(int, cstring): bool
+IsCourierAvailable(): bool
+IsFlyingCourier(handle): bool
+IsHeroAlive(int): bool
+IsInCMBanPhase(): bool
+IsInCMPickPhase(): bool
+IsItemPurchasedFromSecretShop(cstring): bool
+IsItemPurchasedFromSideShop(cstring): bool
+IsLocationPassable(vector): bool
+IsLocationVisible(vector): bool
+IsPlayerBot(int): bool
+IsPlayerInHeroSelectionControl(int): bool
+IsRadiusVisible(vector, float): bool
+IsShrineHealing(handle): bool
+IsTeamPlayer(int): bool
+Max(float, float): float
+Min(float, float): float
+PointToLineDistance(vector, vector, vector): variant
+RandomFloat(float, float): float
+RandomInt(int, int): int
+RandomVector(float): vector
+RealTime(): float
+RemapVal(float, float, float, float, float): float
+RemapValClamped(float, float, float, float, float): float
+RemoveAvoidanceZone(int): void
+RollPercentage(int): bool
+SelectHero(int, cstring): void
+SetCMCaptain(int): void
+]]
+
+
+--[[
 BOT_MODE_NONE
-	无模式状态
 BOT_MODE_LANING
-	对线模式
 BOT_MODE_ATTACK
-	攻击模式
 BOT_MODE_ROAM
-	游走模式
 BOT_MODE_RETREAT
-	撤退模式
 BOT_MODE_RUNE
-	撤退模式
 BOT_MODE_SECRET_SHOP
-	神秘商店购物模式
 BOT_MODE_SIDE_SHOP
-	边路商店购物模式
 BOT_MODE_PUSH_TOWER_TOP
-	推上路塔模式
 BOT_MODE_PUSH_TOWER_MID
-	推中路塔模式
 BOT_MODE_PUSH_TOWER_BOT
-	推下路塔模式
 BOT_MODE_DEFEND_TOWER_TOP
-	防守上路塔模式
 BOT_MODE_DEFEND_TOWER_MID
-	防守中路塔模式
 BOT_MODE_DEFEND_TOWER_BOT
-	防守下路塔模式
 BOT_MODE_ASSEMBLE
-	集合模式
 BOT_MODE_TEAM_ROAM
-	团队集体游走模式
 BOT_MODE_FARM
-	打钱发育模式
 BOT_MODE_DEFEND_ALLY
-	保护队友模式
 BOT_MODE_EVASIVE_MANEUVERS
-	闪避技能模式
 BOT_MODE_ROSHAN
-	打肉山模式
 BOT_MODE_ITEM
-	扔或捡物品模式
 BOT_MODE_WARD
-	插眼模式
-----------------------------------------------------------------------------------------------------
--- Constants - Action Desires 常量-行为欲望值
-These can be useful for making sure all action desires are using a common language for talking about their desire.
 BOT_ACTION_DESIRE_NONE - 0.0
 BOT_ACTION_DESIRE_VERYLOW - 0.1
 BOT_ACTION_DESIRE_LOW - 0.25
@@ -3258,10 +3264,6 @@ BOT_ACTION_DESIRE_MODERATE - 0.5
 BOT_ACTION_DESIRE_HIGH - 0.75
 BOT_ACTION_DESIRE_VERYHIGH - 0.9
 BOT_ACTION_DESIRE_ABSOLUTE - 1.0
-----------------------------------------------------------------------------------------------------
--- Constants - Mode Desires 常量-模式欲望值
-----------------------------------------------------------------------------------------------------
-These can be useful for making sure all mode desires as using a common language for talking about their desire.
 BOT_MODE_DESIRE_NONE - 0
 BOT_MODE_DESIRE_VERYLOW - 0.1
 BOT_MODE_DESIRE_LOW - 0.25
@@ -3269,696 +3271,467 @@ BOT_MODE_DESIRE_MODERATE - 0.5
 BOT_MODE_DESIRE_HIGH - 0.75
 BOT_MODE_DESIRE_VERYHIGH - 0.9
 BOT_MODE_DESIRE_ABSOLUTE - 1.0
-----------------------------------------------------------------------------------------------------
--- Constants - Damage Types 常量-伤害类型
-----------------------------------------------------------------------------------------------------
 DAMAGE_TYPE_PHYSICAL
-	物理
 DAMAGE_TYPE_MAGICAL
-	魔法
 DAMAGE_TYPE_PURE
-	纯粹
 DAMAGE_TYPE_ALL
-	全伤害类型
-----------------------------------------------------------------------------------------------------
--- Constants - Unit Types 常量-单位类型
-----------------------------------------------------------------------------------------------------
 UNIT_LIST_ALL
-	所有单位
 UNIT_LIST_ALLIES
-	友方单位
 UNIT_LIST_ALLIED_HEROES
-	友方英雄单位
 UNIT_LIST_ALLIED_CREEPS
-	友方小兵生物单位
 UNIT_LIST_ALLIED_WARDS
-	友方守卫单位
 UNIT_LIST_ALLIED_BUILDINGS
-	友方建筑单位
 UNIT_LIST_ENEMIES
-	敌方单位
 UNIT_LIST_ENEMY_HEROES
-	敌方英雄单位
 UNIT_LIST_ENEMY_CREEPS
-	敌方小兵生物单位
 UNIT_LIST_ENEMY_WARDS
-	敌方守卫单位
 UNIT_LIST_NEUTRAL_CREEPS
-	中立野怪单位
 UNIT_LIST_ENEMY_BUILDINGS
-	敌方建筑单位
-----------------------------------------------------------------------------------------------------
--- Constants - Difficulties 常量-游戏难度
-----------------------------------------------------------------------------------------------------
 DIFFICULTY_INVALID
-	无
 DIFFICULTY_PASSIVE
-	消极
 DIFFICULTY_EASY
-	容易
 DIFFICULTY_MEDIUM
-	中等
 DIFFICULTY_HARD
-	困难
 DIFFICULTY_UNFAIR
-	疯狂
-----------------------------------------------------------------------------------------------------
--- Constants - Attribute Types 常量-英雄三维属性类型
-----------------------------------------------------------------------------------------------------
 ATTRIBUTE_INVALID
-	无效属性
 ATTRIBUTE_STRENGTH
-	力量属性
 ATTRIBUTE_AGILITY
-	敏捷属性
 ATTRIBUTE_INTELLECT
-	智力属性
-----------------------------------------------------------------------------------------------------
--- Constants - Item Purchase Results 常量-物品购买结果
-----------------------------------------------------------------------------------------------------
 PURCHASE_ITEM_SUCCESS
-	购买成功
 PURCHASE_ITEM_OUT_OF_STOCK
-	库存不够
 PURCHASE_ITEM_DISALLOWED_ITEM
-	失效的物品
 PURCHASE_ITEM_INSUFFICIENT_GOLD
-	金钱不够
 PURCHASE_ITEM_NOT_AT_HOME_SHOP
-	此物品不在主商店出售
 PURCHASE_ITEM_NOT_AT_SIDE_SHOP
-	此物品不在边路商店出售
 PURCHASE_ITEM_NOT_AT_SECRET_SHOP
-	此物品不在神秘商店出售
 PURCHASE_ITEM_INVALID_ITEM_NAME
-	无效的物品名
-----------------------------------------------------------------------------------------------------
--- Constants - Game Modes 常量-游戏模式
-----------------------------------------------------------------------------------------------------
 GAMEMODE_NONE
-	无游戏模式
 GAMEMODE_AP
-	全英雄选择
 GAMEMODE_CM
-	队长模式
 GAMEMODE_RD
-	随机征召
 GAMEMODE_SD
-	单一征召
 GAMEMODE_AR
-	全英雄随机
 GAMEMODE_REVERSE_CM
-	反队长模式
 GAMEMODE_MO
-	单中模式
 GAMEMODE_CD
-	队长征召
 GAMEMODE_ABILITY_DRAFT
-	技能征召
 GAMEMODE_ARDM
-	全英雄随机死亡竞赛
 GAMEMODE_1V1MID
-	中路单挑
-GAMEMODE_ALL_DRAFT (aka Ranked All Pick)
-	？
-----------------------------------------------------------------------------------------------------
--- Constants - Teams 常量-所在团队
-----------------------------------------------------------------------------------------------------
+GAMEMODE_ALL_DRAFT
 TEAM_RADIANT
-	天辉
 TEAM_DIRE
-	夜魇
 TEAM_NEUTRAL
-	中立
 TEAM_NONE
-	无团队
-----------------------------------------------------------------------------------------------------
--- Constants - Lanes 常量-所在兵线（分路）
-----------------------------------------------------------------------------------------------------
 LANE_NONE
-	无分路
 LANE_TOP
-	上路（天辉劣势路或夜魇优势路）
 LANE_MID
-	中路
 LANE_BOT
-	下路（天辉优势路或夜魇劣势路）
-----------------------------------------------------------------------------------------------------
--- Constants - Game States 常量-游戏当前状态
-----------------------------------------------------------------------------------------------------
 GAME_STATE_INIT
-	游戏初始化
 GAME_STATE_WAIT_FOR_PLAYERS_TO_LOAD
-	等待玩家载入
 GAME_STATE_HERO_SELECTION
-	英雄选择
 GAME_STATE_STRATEGY_TIME
-	决策时间
 GAME_STATE_PRE_GAME
-	准备阶段
 GAME_STATE_GAME_IN_PROGRESS
-	正在游戏
 GAME_STATE_POST_GAME
-	赛后阶段
 GAME_STATE_DISCONNECT
-	失去连接
 GAME_STATE_TEAM_SHOWCASE
-	？
 GAME_STATE_CUSTOM_GAME_SETUP
-	？
 GAME_STATE_WAIT_FOR_MAP_TO_LOAD
-	等待地图载入
 GAME_STATE_LAST
-	？
-----------------------------------------------------------------------------------------------------
--- Constants - Hero Pick States 常量-英雄选择当前状态
-----------------------------------------------------------------------------------------------------
 HEROPICK_STATE_NONE
-	无
 HEROPICK_STATE_AP_SELECT
-	全英雄选择-英雄选择
 HEROPICK_STATE_SD_SELECT
-	单一征召-英雄选择
 HEROPICK_STATE_CM_INTRO
-	队长模式-？
 HEROPICK_STATE_CM_CAPTAINPICK
-	队长模式-成为队长
 HEROPICK_STATE_CM_BAN1
-	队长模式-1号BAN位
 HEROPICK_STATE_CM_BAN2
-	队长模式-2号BAN位
 HEROPICK_STATE_CM_BAN3
-	队长模式-3号BAN位
 HEROPICK_STATE_CM_BAN4
-	队长模式-4号BAN位
 HEROPICK_STATE_CM_BAN5
-	队长模式-5号BAN位
 HEROPICK_STATE_CM_BAN6
-	队长模式-6号BAN位
 HEROPICK_STATE_CM_BAN7
-	队长模式-7号BAN位
 HEROPICK_STATE_CM_BAN8
-	队长模式-8号BAN位
 HEROPICK_STATE_CM_BAN9
-	队长模式-9号BAN位
 HEROPICK_STATE_CM_BAN10
-	队长模式-10号BAN位
 HEROPICK_STATE_CM_SELECT1
-	队长模式-1号选位
 HEROPICK_STATE_CM_SELECT2
-	队长模式-2号选位
 HEROPICK_STATE_CM_SELECT3
-	队长模式-3号选位
 HEROPICK_STATE_CM_SELECT4
-	队长模式-4号选位
 HEROPICK_STATE_CM_SELECT5
-	队长模式-5号选位
 HEROPICK_STATE_CM_SELECT6
-	队长模式-6号选位
 HEROPICK_STATE_CM_SELECT7
-	队长模式-7号选位
 HEROPICK_STATE_CM_SELECT8
-	队长模式-8号选位
 HEROPICK_STATE_CM_SELECT9
-	队长模式-9号选位
 HEROPICK_STATE_CM_SELECT10
-	队长模式-10号选位
 HEROPICK_STATE_CM_PICK
-	队长模式-英雄选择
 HEROPICK_STATE_AR_SELECT
-	随机征召-英雄选择
 HEROPICK_STATE_MO_SELECT
-	单中模式-英雄选择
 HEROPICK_STATE_FH_SELECT
-	？-英雄选择
 HEROPICK_STATE_CD_INTRO
-	队长征召-？
 HEROPICK_STATE_CD_CAPTAINPICK
-	队长征召-成为队长
 HEROPICK_STATE_CD_BAN1
-	队长征召-1号BAN位
 HEROPICK_STATE_CD_BAN2
-	队长征召-2号BAN位
 HEROPICK_STATE_CD_BAN3
-	队长征召-3号BAN位
 HEROPICK_STATE_CD_BAN4
-	队长征召-4号BAN位
 HEROPICK_STATE_CD_BAN5
-	队长征召-5号BAN位
 HEROPICK_STATE_CD_BAN6
-	队长征召-6号BAN位
 HEROPICK_STATE_CD_SELECT1
-	队长征召-1号选位
 HEROPICK_STATE_CD_SELECT2
-	队长征召-2号选位
 HEROPICK_STATE_CD_SELECT3
-	队长征召-3号选位
 HEROPICK_STATE_CD_SELECT4
-	队长征召-4号选位
 HEROPICK_STATE_CD_SELECT5
-	队长征召-5号选位
 HEROPICK_STATE_CD_SELECT6
-	队长征召-6号选位
 HEROPICK_STATE_CD_SELECT7
-	队长征召-7号选位
 HEROPICK_STATE_CD_SELECT8
-	队长征召-8号选位
 HEROPICK_STATE_CD_SELECT9
-	队长征召-9号选位
 HEROPICK_STATE_CD_SELECT10
-	队长征召-10号选位
 HEROPICK_STATE_CD_PICK
-	队长征召-英雄选择
 HEROPICK_STATE_BD_SELECT
-	队长征召-？
 HERO_PICK_STATE_ABILITY_DRAFT_SELECT
-	技能征召-技能选择
 HERO_PICK_STATE_ARDM_SELECT
-	死亡随机-英雄选择
 HEROPICK_STATE_ALL_DRAFT_SELECT
-	？-英雄选择
 HERO_PICK_STATE_CUSTOMGAME_SELECT
-	自定义游戏-英雄选择
 HEROPICK_STATE_SELECT_PENALTY
-	英雄选择-惩罚时间
-----------------------------------------------------------------------------------------------------
--- Constants - Rune Types 常量-神符类型
-----------------------------------------------------------------------------------------------------
 RUNE_INVALID (used as return value)
-	无效神符（默认返回值）
 RUNE_DOUBLEDAMAGE
-	双倍伤害
 RUNE_HASTE
-	极速神符
 RUNE_ILLUSION
-	幻象神符
 RUNE_INVISIBILITY
-	隐身神符
 RUNE_REGENERATION
-	回复神符
 RUNE_BOUNTY
-	赏金神符
 RUNE_ARCANE
-	奥术神符
-----------------------------------------------------------------------------------------------------
--- Constants - Rune Status 常量-神符状态
-----------------------------------------------------------------------------------------------------
 RUNE_STATUS_UNKNOWN
-	未知状态
 RUNE_STATUS_AVAILABLE
-	神符可获取
 RUNE_STATUS_MISSING
-	神符消失
-----------------------------------------------------------------------------------------------------
--- Constants - Rune Locations 常量-神符分布位置
-----------------------------------------------------------------------------------------------------
 RUNE_POWERUP_1
-	上路强化神符
 RUNE_POWERUP_2
-	下路强化神符
 RUNE_BOUNTY_1
-	天辉下路赏金神符
 RUNE_BOUNTY_2
-	天辉上路赏金神符
 RUNE_BOUNTY_3
-	夜魇上路赏金神符
 RUNE_BOUNTY_4
-	夜魇下路赏金神符
-----------------------------------------------------------------------------------------------------
--- Constants - Item Slot Types 常量-物品槽位类型
-----------------------------------------------------------------------------------------------------
 ITEM_SLOT_TYPE_INVALID
-	无效槽位
 ITEM_SLOT_TYPE_MAIN
-	主物品栏
 ITEM_SLOT_TYPE_BACKPACK
-	背包
 ITEM_SLOT_TYPE_STASH
-	储藏室
-----------------------------------------------------------------------------------------------------
--- Constants - Action Types 常量-单位动作类型
-----------------------------------------------------------------------------------------------------
 BOT_ACTION_TYPE_NONE
-	无
 BOT_ACTION_TYPE_IDLE
-	空闲
 BOT_ACTION_TYPE_MOVE_TO
-	移动
 BOT_ACTION_TYPE_MOVE_TO_DIRECTLY
-	直接移动
 BOT_ACTION_TYPE_ATTACK
-	攻击
 BOT_ACTION_TYPE_ATTACKMOVE
-	移动并攻击
 BOT_ACTION_TYPE_USE_ABILITY
-	使用技能
 BOT_ACTION_TYPE_PICK_UP_RUNE
-	拾取神符
 BOT_ACTION_TYPE_PICK_UP_ITEM
-	拾取物品
 BOT_ACTION_TYPE_DROP_ITEM
-	丢弃物品
 BOT_ACTION_TYPE_SHRINE
-	使用圣坛
 BOT_ACTION_TYPE_DELAY
-	延迟
-----------------------------------------------------------------------------------------------------
--- Constants - Courier Actions and States 常量-信使动作和状态
-----------------------------------------------------------------------------------------------------
 COURIER_ACTION_BURST
-	动作-冲刺
 COURIER_ACTION_ENEMY_SECRET_SHOP
-	动作-前往敌方神秘商店
 COURIER_ACTION_RETURN
-	动作-返回泉水
 COURIER_ACTION_SECRET_SHOP
-	动作-前往神秘商店
 COURIER_ACTION_SIDE_SHOP
-	动作-前往边路商店1
 COURIER_ACTION_SIDE_SHOP2
-	动作-前往边路商店2
 COURIER_ACTION_TAKE_STASH_ITEMS
-	动作-拿取储藏室物品
 COURIER_ACTION_TAKE_AND_TRANSFER_ITEMS
-	动作-拿取并运送物品
 COURIER_ACTION_TRANSFER_ITEMS
-	动作-运送物品
 COURIER_STATE_IDLE - 0
-	状态-空闲
 COURIER_STATE_AT_BASE - 1
-	状态-待在泉水
 COURIER_STATE_MOVING - 2
-	状态-移动
 COURIER_STATE_DELIVERING_ITEMS - 3
-	状态-运送物品
 COURIER_STATE_RETURNING_TO_BASE - 4
-	状态-返回泉水
 COURIER_STATE_DEAD
-	状态-死亡
-----------------------------------------------------------------------------------------------------
--- Constants - Towers 常量-防御塔
-----------------------------------------------------------------------------------------------------
 TOWER_TOP_1
-	上路一塔
 TOWER_TOP_2
-	上路二塔
 TOWER_TOP_3
-	上路三塔
 TOWER_MID_1
-	中路一塔
 TOWER_MID_2
-	中路二塔
 TOWER_MID_3
-	中路三塔
 TOWER_BOT_1
-	下路一塔
 TOWER_BOT_2
-	下路二塔
 TOWER_BOT_3
-	下路三塔
 TOWER_BASE_1
-	基地左边炮塔
 TOWER_BASE_2
-	基地右边炮塔
-----------------------------------------------------------------------------------------------------
--- Constants - Barracks 常量-兵营
-----------------------------------------------------------------------------------------------------
 BARRACKS_TOP_MELEE
-	上路近战兵营
 BARRACKS_TOP_RANGED
-	上路远程兵营
 BARRACKS_MID_MELEE
-	中路近战兵营
 BARRACKS_MID_RANGED
-	中路远程兵营
 BARRACKS_BOT_MELEE
-	下路近战兵营
 BARRACKS_BOT_RANGED
-	下路远程兵营
-----------------------------------------------------------------------------------------------------
--- Constants - Shrines 常量-圣坛
-----------------------------------------------------------------------------------------------------
 SHRINE_JUNGLE_1
-	上路圣坛
 SHRINE_JUNGLE_2
-	下路圣坛
-----------------------------------------------------------------------------------------------------
--- Constants - Shops 常量-商店
-----------------------------------------------------------------------------------------------------
 SHOP_HOME
-	家里主商店
 SHOP_SIDE
-	天辉（下路）边路商店
 SHOP_SECRET
-	天辉（上路）神秘商店
 SHOP_SIDE2
-	夜魇（上路）边路商店
 SHOP_SECRET2
-	夜魇（下路）神秘商店
-----------------------------------------------------------------------------------------------------
--- Constants - Ability Target Teams 常量-技能指定目标的所在团队
-----------------------------------------------------------------------------------------------------
 ABILITY_TARGET_TEAM_NONE
-	无团队（所有团队？）
 ABILITY_TARGET_TEAM_FRIENDLY
-	我方团队
 ABILITY_TARGET_TEAM_ENEMY
-	敌方团队（包括中立团队？）
-----------------------------------------------------------------------------------------------------
--- Constants - Ability Target Types 常量-技能指定目标的所属类型
-----------------------------------------------------------------------------------------------------
 ABILITY_TARGET_TYPE_NONE
-	无类型
 ABILITY_TARGET_TYPE_HERO
-	英雄
 ABILITY_TARGET_TYPE_CREEP
-	小兵生物
 ABILITY_TARGET_TYPE_BUILDING
-	建筑
 ABILITY_TARGET_TYPE_COURIER
-	信使
 ABILITY_TARGET_TYPE_OTHER
-	其它
 ABILITY_TARGET_TYPE_TREE
-	树木
 ABILITY_TARGET_TYPE_BASIC
-	基本类型
 ABILITY_TARGET_TYPE_ALL
-	全部类型
-----------------------------------------------------------------------------------------------------
--- Constants - Ability Target Flags 常量-技能指定目标的特殊标识
-----------------------------------------------------------------------------------------------------
 ABILITY_TARGET_FLAG_NONE
-	无目标单位
 ABILITY_TARGET_FLAG_RANGED_ONLY
-	仅对远程单位有效
 ABILITY_TARGET_FLAG_MELEE_ONLY
-	仅对近战单位有效
 ABILITY_TARGET_FLAG_DEAD
-	对死亡单位有效
 ABILITY_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES
-	对魔法免疫敌方单位有效
 ABILITY_TARGET_FLAG_NOT_MAGIC_IMMUNE_ALLIES
-	对非魔法免疫友方单位有效
 ABILITY_TARGET_FLAG_INVULNERABLE
-	对无敌单位有效
 ABILITY_TARGET_FLAG_FOW_VISIBLE
-	对可见单位有效
 ABILITY_TARGET_FLAG_NO_INVIS
-	对隐身单位有效
 ABILITY_TARGET_FLAG_NOT_ANCIENTS
-	对远古单位无效
 ABILITY_TARGET_FLAG_PLAYER_CONTROLLED
-	对玩家控制的单位有效
 ABILITY_TARGET_FLAG_NOT_DOMINATED
-	对支配单位无效
 ABILITY_TARGET_FLAG_NOT_SUMMONED
-	对召唤单位无效
 ABILITY_TARGET_FLAG_NOT_ILLUSIONS
-	对幻象单位无效
 ABILITY_TARGET_FLAG_NOT_ATTACK_IMMUNE
-	对攻击免疫单位无效
 ABILITY_TARGET_FLAG_MANA_ONLY
-	仅对有魔法值的单位有效
 ABILITY_TARGET_FLAG_CHECK_DISABLE_HELP
-	？
 ABILITY_TARGET_FLAG_NOT_CREEP_HERO
-	对英雄控制的非英雄单位无效
 ABILITY_TARGET_FLAG_OUT_OF_WORLD
-	对地图外的单位有效
 ABILITY_TARGET_FLAG_NOT_NIGHTMARED
-	对梦魇单位无效
 ABILITY_TARGET_FLAG_PREFER_ENEMIES
-	？
-----------------------------------------------------------------------------------------------------
--- Constants - Ability Behavior Bitfields 常量-技能的表现特征
-----------------------------------------------------------------------------------------------------
 ABILITY_BEHAVIOR_NONE
-	无特征
 ABILITY_BEHAVIOR_HIDDEN
-	隐藏技能
-	【示例】祸乱之源的噩梦终止、昆卡标记后的返回、水人变形后的变回原形
 ABILITY_BEHAVIOR_PASSIVE
-	被动技能
 ABILITY_BEHAVIOR_NO_TARGET
-	无目标技能
 ABILITY_BEHAVIOR_UNIT_TARGET
-	指向性技能
 ABILITY_BEHAVIOR_POINT
-	点技能
 ABILITY_BEHAVIOR_AOE
-	范围技能
 ABILITY_BEHAVIOR_NOT_LEARNABLE
-	不可升级的技能
-	【示例】幽鬼大招后的空降、末日吃野怪后获得的技能、卡尔切出的10个技能
 ABILITY_BEHAVIOR_CHANNELLED
-	持续施法技能
-	【示例】帕克的相位转移、屠夫的大招肢解
 ABILITY_BEHAVIOR_ITEM
-	物品技能
 ABILITY_BEHAVIOR_TOGGLE
-	切换施法开关技能
-	【示例】巫医的巫毒疗法、拉席克的脉冲新星
 ABILITY_BEHAVIOR_DIRECTIONAL
-	直线行径型技能
-	【示例】昆卡的幽灵船、米拉娜的月神之箭、痛苦女王的超声冲击波、虚空的时间漫游
 ABILITY_BEHAVIOR_IMMEDIATE
-	无施法前摇的技能
 ABILITY_BEHAVIOR_AUTOCAST
-	自动施法开关技能
-	【示例】昆卡的潮汐使者、黑鸟的奥术天球、小黑的霜冻之箭
 ABILITY_BEHAVIOR_OPTIONAL_UNIT_TARGET
-	可选目标单位的技能
 ABILITY_BEHAVIOR_OPTIONAL_POINT
-	可选施法点的技能
 ABILITY_BEHAVIOR_OPTIONAL_NO_TARGET
-	可选无（或有）目标的技能
 ABILITY_BEHAVIOR_AURA
-	光环技能
 ABILITY_BEHAVIOR_ATTACK
-	自带普通攻击的技能
-	【示例】毒龙的毒性攻击、小黑的霜冻之箭
 ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT
-	不能恢复移动的技能？
-	【示例】编织者的时光倒流、齐天大圣的七十二变及变回本体、滚滚的虚张声势、斧王的狂战士之吼
 ABILITY_BEHAVIOR_ROOT_DISABLES
-	不能被禁足的技能
-	【示例】米拉娜的跳跃、变体精灵的波浪形态
 ABILITY_BEHAVIOR_UNRESTRICTED
-	不可限制的技能
-	【示例】噬魂鬼使用大招后的控制和消化、工程师的集中引爆
 ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE
-	忽略伪队列的技能？
-	【示例】瘟疫法师的幽冥护罩、维萨吉的石像形态、巨牙海民的雪球滚滚、亚巴顿的回光返照、
-		祸乱之源的噩梦终止
 ABILITY_BEHAVIOR_IGNORE_CHANNEL
-	无须持续施法动作的技能
-	【示例】巫医的巫毒疗法、拉席克的脉冲新星
 ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT
-	不能取消移动的技能
-	【示例】信使（被取消）的加速、信使（自动）升级飞行信使
 ABILITY_BEHAVIOR_DONT_ALERT_TARGET
-	不能提醒目标的技能
-	【示例】（只有）裂魂人的暗影冲刺
 ABILITY_BEHAVIOR_DONT_RESUME_ATTACK
-	本体不能攻击的技能
-	【示例】噬魂鬼的大招感染、黑鸟的星体禁锢、毒狗的崩裂禁锢
 ABILITY_BEHAVIOR_NORMAL_WHEN_STOLEN
-	被复制窃取后维持原状态效果的技能
-	【示例】米波的忽悠（水人复制米波只能忽悠本体）、影魔的魂之挽歌（拉比克窃取后释放是无魂状态）、
-		火枪的暗杀、先知的传送等一系列不会获取天赋加成的技能
 ABILITY_BEHAVIOR_IGNORE_BACKSWING
-	无施法后摇的技能
 ABILITY_BEHAVIOR_RUNE_TARGET
-	能够以神符为（指向）目标的技能
-	【实例】（只有）小小的投掷（注意这里是指向目标，所以屠夫的钩子不算）
 ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL
-	不能取消持续施法的技能
-	【实例】（只有）神谕者的气运之末？？
 ABILITY_BEHAVIOR_VECTOR_TARGETING
-	？
 ABILITY_BEHAVIOR_LAST_RESORT_POINT
-	？
-----------------------------------------------------------------------------------------------------
--- Constants - Misc Constants 常量-MISC常数
-----------------------------------------------------------------------------------------------------
 GLYPH_COOLDOWN
-	塔防激活冷却时间
-----------------------------------------------------------------------------------------------------
--- Constants - Animation Activities 常量-动画类型
-----------------------------------------------------------------------------------------------------
 ACTIVITY_IDLE - 1500
-	空闲
 ACTIVITY_IDLE_RARE - 1501
-	空闲10秒
 ACTIVITY_RUN - 1502
-	移动
 ACTIVITY_ATTACK - 1503
-	攻击
 ACTIVITY_ATTACK2 - 1504
-	第二形态攻击
 ACTIVITY_ATTACK_EVENT - 1505
-	攻击事件
 ACTIVITY_DIE - 1506
-	死亡
 ACTIVITY_FLINCH - 1507
-	？
 ACTIVITY_FLAIL - 1508
-	？
 ACTIVITY_DISABLED - 1509
-	？
 ACTIVITY_CAST_ABILITY_1 - 1510
-	使用技能1
 ACTIVITY_CAST_ABILITY_2 - 1511
-	使用技能2
 ACTIVITY_CAST_ABILITY_3 - 1512
-	使用技能3
 ACTIVITY_CAST_ABILITY_4 - 1513
-	使用技能4（通常为大招）
 ACTIVITY_CAST_ABILITY_5 - 1514
-	使用技能5
 ACTIVITY_CAST_ABILITY_6 - 1515
-	使用技能6
 ACTIVITY_OVERRIDE_ABILITY_1 - 1516
-	？
 ACTIVITY_OVERRIDE_ABILITY_2 - 1517
-	？
 ACTIVITY_OVERRIDE_ABILITY_3 - 1518
-	？
 ACTIVITY_OVERRIDE_ABILITY_4 - 1519
-	？
 ACTIVITY_CHANNEL_ABILITY_1 - 1520
-	？
 ACTIVITY_CHANNEL_ABILITY_2 - 1521
-	？
 ACTIVITY_CHANNEL_ABILITY_3 - 1522
-	？
 ACTIVITY_CHANNEL_ABILITY_4 - 1523
-	？
 ACTIVITY_CHANNEL_ABILITY_5 - 1524
-	？
 ACTIVITY_CHANNEL_ABILITY_6 - 1525
-	？
 ACTIVITY_CHANNEL_END_ABILITY_1 - 1526
-	？
 ACTIVITY_CHANNEL_END_ABILITY_2 - 1527
-	？
 ACTIVITY_CHANNEL_END_ABILITY_3 - 1528
-	？
 ACTIVITY_CHANNEL_END_ABILITY_4 - 1529
-	？
 ACTIVITY_CHANNEL_END_ABILITY_5 - 1530
-	？
 ACTIVITY_CHANNEL_END_ABILITY_6 - 1531
-	？
 ACTIVITY_CONSTANT_LAYER - 1532
-	？
 ACTIVITY_CAPTURE - 1533
-	？
 ACTIVITY_SPAWN - 1534
-	重生
 ACTIVITY_KILLTAUNT - 1535
-	？
 ACTIVITY_TAUNT - 1536
-	嘲讽
-]]
+--]]	
+
+
+--[[
+.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellList)
+.ConsiderUpdateEnvironment(bot)
+.PrintInitStatus(nFlag, nNum, sMessage1, sMessage2)
+.IsDebugHero(npcBot, sName)
+.CanNotUseAbility(bot)
+.GetVulnerableWeakestUnit(bHero, bEnemy, nRadius, bot)
+.GetUnitAllyCountAroundEnemyTarget(target, nRadius)
+.GetAroundTargetEnemyUnitCount(target, nRadius)
+.GetAroundTargetEnemyHeroCount(target, nRadius)
+.GetNearbyAroundLocationUnitCount(bEnemy, bHero, nRadius, vLoc)
+.GetAttackTargetEnemyCreepCount(target, nRange)
+.GetVulnerableUnitNearLoc(bHero, bEnemy, nCastRange, nRadius, vLoc, bot)
+.GetAoeEnemyHeroLocation(npcBot, nCastRange, nRadius, nCount)
+.IsWithoutTarget(bot)
+.GetProperTarget(bot)
+.IsAllyCanKill(target)
+.IsOtherAllyCanKillTarget(bot, target)
+.GetAlliesNearLoc(vLoc, nRadius)
+.IsAllyHeroBetweenAllyAndEnemy(hAlly, hEnemy, vLoc, nRadius)
+.IsSandKingThere(bot, nCastRange, fTime)
+.GetUltimateAbility(bot)
+.CanUseRefresherShard(bot)
+.GetMostUltimateCDUnit()
+.GetPickUltimateScepterUnit()
+.CanUseRefresherOrb(bot)
+.IsSuspiciousIllusion(npcTarget)
+.CanCastOnMagicImmune(npcTarget)
+.CanCastOnNonMagicImmune(npcTarget)
+.CanCastOnTargetAdvanced(npcTarget)
+.CanCastUnitSpellOnTarget(npcTarget, nDelay)
+.CanKillTarget(npcTarget, dmg, dmgType)
+.WillKillTarget(npcTarget, dmg, dmgType, dTime)
+.WillMagicKillTarget(bot, npcTarget, dmg, nDelay)
+.HasForbiddenModifier(npcTarget)
+.ShouldEscape(npcBot)
+.IsDisabled(bEnemy, npcTarget)
+.IsTaunted(npcTarget)
+.IsInRange(npcTarget, npcBot, nCastRange)
+.IsInLocRange(npcTarget, nLoc, nCastRange)
+.IsInTeamFight(npcBot, range)
+.IsRetreating(npcBot)
+.IsGoingOnSomeone(npcBot)
+.IsDefending(npcBot)
+.IsPushing(npcBot)
+.IsLaning(npcBot)
+.IsFarming(npcBot)
+.IsShopping(npcBot)
+.GetTeamFountain()
+.GetEnemyFountain()
+.GetComboItem(npcBot, item_name)
+.HasItem(npcBot, item_name)
+.IsItemAvailable(item_name)
+.GetMostHpUnit(ListUnit)
+.GetLeastHpUnit(ListUnit)
+.IsAllowedToSpam(npcBot, nManaCost)
+.IsAllyUnitSpell(sAbilityName)
+.IsProjectileUnitSpell(sAbilityName)
+.IsOnlyProjectileSpell(sAbilityName)
+.IsWillBeCastUnitTargetSpell(npcBot, nRange)
+.IsWillBeCastPointSpell(npcBot, nRange)
+.IsProjectileIncoming(npcBot, range)
+.IsUnitTargetProjectileIncoming(npcBot, range)
+.IsAttackProjectileIncoming(npcBot, range)
+.IsNotAttackProjectileIncoming(npcBot, range)
+.GetAttackProDelayTime(bot, nCreep)
+.GetCreepAttackActivityWillRealDamage(nUnit, nTime)
+.GetCreepAttackProjectileWillRealDamage(nUnit, nTime)
+.GetTotalAttackWillRealDamage(nUnit, nTime)
+.GetAttackProjectileDamageByRange(nUnit, nRange)
+.GetCorrectLoc(target, delay)
+.GetEscapeLoc()
+.IsStuck2(npcBot)
+.IsStuck(npcBot)
+.IsExistInTable(u, tUnit)
+.CombineTwoTable(tableOne, tableTwo)
+.GetInvUnitInLocCount(bot, nRange, nRadius, loc, pierceImmune)
+.GetInLocLaneCreepCount(bot, nRange, nRadius, loc)
+.GetInvUnitCount(pierceImmune, units)
+.GetDistanceFromEnemyFountain(npcBot)
+.GetDistanceFromAllyFountain(npcBot)
+.GetDistanceFromAncient(npcBot, bEnemy)
+.GetAroundTargetAllyHeroCount(target, nRadius, npcBot)
+.GetAroundTargetOtherAllyHeroCount(target, nRadius, npcBot)
+.GetAllyCreepNearLoc(vLoc, nRadius, npcBot)
+.GetAllyUnitCountAroundEnemyTarget(target, nRadius, npcBot)
+.GetLocationToLocationDistance(fLoc, sLoc)
+.GetUnitTowardDistanceLocation(npcBot, towardTarget, nDistance)
+.GetLocationTowardDistanceLocation(npcBot, towardLocation, nDistance)
+.GetFaceTowardDistanceLocation(npcBot, nDistance)
+.PrintMessage(nMessage, nNumber, n, nIntevel)
+.Print(nMessage, nNumber)
+.PrintAndReport(nMessage, nNumber)
+.SetReportMessage(nMessage, nNumber, n)
+.SetReport(nMessage, nNumber)
+.SetPingLocation(bot, vLoc)
+.SetReportAndPingLocation(vLoc, nMessage, nNumber)
+.SetReportMotive(bDebugFile, sMotive)
+.GetCastLocation(npcBot, npcTarget, nCastRange, nRadius)
+.GetDelayCastLocation(npcBot, npcTarget, nCastRange, nRadius, nTime)
+.GetOne(number)
+.GetTwo(number)
+.SetQueueSwitchPtToINT(bot)
+.SetQueueUseSoulRing(bot)
+.SetQueuePtToINT(bot, bSoulRingUsed)
+.IsPTReady(bot, status)
+.ShouldSwitchPTStat(bot, pt)
+.IsOtherAllysTarget(unit)
+.IsAllysTarget(unit)
+.IsKeyWordUnit(keyWord, Unit)
+.IsHumanPlayer(nUnit)
+.IsValid(nTarget)
+.IsValidHero(nTarget)
+.IsValidBuilding(nTarget)
+.IsRoshan(nTarget)
+.IsMoving(bot)
+.IsRunning(bot)
+.IsAttacking(bot)
+.GetModifierTime(bot, nMoName)
+.GetRemainStunTime(bot)
+.IsTeamActivityCount(bot, nCount)
+.GetSpecialModeAllies(nMode, nDistance, bot)
+.GetSpecialModeAlliesCount(nMode)
+.GetTeamFightLocation(bot)
+.GetTeamFightAlliesCount(bot)
+.GetCenterOfUnits(nUnits)
+.GetMostFarmLaneDesire()
+.GetMostDefendLaneDesire()
+.GetMostPushLaneDesire()
+.GetNearestLaneFrontLocation(nUnitLoc, bEnemy, fDeltaFromFront)
+.IsSpecialCarry(bot)
+.IsSpecialSupport(bot)
+.GetAttackableWeakestUnit(bHero, bEnemy, nRadius, bot)
+.CanBeAttacked(npcTarget)
+.GetHPR(bot)
+.GetMPR(bot)
+.GetAllyList(bot, nRange)
+.GetAllyCount(bot, nRange)
+.GetEnemyList(bot, nRange)
+.GetEnemyCount(bot, nRange)
+.ConsiderTarget()
+.IsHaveAegis(bot)
+.IsLocHaveTower(nRange, bEnemy, nLoc)
+.GetNearbyLocationToTp(nLoc)
+.IsEnemyFacingUnit(nRange, bot, nDegrees)
+.IsAllyFacingUnit(nRange, bot, nDegrees)
+.IsEnemyTargetUnit(nRange, nUnit)
+.IsCastingUltimateAbility(bot)
+.IsInAllyArea(bot)
+.IsInEnemyArea(bot)
+.IsEnemyHeroAroundLocation(vLoc, nRadius)
+.GetNumOfAliveHeroes(bEnemy)
+.GetAverageLevel(bEnemy)
+.GetNumOfTeamTotalKills(bEnemy)
+.ConsiderForBtDisassembleMask(bot)
+.ConsiderForMkbDisassembleMask(bot)
+.HasNotActionLast(nCD, nNumber)
+.GetCastPoint(bot, unit, nPointTime, nProjectSpeed)	
+.CanBreakTeleport(bot, unit, nPointTime, nProjectSpeed)	
+.GetMagicToPhysicalDamage(bot, nUnit, nMagicDamage)
+--]]
+
+
+--]]

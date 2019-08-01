@@ -30,9 +30,9 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+
+X['sBuyList'] = {
 				sOutfit,
 				"item_mekansm",
 				"item_urn_of_shadows",
@@ -44,6 +44,16 @@ X['items'] = {
 				"item_shivas_guard",
 }
 
+X['sSellList'] = {
+	"item_ultimate_scepter",
+	"item_magic_wand",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
+
 X['bDeafaultAbility'] = true
 X['bDeafaultItem'] = true
 
@@ -51,10 +61,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -485,4 +492,4 @@ function X.ReportDetails(bot,npcTarget,EstDamage,nDamagePerHealth)
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

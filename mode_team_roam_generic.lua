@@ -10,7 +10,6 @@ if GetBot():IsInvulnerable() or not GetBot():IsHero() or not string.find(GetBot(
 	return;
 end
 
---if true then return end
 
 local bot = GetBot();
 local bDebugMode = (bot:GetUnitName() == "npc_dota_hero_medusa")
@@ -1753,7 +1752,7 @@ function X.ShouldNotRetreat(bot)
 	return false;
 end
 
-
+local fLastReturnTime = 0
 function X.ShouldAttackTowerCreep(bot)
 
 	if X.CantUseAttack(bot) then return 0,nil;end
@@ -1780,11 +1779,12 @@ function X.ShouldAttackTowerCreep(bot)
 			and ( nEnemyTowers[1]:GetAttackTarget() ~= bot or J.GetHPR(bot) > 0.8 )
 			and not nEnemyTowers[1]:HasModifier('modifier_backdoor_protection')
 			and #allyCreeps > 0
+			and fLastReturnTime < DotaTime() - 1.0
 		then
 			attackTarget = nEnemyTowers[1];
 			local nDist = GetUnitToUnitDistance(bot,attackTarget) - bot:GetAttackRange();
 			if nDist > 0 then attackTime = attackTime + nDist/botMoveSpeed;end
-			
+			fLastReturnTime = DotaTime();
 			return attackTime,attackTarget;
 		end
 		
@@ -1795,7 +1795,6 @@ function X.ShouldAttackTowerCreep(bot)
 			attackTarget = nEnemyBarracks[1];
 			local nDist = GetUnitToUnitDistance(bot,attackTarget) - bot:GetAttackRange();
 			if nDist > 0 then attackTime = attackTime + nDist/botMoveSpeed;end
-			
 			return attackTime,attackTarget;
 		end
 		
@@ -1810,7 +1809,6 @@ function X.ShouldAttackTowerCreep(bot)
 			attackTarget = nEnemyAncient;
 			local nDist = GetUnitToUnitDistance(bot,attackTarget) - bot:GetAttackRange();
 			if nDist > 0 then attackTime = attackTime + nDist/botMoveSpeed;end
-			
 			return attackTime,attackTarget;
 		end
 	end		
@@ -1868,4 +1866,4 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 	return AvailableCamp;
 end
 
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

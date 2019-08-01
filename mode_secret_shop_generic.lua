@@ -105,21 +105,21 @@ function X.HaveItemToSell()
 		 "item_faerie_fire",
 		 "item_tango",  
 		 "item_flask", 
---		 "item_stout_shield",
---		 "item_quelling_blade",
 		 "item_orb_of_venom",
 		 "item_bracer",
 		 "item_wraith_band",
 		 "item_null_talisman",
---		 "item_magic_wand",
---		 "item_magic_stick",
 		 "item_infused_raindrop",
 		 "item_bottle",  
+		 "item_ancient_janggo",
+--		 "item_stout_shield",
+--		 "item_quelling_blade",
+--		 "item_magic_wand",
+--		 "item_magic_stick",
 --		 "item_soul_ring",  
 --		 "item_branches",
 --		 "item_dust",
 --		 "item_ward_observer",
-		 "item_ancient_janggo",
 --		 "item_ring_of_basilius",
 --		 "item_urn_of_shadows",
 --		 "item_armlet",
@@ -179,4 +179,4 @@ function X.IsStronger(bot, enemy)
 	return EPower > BPower;
 end
 
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

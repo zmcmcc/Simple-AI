@@ -30,9 +30,8 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+X['sBuyList'] = {
 				sOutfit,
 				"item_dragon_lance",
 --				"item_mask_of_madness",
@@ -48,6 +47,17 @@ X['items'] = {
 				--"item_bloodthorn",
 }
 
+X['sSellList'] = {
+	"item_manta",
+	"item_urn_of_shadows",
+	"item_black_king_bar",
+	"item_dragon_lance",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
@@ -57,10 +67,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -241,7 +248,7 @@ function X.ConsiderW()
 			if J.IsValid(nCreeps[1])
 				and J.CanCastOnNonMagicImmune(nCreeps[1])
 				and not (nCreeps[1]:GetTeam() == TEAM_NEUTRAL and #nLaneCreeps >= 1)
-				and J.GetEnemyUnitCountAroundTarget(nCreeps[1],470) >= 2
+				and J.GetAroundTargetEnemyUnitCount(nCreeps[1],470) >= 2
 			then
 				return BOT_ACTION_DESIRE_HIGH,nCreeps[1];
 			end
@@ -255,7 +262,7 @@ function X.ConsiderW()
 			   and #creeps + #heroes >= 4
 			   and J.CanCastOnNonMagicImmune(nCreeps[1])
 			   and not (nCreeps[1]:GetTeam() == TEAM_NEUTRAL and #nLaneCreeps >= 1)
-			   and J.GetEnemyUnitCountAroundTarget(nCreeps[1],470) >= 2
+			   and J.GetAroundTargetEnemyUnitCount(nCreeps[1],470) >= 2
 			then
 				return BOT_ACTION_DESIRE_HIGH,nCreeps[1];
 			end
@@ -404,4 +411,4 @@ function X.IsExistInTable(u, tUnit)
 end 
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

@@ -30,10 +30,8 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
-				'item_stout_shield', 
+X['sBuyList'] = {
 				sOutfit,
 				"item_crimson_guard",
 				"item_echo_sabre",
@@ -42,6 +40,15 @@ X['items'] = {
 --				"item_heart",
 }
 
+X['sSellList'] = {
+	"item_crimson_guard",
+	"item_quelling_blade",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
@@ -49,10 +56,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -570,4 +574,4 @@ function X.GetNearbyUnit(npcBot, npcTarget)
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

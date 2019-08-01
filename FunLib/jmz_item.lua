@@ -10,14 +10,6 @@
 
 local ItemModule = {}
 
---local sBotVersion = 'New';
-local sBotVersion = "Mid";
-local sVersionDate = "7.22,2019/07/30."
-
-function ItemModule.GetBotVersion()
-	return sBotVersion,sVersionDate;
-end
-
 
 ItemModule['tRemoveItems'] = {
 	'item_iron_talon',
@@ -206,7 +198,6 @@ ItemModule['tEarlyItem'] = {
 	 'item_faerie_fire',
 	 'item_tango',  
 	 'item_flask', 
-	 'item_stout_shield',
 	 'item_infused_raindrop',
 	 'item_branches',
 	 'item_magic_stick',
@@ -214,13 +205,14 @@ ItemModule['tEarlyItem'] = {
 	 'item_bracer',
 	 'item_wraith_band',
 	 'item_null_talisman',
-	 'item_quelling_blade',
 	 'item_bottle',  
 	 'item_soul_ring',  
 	 'item_magic_wand',
 	 'item_ancient_janggo',
 	 'item_refresher_shard',
 	 'item_cheese',
+--   'item_quelling_blade',
+--	 'item_stout_shield',
 --	 'item_dust',
 --	 'item_ward_observer',
 --	 'item_ring_of_basilius',
@@ -272,7 +264,6 @@ ItemModule['tCarryOutfit'] = {
 
 ItemModule['tCoreOutfit'] = {  
 	'item_chaos_knight_outfit',
-	'item_abaddon_outfit',
 	'item_kunkka_outfit',
 	'item_dragon_knight_outfit',
 	'item_skeleton_king_outfit',
@@ -506,27 +497,45 @@ end
 
 if true then
 
-ItemModule['item_double_branches']      = { 'item_branches', 'item_branches' }
+ItemModule['item_double_branches']      	= { 'item_branches', 'item_branches' }
 
-ItemModule['item_stick_bracer']         = { 'item_magic_stick', 'item_circlet', 'item_gauntlets', 'item_recipe_bracer' }
+ItemModule['item_double_tango'] 			= { 'item_tango', 'item_tango',}
+	
+ItemModule['item_double_clarity']			= { 'item_clarity', 'item_clarity',}
+	
+ItemModule['item_double_flask']				= { 'item_flask', 'item_flask',}
 
-ItemModule['item_stick_wraith_band']    = { 'item_magic_stick', 'item_circlet', 'item_slippers', 'item_recipe_wraith_band' }
+ItemModule['item_double_enchanted_mango'] 	= { 'item_enchanted_mango', 'item_enchanted_mango',}
 
-ItemModule['item_stick_null_talisman']  = { 'item_magic_stick', 'item_circlet', 'item_mantle', 'item_recipe_null_talisman' }
+ItemModule['item_double_circlet'] 			= { 'item_circlet', 'item_circlet',}
 
-ItemModule['item_broken_urn']           = { 'item_infused_raindrop', 'item_ring_of_protection', 'item_recipe_urn_of_shadows' }
+ItemModule['item_double_slippers'] 			= { 'item_slippers', 'item_slippers',}
 
-ItemModule['item_broken_vladmir']       = { 'item_lifesteal', 'item_recipe_vladmir' }
+ItemModule['item_double_mantle'] 			= { 'item_mantle', 'item_mantle',}
 
-ItemModule['item_broken_crimson_guard'] = { 'item_branches', 'item_chainmail', 'item_recipe_buckler', 'item_vanguard', 'item_recipe_crimson_guard' }
+ItemModule['item_double_gauntlets'] 		= { 'item_gauntlets', 'item_gauntlets',}
 
-ItemModule['item_broken_octarine_core'] = { 'item_point_booster', 'item_vitality_booster', 'item_mystic_staff' }
+ItemModule['item_double_wraith_band'] 		= { 'item_wraith_band', 'item_wraith_band',}
 
-ItemModule['item_broken_satanic']       = { 'item_reaver', 'item_claymore' }
+ItemModule['item_double_null_talisman'] 	= { 'item_null_talisman', 'item_null_talisman',}
 
-ItemModule['item_broken_mkb']           = { 'item_javelin', 'item_demon_edge' }
+ItemModule['item_double_bracer'] 			= { 'item_bracer', 'item_bracer',}
+	
+ItemModule['item_double_crown'] 			= { 'item_crown', 'item_crown',}	
 
-ItemModule['item_six_refresher']        = { 'item_refresher', 'item_refresher', 'item_refresher', 'item_refresher', 'item_refresher', 'item_refresher' }
+ItemModule['item_broken_urn']           	= { 'item_infused_raindrop', 'item_ring_of_protection', 'item_recipe_urn_of_shadows' }
+
+ItemModule['item_broken_vladmir']       	= { 'item_lifesteal', 'item_recipe_vladmir' }
+
+ItemModule['item_broken_crimson_guard'] 	= { 'item_branches', 'item_chainmail', 'item_recipe_buckler', 'item_vitality_booster', 'item_ring_of_health', 'item_recipe_crimson_guard' }
+
+ItemModule['item_broken_octarine_core'] 	= { 'item_point_booster', 'item_vitality_booster', 'item_mystic_staff' }
+
+ItemModule['item_broken_satanic']       	= { 'item_reaver', 'item_claymore' }
+
+ItemModule['item_broken_mkb']           	= { 'item_javelin', 'item_demon_edge' }
+
+ItemModule['item_six_refresher']        	= { 'item_refresher', 'item_refresher', 'item_refresher', 'item_refresher', 'item_refresher', 'item_refresher' }
 
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
@@ -559,11 +568,11 @@ ItemModule['item_arc_warden_outfit']       = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_sven_outfit']             = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_bracer', 'item_recipe_magic_wand', 'item_phase_boots' }
 
-ItemModule['item_chaos_knight_outfit']     = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_stick_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
+ItemModule['item_chaos_knight_outfit']     = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
 ItemModule['item_brewmaster_outfit']       = { 'item_tango', 'item_tango', 'item_quelling_blade', 'item_gauntlets', 'item_stick_bracer', 'item_ring_of_basilius', 'item_phase_boots', 'item_broken_vladmir', 'item_mjollnir' , 'item_abyssal_blade' , 'item_black_king_bar' , 'item_lotus_orb' }
 
-ItemModule['item_dragon_knight_outfit']    = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_soul_ring', 'item_broken_vladmir', 'item_broken_crimson_guard' }
+ItemModule['item_dragon_knight_outfit']    = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_soul_ring', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
 ItemModule['item_abaddon_outfit']          = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_soul_ring', 'item_phase_boots', 'item_blade_mail', 'item_mjollnir', 'item_sange_and_yasha', 'item_radiance', 'item_satanic', 'item_heart' }
 
@@ -571,11 +580,11 @@ ItemModule['item_axe_outfit']              = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_bristleback_outfit']      = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_stick_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
-ItemModule['item_kunkka_outfit']           = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_stick_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
+ItemModule['item_kunkka_outfit']           = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
 ItemModule['item_tidehunter_outfit']       = { 'item_tango', 'item_flask', 'item_enchanted_mango', 'item_enchanted_mango', 'item_stout_shield', 'item_phase_boots', 'item_vladmir', 'item_blink', 'item_greater_crit', 'item_ultimate_scepter' , 'item_solar_crest' }
 
-ItemModule['item_skeleton_king_outfit']    = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_stick_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
+ItemModule['item_skeleton_king_outfit']    = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
 ItemModule['item_silencer_outfit']         = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
@@ -592,8 +601,6 @@ ItemModule['item_shadow_demon_outfit']     = { 'item_tango', 'item_enchanted_man
 ItemModule['item_crystal_maiden_outfit']   = { 'item_tango', 'item_flask', 'item_double_branches', 'item_branches', 'item_magic_stick', 'item_crown', 'item_power_treads_int', 'item_recipe_magic_wand' }
 
 ItemModule['item_zuus_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
-
-ItemModule['item_tinker_outfit']           = { 'item_tango', 'item_clarity', 'item_double_branches', 'item_enchanted_mango', 'item_null_talisman', 'item_soul_ring' , "item_rod_of_atos", "item_travel_boots", "item_bloodstone", "item_glimmer_cape", "item_dagon_5", "item_sheepstick" }
 
 ItemModule['item_skywrath_mage_outfit']    = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
@@ -622,10 +629,20 @@ end
 
 function ItemModule.IsItemInHero(sItemName)
 
-	if sItemName == 'item_infused_raindrop' then return false end
+--	if sItemName == 'item_infused_raindrop' then return false end
 	
 	if ItemModule.IsExistInTable(sItemName, ItemModule['tPowerBoots']) 
 	then return ItemModule.IsItemInHero('item_power_treads') end
+	
+	if string.find(sItemName, 'item_double') ~= nil 
+	then
+		if sItemName == 'item_double_tango' 
+		   or sItemName == 'item_double_flask'
+		   or sItemName == 'item_double_clarity'
+		then return ItemModule.IsItemInHero(string.gsub(sItemName,"_double","")) end
+	
+		return ItemModule.GetItemCountInSolt(GetBot(),string.gsub(sItemName,"_double",""), 0, 8) >= 2
+	end
 	
 	if string.find(sItemName, '_outfit') ~= nil 
 	then
@@ -649,19 +666,21 @@ function ItemModule.IsItemInHero(sItemName)
 	
 	if sItemName == 'item_broken_satanic' then return ItemModule.IsItemInHero('item_satanic') end
 	
+	if sItemName == 'item_ultimate_scepter_2' then return GetBot():HasModifier('modifier_item_ultimate_scepter_consumed') end
+	
 	local nItemSolt = GetBot():FindItemSlot(sItemName)
 	
-	return nItemSolt >= 0 and nItemSolt <= 8 --14
+	return (nItemSolt >= 0 and nItemSolt <= 8) or nItemSolt == 15 
 
 end
 
 
-function ItemModule.GetBasicItems(tItems)
+function ItemModule.GetBasicItems(sItemList)
 
 	local npcBot = GetBot()
     local tBasicItem = {}  
 	
-    for i,v in pairs(tItems) 
+    for i,v in pairs(sItemList) 
 	do 
 		local bRepeatedItem = ItemModule.IsItemInHero(v)		
 		if bRepeatedItem == false 
@@ -679,7 +698,11 @@ function ItemModule.GetBasicItems(tItems)
 			end
 		else
 			--能修复单重重复的问题
-			npcBot.sLastRepeatItem = v			
+			--能修复"两个"系列重复的问题
+			if ItemModule.GetItemCount(GetBot(),v) <= 1
+			then
+				npcBot.sLastRepeatItem = v
+			end
 		end
     end
     return tBasicItem
@@ -750,6 +773,17 @@ function ItemModule.GetItemCount(unit, item_name)
 	
 end
 
+function ItemModule.GetItemCountInSolt(unit, item_name, nSlotMin, nSlotMax)
+	local count = 0;
+	for i = nSlotMin, nSlotMax 
+	do
+		local item = unit:GetItemInSlot(i)
+		if item ~= nil and item:GetName() == item_name then
+			count = count + 1;
+		end
+	end
+	return count;
+end
 
 function ItemModule.HasBasicItem(bot)
 	
@@ -780,17 +814,6 @@ function ItemModule.UpdateBuyBootStatus(bot)
 end
 
 
-function ItemModule.GetItemCountInSolt(unit, item_name, nSlotMin, nSlotMax)
-	local count = 0;
-	for i = nSlotMin, nSlotMax 
-	do
-		local item = unit:GetItemInSlot(i)
-		if item ~= nil and item:GetName() == item_name then
-			count = count + 1;
-		end
-	end
-	return count;
-end
 
 function ItemModule.GetTheItemSolt(bot, nSlotMin, nSlotMax, bMaxCost)
 
@@ -833,5 +856,6 @@ function ItemModule.GetTheItemSolt(bot, nSlotMin, nSlotMax, bMaxCost)
 
 end
 
+
 return ItemModule;
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

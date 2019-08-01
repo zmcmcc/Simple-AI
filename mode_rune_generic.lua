@@ -66,10 +66,7 @@ function GetDesire()
 	
 	if teamPlayers == nil then teamPlayers = GetTeamPlayers(GetTeam()) end
 	
-	if bot:IsIllusion() 
-		or bot:IsInvulnerable() 
-		or not bot:IsHero() 
-		or bot:HasModifier("modifier_arc_warden_tempest_double") 
+	if  bot:HasModifier("modifier_arc_warden_tempest_double") 
 		or bot:GetCurrentActionType() == BOT_ACTION_TYPE_IDLE 
 		or ( GetUnitToUnitDistance(bot, GetAncient(GetTeam())) < 2500 and DotaTime() > 0 )
 		or GetUnitToUnitDistance(bot, GetAncient(GetOpposingTeam())) < 4000 
@@ -192,7 +189,7 @@ function Think()
 		if nWardSolt >= 0 and nWardSolt <= 8
 		then
 			hItemWard = bot:GetItemInSlot(nWardSolt);
-		end
+		end		
 	
 		if hItemWard ~= nil 
 		   and DotaTime() < 0
@@ -249,6 +246,7 @@ function Think()
 			local nEnemys = bot:GetNearbyHeroes(nAttactRange,true,BOT_MODE_NONE);
 			if nEnemys[1] ~= nil and nEnemys[1]:IsAlive() and nEnemys[1]:CanBeSeen()
 				and not role.CanBeSupport(bot:GetUnitName())
+				and bot:GetHealth() > 500
 			then
 				bot:Action_AttackUnit(nEnemys[1], true);
 				return;
@@ -283,6 +281,7 @@ function Think()
 		   and nEnemys[1]:IsAlive() 
 		   and nEnemys[1]:CanBeSeen()
 		   and bot:GetPrimaryAttribute() ~= ATTRIBUTE_INTELLECT
+		   and bot:GetHealth() > 500
 		then
 			bot:Action_AttackUnit(nEnemys[1], true);
 			return;
@@ -623,4 +622,4 @@ function X.GetWaitRuneLocation(nRune)
 end
 
 
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

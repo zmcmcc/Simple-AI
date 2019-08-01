@@ -54,8 +54,52 @@ local beNormalFarmer = false;
 local beHighFarmer = false;
 local beVeryHighFarmer = false;
 
+local sBotVersion,sVersionDate = J.Role.GetBotVersion();
+local bPushNoticeDone = false;
+local bAllNotice = true;
+local nPushNoticeTime = nil;
+if J.Role.IsUserMode()
+then 
+	local nUserType = J.Role.GetUserType()
+	sVersionDate = J.Chat.GetLocalWord(nUserType)..J.Role.GetUserName()
+end
+
 
 function GetDesire()	
+
+	--Set PushNotice Delay 
+	if not bPushNoticeDone
+	   and DotaTime() < 0
+	   and GetTeam() == TEAM_DIRE
+	   and bot == GetTeamMember(5)
+	   and GetTeamPlayers(GetOpposingTeam())[5] ~= nil
+	   and IsPlayerBot( GetTeamPlayers(GetOpposingTeam())[5])
+	   and nPushNoticeTime == nil
+	then
+		nPushNoticeTime = DotaTime();
+		bAllNotice = false
+	end
+	
+	--PushNotice
+	if not bPushNoticeDone
+	   and DotaTime() < 0
+	   and bot:GetGold() < 300 
+	   and bot == GetTeamMember(5)
+	   and (GetTeam() ~= TEAM_DIRE 
+	         or nPushNoticeTime == nil
+			 or nPushNoticeTime +3 < DotaTime())
+	then
+		local fMessage ;
+		if sBotVersion ~= "1V5"
+		then
+			fMessage = "Simple AI: "..sVersionDate;
+		else 
+			fMessage = 'null'
+		end
+	    
+		bot:ActionImmediate_Chat( fMessage, true);
+		bPushNoticeDone = true
+	end
 
 	-------------#############---------
 	--if true then return 0 end
@@ -63,27 +107,27 @@ function GetDesire()
 	
 	if not bInitDone
 	then
-		bInitDone = true --设置初始化状态
+		bInitDone = true
 		beNormalFarmer = X.IsNormalFarmer(bot);
 		beHighFarmer = X.IsHighFarmer(bot);
 		beVeryHighFarmer = X.IsVeryHighFarmerr(bot);
 	end
 	
-	if DotaTime() < 50 then return 0.0 end --50秒之前不进行此函数
+	if DotaTime() < 50 then return 0.0 end
 		
-	if X.IsUnitAroundLocation(GetAncient(GetTeam()):GetLocation(), 3000) then --在家不执行
+	if X.IsUnitAroundLocation(GetAncient(GetTeam()):GetLocation(), 3000) then
 		return BOT_MODE_DESIRE_NONE;
 	end
 	
-	if teamPlayers == nil then teamPlayers = GetTeamPlayers(GetTeam()) end --初始电脑池
+	if teamPlayers == nil then teamPlayers = GetTeamPlayers(GetTeam()) end
 	
 	if bot:IsAlive() --For sometime to run
 	then
 		if runTime ~= 0 
 			and DotaTime() < runTime + shouldRunTime
 		then
-			return BOT_MODE_DESIRE_ABSOLUTE * 1.03; --最高欲望
-		else --尚未就绪
+			return BOT_MODE_DESIRE_ABSOLUTE * 1.03;
+		else
 			runTime = 0;
 			runMode = false;
 		end
@@ -233,7 +277,7 @@ function GetDesire()
 			local rand = RandomInt(1,6);
 			if rand < 3 
 			then
-				bot:ActionImmediate_Chat("我们预估获胜的概率在百分之九十以上。",true);
+				bot:ActionImmediate_Chat("我们预估团战获胜的概率在百分之九十以上。",true);
 			else
 				bot:ActionImmediate_Chat("We estimate the probability of winning to above 90%.",true);
 			end
@@ -794,31 +838,31 @@ end
 
 
 local enemyPids = nil;
-local runCD = 0.1;
-local lastRunCheckTime = -90;
+--local runCD = 0.1;
+--local lastRunCheckTime = -90;
 function X.ShouldRun(bot)
 	
-	if DotaTime() < lastRunCheckTime + runCD
-	then
-		return 0;
-	end
+	-- if DotaTime() < lastRunCheckTime + runCD
+	-- then
+		-- return 0;
+	-- end
 	
-	if bot:IsChanneling() --检查状态
+	if bot:IsChanneling() 
 	   or not bot:IsAlive()
 	then
 		return 0;
 	end	   
 	
-	local botLevel    = bot:GetLevel(); --等级
-	local botMode     = bot:GetActiveMode(); --活动模式
-	local botTarget   = J.GetProperTarget(bot); --当前目标
-	local EnemyHeroes = J.GetEnemyList(bot,1600); --敌人列表
-	local AllyHeroes  = J.GetAllyList(bot,1600); --队友列表
-	local enemyFountainDistance = J.GetDistanceFromEnemyFountain(bot);--敌方泉水距离
-	local enemyAncient = GetAncient(GetOpposingTeam());--敌人基地
-	local enemyAncientDistance = GetUnitToUnitDistance(bot,enemyAncient);--敌人基地距离
-	local aliveEnemyCount = J.GetNumOfAliveHeroes(true)--敌方或者的英雄数
-	local rushEnemyTowerDistance = 250;--冲塔距离
+	local botLevel    = bot:GetLevel();
+	local botMode     = bot:GetActiveMode();
+	local botTarget   = J.GetProperTarget(bot);
+	local EnemyHeroes = J.GetEnemyList(bot,1600);
+	local AllyHeroes  = J.GetAllyList(bot,1600);
+	local enemyFountainDistance = J.GetDistanceFromEnemyFountain(bot);
+	local enemyAncient = GetAncient(GetOpposingTeam());
+	local enemyAncientDistance = GetUnitToUnitDistance(bot,enemyAncient);
+	local aliveEnemyCount = J.GetNumOfAliveHeroes(true)
+	local rushEnemyTowerDistance = 250;
 	
 	--禁止冲泉
 	if enemyFountainDistance < 1200
@@ -1043,7 +1087,7 @@ function X.ShouldRun(bot)
 		
 	end	
 	
-	lastRunCheckTime = DotaTime();
+	--lastRunCheckTime = DotaTime();
 	return 0;
 end
 
@@ -1200,6 +1244,7 @@ function X.IsNormalFarmer(bot)
 		 or botName == "npc_dota_hero_shredder"
 		 or botName == "npc_dota_hero_bristleback" 
 		 or botName == "npc_dota_hero_skeleton_king"
+		 or botName == "npc_dota_hero_abaddon"
 		 or botName == "npc_dota_hero_kunkka"
 		 or botName == "npc_dota_hero_sniper"
 		 or botName == "npc_dota_hero_clinkz"
@@ -1209,7 +1254,7 @@ function X.IsNormalFarmer(bot)
 		 or botName == "npc_dota_hero_disruptor"
 		 or botName == "npc_dota_hero_shadow_demon"
 		 or botName == "npc_dota_hero_vengefulspirit"
-		 or botName == "npc_dota_hero_omniknight"	 
+		 or botName == "npc_dota_hero_omniknight"
 end
 
 
@@ -1227,10 +1272,9 @@ function X.IsHighFarmer(bot)
 		or botName == "npc_dota_hero_arc_warden"
 		or botName == "npc_dota_hero_bloodseeker"
 		or botName == "npc_dota_hero_medusa"
-		or botName == "npc_dota_hero_abaddon"
-		or botName == "npc_dota_hero_tidehunter"
+		
 		or botName == "npc_dota_hero_grimstroke"
-
+		
 end
 
 
@@ -1246,4 +1290,5 @@ function X.IsVeryHighFarmerr(bot)
 		
 end
 
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592

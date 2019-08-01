@@ -17,23 +17,22 @@ then
 	return;
 end
 
-if GetTeam() ~= TEAM_DIRE
-then
-	print('Hello, Dota World!')
-end
-
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local botBuild = dofile(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
+local BotBuild = dofile(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
 
-if botBuild == nil then 
+if BotBuild == nil then 
 	print("*&((*^(*^(*^(^(*^(*^(*");
 	return ;
 end
 
+if GetTeam() ~= TEAM_DIRE
+then
+	print(J.Chat.GetNormName(bot)..': Hello, Dota2 World!')
+end
 
-local bDeafaultAbilityHero = botBuild['bDeafaultAbility'];
-local bDeafaultItemHero = botBuild['bDeafaultItem'];
-local botAbilities = botBuild['skills'];
+local bDeafaultAbilityHero = BotBuild['bDeafaultAbility'];
+local bDeafaultItemHero = BotBuild['bDeafaultItem'];
+local botAbilities = BotBuild['sSkillList'];
 
 local TimeDeath = nil;
 local count = 1;
@@ -46,7 +45,7 @@ local function AbilityLevelUpComplement()
 		return;
 	end
 
-	if not bot:IsAlive() and bot:NumQueuedActions() then
+	if not bot:IsAlive() and bot:NumQueuedActions() > 0 then
 		 bot:Action_ClearActions( false ) 
 		 return
 	end	
@@ -182,7 +181,7 @@ local function BuybackUsageComplement()
 	if ancient ~= nil 
 	then
 		local nEnemies = X.GetNumEnemyNearby(ancient);
-		local nAllies  = X.GetNumOfAliveHeroes(GetTeam())
+		local nAllies = X.GetNumOfAliveHeroes(GetTeam())
 		if  nEnemies > 0 and nEnemies >= nAllies and nEnemies - nAllies <= 3 then
 			J.Role['lastbbtime'] = DotaTime();
 			bot:ActionImmediate_Buyback();
@@ -236,12 +235,12 @@ local function CourierUsageComplement()
 	then
 		pTime = DotaTime();
 		local npcCourier = GetCourier(0);	
-		local available  = tostring(IsCourierAvailable());
-		local cState     = tostring(GetCourierState( npcCourier ));
+		local available = tostring(IsCourierAvailable());
+		local cState    = tostring(GetCourierState( npcCourier ));
 		local courierPHP = tostring(npcCourier:GetHealth() / npcCourier:GetMaxHealth()); 
-		local suCourier  = tostring(J.Role.ShouldUseCourier());
+		local suCourier = tostring(J.Role.ShouldUseCourier());
 		local numCouriers = GetNumCouriers();
-		local nLastUser  = 'Null';
+		local nLastUser = 'Null';
 	    if npcCourier.latestUser ~= nil then nLastUser = "temp" end;
 		
 		print(tostring(GetTeam()).."++++++++++++++++++++++++++++++++++++＄＄＄＄＄＄＄＄＄START");
@@ -274,7 +273,7 @@ local function CourierUsageComplement()
 	local courierPHP = npcCourier:GetHealth() / npcCourier:GetMaxHealth(); 
 	
 	--------*******----------------*******----------------*******--------
-	local nowTime    = DotaTime();
+	local nowTime   = DotaTime();
 	local botIsAlive = bot:IsAlive();
 	local BeHumanUseCourier = X.IsHumanHaveItemInCourier();
 	local useCourierCD = 2.0;
@@ -612,7 +611,7 @@ end
 function X.IsDisabled(npcTarget)
 	
 	if npcTarget:IsStunned() and J.GetRemainStunTime(npcTarget) > 0.8
-	then
+	then --待检测
 		return true;
 	end
 
@@ -831,7 +830,7 @@ function X.ShouldTP()
 	local modDesire = bot:GetActiveModeDesire();
 	local botLoc = bot:GetLocation();
 	local enemies = X.GetNumHeroWithinRange(1600);
-	local allies  = X.GetAlliesNumWithinRange(1600);
+	local allies = X.GetAlliesNumWithinRange(1600);
 	local ifl = X.IsItemAvailable("item_flask");
 	
 	if     ( bot:HasModifier("modifier_kunkka_x_marks_the_spot") )
@@ -1105,7 +1104,7 @@ local function UnImplementedItemUsage()
 	
 		
 	local pt = X.IsItemAvailable("item_power_treads");
-	if pt~=nil and pt:IsFullyCastable()
+	if pt ~= nil and pt:IsFullyCastable()
 	then
 		if (   bot:HasModifier("modifier_flask_healing")
 		   or  bot:HasModifier("modifier_clarity_potion")
@@ -1144,7 +1143,7 @@ local function UnImplementedItemUsage()
 				end
 		else
 			local enemies = bot:GetNearbyHeroes( 1600, true, BOT_MODE_NONE );
-			local creeps  = bot:GetNearbyCreeps(1200,true);
+			local creeps = bot:GetNearbyCreeps(1200,true);
 			if  #creeps == 0
 				and  #enemies == 0 
 				and  (npcTarget == nil or GetUnitToUnitDistance(bot,npcTarget) > 1600)
@@ -1228,7 +1227,7 @@ local function UnImplementedItemUsage()
 			local mostFarmDesireLane,mostFarmDesire = J.GetMostFarmLaneDesire();
 
 			if mostFarmDesire > BOT_MODE_DESIRE_VERYHIGH *0.95
-				and #nEnemy  == 0
+				and #nEnemy == 0
 				and #nCreeps == 0
 				and #nAttackAllys == 0
 				and not X.IsAllyChanneling()				
@@ -1331,7 +1330,7 @@ local function UnImplementedItemUsage()
 	
 	
 	local bas = X.IsItemAvailable("item_ring_of_basilius");
-	if bas~=nil and bas:IsFullyCastable() and DotaTime() % 3 < 1 
+	if bas ~= nil and bas:IsFullyCastable() and DotaTime() % 3 < 1 
 	then
 		if #nearbyEnemyTower == 0 
 		   and mode == BOT_MODE_LANING
@@ -1351,7 +1350,7 @@ local function UnImplementedItemUsage()
 	
 
 	local itg = X.IsItemAvailable("item_tango");
-	if itg~=nil and itg:IsFullyCastable() then
+	if itg ~= nil and itg:IsFullyCastable() then
 		local tCharge = itg:GetCurrentCharges()
 		if DotaTime() > -86 and DotaTime() < 0 and bot:DistanceFromFountain() < 400 and J.Role.CanBeSupport(bot:GetUnitName())
 		   and bot:GetAssignedLane() ~= LANE_MID and tCharge > 2 and DotaTime() > giveTime + 2.0 then
@@ -1396,7 +1395,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local its=X.IsItemAvailable("item_tango_single");
+	local its = X.IsItemAvailable("item_tango_single");
 	local tango = its;
 	local item_tango_rate = 160; 
 	if(its == nil or not its:IsFullyCastable())
@@ -1414,7 +1413,7 @@ local function UnImplementedItemUsage()
 		then
 			local trees = bot:GetNearbyTrees(800);
 			local nEnemies = bot:GetNearbyHeroes(800,true,BOT_MODE_NONE);
-			local nTowers  = bot:GetNearbyTowers(1500,true)
+			local nTowers = bot:GetNearbyTowers(1500,true)
 			if trees[1] ~= nil  			   
 			   and  IsLocationVisible(GetTreeLocation(trees[1])) 
 			   and  IsLocationPassable(GetTreeLocation(trees[1])) 
@@ -1451,7 +1450,7 @@ local function UnImplementedItemUsage()
 	end	
 	
 	
-	local blink =X.IsItemAvailable("item_blink");	
+	local blink = X.IsItemAvailable("item_blink");	
 	if blink ~= nil and blink:IsFullyCastable() then
 		if J.IsStuck(bot)
 		then
@@ -1478,12 +1477,12 @@ local function UnImplementedItemUsage()
 		
 		--Farm
 		local nEnemyHeroInView = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
-		local nAttackAllys     = bot:GetNearbyHeroes(1600,false,BOT_MODE_ATTACK);
+		local nAttackAllys    = bot:GetNearbyHeroes(1600,false,BOT_MODE_ATTACK);
 		if #nEnemyHeroInView == 0 and not bot:WasRecentlyDamagedByAnyHero(3.0)
 		   and #nAttackAllys == 0 and ( npcTarget == nil or not npcTarget:IsHero())
 		then
 			local nAOELocation = bot:FindAoELocation(true,false,bot:GetLocation(),1600,400,0,0);
-			local nLaneCreeps  = bot:GetNearbyLaneCreeps(1600,true);
+			local nLaneCreeps = bot:GetNearbyLaneCreeps(1600,true);
 			if nAOELocation.count >= 4 
 			   and #nLaneCreeps >= 4
 			then
@@ -1522,7 +1521,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local its =X.IsItemAvailable("item_tango_single");
+	local its = X.IsItemAvailable("item_tango_single");
 	if its ~= nil and its:IsFullyCastable() and bot:DistanceFromFountain() > 1000 and DotaTime() > 0 and npcTarget == nil then
 	    local tCount = X.GetItemCount(bot, "item_tango_single")
 		if DotaTime() > 4*60 +30
@@ -1555,8 +1554,8 @@ local function UnImplementedItemUsage()
 	
 	
 	
-	local icl =X.IsItemAvailable("item_clarity");
-	if icl~=nil and icl:IsFullyCastable() and bot:DistanceFromFountain() > 4000 then
+	local icl = X.IsItemAvailable("item_clarity");
+	if icl ~= nil and icl:IsFullyCastable() and bot:DistanceFromFountain() > 4000 then
 		if DotaTime() > 0 
 		then
 			local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 800, true, BOT_MODE_NONE );
@@ -1647,7 +1646,7 @@ local function UnImplementedItemUsage()
 	
 	
 	local mg = X.IsItemAvailable("item_enchanted_mango");
-	if mg~=nil and mg:IsFullyCastable() 
+	if mg ~= nil and mg:IsFullyCastable() 
 	then
 		if bot:GetMana()/bot:GetMaxMana() < 0.10 and mode == BOT_MODE_ATTACK then
 			bot:Action_UseAbility(mg);
@@ -1656,8 +1655,8 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local tok=X.IsItemAvailable("item_tome_of_knowledge");
-	if tok~=nil and tok:IsFullyCastable() then
+	local tok = X.IsItemAvailable("item_tome_of_knowledge");
+	if tok ~= nil and tok:IsFullyCastable() then
 		if firstUseTime == 0 
 		then
 			firstUseTime = DotaTime();
@@ -1673,7 +1672,7 @@ local function UnImplementedItemUsage()
 	
 	
 	local ff = X.IsItemAvailable("item_faerie_fire");
-	if ff~=nil and ff:IsFullyCastable() then
+	if ff ~= nil and ff:IsFullyCastable() then
 		if ( mode == BOT_MODE_RETREAT and 
 			bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH and 
 			bot:DistanceFromFountain() > 0 and
@@ -1732,7 +1731,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local bst=X.IsItemAvailable("item_bloodstone");
+	local bst = X.IsItemAvailable("item_bloodstone");
 	if bst ~= nil and bst:IsFullyCastable() then
 		if  mode == BOT_MODE_RETREAT and 
 			bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH and 
@@ -1773,8 +1772,8 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local rs=X.IsItemAvailable("item_refresher_shard");
-	if rs~=nil and rs:IsFullyCastable() 
+	local rs = X.IsItemAvailable("item_refresher_shard");
+	if rs ~= nil and rs:IsFullyCastable() 
 	then
 		if J.IsGoingOnSomeone(bot) 
 		   and J.CanUseRefresherShard(bot)  
@@ -1785,7 +1784,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local ro=X.IsItemAvailable("item_refresher");
+	local ro = X.IsItemAvailable("item_refresher");
 	if ro ~= nil and ro:IsFullyCastable() 
 	then
 		if J.IsGoingOnSomeone(bot) 
@@ -1798,7 +1797,7 @@ local function UnImplementedItemUsage()
 	
 	
 	local sc = X.IsItemAvailable("item_solar_crest");
-	if sc == nil then sc=X.IsItemAvailable("item_medallion_of_courage"); end
+	if sc == nil then sc = X.IsItemAvailable("item_medallion_of_courage"); end
 	if sc ~= nil and sc:IsFullyCastable() 
 	then
 		if J.IsGoingOnSomeone(bot)
@@ -1891,7 +1890,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local stick=X.IsItemAvailable("item_magic_stick");
+	local stick = X.IsItemAvailable("item_magic_stick");
 	if stick ~= nil and stick:IsFullyCastable() and bot:DistanceFromFountain() > 300
 	then
 		local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 800, true, BOT_MODE_NONE );
@@ -2050,7 +2049,7 @@ local function UnImplementedItemUsage()
 			if J.IsValidHero(nAllies[2])
 			then
 				local targetAlly = nil
-				local targetDis  = 9999
+				local targetDis = 9999
 				for _,ally in pairs(nAllies)
 				do 
 					if  ally ~= bot
@@ -2060,7 +2059,7 @@ local function UnImplementedItemUsage()
 						and not ally:HasModifier('modifier_antimage_spell_shield') 
 					then
 						targetAlly = ally;
-						targetDis  = GetUnitToUnitDistance(npcTarget,ally);
+						targetDis = GetUnitToUnitDistance(npcTarget,ally);
 					end
 				end
 				if targetAlly ~= nil
@@ -2131,7 +2130,7 @@ local function UnImplementedItemUsage()
 			if J.IsValid(nAllies[1])
 			then
 				local targetAlly = nil
-				local targetDis  = 9999
+				local targetDis = 9999
 				for _,ally in pairs(nAllies)
 				do 
 					if  J.IsValid(ally)
@@ -2141,7 +2140,7 @@ local function UnImplementedItemUsage()
 						and not ally:HasModifier("modifier_item_mjollnir_static")
 					then
 						targetAlly = ally;
-						targetDis  = GetUnitToUnitDistance(npcTarget,ally);
+						targetDis = GetUnitToUnitDistance(npcTarget,ally);
 					end
 				end
 				if targetAlly ~= nil
@@ -2159,7 +2158,7 @@ local function UnImplementedItemUsage()
 			if #nAllyCreeps >= 1 and #nEnemyCreeps == 0
 			then
 				local targetCreep = nil
-				local targetDis  = 0
+				local targetDis = 0
 				for _,creep in pairs(nAllyCreeps)
 				do 
 					if J.IsValid(creep)
@@ -2167,7 +2166,7 @@ local function UnImplementedItemUsage()
 						and creep:DistanceFromFountain() > targetDis
 					then
 						targetCreep = creep;
-						targetDis   = creep:DistanceFromFountain();
+						targetDis  = creep:DistanceFromFountain();
 					end
 				end
 				if targetCreep ~= nil
@@ -2331,7 +2330,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local sheep=X.IsItemAvailable("item_sheepstick");
+	local sheep = X.IsItemAvailable("item_sheepstick");
 	if sheep ~= nil and sheep:IsFullyCastable()
 	then
 		local nCastRange = 850 +aetherRange;
@@ -2372,7 +2371,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local abyssal=X.IsItemAvailable("item_abyssal_blade");
+	local abyssal = X.IsItemAvailable("item_abyssal_blade");
 	if abyssal ~= nil and abyssal:IsFullyCastable()
 	then
 		local nCastRange = 300 +aetherRange;
@@ -2529,7 +2528,7 @@ local function UnImplementedItemUsage()
 	end
 	
 	local fst = X.IsItemAvailable("item_force_staff");
-	if fst~=nil and fst:IsFullyCastable() 
+	if fst ~= nil and fst:IsFullyCastable() 
 	then
 		if J.IsStuck(bot)
 		then
@@ -2615,7 +2614,7 @@ local function UnImplementedItemUsage()
 	
 			
 	local hurricanpike = X.IsItemAvailable("item_hurricane_pike");
-	if hurricanpike~=nil and hurricanpike:IsFullyCastable()
+	if hurricanpike ~= nil and hurricanpike:IsFullyCastable()
 	then
 	
 		local nCastRange = 800;
@@ -2927,7 +2926,7 @@ local function UnImplementedItemUsage()
 		end
 		
 		local nNearbyAlliedHeroes = npcBot:GetNearbyHeroes( 1200, false, BOT_MODE_NONE );
-		local nNearbyEnemyHeroes  = npcBot:GetNearbyHeroes( 1600, true, BOT_MODE_NONE );
+		local nNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 1600, true, BOT_MODE_NONE );
 		local nNearbyAlliedTowers = npcBot:GetNearbyTowers(1200,true); 
 		if (#nNearbyAlliedHeroes >= 2 and #nNearbyEnemyHeroes >= 2)
 			or (#nNearbyEnemyHeroes >= 2 and #nNearbyAlliedHeroes + #nNearbyAlliedTowers >= 2 and #nNearbyAlliedHeroes >=1)
@@ -2998,7 +2997,7 @@ local function UnImplementedItemUsage()
 		end
 		
 		Enemies = npcBot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);		
-		if Enemies~=nil and #Enemies > 0 
+		if Enemies ~= nil and #Enemies > 0 
 		then
 			local nAOELocation = bot:FindAoELocation(true, true, npcBot:GetLocation(), 800, 600 , 0, 0);
 			if nAOELocation.count >= 1  
@@ -3010,7 +3009,7 @@ local function UnImplementedItemUsage()
 		end
 		
 		local LaneCreeps=npcBot:GetNearbyLaneCreeps(1500,true);		
-		if LaneCreeps~=nil and #LaneCreeps >= 6 then
+		if LaneCreeps ~= nil and #LaneCreeps >= 6 then
 			local nAOELocation = bot:FindAoELocation(true, false, npcBot:GetLocation(), nCastRange, 600 , 0, 0);
 			if nAOELocation.count >= 8
 			   and GetUnitToLocationDistance(bot,nAOELocation.targetloc) <= nCastRange
@@ -3026,7 +3025,7 @@ local function UnImplementedItemUsage()
 	if manta ~= nil and manta:IsFullyCastable() 
 	then
 	    local nNearbyAttackingAlliedHeroes = npcBot:GetNearbyHeroes( 1000, false, BOT_MODE_ATTACK );
-		local nNearbyEnemyHeroes  = npcBot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
+		local nNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
 		local nNearbyEnemyTowers = npcBot:GetNearbyTowers(800,true);
 		local nNearbyEnemyBarracks = npcBot:GetNearbyBarracks(600,true);
 		local nNearbyAlliedCreeps = npcBot:GetNearbyLaneCreeps(1000,false);
@@ -3141,7 +3140,7 @@ local function UnImplementedItemUsage()
 		end
 	end	
 	
-	local mask =X.IsItemAvailable("item_mask_of_madness");
+	local mask = X.IsItemAvailable("item_mask_of_madness");
 	if mask ~= nil and mask:IsFullyCastable() 
 		and bot:GetUnitName() ~= "npc_dota_hero_drow_ranger"
 	then
@@ -3151,7 +3150,7 @@ local function UnImplementedItemUsage()
 			and J.CanBeAttacked(nAttackTarget)
 			and J.IsInRange(bot,nAttackTarget,nCastRange)
 			and ( not J.CanKillTarget(nAttackTarget,bot:GetAttackDamage() *2,DAMAGE_TYPE_PHYSICAL)
-				  or J.GetEnemyUnitCountAroundTarget(bot, nCastRange ) >= 2 )		    
+				  or J.GetAroundTargetEnemyUnitCount(bot, nCastRange ) >= 2 )		    
 		then
 			local nEnemyHeroInView = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
 			if nAttackTarget:IsHero()
@@ -3340,8 +3339,8 @@ local function UnImplementedItemUsage()
 	end
 	
 	
-	local null=X.IsItemAvailable("item_nullifier");
-	if null~=nil and null:IsFullyCastable() 
+	local null = X.IsItemAvailable("item_nullifier");
+	if null ~= nil and null:IsFullyCastable() 
 	then
 		if J.IsGoingOnSomeone(bot)
 		then	
@@ -3474,7 +3473,7 @@ function BuybackUsageThink()
 	
 	UnImplementedItemUsage();
 	
-	botBuild.SkillsComplement();
+	BotBuild.SkillsComplement();
 
 	BuybackUsageComplement();
 	
@@ -3494,4 +3493,4 @@ function AbilityLevelUpThink()
 
 end
 
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

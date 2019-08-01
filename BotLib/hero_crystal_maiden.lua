@@ -17,10 +17,10 @@ local sOutfit = J.Skill.GetOutfitName(npcBot)
 
 
 local tTalentTreeList = {
-						["t25"] = {10, 0},
-						["t20"] = {0, 10},
-						["t15"] = {10, 0},
-						["t10"] = {0, 10},
+						['t25'] = {10, 0},
+						['t20'] = {0, 10},
+						['t15'] = {10, 0},
+						['t10'] = {0, 10},
 }
 
 local tAllAbilityBuildList = {
@@ -31,19 +31,27 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X["items"] = {
+X['sBuyList'] = {
 				sOutfit,
-				"item_headdress",
-				"item_pipe",
-				"item_shadow_amulet",
-				"item_veil_of_discord",
-				"item_invis_sword",		
-				"item_cyclone", 
-				"item_sheepstick",
-				"item_silver_edge",
+				'item_headdress',
+				'item_pipe',
+				'item_shadow_amulet',
+				'item_veil_of_discord',
+				'item_invis_sword',		
+				'item_cyclone', 
+				'item_sheepstick',
+				'item_silver_edge',
 }
+
+X['sSellList'] = {
+	'item_cyclone',
+	'item_magic_wand',
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
 X['bDeafaultAbility'] = true
 X['bDeafaultItem'] = true
@@ -52,10 +60,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -85,9 +90,9 @@ function X.SkillsComplement()
 	nMP = npcBot:GetMana()/npcBot:GetMaxMana()
 	nHP = npcBot:GetHealth()/npcBot:GetMaxHealth()
 	nLV = npcBot:GetLevel()
-	local aether = J.IsItemAvailable("item_aether_lens");
+	local aether = J.IsItemAvailable('item_aether_lens');
 	if aether ~= nil then aetherRange = 250 end
-	if talent2:IsTrained() then aetherRange = aetherRange + talent2:GetSpecialValueInt("value") end
+	if talent2:IsTrained() then aetherRange = aetherRange + talent2:GetSpecialValueInt('value') end
 
 	
 	castQDesire, castQLoc = X.ConsiderQ();
@@ -130,7 +135,7 @@ function X.ConsiderCombo()
 		
 		if nEnemyTowers[1] ~= nil then return end
 	
-		local amulet = J.IsItemAvailable("item_shadow_amulet");
+		local amulet = J.IsItemAvailable('item_shadow_amulet');
 		if amulet~=nil and amulet:IsFullyCastable() and amuletTime < DotaTime()- 10
 		then
 			amuletTime = DotaTime();
@@ -138,23 +143,23 @@ function X.ConsiderCombo()
 			return;
 		end					
      
-		if not npcBot:HasModifier("modifier_teleporting") 
+		if not npcBot:HasModifier('modifier_teleporting') 
 		then
-			local glimer = J.IsItemAvailable("item_glimmer_cape");
+			local glimer = J.IsItemAvailable('item_glimmer_cape');
 			if glimer ~= nil and glimer:IsFullyCastable() 
 			then
 				npcBot:Action_UseAbilityOnEntity(glimer, npcBot)
 				return;			
 			end
 			
-			local invissword = J.IsItemAvailable("item_invis_sword");
+			local invissword = J.IsItemAvailable('item_invis_sword');
 			if invissword ~= nil and invissword:IsFullyCastable() 
 			then
 				npcBot:Action_UseAbility(invissword)
 				return;			
 			end
 			
-			local silveredge = J.IsItemAvailable("item_silver_edge");
+			local silveredge = J.IsItemAvailable('item_silver_edge');
 			if silveredge ~= nil and silveredge:IsFullyCastable() 
 			then
 				npcBot:Action_UseAbility(silveredge)
@@ -247,8 +252,8 @@ function X.ConsiderQ()
 	then
 	
 		--进攻时对两名以上敌人使用
-		if nCanHurtHeroLocationAoE.count >= 2 
-		   and J.IsValid(nWeakestEnemyHeroInBonus)
+		if J.IsValid(nWeakestEnemyHeroInBonus)
+		   and nCanHurtHeroLocationAoE.count >= 2 
 		   and GetUnitToLocationDistance(npcBot,nCanHurtHeroLocationAoE.targetloc) <= nCastRange
 		then
 			return BOT_ACTION_DESIRE_HIGH, nCanHurtHeroLocationAoE.targetloc;
@@ -298,8 +303,8 @@ function X.ConsiderQ()
 		end 
 		
 		--无敌人时清理兵线
-		if nCanHurtCreepsLocationAoE.count >= 5 
-			and J.IsValid(nEnemysWeakestLaneCreeps2)
+		if 	J.IsValid(nEnemysWeakestLaneCreeps2)
+			and nCanHurtCreepsLocationAoE.count >= 5 
 			and #nEnemysHeroesInBonus <= 0
 			and npcBot:GetActiveMode() ~= BOT_MODE_ATTACK
 			and nSkillLV >= 3
@@ -418,11 +423,11 @@ function X.ConsiderQ()
 	    for _,creep in pairs(nNeutarlCreeps)
 		do
 			if J.IsValid(creep)
-				and creep:HasModifier("modifier_crystal_maiden_frostbite")
+				and creep:HasModifier('modifier_crystal_maiden_frostbite')
 				and creep:GetHealth()/creep:GetMaxHealth() > 0.3
-				and (  creep:GetUnitName() == "npc_dota_neutral_dark_troll_warlord"
-					or creep:GetUnitName() == "npc_dota_neutral_satyr_hellcaller"
-					or creep:GetUnitName() == "npc_dota_neutral_polar_furbolg_ursa_warrior" )
+				and (  creep:GetUnitName() == 'npc_dota_neutral_dark_troll_warlord'
+					or creep:GetUnitName() == 'npc_dota_neutral_satyr_hellcaller'
+					or creep:GetUnitName() == 'npc_dota_neutral_polar_furbolg_ursa_warrior' )
 			then
 				local nTargetLocation = J.GetCastLocation(npcBot,creep,nCastRange,nRadius);
 				if nTargetLocation ~= nil
@@ -504,7 +509,7 @@ function X.ConsiderW()
 	do
 		if J.IsValid(npcEnemy)
 		   and npcEnemy:IsChanneling()
-		   and npcEnemy:HasModifier("modifier_teleporting")
+		   and npcEnemy:HasModifier('modifier_teleporting')
 		   and J.CanCastOnNonMagicImmune(npcEnemy)
 		   and J.CanCastOnTargetAdvanced(npcEnemy)
 		then
@@ -641,10 +646,10 @@ function X.ConsiderW()
 		--先远
 		if  J.IsValid(nEnemysStrongestCreeps2)
 			and (DotaTime() > 10*60 
-			     or (nEnemysStrongestCreeps2:GetUnitName() ~= "npc_dota_creep_badguys_melee"
-                     and nEnemysStrongestCreeps2:GetUnitName() ~= "npc_dota_creep_badguys_ranged"
-                     and nEnemysStrongestCreeps2:GetUnitName() ~= "npc_dota_creep_goodguys_melee"
-                     and nEnemysStrongestCreeps2:GetUnitName() ~= "npc_dota_creep_goodguys_ranged") )
+			     or (nEnemysStrongestCreeps2:GetUnitName() ~= 'npc_dota_creep_badguys_melee'
+                     and nEnemysStrongestCreeps2:GetUnitName() ~= 'npc_dota_creep_badguys_ranged'
+                     and nEnemysStrongestCreeps2:GetUnitName() ~= 'npc_dota_creep_goodguys_melee'
+                     and nEnemysStrongestCreeps2:GetUnitName() ~= 'npc_dota_creep_goodguys_ranged') )
 		then
 			if  (nEnemysStrongestCreepsHealth2 > 460 or (nEnemysStrongestCreepsHealth1 > 390 and nMP > 0.45)) 
 				and nEnemysStrongestCreepsHealth2 <= 1200
@@ -656,10 +661,10 @@ function X.ConsiderW()
 		--再近
 		if  J.IsValid(nEnemysStrongestCreeps1)
 			and (DotaTime() > 10*60 
-			     or (nEnemysStrongestCreeps1:GetUnitName() ~= "npc_dota_creep_badguys_melee"
-                     and nEnemysStrongestCreeps1:GetUnitName() ~= "npc_dota_creep_badguys_ranged"
-                     and nEnemysStrongestCreeps1:GetUnitName() ~= "npc_dota_creep_goodguys_melee"
-                     and nEnemysStrongestCreeps1:GetUnitName() ~= "npc_dota_creep_goodguys_ranged") )					 
+			     or (nEnemysStrongestCreeps1:GetUnitName() ~= 'npc_dota_creep_badguys_melee'
+                     and nEnemysStrongestCreeps1:GetUnitName() ~= 'npc_dota_creep_badguys_ranged'
+                     and nEnemysStrongestCreeps1:GetUnitName() ~= 'npc_dota_creep_goodguys_melee'
+                     and nEnemysStrongestCreeps1:GetUnitName() ~= 'npc_dota_creep_goodguys_ranged') )					 
 		then
 			if (nEnemysStrongestCreepsHealth1 > 410 or (nEnemysStrongestCreepsHealth1 > 360 and nMP > 0.45))   
 				and nEnemysStrongestCreepsHealth1 <= 1200  
@@ -772,7 +777,7 @@ function X.ConsiderR()
 			and npcTarget:GetHealth( ) > 400
 			and #nAllies <= 2 
 		then
---			J.PrintAndReport("进攻时尝试放大,队友数量:",#nAllies);
+--			J.PrintAndReport('进攻时尝试放大,队友数量:',#nAllies);
 			return BOT_ACTION_DESIRE_HIGH
 		end
 	end
@@ -788,7 +793,7 @@ function X.ConsiderR()
 		   and not abilityW:IsFullyCastable()
 		   and nHP > 0.38 * #nEnemysHeroesFurther
 		then
---			J.PrintAndReport("撤退时尝试放大,附近敌人:",#nEnemysHeroesFurther);
+--			J.PrintAndReport('撤退时尝试放大,附近敌人:',#nEnemysHeroesFurther);
 			return BOT_ACTION_DESIRE_HIGH;
 		end	
 	end	
@@ -824,7 +829,7 @@ function X.cm_GetStrongestUnit( nEnemyUnits )
 	for _,unit in pairs(nEnemyUnits)
 	do
 		if 	unit ~= nil and unit:IsAlive() 
-			and not unit:HasModifier("modifier_fountain_glyph") 
+			and not unit:HasModifier('modifier_fountain_glyph') 
 			and not unit:IsIllusion()
 			and not unit:IsMagicImmune()
 			and not unit:IsInvulnerable()
@@ -833,10 +838,10 @@ function X.cm_GetStrongestUnit( nEnemyUnits )
 			and unit:GetMagicResist() < 1.05 - unit:GetHealth()/1100
 			and not unit:WasRecentlyDamagedByAnyHero(2.5)
 			and not J.IsOtherAllysTarget(unit)
-			and string.find(unit:GetUnitName(),"siege") == nil 
+			and string.find(unit:GetUnitName(),'siege') == nil 
 			and ( nLV < 25 or unit:GetTeam() == TEAM_NEUTRAL )
 		then
-			if string.find(unit:GetUnitName(),"ranged") ~= nil
+			if string.find(unit:GetUnitName(),'ranged') ~= nil
 				and unit:GetHealth() > GetBot():GetAttackDamage() * 2
 		    then
 			   return unit,500; 
@@ -854,4 +859,4 @@ function X.cm_GetStrongestUnit( nEnemyUnits )
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

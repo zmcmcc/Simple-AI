@@ -30,9 +30,9 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+
+X['sBuyList'] = {
 				sOutfit,
 				"item_bfury",
 				"item_solar_crest",
@@ -41,6 +41,16 @@ X['items'] = {
 				"item_monkey_king_bar",
 }
 
+
+X['sSellList'] = {
+	"item_power_treads",
+	"item_stout_shield",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
@@ -48,10 +58,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -109,6 +116,8 @@ function X.SkillsComplement()
 		if #hEnemyHeroList == 0 and #nLaneCreeps == 0  
 		then
 			J.SetQueuePtToINT(npcBot, false)
+		else
+			npcBot:Action_ClearActions(false)
 		end
 				
 		npcBot:ActionQueue_UseAbilityOnEntity( abilityQ , castQTarget);
@@ -276,7 +285,8 @@ function X.ConsiderQ()
 			and J.CanCastOnNonMagicImmune(npcTarget) 
 			and J.IsInRange(npcTarget, npcBot, nCastRange +50) 
 		then
-			if nSkillLV >= 3 or nMP > 0.68 or J.GetHPR(npcTarget) < 0.38
+			if nSkillLV >= 3 or nMP > 0.68 
+			   or J.GetHPR(npcTarget) < 0.38 or DotaTime() > 6 *60
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			end
@@ -703,4 +713,4 @@ function X.ConsiderE()
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

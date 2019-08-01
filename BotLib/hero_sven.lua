@@ -30,9 +30,9 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+
+X['sBuyList'] = {
 				sOutfit,
 				"item_mask_of_madness",
 				"item_echo_sabre",
@@ -44,6 +44,19 @@ X['items'] = {
 				"item_heart",
 }
 
+X['sSellList'] = {
+	"item_phase_boots",
+	"item_stout_shield",
+	"item_echo_sabre",
+	"item_quelling_blade",
+	"item_bloodthorn",
+	"item_phase_boots",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
@@ -51,10 +64,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -314,7 +324,7 @@ function X.ConsiderQ()
 					and creep:GetHealth() >= 900
 					and creep:GetMagicResist() < 0.3
 					and J.IsInRange(creep,npcBot,350)
-					and J.GetEnemyUnitCountAroundTarget(creep, nRadius) >= 3
+					and J.GetAroundTargetEnemyUnitCount(creep, nRadius) >= 3
 				then
 					J.SetReport("打野时野怪数量:",#nNeutralCreeps);
 					return BOT_ACTION_DESIRE_HIGH, creep;
@@ -339,7 +349,7 @@ function X.ConsiderQ()
 					and creep:GetHealth() >= 500
 					and not creep:HasModifier("modifier_fountain_glyph")
 					and J.IsInRange(creep,npcBot,nCastRange + 100)
-					and J.GetEnemyUnitCountAroundTarget(creep, nRadius) >= 5
+					and J.GetAroundTargetEnemyUnitCount(creep, nRadius) >= 5
 				then
 					J.SetReport("推进时小兵数量:",#nLaneCreeps);
 					return BOT_ACTION_DESIRE_HIGH, creep;
@@ -527,4 +537,4 @@ function X.SvenConsiderTarget()
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

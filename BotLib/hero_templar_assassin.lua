@@ -30,9 +30,9 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+
+X['sBuyList'] = {
 				sOutfit,
 				"item_dragon_lance",
 				"item_desolator",
@@ -43,6 +43,15 @@ X['items'] = {
 				"item_bloodthorn",
 }
 
+X['sSellList'] = {
+	"item_black_king_bar",
+	"item_urn_of_shadows",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
@@ -50,13 +59,11 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
-		
-		if hMinionUnit:GetUnitName() ==  "npc_dota_templar_assassin_psionic_trap" 
+		if hMinionUnit:GetUnitName() ~=  "npc_dota_templar_assassin_psionic_trap" 
 		then
+			minion.IllusionThink(hMinionUnit)
+			return;
+		else
 			local abilitySTP = hMinionUnit:GetAbilityByName( "templar_assassin_self_trap" );
 			local abilityTP = npcBot:GetAbilityByName( "templar_assassin_trap" );
 			local nRadius = abilitySTP:GetSpecialValueInt("trap_radius");
@@ -726,4 +733,4 @@ end
 
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

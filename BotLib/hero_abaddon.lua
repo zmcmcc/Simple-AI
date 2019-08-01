@@ -24,9 +24,7 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 --根据天赋树生成天赋列表
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 --技能和天赋加点方案
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
---将装备信息和额外出装加入装备方案
-X['items'] = {
+X['sBuyList'] = {
 				"item_stout_shield",
 				sOutfit,
 				"item_sange_and_yasha",
@@ -36,6 +34,16 @@ X['items'] = {
 				"item_heart",
 				"item_octarine_core",
 }
+
+X['sSellList'] = {
+	"item_stout_shield",
+}
+
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
 X['bDeafaultAbility'] = true
 X['bDeafaultItem'] = true

@@ -30,10 +30,8 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
-				'item_stout_shield', 
+X['sBuyList'] = {
 				sOutfit,
 				"item_crimson_guard",
 				"item_heavens_halberd",
@@ -42,6 +40,15 @@ X['items'] = {
 --				"item_heart",
 }
 
+X['sSellList'] = {
+	"item_crimson_guard",
+	"item_quelling_blade",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
@@ -49,10 +56,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -213,18 +217,10 @@ function X.ConsiderW()
 		end
 	end
 	
-	-- If we're doing Roshan
-	if ( npcBot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
-	then
-		local npcTarget = npcBot:GetAttackTarget();
-		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcBot, npcTarget, nRadius)  )
-		then
-			return BOT_ACTION_DESIRE_MODERATE;
-		end
-	end
-	
 	-- If We're pushing or defending
-	if J.IsPushing(npcBot) or J.IsDefending(npcBot) or J.IsGoingOnSomeone(npcBot)
+	if J.IsPushing(npcBot) 
+	   or J.IsDefending(npcBot) 
+	   or ( J.IsGoingOnSomeone(npcBot) and nLV >= 6 ) 
 	then
 		local tableNearbyEnemyCreeps = npcBot:GetNearbyLaneCreeps( nRadius, true );
 		if ( tableNearbyEnemyCreeps ~= nil and #tableNearbyEnemyCreeps >= 1 and J.IsAllowedToSpam(npcBot, nManaCost) ) then
@@ -232,9 +228,30 @@ function X.ConsiderW()
 		end
 	end
 	
+	if J.IsFarming(npcBot) and nLV > 5
+	   and J.IsAllowedToSpam(npcBot, nManaCost)
+	then
+		local npcTarget = J.GetProperTarget(npcBot);
+		if J.IsValid(npcTarget)
+		   and npcTarget:GetTeam() == TEAM_NEUTRAL
+		then
+			if npcTarget:GetHealth() > npcBot:GetAttackDamage() * 2.28
+			then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		
+			local nCreeps = npcBot:GetNearbyCreeps(nRadius, true);
+			if ( #nCreeps >= 2 ) 
+			then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		end
+	end
+	
 	if J.IsInTeamFight(npcBot, 1200)
 	then
-		if tableNearbyEnemyHeroes ~= nil and #tableNearbyEnemyHeroes >= 1 then
+		if #tableNearbyEnemyHeroes >= 1 
+		then
 			return BOT_ACTION_DESIRE_LOW;
 		end
 	end
@@ -243,12 +260,14 @@ function X.ConsiderW()
 	if J.IsGoingOnSomeone(npcBot)
 	then
 		local npcTarget = J.GetProperTarget(npcBot);
-		if J.IsValidHero(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, npcBot, nRadius-100)
+		if J.IsValidHero(npcTarget) 
+		   and J.CanCastOnMagicImmune(npcTarget) 
+		   and J.IsInRange(npcTarget, npcBot, nRadius-100)
 		then
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
 		
-		if J.IsValid(npcTarget) 
+		if J.IsValidHero(npcTarget) 
 		   and J.IsAllowedToSpam(npcBot, nManaCost) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
 		   and J.IsInRange(npcTarget, npcBot, nRadius) 
@@ -258,6 +277,16 @@ function X.ConsiderW()
 			then
 				return BOT_ACTION_DESIRE_HIGH;
 			end
+		end
+	end
+	
+	-- If Roshan
+	if ( npcBot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
+	then
+		local npcTarget = npcBot:GetAttackTarget();
+		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcBot, npcTarget, nRadius)  )
+		then
+			return BOT_ACTION_DESIRE_MODERATE;
 		end
 	end
 
@@ -274,4 +303,4 @@ function X.ConsiderW()
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

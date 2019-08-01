@@ -30,9 +30,7 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
-
-X['items'] = {
+X['sBuyList'] = {
 				sOutfit,
 				"item_bfury",
 				"item_manta",
@@ -41,15 +39,33 @@ X['items'] = {
 				"item_satanic",
 }
 
+X['sSellList'] = {
+	"item_manta",
+	"item_stout_shield",
+}
+
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true
 
 function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
-	then
+	then		
 		if hMinionUnit:IsIllusion() 
 		then 
+			-- if hMinionUnit.fRemainTime == nil 
+			-- then
+				-- hMinionUnit.fRemainTime = hMinionUnit:GetRemainingLifespan()
+			-- end
+			
+			-- if hMinionUnit.fRemainTime < 11 then return end
+		
 			minion.IllusionThink(hMinionUnit)	
 		end
 	end
@@ -717,4 +733,4 @@ function X.ReportDetails(npcBot,npcTarget,EstDamage)
 end
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592

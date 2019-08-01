@@ -22,9 +22,7 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
-
-X['items'] = {
+X['sBuyList'] = {
 				sOutfit,
 				"item_dragon_lance",
 				"item_desolator",
@@ -34,6 +32,14 @@ X['items'] = {
 				"item_lesser_crit",
 				"item_bloodthorn",
 }
+
+X['sSellList'] = {
+	"item_hand_of_midas",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
 X['bDeafaultAbility'] = false
 X['bDeafaultItem'] = true

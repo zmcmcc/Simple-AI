@@ -31,11 +31,10 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
-X['skills'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-X['items'] = {
+X['sBuyList'] = {
 				sOutfit,
-				"item_soul_ring",
+				--"item_soul_ring",
 				"item_force_staff",
 				"item_pipe",
 				"item_glimmer_cape",
@@ -46,6 +45,17 @@ X['items'] = {
 				"item_sheepstick",
 }
 
+X['sSellList'] = {
+	"item_cyclone",
+	"item_magic_wand",
+	"item_hurricane_pike",
+	"item_arcane_boots",
+}
+
+nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
+
+X['sSkillList'] = J.Skill.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
+
 X['bDeafaultAbility'] = true
 X['bDeafaultItem'] = true
 
@@ -53,10 +63,7 @@ function X.MinionThink(hMinionUnit)
 
 	if minion.IsValidUnit(hMinionUnit) 
 	then
-		if hMinionUnit:IsIllusion() 
-		then 
-			minion.IllusionThink(hMinionUnit)	
-		end
+		minion.IllusionThink(hMinionUnit)
 	end
 
 end
@@ -157,6 +164,7 @@ function X.ConsiderQ()
 	local nDamage     = abilityQ:GetSpecialValueInt( "bolt_damage" ) + npcBot:GetAttributeValue(ATTRIBUTE_INTELLECT) *1.6 
 	local nDamageType = DAMAGE_TYPE_MAGICAL
 	local nInRangeEnemyHeroList = npcBot:GetNearbyHeroes(nCastRange + 50, true, BOT_MODE_NONE);
+	local nAttackDamage = npcBot:GetAttackDamage()
 	
 	
 	local hAllyList = npcBot:GetNearbyHeroes(1300,false,BOT_MODE_NONE)
@@ -192,6 +200,7 @@ function X.ConsiderQ()
 			then
 				local nDelay = nCastPoint + GetUnitToUnitDistance(npcBot,creep)/500;
 				if J.WillKillTarget(creep, nDamage, nDamageType, nDelay *0.9)
+				   and not J.WillKillTarget(creep, nAttackDamage, DAMAGE_TYPE_PHYSICAL, nDelay )
 				then
 					return BOT_ACTION_DESIRE_HIGH, creep, 'Q对线'
 				end
@@ -225,6 +234,7 @@ function X.ConsiderQ()
 			then
 				local nDelay = nCastPoint + GetUnitToUnitDistance(npcBot,creep)/500;
 				if J.WillKillTarget(creep, nDamage, nDamageType, nDelay *0.8)
+				   and not J.WillKillTarget(creep, nAttackDamage, DAMAGE_TYPE_PHYSICAL, nDelay )
 				then
 					return BOT_ACTION_DESIRE_HIGH, creep, 'Q推进'
 				end
@@ -240,6 +250,7 @@ function X.ConsiderQ()
 		   and (hBotTarget:GetMagicResist() < 0.3 or nMP > 0.95)
 		   and not J.CanKillTarget(hBotTarget,npcBot:GetAttackDamage() *1.68,DAMAGE_TYPE_PHYSICAL)
 		   and not J.CanKillTarget(hBotTarget,nDamage - 10,nDamageType)
+		   and not J.WillKillTarget(hBotTarget, nAttackDamage, DAMAGE_TYPE_PHYSICAL, nDelay )
 		then
 			return BOT_ACTION_DESIRE_HIGH, hBotTarget, 'Q打野'
 		end
@@ -261,6 +272,7 @@ function X.ConsiderQ()
 		and nLV > 15 and nMP > 0.4
 	then
 		if J.IsRoshan(hBotTarget) 
+		    and J.GetHPR(hBotTarget) > 0.2
 			and J.IsInRange(hBotTarget, npcBot, nCastRange)  
 		then
 			return BOT_ACTION_DESIRE_HIGH, hBotTarget, 'Q肉山'
@@ -495,4 +507,4 @@ end
 
 
 return X
--- dota2jmz@163.com QQ:2462331592.
+-- dota2jmz@163.com QQ:2462331592
