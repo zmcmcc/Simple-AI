@@ -15,10 +15,10 @@ local Site = require( GetScriptDirectory()..'/FunLib/jmz_site')
 local bot = GetBot();
 local X = {}
 local AvailableSpots = {};
-local nWardCastRange = 500;
+local nWardCastRange = 500; --插眼范围
 local itemWard = nil;
 local targetLoc = nil;
-local wardCastTime = -90;
+local wardCastTime = -90; --眼持续时间
 
 
 bot.lastSwapWardTime = -90;
@@ -35,50 +35,51 @@ local nStartTime = RandomInt(1,30);
 
 function GetDesire()
 	
-	if bot:GetUnitName() == "npc_dota_hero_necrolyte" 
-	   and bot:GetLevel() > 10
+	if bot:GetUnitName() == "npc_dota_hero_necrolyte" --瘟疫法师
+	   and bot:GetLevel() > 10 --等级大于10
 	   and bot:IsAlive()
 	   and not bot:IsChanneling()
 	   and not bot:IsCastingAbility()
-	   and bot:NumQueuedActions() <= 0
+	   and bot:NumQueuedActions() <= 0 --没有其他操作
 	then
-		local cAbilty = bot:GetAbilityByName( "necrolyte_death_pulse" );
-		local nEnemys = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE); 
-		if cAbilty ~= nil and #nEnemys == 0
-		   and ( cAbilty:IsFullyCastable() or (cAbilty:GetCooldownTimeRemaining() < 3 and bot:GetMana() > 180) )
+		local cAbilty = bot:GetAbilityByName( "necrolyte_death_pulse" );--脉冲技能
+		local nEnemys = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE); --1600内敌人
+		if cAbilty ~= nil and #nEnemys == 0--学了脉冲并且1600内没敌人
+		   and ( cAbilty:IsFullyCastable() or (cAbilty:GetCooldownTimeRemaining() < 3 and bot:GetMana() > 180) )--脉冲就绪或即将就绪
 		then
-			local nAoe = bot:FindAoELocation( true, false, bot:GetLocation(),700, 475, 0.5, 0);
-			local nLaneCreeps = bot:GetNearbyLaneCreeps(1000,true);
-			if nAoe.count >= 3 
-				and #nLaneCreeps >= 3
+			local nAoe = bot:FindAoELocation( true, false, bot:GetLocation(),700, 475, 0.5, 0);--计算技能释放最佳位置
+			local nLaneCreeps = bot:GetNearbyLaneCreeps(1000,true);--1000范围内敌兵
+			if nAoe.count >= 3 --计算出的敌兵数量
+				and #nLaneCreeps >= 3--范围内的敌兵数量
 			then
 				walkMode = true;
 				walkLocation = nAoe.targetloc;
-				return BOT_MODE_DESIRE_VERYHIGH;
+				return BOT_MODE_DESIRE_VERYHIGH;--欲望非常高
 			end
 		end
 	end
 	
-	itemWard = Site.GetItemWard(bot);
+	itemWard = Site.GetItemWard(bot);--是否有眼
 
+	--死了或无法施展
 	if bot:IsChanneling() 
 	   or bot:IsIllusion() 
 	   or bot:IsInvulnerable() 
 	   or not X.IsSuitableToWard()
 	   or not bot:IsAlive()
 	then
-		return BOT_MODE_DESIRE_NONE;
+		return BOT_MODE_DESIRE_NONE;--没欲望
 	end
 	
 	if DotaTime() < 60 + nStartTime
 	then
-		return BOT_MODE_DESIRE_NONE;
+		return BOT_MODE_DESIRE_NONE;--开局没欲望
 	end	
 	
-	if itemWard ~= nil  then
+	if itemWard ~= nil  then--有眼的情况下
 		
-		AvailableSpots = Site.GetAvailableSpot(bot);
-		targetLoc, targetDist = Site.GetClosestSpot(bot, AvailableSpots);
+		AvailableSpots = Site.GetAvailableSpot(bot);--获取插眼位置
+		targetLoc, targetDist = Site.GetClosestSpot(bot, AvailableSpots);--获得可用眼位中最近的一个
 		if targetLoc ~= nil and DotaTime() > wardCastTime + 1.0 then
 			bot.ward = true;
 			return math.floor((RemapValClamped(targetDist, 6000, 0, BOT_MODE_DESIRE_MODERATE, BOT_MODE_DESIRE_VERYHIGH))*20)/20;

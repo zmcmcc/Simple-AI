@@ -53,10 +53,10 @@ local courier = nil;
 local t3AlreadyDamaged = false;
 local t3Check = -90;
 
---General item purchase logis
+--一般项目采购
 local function GeneralPurchase()
 
-	--Cache all needed item properties when the last item to buy not equal to current item component to buy
+	--当要购买的最后一项不等于要购买的当前项组件时，缓存所有需要的项属性
 	if lastItemToBuy ~= bot.currentComponentToBuy then
 		lastItemToBuy = bot.currentComponentToBuy;
 		bot:SetNextItemPurchaseValue( GetItemCost( bot.currentComponentToBuy ) );
@@ -207,7 +207,7 @@ end
 
 --Turbo Mode General item purchase logis
 local function TurboModeGeneralPurchase()
-	--Cache all needed item properties when the last item to buy not equal to current item component to buy
+	--当要购买的最后一项不等于要购买的当前项组件时，缓存所有需要的项属性
 	if lastItemToBuy ~= bot.currentComponentToBuy then
 		lastItemToBuy = bot.currentComponentToBuy;
 		bot:SetNextItemPurchaseValue( GetItemCost( bot.currentComponentToBuy ) );
@@ -314,7 +314,7 @@ function ItemPurchaseThink()
 	--Update boots availability status to make the bot start buy support item and rain drop
 	if buyBootsStatus == false and nowTime > lastBootsCheck + 2.0 then buyBootsStatus = Item.UpdateBuyBootStatus(bot); lastBootsCheck = nowTime end
 	
-	--purchase flying courier and support item
+	--支援项目购买，鸡眼粉小蓝
 	if bot.theRole == 'support' then
 		if nowTime < 0 and GetItemStockCount( "item_courier" ) > 0
 		then
@@ -405,7 +405,7 @@ function ItemPurchaseThink()
 		return;
 	end	 
 
-	--buy ward when die
+	--死后买眼
 	if botGold >= 50 
 	   and bot:IsAlive()
 	   and bot.theRole == 'support'
@@ -725,7 +725,7 @@ function ItemPurchaseThink()
 		end
 	end
 	
-	--Sell cheapie when have travel_boots
+	--有飞鞋时额外购买便宜的补给
 	if  nowTime > 50 *60 --and #bot.itemToBuy == 0 
 		and ( bot:GetItemInSlot(7) ~= nil or bot:GetItemInSlot(8) ~= nil )
 		and ( Item.HasItem(bot, 'item_travel_boots') or Item.HasItem(bot, 'item_travel_boots_2'))

@@ -190,7 +190,7 @@ function Think()
 		then
 			hItemWard = bot:GetItemInSlot(nWardSolt);
 		end		
-	
+		-- 开具丢眼
 		if hItemWard ~= nil 
 		   and DotaTime() < 0
 		   and not IsPlayerBot(GetTeamPlayers(GetTeam())[1])
@@ -199,7 +199,7 @@ function Think()
 			if not hasPingAndSay and bot:GetAssignedLane()== LANE_TOP
 			then
 				bot:ActionImmediate_Ping( bot:GetLocation().x, bot:GetLocation().y, false );				
-				local nMessage = "I can't share wards, so I threw it here. :D "
+				local nMessage = "我不能直接分享物品，眼就丢这里了ヾ(•ω•`)o"
 				bot:ActionImmediate_Chat(nMessage,false);
 				hasPingAndSay = true;
 			end

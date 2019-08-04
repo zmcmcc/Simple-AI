@@ -604,6 +604,8 @@ ItemModule['item_crystal_maiden_outfit']   = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_zuus_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
+ItemModule['item_leshrac_outfit']          = { 'item_tango', 'item_flask', 'item_faerie_fire', 'item_magic_stick', 'item_arcane_boots', 'item_rod_of_atos', 'item_vanguard', 'item_glimmer_cape', 'item_yasha_and_kaya', 'item_ultimate_scepter', 'item_sheepstick' }
+
 ItemModule['item_skywrath_mage_outfit']    = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
 ItemModule['item_grimstroke_outfit']       = { 'item_tango', 'item_enchanted_mango', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_arcane_boots', 'item_rod_of_atos' , 'item_glimmer_cape' , 'item_ultimate_scepter' , 'item_cyclone' , 'item_sheepstick' , 'item_force_staff' }
