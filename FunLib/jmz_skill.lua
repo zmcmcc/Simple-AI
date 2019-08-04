@@ -11,11 +11,11 @@
 local X = {}
 
 
-function X.GetTalentList(npcBot)
+function X.GetTalentList(bot)
 	local sTalentList = {};
 	for i = 0, 23 
 	do
-		local hAbility = npcBot:GetAbilityInSlot(i);
+		local hAbility = bot:GetAbilityInSlot(i);
 		if hAbility ~= nil and hAbility:IsTalent() then
 			table.insert(sTalentList, hAbility:GetName());
 		end
@@ -23,11 +23,11 @@ function X.GetTalentList(npcBot)
 	return sTalentList;
 end
 
-function X.GetAbilityList(npcBot)
+function X.GetAbilityList(bot)
 	local sAbilityList = {};
 	for slot = 0,5
 	do
-		table.insert(sAbilityList, npcBot:GetAbilityInSlot(slot):GetName());
+		table.insert(sAbilityList, bot:GetAbilityInSlot(slot):GetName());
 	end
 	return sAbilityList;
 end
@@ -94,9 +94,9 @@ function X.IsHeroInEnemyTeam(sHero)
 	
 end
 
-function X.GetOutfitName(npcBot)
+function X.GetOutfitName(bot)
 
-	return 'item_'..string.gsub(npcBot:GetUnitName(),"npc_dota_hero_","")..'_outfit'
+	return 'item_'..string.gsub(bot:GetUnitName(),"npc_dota_hero_","")..'_outfit'
 
 end
 

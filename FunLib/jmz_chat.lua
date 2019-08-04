@@ -5,7 +5,7 @@
 --- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1627071163
 -----------------------------------------------------------------------------
 local Chat = {}
-local sRawLanguage = 'sCnName';
+local sRawLanguage = 'sCnName'
 
 Chat['sExpandedList'] = {
 	'npc_dota_hero_antimage',
@@ -2260,9 +2260,9 @@ Chat['tItemNameList'] = {
 	},
 	
 	[163] = {
-		['sRawName'] = 'item_new_3',
+		['sRawName'] = 'item_infused_raindrop',
 		['sShortName'] = 'itemNull',
-		['sCnName'] = '新物品3',
+		['sCnName'] = '凝魂之露',
 		['sEnName'] = 0,
 		['sFrName'] = 0,
 		['sDeName'] = 0,
@@ -2272,9 +2272,9 @@ Chat['tItemNameList'] = {
 	},
 	
 	[164] = {
-		['sRawName'] = 'item_new_4',
+		['sRawName'] = 'item_wind_lace',
 		['sShortName'] = 'itemNull',
-		['sCnName'] = '新物品4',
+		['sCnName'] = '风灵之纹',
 		['sEnName'] = 0,
 		['sFrName'] = 0,
 		['sDeName'] = 0,
@@ -4069,17 +4069,17 @@ function Chat.GetRawLanguge(sName)
 	do
 		if t['sLocalName'] == sName
 		then
-			return t['sRawName'];
+			return t['sRawName']
 		end	
 	end
 	
-	return 'sCnName';
+	return 'sCnName'
 
 end
 
 function Chat.SetRawLanguage(sName)
 
-	--sRawLanguage = Chat.GetRawLanguge(sName);
+	--sRawLanguage = Chat.GetRawLanguge(sName)
 
 end
 
@@ -4087,7 +4087,7 @@ function Chat.GetEnName(npcBot)
 
 	local sHeroName = string.gsub(string.sub(npcBot:GetUnitName(), 15),'_','')
 
-	return sHeroName;
+	return sHeroName
 	
 end
 
@@ -4098,7 +4098,7 @@ function Chat.GetLocalName(npcBot)
 	
 	if tBotName ~= nil
 	then
-		return tBotName[sRawLanguage];
+		return tBotName[sRawLanguage]
 	end
 	
 end
@@ -4118,10 +4118,10 @@ function Chat.GetRawHeroName(sName)
 	
 	for _,s in pairs(Chat['sExpandedList'])
 	do
-		local sTempCnName = Chat['tHeroNameList'][s][sRawLanguage];
+		local sTempCnName = Chat['tHeroNameList'][s][sRawLanguage]
 		if sTempCnName == sName
 		then
-			return s;
+			return s
 		end	
 	end
 	
@@ -4137,7 +4137,7 @@ function Chat.GetRawItemName(sName)
 	do
 		if t[sRawLanguage] == sName
 		then
-			return t['sRawName'];
+			return t['sRawName']
 		end	
 	end
 	
@@ -4153,11 +4153,11 @@ function Chat.GetRawGameWord(sName)
 	do
 		if t[sRawLanguage] == sName
 		then
-			return t['sRawName'];
+			return t['sRawName']
 		end	
 	end
 	
-	return nil;  --如果是错误词汇
+	return nil  --如果是错误词汇
 	
 end
 
@@ -4165,12 +4165,12 @@ end
 --选人列表
 function Chat.GetHeroSelectList(nLocalList)
 
-	local sTargetList = {};
+	local sTargetList = {}
 	
 	for i = 1, #nLocalList
     do
 		local tempName = Chat.GetRawHeroName(nLocalList[i])
-		sTargetList[#sTargetList + 1] = tempName;
+		sTargetList[#sTargetList + 1] = tempName
 	end
 	
 	return sTargetList
@@ -4182,12 +4182,12 @@ end
 function Chat.GetLaneAssignList(nLocalList)
 
 	
-	local sTargetList = {};
+	local sTargetList = {}
 	
 	for i = 1, #nLocalList
     do
 		local tempName = Chat.GetRawGameWord(nLocalList[i])
-		sTargetList[#sTargetList +1] = tempName;
+		sTargetList[#sTargetList +1] = tempName
 	end
 	
 	return sTargetList
@@ -4198,16 +4198,16 @@ end
 --天赋列表
 function Chat.GetTalentBuildList(nLocalList)
 
-	local sTargetList = {};
+	local sTargetList = {}
 	
 	for i = 1, #nLocalList
     do
 		local rawTalent = Chat.GetRawGameWord(nLocalList[i])
 		if rawTalent == 10 
 		then
-			sTargetList[#sTargetList +1] = i *2;
+			sTargetList[#sTargetList +1] = i *2
 		else
-			sTargetList[#sTargetList +1] = i *2 -1;
+			sTargetList[#sTargetList +1] = i *2 -1
 		end
 	end
 	
@@ -4219,12 +4219,12 @@ end
 --物品构成表
 function Chat.GetItemBuildList(nLocalList)
 
-	local sTargetList = {};
+	local sTargetList = {}
 	
 	for i = 1, #nLocalList
     do
 		local tempName = Chat.GetRawItemName(nLocalList[i])
-		sTargetList[#sTargetList + 1] = tempName;
+		sTargetList[#sTargetList + 1] = tempName
 	end
 	
 	return sTargetList
@@ -4235,9 +4235,9 @@ end
 --本地英雄策略路径名
 function Chat.GetHeroDirName(npcBot, nType)
 	
-	local sString = Chat['tSpWordList'][nType][sRawLanguage];
+	local sString = Chat['tSpWordList'][nType][sRawLanguage]
 	
-	return sString..Chat.GetLocalName(npcBot,sLanguage);	
+	return sString..Chat.GetLocalName(npcBot,sLanguage)	
 
 end
 
@@ -4245,16 +4245,14 @@ end
 --本地游戏词语名
 function Chat.GetLocalWord(nType)
 	
-	local sString = Chat['tSpWordList'][nType][sRawLanguage];
+	local sString = Chat['tSpWordList'][nType][sRawLanguage]
 	
-	--print('***********'..tostring(sString))
-	
-	return sString;	
+	return sString	
 
 end
 
 
-return Chat;
+return Chat
 
 --[[
 Eul的神圣法杖  item_cyclone  item_recipe_cyclone  
@@ -4400,7 +4398,7 @@ Eul的神圣法杖  item_cyclone  item_recipe_cyclone
 原力法杖  item_force_staff  item_recipe_force_staff  
 圆盾  item_stout_shield  
 圆环  item_circlet  
-远行鞋  item_travel_boots_
+远行鞋  item_travel_boots
 远行鞋2  item_travel_boots_2  item_recipe_travel_boots  
 怨灵系带  item_wraith_band  item_recipe_wraith_band  
 陨星锤  item_meteor_hammer
@@ -4415,4 +4413,7 @@ Eul的神圣法杖  item_cyclone  item_recipe_cyclone
 紫怨  item_orchid  item_recipe_orchid  
 知识之书 item_tome_of_knowledge
 魂之灵瓮 item_spirit_vessel 
+凝魂之露 item_infused_raindrop
+风灵之纹 item_wind_lace
+
 --]]

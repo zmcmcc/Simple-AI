@@ -16,27 +16,25 @@ then
 	return;
 end
 
-local purchase = require(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
+local BotBuild = require(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
 
-if purchase == nil then return; end
+if BotBuild == nil then return; end
 
 --clone item build to bot.itemTobBuy in reverse order 
---plus overcome the usage of the same memory address problem for bot.abilities in same heroes game which result in bot failed to level up correctly 
 bot.itemToBuy = {};   
 bot.currentItemToBuy = nil;  
 bot.currentComponentToBuy = nil;   
 bot.currListItemToBuy = {};         
 bot.SecretShop = false;             
 bot.SideShop = false;                
-local unitName = bot:GetUnitName();
-local purchaseList = purchase['sBuyList'];
 
-local sItemSellList = purchase['sSellList'];
+local sPurchaseList = BotBuild['sBuyList'];
+local sItemSellList = BotBuild['sSellList'];
 
---Swap item order
-for i=1, math.ceil(#purchaseList/2) do      
-	bot.itemToBuy[i] = purchaseList[#purchaseList-i+1]; 
-	bot.itemToBuy[#purchaseList-i+1] = purchaseList[i];
+--Reverse item order
+for i=1,#sPurchaseList
+do
+	bot.itemToBuy[i] = sPurchaseList[#sPurchaseList - i +1];
 end
 
 
@@ -131,7 +129,7 @@ local function GeneralPurchase()
 			courier = GetCourier(0);
 		end
 		
-		--purchase done by courier for secret shop item
+		--BotBuild done by courier for secret shop item
 		if bot.SecretShop 
 		   and courier ~= nil 
 		   and GetCourierState(courier) == COURIER_STATE_IDLE 
@@ -151,7 +149,7 @@ local function GeneralPurchase()
 		local dSecretShop = bot:DistanceFromSecretShop();
 		local dSideShop   = bot:DistanceFromSideShop();
 		
-		--Logic to decide in which shop bot have to purchase the item
+		--Logic to decide in which shop bot have to BotBuild the item
 		if CanPurchaseFromSecret             
 		   and CanPurchaseFromSide == false  
 		   and bot:DistanceFromSecretShop() > 0   
@@ -195,7 +193,7 @@ local function GeneralPurchase()
 				bot.SideShop = false;	                              
 				return
 			else
-				print("[item_purchase_generic] "..bot:GetUnitName().." failed to purchase "..bot.currentComponentToBuy.." : "..tostring(bot:ActionImmediate_PurchaseItem( bot.currentComponentToBuy )))	
+				print("[item_purchase_generic] "..bot:GetUnitName().." failed to BotBuild "..bot.currentComponentToBuy.." : "..tostring(bot:ActionImmediate_PurchaseItem( bot.currentComponentToBuy )))	
 			end
 		end	
 	else
@@ -205,7 +203,7 @@ local function GeneralPurchase()
 end
 
 
---Turbo Mode General item purchase logis
+--Turbo Mode General item BotBuild logis
 local function TurboModeGeneralPurchase()
 	--当要购买的最后一项不等于要购买的当前项组件时，缓存所有需要的项属性
 	if lastItemToBuy ~= bot.currentComponentToBuy then
@@ -238,7 +236,7 @@ local function TurboModeGeneralPurchase()
 			bot.SideShop = false;	
 			return
 		else
-			print("[item_purchase_generic] "..bot:GetUnitName().." failed to purchase "..bot.currentComponentToBuy.." : "..tostring(bot:ActionImmediate_PurchaseItem( bot.currentComponentToBuy )))	
+			print("[item_purchase_generic] "..bot:GetUnitName().." failed to BotBuild "..bot.currentComponentToBuy.." : "..tostring(bot:ActionImmediate_PurchaseItem( bot.currentComponentToBuy )))	
 		end
 	end
 end
@@ -339,7 +337,7 @@ function ItemPurchaseThink()
 		end
 	end
 	
-	--purchase courier when no support in team
+	--BotBuild courier when no support in team
 	if nowTime > -65 and nowTime < 600 and botGold >= 50 
 	   and GetItemStockCount( "item_courier" ) > 0 
 	   and bot:DistanceFromFountain() < 200
@@ -349,7 +347,7 @@ function ItemPurchaseThink()
 		return;
 	end
 	
-	--purchase raindrop
+	--BotBuild raindrop
 	if buyRD == false
 	   and nowTime > 3 *60
 	   and nowTime < 20 *60
@@ -763,7 +761,7 @@ function ItemPurchaseThink()
 		end
 	end
 		
-	--No need to purchase item when no item to purchase in the list
+	--No need to BotBuild item when no item to BotBuild in the list
 	if #bot.itemToBuy == 0 then bot:SetNextItemPurchaseValue( 0 ); return; end
 	
 	--Get the next item to buy and break it to item components then add it to currListItemToBuy. 
@@ -788,7 +786,7 @@ function ItemPurchaseThink()
 		else
 			lastInvCheck = nowTime;
 		end
-	--Added item component to current item component to buy and do the purchase	
+	--Added item component to current item component to buy and do the BotBuild	
 	elseif #bot.currListItemToBuy > 0 then           
 		if bot.currentComponentToBuy == nil then      
 			bot.currentComponentToBuy = bot.currListItemToBuy[#bot.currListItemToBuy];  

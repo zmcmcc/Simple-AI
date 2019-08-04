@@ -1865,5 +1865,4 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 	end
 	return AvailableCamp;
 end
-
 -- dota2jmz@163.com QQ:2462331592

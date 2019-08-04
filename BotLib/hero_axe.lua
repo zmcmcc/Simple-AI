@@ -1,11 +1,11 @@
 local X = {}
-local npcBot = GetBot()
+local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
-local sTalentList = J.Skill.GetTalentList(npcBot)
-local sAbilityList = J.Skill.GetAbilityList(npcBot)
-local sOutfit = J.Skill.GetOutfitName(npcBot)
+local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
+local sTalentList = J.Skill.GetTalentList(bot)
+local sAbilityList = J.Skill.GetAbilityList(bot)
+local sOutfit = J.Skill.GetOutfitName(bot)
 
 local tTalentTreeList = {
 						['t25'] = {10, 0},
@@ -46,19 +46,19 @@ X['bDeafaultItem'] = true
 
 function X.MinionThink(hMinionUnit)
 
-	if minion.IsValidUnit(hMinionUnit) 
+	if Minion.IsValidUnit(hMinionUnit) 
 	then
 		if hMinionUnit:IsIllusion() 
 		then 
-			minion.IllusionThink(hMinionUnit)	
+			Minion.IllusionThink(hMinionUnit)	
 		end
 	end
 
 end
 
-local abilityQ = npcBot:GetAbilityByName( sAbilityList[1] )
-local abilityW = npcBot:GetAbilityByName( sAbilityList[2] )
-local abilityR = npcBot:GetAbilityByName( sAbilityList[6] )
+local abilityQ = bot:GetAbilityByName( sAbilityList[1] )
+local abilityW = bot:GetAbilityByName( sAbilityList[2] )
+local abilityR = bot:GetAbilityByName( sAbilityList[6] )
 
 
 local castQDesire
@@ -71,24 +71,24 @@ local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
 function X.SkillsComplement()
 
 	
-	if J.CanNotUseAbility(npcBot) or npcBot:IsInvisible() then return end
+	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 
 	
 	
 	nKeepMana = 180
-	nMP = npcBot:GetMana()/npcBot:GetMaxMana();
-	nHP = npcBot:GetHealth()/npcBot:GetMaxHealth();
-	nLV = npcBot:GetLevel();
-	hEnemyHeroList = npcBot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
+	nMP = bot:GetMana()/bot:GetMaxMana();
+	nHP = bot:GetHealth()/bot:GetMaxHealth();
+	nLV = bot:GetLevel();
+	hEnemyHeroList = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
 	
 	
 	castRDesire, castRTarget = X.ConsiderR();
 	if ( castRDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(npcBot, true)
+		J.SetQueuePtToINT(bot, true)
 
-		npcBot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget)
+		bot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget)
 		return;
 	end
 
@@ -96,9 +96,9 @@ function X.SkillsComplement()
 	if ( castQDesire > 0) 
 	then
 	
-		J.SetQueuePtToINT(npcBot, true)
+		J.SetQueuePtToINT(bot, true)
 	
-		npcBot:ActionQueue_UseAbility( abilityQ )
+		bot:ActionQueue_UseAbility( abilityQ )
 		return;
 	end
 	
@@ -106,13 +106,13 @@ function X.SkillsComplement()
 	if ( castWDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(npcBot, true)
+		J.SetQueuePtToINT(bot, true)
 		
-		if npcBot:HasScepter() 
+		if bot:HasScepter() 
 		then
-			npcBot:ActionQueue_UseAbilityOnLocation( abilityW, castWTarget:GetLocation() )
+			bot:ActionQueue_UseAbilityOnLocation( abilityW, castWTarget:GetLocation() )
 		else
-			npcBot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
+			bot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
 		end
 		return;
 	end
@@ -125,12 +125,12 @@ function X.ConsiderW()
 	if not abilityW:IsFullyCastable() then return 0 end
 	
 	local nCastRange = abilityW:GetCastRange();
-	local nAttackRange = npcBot:GetAttackRange();
+	local nAttackRange = bot:GetAttackRange();
 	local nDamage = (abilityW:GetLevel() *8 + 8) * 12;
 	
-	local nEnemysHerosInCastRange = npcBot:GetNearbyHeroes(nCastRange + 80 ,true,BOT_MODE_NONE);
-	local nWeakestEnemyHeroInCastRange = J.GetVulnerableWeakestUnit(true, true, nCastRange + 80, npcBot);
-	local npcTarget = J.GetProperTarget(npcBot)
+	local nEnemysHerosInCastRange = bot:GetNearbyHeroes(nCastRange + 80 ,true,BOT_MODE_NONE);
+	local nWeakestEnemyHeroInCastRange = J.GetVulnerableWeakestUnit(true, true, nCastRange + 80, bot);
+	local npcTarget = J.GetProperTarget(bot)
 	local castRTarget = nil
 	
 	
@@ -148,7 +148,7 @@ function X.ConsiderW()
 			if J.IsValidHero(npcTarget) and
 				not npcTarget:HasModifier("modifier_axe_battle_hunger")
 			then
-				if J.IsInRange(npcTarget, npcBot, nCastRange + 80)   
+				if J.IsInRange(npcTarget, bot, nCastRange + 80)   
 					and J.CanCastOnMagicImmune(npcTarget)
 				then					
 					castRTarget = npcTarget;
@@ -169,9 +169,9 @@ function X.ConsiderW()
 	end	
 	
 	
-	if npcBot:GetActiveMode() == BOT_MODE_ROSHAN and npcBot:HasScepter()
+	if bot:GetActiveMode() == BOT_MODE_ROSHAN and bot:HasScepter()
 	then
-	    local nAttackTarget = npcBot:GetAttackTarget();
+	    local nAttackTarget = bot:GetAttackTarget();
 		if  nAttackTarget ~= nil and nAttackTarget:IsAlive() and
 		not nAttackTarget:HasModifier("modifier_axe_battle_hunger")
 		then
@@ -195,19 +195,19 @@ function X.ConsiderQ()
 	local nManaCost  = abilityQ:GetManaCost( );
 	local nSkillLV   = abilityQ:GetLevel();
 	
-	local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nRadius - 80, true, BOT_MODE_NONE );
+	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius - 80, true, BOT_MODE_NONE );
 	
 	-- If we're doing Roshan
-	if ( npcBot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
+	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
 	then
-		local npcTarget = npcBot:GetAttackTarget();
-		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcBot, npcTarget, nRadius - 80)  )
+		local npcTarget = bot:GetAttackTarget();
+		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(bot, npcTarget, nRadius - 80)  )
 		then
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
 	end
 	
-	if J.IsInTeamFight(npcBot, 1200)
+	if J.IsInTeamFight(bot, 1200)
 	then
 		if tableNearbyEnemyHeroes ~= nil and #tableNearbyEnemyHeroes >= 1 then
 			return BOT_ACTION_DESIRE_LOW;
@@ -215,10 +215,10 @@ function X.ConsiderQ()
 	end
 	
 	-- If we're going after someone
-	if J.IsGoingOnSomeone(npcBot)
+	if J.IsGoingOnSomeone(bot)
 	then
-		local npcTarget = J.GetProperTarget(npcBot);
-		if J.IsValidHero(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, npcBot, nRadius-100)
+		local npcTarget = J.GetProperTarget(bot);
+		if J.IsValidHero(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nRadius-100)
 		then
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
@@ -241,13 +241,13 @@ function X.ConsiderR()
 	local nKillHealth = 75 * nSkillLV + 175;
 
 	-- If we're going after someone
-	if J.IsGoingOnSomeone(npcBot)
+	if J.IsGoingOnSomeone(bot)
 	then
-		local npcTarget = J.GetProperTarget(npcBot);
+		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
 		   and not J.IsHaveAegis(npcTarget)
-		   and J.IsInRange(npcTarget, npcBot, nCastRange + 200)
+		   and J.IsInRange(npcTarget, bot, nCastRange + 200)
 		then
 			if --J.CanKillTarget(npcTarget, nKillHealth, DAMAGE_TYPE_MAGICAL ) 
 			npcTarget:GetHealth() < nKillHealth
@@ -258,10 +258,10 @@ function X.ConsiderR()
 	end	
 
 	-- If we're in a teamfight, use it on the scariest enemy
-	if J.IsInTeamFight(npcBot, 1200)
+	if J.IsInTeamFight(bot, 1200)
 	then
 		local npcToKill = nil;
-		local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
 			if J.IsValidHero(npcEnemy)
@@ -282,7 +282,7 @@ function X.ConsiderR()
 		end
 	end
 	
-	local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
+	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
 	for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 	do
 		if J.IsValidHero(npcEnemy) 

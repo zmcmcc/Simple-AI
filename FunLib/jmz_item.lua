@@ -280,6 +280,14 @@ ItemModule['tSupportOutfit'] = {
 	'item_skywrath_mage_outfit',
 }
 
+ItemModule['tConsumableList'] = {
+	'item_clarity',
+	'item_tango',
+	'item_flask',
+	'item_faerie_fire',
+}
+
+
 if true then
 
 ItemModule['item_abyssal_blade']		 = { 'item_basher', 'item_vanguard', 'item_recipe_abyssal_blade' }
@@ -578,7 +586,7 @@ ItemModule['item_abaddon_outfit']          = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_axe_outfit']              = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_magic_stick', 'item_phase_boots', 'item_vanguard' , 'item_blink' , 'item_blade_mail', 'item_manta', 'item_mjollnir', 'item_octarine_core'}
 
-ItemModule['item_bristleback_outfit']      = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_double_branches', 'item_stick_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
+ItemModule['item_bristleback_outfit']      = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
 ItemModule['item_kunkka_outfit']           = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
@@ -632,17 +640,21 @@ end
 
 
 function ItemModule.IsItemInHero(sItemName)
-
---	if sItemName == 'item_infused_raindrop' then return false end
+	
+	local bot = GetBot()
 	
 	if ItemModule.IsExistInTable(sItemName, ItemModule['tPowerBoots']) 
 	then return ItemModule.IsItemInHero('item_power_treads') end
+	
+	if ItemModule.IsExistInTable(sItemName, ItemModule['tConsumableList']) 
+	then return bot:FindItemSlot(sItemName) >= 0 end
 	
 	if string.find(sItemName, 'item_double') ~= nil 
 	then
 		if sItemName == 'item_double_tango' 
 		   or sItemName == 'item_double_flask'
 		   or sItemName == 'item_double_clarity'
+		   or sItemName == 'item_double_enchanted_mango'
 		then return ItemModule.IsItemInHero(string.gsub(sItemName,"_double","")) end
 	
 		return ItemModule.GetItemCountInSolt(GetBot(),string.gsub(sItemName,"_double",""), 0, 8) >= 2
@@ -670,9 +682,9 @@ function ItemModule.IsItemInHero(sItemName)
 	
 	if sItemName == 'item_broken_satanic' then return ItemModule.IsItemInHero('item_satanic') end
 	
-	if sItemName == 'item_ultimate_scepter_2' then return GetBot():HasModifier('modifier_item_ultimate_scepter_consumed') end
+	if sItemName == 'item_ultimate_scepter_2' then return bot:HasModifier('modifier_item_ultimate_scepter_consumed') end
 	
-	local nItemSolt = GetBot():FindItemSlot(sItemName)
+	local nItemSolt = bot:FindItemSlot(sItemName)
 	
 	return (nItemSolt >= 0 and nItemSolt <= 8) or nItemSolt == 15 
 
@@ -681,14 +693,14 @@ end
 
 function ItemModule.GetBasicItems(sItemList)
 
-	local npcBot = GetBot()
+	local bot = GetBot()
     local tBasicItem = {}  
 	
     for i,v in pairs(sItemList) 
 	do 
 		local bRepeatedItem = ItemModule.IsItemInHero(v)		
 		if bRepeatedItem == false 
-		   or v == npcBot.sLastRepeatItem
+		   or v == bot.sLastRepeatItem
 		then		
 			if ItemModule[v] ~= nil      
 			then                                        
@@ -705,7 +717,7 @@ function ItemModule.GetBasicItems(sItemList)
 			--能修复"两个"系列重复的问题
 			if ItemModule.GetItemCount(GetBot(),v) <= 1
 			then
-				npcBot.sLastRepeatItem = v
+				bot.sLastRepeatItem = v
 			end
 		end
     end
@@ -717,7 +729,7 @@ end
 function ItemModule.GetMainInvLessValItemSlot(bot)
 	local minPrice = 10000;
 	local minSlot = -1;
-	for i=0,5,1 do
+	for i=0,5 do
 		local item = bot:GetItemInSlot(i);
 		if  item ~= nil 
 			and not ItemModule.IsExistInTable(item:GetName(), ItemModule['tCanNotSwitchItems'])
@@ -733,11 +745,11 @@ function ItemModule.GetMainInvLessValItemSlot(bot)
 end
 
 
-function ItemModule.GetItemCharges(npcBot, item_name)
+function ItemModule.GetItemCharges(bot, item_name)
 	
 	local charges = 0;
 	for i = 0, 15 do
-		local item = npcBot:GetItemInSlot(i);
+		local item = bot:GetItemInSlot(i);
 		if item ~= nil and item:GetName() == item_name then
 			charges = charges + item:GetCurrentCharges();
 		end
@@ -747,12 +759,12 @@ function ItemModule.GetItemCharges(npcBot, item_name)
 end
 
 
-function ItemModule.GetEmptyInventoryAmount(npcBot)
+function ItemModule.GetEmptyInventoryAmount(bot)
 	
 	local amount = 0;
 	for i=0,8 
 	do	
-		local item = npcBot:GetItemInSlot(i);
+		local item = bot:GetItemInSlot(i);
 		if item == nil 
 		then
 			amount = amount +1;
@@ -777,6 +789,7 @@ function ItemModule.GetItemCount(unit, item_name)
 	
 end
 
+
 function ItemModule.GetItemCountInSolt(unit, item_name, nSlotMin, nSlotMax)
 	local count = 0;
 	for i = nSlotMin, nSlotMax 
@@ -788,6 +801,7 @@ function ItemModule.GetItemCountInSolt(unit, item_name, nSlotMin, nSlotMax)
 	end
 	return count;
 end
+
 
 function ItemModule.HasBasicItem(bot)
 	
@@ -816,7 +830,6 @@ function ItemModule.UpdateBuyBootStatus(bot)
 	end
 	return bootsSlot >= 0;
 end
-
 
 
 function ItemModule.GetTheItemSolt(bot, nSlotMin, nSlotMax, bMaxCost)

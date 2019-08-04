@@ -14,6 +14,7 @@ local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargets
 local cMod = require(GetScriptDirectory() .. "/AuxiliaryScript/CaptainMode");
 
 local X = {};
+local bDebugMode = false
 local sSelectHero = "npc_dota_hero_zuus";
 local fLastSlectTime,fLastRand,nRand = 0,0,0 ;
 local nDelayTime;
@@ -24,7 +25,7 @@ local tSelectPoolList = {};
 local tLaneAssignList = {};
 local bInitLineUpDone = false;
 
-local bSelfMode = false;
+local bUserMode = false;
 
 local BotsInit = require( "game/botsinit" );
 
@@ -276,7 +277,7 @@ sSelectList = {
 
 if BotsInit["ABATiYanMa"] ~= nil
 then 
-	bSelfMode = true
+	bUserMode = true
 
 	--设置全局语种环境
 	Chat.SetRawLanguage(BotsInit["ABATiYanMa"]);
@@ -299,13 +300,13 @@ then
 	
 	if Chat.GetRawGameWord(HeroSet['ShuBuQi']) ~= false then Role["nUserMode"] = -1 end
 
-	if Role["nUserMode"] <= 0 then bSelfMode = false end
+	if Role["nUserMode"] <= 0 then bUserMode = false end
 end
 
 --For Random LineUp-------------
 local sTempList = sSelectList;
 nRand = RandomInt(1,(#tAllLineUpList) *1.4 ); 
-if nRand <= #tAllLineUpList --and false
+if nRand <= #tAllLineUpList and not bDebugMode
 then 
 	sSelectList = tAllLineUpList[nRand];
 	print(tostring(GetTeam())..tostring(nRand/100));
@@ -319,7 +320,7 @@ then
 end
 
 ------------------------------------------------
----Finsh Lineup---------------------------------
+---Finish Lineup---------------------------------
 --初始阵容和英雄池
 sSelectList = { sSelectList[5], sSelectList[4], sSelectList[3], sSelectList[2], sSelectList[1] };
 tSelectPoolList = { tSelectPoolList[5], tSelectPoolList[4], tSelectPoolList[3], tSelectPoolList[2], tSelectPoolList[1] };
@@ -329,7 +330,7 @@ tSelectPoolList = { tSelectPoolList[5], tSelectPoolList[4], tSelectPoolList[3], 
 ------For Random LaneAssig-------
 function X.GetRandomChangeLane(tLane)
 
---	if true then return tLane end
+	if bDebugMode then return tLane end
 
 	local temp;
 	if RandomInt(1,9) < 4 then
@@ -379,7 +380,7 @@ function X.SetLaneUpInit()
 
 	if bInitLineUpDone then return end
 	
-	if bSelfMode 
+	if bUserMode 
 	then 
 		if Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
 		then
@@ -598,8 +599,9 @@ function AllPickLogic()
 	----------------------------------------------------------------------------------------
 	------设置挑选延迟完毕------------------------------------------------------------------
 	----------------------------------------------------------------------------------------
+	
 	--自定义挑选逻辑
-	if bSelfMode and Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
+	if bUserMode and Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
 	then
 		local IDs = GetTeamPlayers(GetTeam());
 		for i,id in pairs(IDs) 
@@ -634,17 +636,22 @@ function AllPickLogic()
 			break;
 		end
 	end
+	
+	
 end
+
 
 function GetBotNames()
 
-	if bSelfMode then return HeroSet['ZhanDuiMing'] end
+	if bUserMode then return HeroSet['ZhanDuiMing'] end
 
 	return targetdata.GetDota2Team();
+	
 end
 
+
 local sBotVersion = Role.GetBotVersion()
-if bSelfMode or sBotVersion == 'Mid'
+if bUserMode or sBotVersion == 'Mid'
 then
 
 function UpdateLaneAssignments()  

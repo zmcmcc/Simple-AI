@@ -54,7 +54,7 @@ function GetDesire()
 			then
 				walkMode = true;
 				walkLocation = nAoe.targetloc;
-				return BOT_MODE_DESIRE_VERYHIGH;--欲望非常高
+				return BOT_MODE_DESIRE_VERYHIGH;
 			end
 		end
 	end
@@ -68,12 +68,12 @@ function GetDesire()
 	   or not X.IsSuitableToWard()
 	   or not bot:IsAlive()
 	then
-		return BOT_MODE_DESIRE_NONE;--没欲望
+		return BOT_MODE_DESIRE_NONE;
 	end
 	
 	if DotaTime() < 60 + nStartTime
 	then
-		return BOT_MODE_DESIRE_NONE;--开局没欲望
+		return BOT_MODE_DESIRE_NONE;
 	end	
 	
 	if itemWard ~= nil  then--有眼的情况下
@@ -213,13 +213,5 @@ function X.IsIBecameTheTarget(units)
 	end
 	return false;
 end
--- dota2jmz@163.com QQ:2462331592
 
-----------------------------------------------------------------
--- _G._savedEnv = getfenv()
--- module( "mode_ward_generic", package.seeall )
--- local fileName = "mode_ward_generic";
-----------------------------------------------------------------
------------------------------------------------------------------
--- for k,v in pairs( mode_ward_generic ) do _G._savedEnv[k] = v end
------------------------------------------------------------------
+-- dota2jmz@163.com QQ:2462331592

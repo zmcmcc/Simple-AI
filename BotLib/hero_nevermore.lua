@@ -7,13 +7,13 @@
 --- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1627071163
 ----------------------------------------------------------------------------------------------------
 local X = {}
-local npcBot = GetBot()
+local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
-local sTalentList = J.Skill.GetTalentList(npcBot)
-local sAbilityList = J.Skill.GetAbilityList(npcBot)
-local sOutfit = J.Skill.GetOutfitName(npcBot)
+local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
+local sTalentList = J.Skill.GetTalentList(bot)
+local sAbilityList = J.Skill.GetAbilityList(bot)
+local sOutfit = J.Skill.GetOutfitName(bot)
 
 local tTalentTreeList = {
 						['t25'] = {10, 0},
@@ -56,18 +56,18 @@ X['bDeafaultItem'] = true
 
 function X.MinionThink(hMinionUnit)
 
-	if minion.IsValidUnit(hMinionUnit) 
+	if Minion.IsValidUnit(hMinionUnit) 
 	then
-		minion.IllusionThink(hMinionUnit)
+		Minion.IllusionThink(hMinionUnit)
 	end
 
 end
 
-local abilityZ = npcBot:GetAbilityByName( sAbilityList[1] )
-local abilityX = npcBot:GetAbilityByName( sAbilityList[2] )
-local abilityC = npcBot:GetAbilityByName( sAbilityList[3] )
-local abilityR = npcBot:GetAbilityByName( sAbilityList[6] )
-local talent6 = npcBot:GetAbilityByName( sTalentList[6] )
+local abilityZ = bot:GetAbilityByName( sAbilityList[1] )
+local abilityX = bot:GetAbilityByName( sAbilityList[2] )
+local abilityC = bot:GetAbilityByName( sAbilityList[3] )
+local abilityR = bot:GetAbilityByName( sAbilityList[6] )
+local talent6 = bot:GetAbilityByName( sTalentList[6] )
 
 local castZDesire
 local castXDesire
@@ -84,15 +84,15 @@ function X.SkillsComplement()
 	J.ConsiderTarget();
 	
 	
-	if J.CanNotUseAbility(npcBot) or npcBot:IsInvisible() then return end
+	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	
 	
 	nKeepMana = 340
 	talentDamage = 0
-	nLV = npcBot:GetLevel();
-	nMP = npcBot:GetMana()/npcBot:GetMaxMana();
-	nHP = npcBot:GetHealth()/npcBot:GetMaxHealth();
-	hEnemyHeroList = npcBot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
+	nLV = bot:GetLevel();
+	nMP = bot:GetMana()/bot:GetMaxMana();
+	nHP = bot:GetHealth()/bot:GetMaxHealth();
+	hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
 	
 	
 	if talent6:IsTrained() then talentDamage = talentDamage + talent6:GetSpecialValueInt("value") end
@@ -102,9 +102,9 @@ function X.SkillsComplement()
 	if castCDesire > 0
 	then
 				
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 				
-		npcBot:ActionQueue_UseAbility( abilityC );
+		bot:ActionQueue_UseAbility( abilityC );
 		return;
 	end
 	
@@ -112,9 +112,9 @@ function X.SkillsComplement()
 	if castXDesire > 0
 	then
 			
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 				
-		npcBot:ActionQueue_UseAbility( abilityX );
+		bot:ActionQueue_UseAbility( abilityX );
 		return;
 	end
 	
@@ -122,9 +122,9 @@ function X.SkillsComplement()
 	if castZDesire > 0
 	then
 				
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 	
-		npcBot:ActionQueue_UseAbility( abilityZ );
+		bot:ActionQueue_UseAbility( abilityZ );
 		return;	
 
 	end
@@ -133,9 +133,9 @@ function X.SkillsComplement()
 	if castRDesire > 0
 	then
 	
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 	
-		npcBot:ActionQueue_UseAbility ( abilityR );
+		bot:ActionQueue_UseAbility ( abilityR );
 		return;	
 							
 	end
@@ -146,15 +146,15 @@ function X.ConsiderR()
 
 	-- Make sure it's castable
 	if  not abilityR:IsFullyCastable() 
-	   or ( npcBot:WasRecentlyDamagedByAnyHero(1.5) and not npcBot:HasModifier("modifier_black_king_bar_immune") and nHP < 0.62)
+	   or ( bot:WasRecentlyDamagedByAnyHero(1.5) and not bot:HasModifier("modifier_black_king_bar_immune") and nHP < 0.62)
 	then return 0; end
 
 	-- Get some of its values 
 	local nRadius = 1000;                          
 	
-	local nEnemysHerosInLong       = J.GetEnemyList(npcBot,1400); 
-	local nEnemysHerosInSkillRange = J.GetEnemyList(npcBot,850); 
-	local nEnemysHerosNearby       = J.GetEnemyList(npcBot,400); 
+	local nEnemysHerosInLong       = J.GetEnemyList(bot,1400); 
+	local nEnemysHerosInSkillRange = J.GetEnemyList(bot,850); 
+	local nEnemysHerosNearby       = J.GetEnemyList(bot,400); 
 	
 	for _,enemy in pairs(nEnemysHerosNearby)
 	do
@@ -167,7 +167,7 @@ function X.ConsiderR()
 		end			
 	end
 	
-	if J.IsInTeamFight(npcBot,1200) or J.IsGoingOnSomeone(npcBot)
+	if J.IsInTeamFight(bot,1200) or J.IsGoingOnSomeone(bot)
 	then
 		if #nEnemysHerosInSkillRange >= 3
 			or (#nEnemysHerosNearby >= 1 and #nEnemysHerosInSkillRange >= 2)
@@ -177,17 +177,17 @@ function X.ConsiderR()
 			return BOT_ACTION_DESIRE_HIGH;
 		end		
 		
-		local nAoe = npcBot:FindAoELocation( true, true, npcBot:GetLocation(), 100, 800, 1.67, 0 );
+		local nAoe = bot:FindAoELocation( true, true, bot:GetLocation(), 100, 800, 1.67, 0 );
 		if nAoe.count >= 3
 		then
 			return BOT_ACTION_DESIRE_HIGH;
 		end	
 		
-		local npcTarget = J.GetProperTarget(npcBot);		
+		local npcTarget = J.GetProperTarget(bot);		
 		if J.IsValidHero(npcTarget) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
 			and not J.IsDisabled(true, npcTarget)
-			and GetUnitToUnitDistance(npcTarget,npcBot) <= 400
+			and GetUnitToUnitDistance(npcTarget,bot) <= 400
 			and npcTarget:GetHealth() > 800
 			and nHP > 0.38
 		then
@@ -209,21 +209,21 @@ function X.Consider(nAbility,nDistance)
 	
 	-- Get some of its values
 	local nRadius       = 248;
-	local nCastLocation = J.GetFaceTowardDistanceLocation(npcBot,nDistance);					
+	local nCastLocation = J.GetFaceTowardDistanceLocation(bot,nDistance);					
 	local nCastPoint    = nAbility:GetCastPoint();			    
 	local nDamageType   = DAMAGE_TYPE_MAGICAL;
 	local nSkillLV      = nAbility:GetLevel();
 	local nDamage       = nAbility:GetSpecialValueInt('shadowraze_damage') + talentDamage;
 	local nBonus        = nAbility:GetSpecialValueInt('stack_bonus_damage');
 	local keyWord       = "ranged";
-	local nEnemyHeroes  = npcBot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);
-	local npcTarget     = J.GetProperTarget(npcBot);
+	local nEnemyHeroes  = bot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);
+	local npcTarget     = J.GetProperTarget(bot);
 	
 		
 	if J.IsValidHero(npcTarget)
 		and J.CanCastOnNonMagicImmune(npcTarget)
 		and X.IsUnitNearLoc(npcTarget,nCastLocation,nRadius -20,nCastPoint)
-		and not ( npcBot:GetMana() <= nKeepMana *(1 - nSkillLV/4) )
+		and not ( bot:GetMana() <= nKeepMana *(1 - nSkillLV/4) )
 	then
 		return BOT_ACTION_DESIRE_HIGH;
 	end
@@ -234,7 +234,7 @@ function X.Consider(nAbility,nDistance)
 			if J.IsValidHero(enemy)
 				and J.CanCastOnNonMagicImmune(enemy)
 				and X.IsUnitNearLoc(enemy,nCastLocation,nRadius -30,nCastPoint)
-				and (not ( npcBot:GetMana() <= nKeepMana *(1 - nSkillLV/4) ) 
+				and (not ( bot:GetMana() <= nKeepMana *(1 - nSkillLV/4) ) 
 					 or X.IsUnitCanBeKill(enemy,nDamage,nBonus,nCastPoint))
 			then
 				return BOT_ACTION_DESIRE_HIGH;
@@ -244,7 +244,7 @@ function X.Consider(nAbility,nDistance)
 	
 	if nLV <= 12
 	then
-		local nLaneCreeps = npcBot:GetNearbyLaneCreeps(1000,true);
+		local nLaneCreeps = bot:GetNearbyLaneCreeps(1000,true);
 		local keyCount = 0;
 		for _,creep in pairs(nLaneCreeps)
 		do
@@ -264,10 +264,10 @@ function X.Consider(nAbility,nDistance)
 		end
 	end
 		
-	if not J.IsRetreating(npcBot) 
+	if not J.IsRetreating(bot) 
 	then
-		local nEnemysCreeps = npcBot:GetNearbyCreeps(1200,true);
-		local tableLaneCreeps = npcBot:GetNearbyLaneCreeps(nDistance + nRadius * 1.5,true);
+		local nEnemysCreeps = bot:GetNearbyCreeps(1200,true);
+		local tableLaneCreeps = bot:GetNearbyLaneCreeps(nDistance + nRadius * 1.5,true);
 		local nCanHurtCount = 0;
 		local nCanKillCount = 0;
 		for _,creep in pairs(nEnemysCreeps)
@@ -288,10 +288,10 @@ function X.Consider(nAbility,nDistance)
 		if nLV >= 8 and nEnemyHeroes[1] == nil
 		then
 			if  (nCanHurtCount >= 4 and nMP > 0.6)
-				or (nCanHurtCount >= 3 and npcBot:GetActiveMode() ~= BOT_MODE_LANING)
+				or (nCanHurtCount >= 3 and bot:GetActiveMode() ~= BOT_MODE_LANING)
 				or (nCanKillCount >= 2 and nCanHurtCount == #tableLaneCreeps )
 				or (nCanHurtCount >= 2 and nMP > 0.8 and nLV > 10 and #nEnemysCreeps == 2)
-				or (nCanHurtCount >= 2 and nLV > 24 and #nEnemysCreeps == 2 and J.IsAllowedToSpam(npcBot, 180))
+				or (nCanHurtCount >= 2 and nLV > 24 and #nEnemysCreeps == 2 and J.IsAllowedToSpam(bot, 180))
 			then
 				return BOT_ACTION_DESIRE_HIGH;
 			end
@@ -319,15 +319,15 @@ end
 
 function X.IsUnitNearLoc(nUnit,vLoc,nRange,nDely)
 	
-	if GetUnitToLocationDistance(nUnit,vLoc) > 256
+	if GetUnitToLocationDistance(nUnit,vLoc) > 250
 	then
 		return false;
 	end
 	
 	local nMoveSta = nUnit:GetMovementDirectionStability();
-	if nMoveSta < 0.98 then nRange = nRange - 4; end
-	if nMoveSta < 0.91 then nRange = nRange - 6; end
-	if nMoveSta < 0.81 then nRange = nRange - 10; end
+	if nMoveSta < 0.98 then nRange = nRange - 14; end
+	if nMoveSta < 0.91 then nRange = nRange - 26; end
+	if nMoveSta < 0.81 then nRange = nRange - 30; end
 	
 	local fLoc = J.GetCorrectLoc(nUnit, nDely);	
 	if J.GetLocationToLocationDistance(fLoc,vLoc) < nRange

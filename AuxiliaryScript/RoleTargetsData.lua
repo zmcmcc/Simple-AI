@@ -63,22 +63,21 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 }]]
 
 X["test_hero"] = {
-    'npc_dota_hero_axe',
-    'npc_dota_hero_grimstroke',
     --'npc_dota_hero_tidehunter',
-    'npc_dota_hero_dazzle',
+    --'npc_dota_hero_dazzle',
     --'npc_dota_hero_leshrac'
 }
 
 X["onlyCM_hero"] = {
-    --'npc_dota_hero_abaddon',
-    --'npc_dota_hero_vengefulspirit',
-    --'npc_dota_hero_disruptor',
-    --'npc_dota_hero_shadow_demon',
-    --'npc_dota_hero_grimstroke',
-    --'npc_dota_hero_tidehunter',
-    --'npc_dota_hero_axe',
-    --'npc_dota_hero_dazzle',
+    'npc_dota_hero_abaddon',
+    'npc_dota_hero_vengefulspirit',
+    'npc_dota_hero_disruptor',
+    'npc_dota_hero_shadow_demon',
+    'npc_dota_hero_grimstroke',
+    'npc_dota_hero_tidehunter',
+    'npc_dota_hero_axe',
+    'npc_dota_hero_dazzle',
+    'npc_dota_hero_leshrac',
 }
 
 function X.CounterWeightList(hero) --获取推荐阵容列表

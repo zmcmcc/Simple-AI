@@ -7,13 +7,13 @@
 --- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1627071163
 ----------------------------------------------------------------------------------------------------
 local X = {}
-local npcBot = GetBot()
+local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
-local sTalentList = J.Skill.GetTalentList(npcBot)
-local sAbilityList = J.Skill.GetAbilityList(npcBot)
-local sOutfit = J.Skill.GetOutfitName(npcBot)
+local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
+local sTalentList = J.Skill.GetTalentList(bot)
+local sAbilityList = J.Skill.GetAbilityList(bot)
+local sOutfit = J.Skill.GetOutfitName(bot)
 
 local tTalentTreeList = {
 						['t25'] = {10, 0},
@@ -59,16 +59,16 @@ X['bDeafaultItem'] = true
 
 function X.MinionThink(hMinionUnit)
 
-	if minion.IsValidUnit(hMinionUnit) 
+	if Minion.IsValidUnit(hMinionUnit) 
 	then
-		minion.IllusionThink(hMinionUnit)
+		Minion.IllusionThink(hMinionUnit)
 	end
 
 end
 
-local abilityQ = npcBot:GetAbilityByName( sAbilityList[1] );
-local abilityW = npcBot:GetAbilityByName( sAbilityList[2] );
-local abilityR = npcBot:GetAbilityByName( sAbilityList[6] );
+local abilityQ = bot:GetAbilityByName( sAbilityList[1] );
+local abilityW = bot:GetAbilityByName( sAbilityList[2] );
+local abilityR = bot:GetAbilityByName( sAbilityList[6] );
 
 
 local castQDesire
@@ -82,15 +82,15 @@ function X.SkillsComplement()
 
 	
 	
-	if J.CanNotUseAbility(npcBot) then return end
+	if J.CanNotUseAbility(bot) then return end
 	
 	
 	
 	nKeepMana = 400; 
-	nLV = npcBot:GetLevel();
-	nMP = npcBot:GetMana()/npcBot:GetMaxMana();
-	nHP = npcBot:GetHealth()/npcBot:GetMaxHealth();
-	hEnemyHeroList = npcBot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
+	nLV = bot:GetLevel();
+	nMP = bot:GetMana()/bot:GetMaxMana();
+	nHP = bot:GetHealth()/bot:GetMaxHealth();
+	hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
 	
 	
 	
@@ -100,9 +100,9 @@ function X.SkillsComplement()
 	if ( castRDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 	
-		npcBot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
+		bot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
 		return;
 	end
 	
@@ -110,9 +110,9 @@ function X.SkillsComplement()
 	if ( castWDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 	
-		npcBot:ActionQueue_UseAbility( abilityW )
+		bot:ActionQueue_UseAbility( abilityW )
 		return;
 	
 	end
@@ -121,9 +121,9 @@ function X.SkillsComplement()
 	if ( castQDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(npcBot, false)
+		J.SetQueuePtToINT(bot, false)
 	
-		npcBot:ActionQueue_UseAbility( abilityQ )
+		bot:ActionQueue_UseAbility( abilityQ )
 		return;
 	
 	end
@@ -141,26 +141,28 @@ function X.ConsiderW()
 	local nRadius = abilityW:GetSpecialValueInt( "slow_aoe" );
 	
 	local SadStack = 0;
-	local npcModifier = npcBot:NumModifiers();
+	local npcModifier = bot:NumModifiers();
 	
 	for i = 0, npcModifier 
 	do
-		if npcBot:GetModifierName(i) == "modifier_necrolyte_death_pulse_counter" then
-			SadStack = npcBot:GetModifierStackCount(i);
+		if bot:GetModifierName(i) == "modifier_necrolyte_death_pulse_counter" then
+			SadStack = bot:GetModifierStackCount(i);
 			break;
 		end
 	end
 	
-	if ( SadStack >= 8 or npcBot:GetHealthRegen() > 90) and npcBot:GetHealth() / npcBot:GetMaxHealth() < 0.5 then
+	if ( SadStack >= 8 or bot:GetHealthRegen() > 99) 
+	    and bot:GetHealth() / bot:GetMaxHealth() < 0.5 
+	then
 		return BOT_ACTION_DESIRE_LOW;
 	end
 	
 	
 	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
-	if J.IsRetreating(npcBot)
+	if J.IsRetreating(bot)
 	then
-		local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
-		if npcBot:WasRecentlyDamagedByAnyHero( 2.0 ) and #tableNearbyEnemyHeroes > 0  
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
+		if bot:WasRecentlyDamagedByAnyHero( 2.0 ) and #tableNearbyEnemyHeroes > 0  
 		then
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
@@ -168,17 +170,19 @@ function X.ConsiderW()
 
 	
 	-- If we're going after someone
-	if J.IsGoingOnSomeone(npcBot)
+	if J.IsGoingOnSomeone(bot)
 	then
-		local npcTarget = npcBot:GetTarget();
+		local npcTarget = bot:GetTarget();
 		if J.IsValidHero(npcTarget) 
 		   and J.IsRunning(npcTarget)
+		   and J.IsRunning(bot)
+		   and bot:GetAttackTarget() == nil
 		   and J.CanCastOnNonMagicImmune(npcTarget)
-		   and J.IsInRange(npcTarget, npcBot, nRadius - 50)
-		   and ( J.GetHPR(npcBot) < 0.25 
-		         or ( not J.IsInRange(npcTarget, npcBot, 350)
-					  and npcBot:IsFacingLocation(npcTarget:GetLocation(),30) 
-				      and not npcTarget:IsFacingLocation(npcBot:GetLocation(),90) ))
+		   and J.IsInRange(npcTarget, bot, nRadius - 30)
+		   and ( J.GetHPR(bot) < 0.25 
+		         or ( not J.IsInRange(npcTarget, bot, 430)
+					  and bot:IsFacingLocation(npcTarget:GetLocation(),30) 
+				      and not npcTarget:IsFacingLocation(bot:GetLocation(),120) ))
 		then
 			local targetAllies = npcTarget:GetNearbyHeroes(1000, false, BOT_MODE_NONE);
 			if #targetAllies == 1 then 
@@ -195,8 +199,8 @@ function X.ConsiderQ()
 
 	-- Make sure it's castable
 	if  not abilityQ:IsFullyCastable() 
-		or npcBot:IsInvisible()
-		or ( J.GetHPR(npcBot) > 0.62 and abilityR:GetCooldownTimeRemaining() < 6 and npcBot:GetMana() < abilityR:GetManaCost() )
+		or bot:IsInvisible()
+		or ( J.GetHPR(bot) > 0.62 and abilityR:GetCooldownTimeRemaining() < 6 and bot:GetMana() < abilityR:GetManaCost() )
 	then 
 		return BOT_ACTION_DESIRE_NONE;
 	end
@@ -213,13 +217,13 @@ function X.ConsiderQ()
 	--------------------------------------
 
 	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
-	if J.IsRetreating(npcBot) or J.GetHPR(npcBot) < 0.5
+	if J.IsRetreating(bot) or J.GetHPR(bot) < 0.5
 	then
-		local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 2*nRadius, true, BOT_MODE_NONE );
-		if ( npcBot:WasRecentlyDamagedByAnyHero( 2.0 ) and #tableNearbyEnemyHeroes > 0 )
-			or (J.GetHPR(npcBot) < 0.75 and npcBot:DistanceFromFountain() < 400)
-			or J.GetHPR(npcBot) < J.GetMPR(npcBot)
-			or J.GetHPR(npcBot) < 0.25
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 2*nRadius, true, BOT_MODE_NONE );
+		if ( bot:WasRecentlyDamagedByAnyHero( 2.0 ) and #tableNearbyEnemyHeroes > 0 )
+			or (J.GetHPR(bot) < 0.75 and bot:DistanceFromFountain() < 400)
+			or J.GetHPR(bot) < J.GetMPR(bot)
+			or J.GetHPR(bot) < 0.25
 		then
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
@@ -227,7 +231,7 @@ function X.ConsiderQ()
 	
 	if abilityQ:GetLevel() >= 3
 	then
-		local tableNearbyEnemyCreeps = npcBot:GetNearbyLaneCreeps( nRadius, true );
+		local tableNearbyEnemyCreeps = bot:GetNearbyLaneCreeps( nRadius, true );
 		local nCanHurtCount = 0;
 		local nCanKillCount = 0;
 		for _,creep in pairs(tableNearbyEnemyCreeps)
@@ -244,21 +248,21 @@ function X.ConsiderQ()
 		end
 		
 		if  nCanKillCount >= 2
-			or (nCanKillCount >= 1 and J.GetMPR(npcBot) > 0.9)
-			or (nCanHurtCount >= 3 and npcBot:GetActiveMode() ~= BOT_MODE_LANING)
-			or (nCanHurtCount >= 3 and nCanKillCount >= 1 and J.IsAllowedToSpam(npcBot, 190))
-			or (nCanHurtCount >= 3 and J.GetMPR(npcBot) > 0.8 and npcBot:GetLevel() > 10 and #tableNearbyEnemyCreeps == 3)
-			or (nCanHurtCount >= 2 and nCanKillCount >= 1 and npcBot:GetLevel() > 24 and #tableNearbyEnemyCreeps == 2)
+			or (nCanKillCount >= 1 and J.GetMPR(bot) > 0.9)
+			or (nCanHurtCount >= 3 and bot:GetActiveMode() ~= BOT_MODE_LANING)
+			or (nCanHurtCount >= 3 and nCanKillCount >= 1 and J.IsAllowedToSpam(bot, 190))
+			or (nCanHurtCount >= 3 and J.GetMPR(bot) > 0.8 and bot:GetLevel() > 10 and #tableNearbyEnemyCreeps == 3)
+			or (nCanHurtCount >= 2 and nCanKillCount >= 1 and bot:GetLevel() > 24 and #tableNearbyEnemyCreeps == 2)
 		then
 			return BOT_ACTION_DESIRE_HIGH;
 		end
 		
 	end
 
-	if J.IsInTeamFight(npcBot, 1200)
+	if J.IsInTeamFight(bot, 1200)
 	then
-		local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
-		local tableNearbyAlliesHeroes = npcBot:GetNearbyHeroes( nRadius, false, BOT_MODE_NONE );
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
+		local tableNearbyAlliesHeroes = bot:GetNearbyHeroes( nRadius, false, BOT_MODE_NONE );
 		local lowHPAllies = 0;
 		for _,ally in pairs(tableNearbyAlliesHeroes)
 		do
@@ -277,7 +281,7 @@ function X.ConsiderQ()
 	end
 	
 	-- If we can heal 3+ allyHero
-	local tableNearbyAlliesHeroes = npcBot:GetNearbyHeroes( nRadius, false, BOT_MODE_NONE );
+	local tableNearbyAlliesHeroes = bot:GetNearbyHeroes( nRadius, false, BOT_MODE_NONE );
 	if #tableNearbyAlliesHeroes >= 2
 	then
 		local needHPCount = 0;
@@ -309,11 +313,11 @@ function X.ConsiderQ()
 	end
 	
 	-- If we're going after someone
-	if J.IsGoingOnSomeone(npcBot)
+	if J.IsGoingOnSomeone(bot)
 	then
-		local npcTarget = J.GetProperTarget(npcBot);
+		local npcTarget = J.GetProperTarget(bot);
 
-		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.IsInRange(npcTarget, npcBot, nRadius)
+		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nRadius)
 		then
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
@@ -337,31 +341,31 @@ function X.ConsiderR()
 	local nDamagePerHealth = abilityR:GetSpecialValueFloat("damage_per_health");
 
 	-- If we're going after someone
-	if J.IsGoingOnSomeone(npcBot)
+	if J.IsGoingOnSomeone(bot)
 	then
-		local npcTarget = J.GetProperTarget(npcBot);
+		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
 		   and not J.IsHaveAegis(npcTarget)
 		   and not npcTarget:HasModifier("modifier_arc_warden_tempest_double")
-		   and J.IsInRange(npcTarget, npcBot, nCastRange + 200)
+		   and J.IsInRange(npcTarget, bot, nCastRange + 200)
 		then
-			local EstDamage = X.GetEstDamage(npcBot,npcTarget,nDamagePerHealth);
+			local EstDamage = X.GetEstDamage(bot,npcTarget,nDamagePerHealth);
 			
 			if J.CanKillTarget(npcTarget, EstDamage, DAMAGE_TYPE_MAGICAL ) 
 			   or ( npcTarget:IsChanneling() and npcTarget:HasModifier("modifier_teleporting") )
 			then
-				X.ReportDetails(npcBot,npcTarget,EstDamage,nDamagePerHealth)
+				X.ReportDetails(bot,npcTarget,EstDamage,nDamagePerHealth)
 				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			end
 		end
 	end	
 
 	-- If we're in a teamfight, use it on the scariest enemy
-	if J.IsInTeamFight(npcBot, 1200)
+	if J.IsInTeamFight(bot, 1200)
 	then
 		local npcToKill = nil;
-		local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
 			if J.IsValidHero(npcEnemy)
@@ -369,10 +373,10 @@ function X.ConsiderR()
 			   and not J.IsHaveAegis(npcEnemy) 
 			   and not npcEnemy:HasModifier("modifier_arc_warden_tempest_double")
 			then
-				local EstDamage = X.GetEstDamage(npcBot,npcEnemy,nDamagePerHealth);
+				local EstDamage = X.GetEstDamage(bot,npcEnemy,nDamagePerHealth);
 				if J.CanKillTarget(npcEnemy, EstDamage, DAMAGE_TYPE_MAGICAL )
 				then
-					X.ReportDetails(npcBot,npcEnemy,EstDamage,nDamagePerHealth)
+					X.ReportDetails(bot,npcEnemy,EstDamage,nDamagePerHealth)
 					npcToKill = npcEnemy;
 					break;
 				end
@@ -384,17 +388,17 @@ function X.ConsiderR()
 		end
 	end
 	
-	local tableNearbyEnemyHeroes = npcBot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
+	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
 	for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 	do
 		if J.IsValidHero(npcEnemy) 
 		   and not J.IsHaveAegis(npcEnemy) 
 		   and not npcEnemy:HasModifier("modifier_arc_warden_tempest_double")
 		then
-			local EstDamage = X.GetEstDamage(npcBot,npcEnemy,nDamagePerHealth);
+			local EstDamage = X.GetEstDamage(bot,npcEnemy,nDamagePerHealth);
 			if J.CanCastOnNonMagicImmune(npcEnemy) and J.CanKillTarget(npcEnemy, EstDamage, DAMAGE_TYPE_MAGICAL )
 			then
-				X.ReportDetails(npcBot,npcEnemy,EstDamage,nDamagePerHealth)
+				X.ReportDetails(bot,npcEnemy,EstDamage,nDamagePerHealth)
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
 		end
@@ -404,7 +408,7 @@ function X.ConsiderR()
 end
 
 
-function X.GetEstDamage(npcBot, npcTarget, nDamagePerHealth)
+function X.GetEstDamage(bot, npcTarget, nDamagePerHealth)
 
 	local targetMaxHealth = npcTarget:GetMaxHealth();
 	
@@ -413,7 +417,7 @@ function X.GetEstDamage(npcBot, npcTarget, nDamagePerHealth)
 		return targetMaxHealth * 0.3;
 	end
 	
-	local AroundTargetAllyCount = J.GetAroundTargetAllyHeroCount(npcTarget, 650, npcBot);
+	local AroundTargetAllyCount = J.GetAroundTargetAllyHeroCount(npcTarget, 650, bot);
 	
 	local MagicResistReduce = 1 - npcTarget:GetMagicResist();
 	if MagicResistReduce  < 0.1 then  MagicResistReduce  = 0.1 end;
@@ -421,11 +425,11 @@ function X.GetEstDamage(npcBot, npcTarget, nDamagePerHealth)
 	
 	local EstDamage = ( targetMaxHealth - npcTarget:GetHealth() - HealthBack ) * nDamagePerHealth - HealthBack/MagicResistReduce;	
 	
-	if npcBot:GetLevel() >= 9 then EstDamage = EstDamage + targetMaxHealth * 0.026; end
-	if npcBot:GetLevel() >= 12 then EstDamage = EstDamage + targetMaxHealth * 0.032; end
-	if npcBot:GetLevel() >= 18 then EstDamage = EstDamage + targetMaxHealth * 0.016; end
+	if bot:GetLevel() >= 9 then EstDamage = EstDamage + targetMaxHealth * 0.026; end
+	if bot:GetLevel() >= 12 then EstDamage = EstDamage + targetMaxHealth * 0.032; end
+	if bot:GetLevel() >= 18 then EstDamage = EstDamage + targetMaxHealth * 0.016; end
 	
-	if npcBot:HasScepter() and J.GetHPR(npcBot) < 0.2 then EstDamage = EstDamage + targetMaxHealth * 0.3; end
+	if bot:HasScepter() and J.GetHPR(bot) < 0.2 then EstDamage = EstDamage + targetMaxHealth * 0.3; end
 		
 	if AroundTargetAllyCount >= 2 then EstDamage = EstDamage + targetMaxHealth * 0.08 *(AroundTargetAllyCount - 1); end
 

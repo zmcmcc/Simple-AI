@@ -190,7 +190,7 @@ function Think()
 		then
 			hItemWard = bot:GetItemInSlot(nWardSolt);
 		end		
-		-- 开具丢眼
+	
 		if hItemWard ~= nil 
 		   and DotaTime() < 0
 		   and not IsPlayerBot(GetTeamPlayers(GetTeam())[1])
@@ -620,6 +620,4 @@ function X.GetWaitRuneLocation(nRune)
 	return vNearestLoc;
 
 end
-
-
 -- dota2jmz@163.com QQ:2462331592
