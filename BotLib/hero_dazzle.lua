@@ -214,7 +214,7 @@ function X.ConsiderE()
 			Enemys = Enemys + 2
 		end
 
-		if allyHP <= 0.15
+		if allyHP <= 0.15 and nLV > 14
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcAlly;
 		end
@@ -223,9 +223,9 @@ function X.ConsiderE()
 	if targetally ~= nil and nMP > 0.15 then
 		if Enemys > 7 then
 			return BOT_ACTION_DESIRE_VERYHIGH, targetally;
-		elseif Enemys > 5 and nLV >= 3 then
+		elseif Enemys > 5 and nLV >= 6 then
 			return BOT_ACTION_DESIRE_HIGH, targetally;
-		elseif Enemys > 3 and nMP > 0.25 and nLV >= 6 then
+		elseif Enemys > 3 and nMP > 0.3 and nLV >= 10 then
 			return BOT_ACTION_DESIRE_MODERATE, targetally;
 		end
 	end
