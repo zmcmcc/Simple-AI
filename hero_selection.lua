@@ -425,7 +425,7 @@ end
 
 function X.IsHumanNotReady(team)
 	
-	if GameTime() > 20 then return false end
+	if GameTime() > 40 then return false end
 
 	local humanCount,readyCount = 0, 0;
 	local IDs = GetTeamPlayers(team);

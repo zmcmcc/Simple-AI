@@ -197,7 +197,7 @@ function X.ConsiderQ()
 	
 	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius - 80, true, BOT_MODE_NONE );
 
-	if J.IsRetreating(npcBot)
+	if J.IsRetreating(bot)
 	then
 		local tableEnemyHeroes = bot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
 		for _,npcEnemy in pairs( tableEnemyHeroes )

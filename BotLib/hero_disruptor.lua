@@ -209,14 +209,16 @@ function X.ConsiderQ()
 	then
 		for _,npcEnemy in pairs( enemies )
 		do
-			local enemyCount = J.GetEnemyUnitCountAroundTarget(npcEnemy, 600)
 			if  J.IsValid(npcEnemy)
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
 				and not J.IsDisabled(true, npcEnemy)
-				and enemyCount ~= nil
-				and enemyCount >= 4
 			then
-				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+				local enemyCount = J.GetEnemyUnitCountAroundTarget(npcEnemy, 600)
+				if enemyCount ~= nil
+				   and enemyCount >= 4
+				then
+					return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+				end
 			end
 		end
 	end

@@ -66,7 +66,7 @@ local abilityR = bot:GetAbilityByName( sAbilityList[6] );
 local castQDesire, castQLocation
 local castWDesire, castWLocation
 local castEDesire
-local castRDesire, castRTarget
+local castRDesire, moveRLocation, castRTarget
 local castBlinkDesire, itemBlink, castBlinkLocation
 local castForceDesire, itemForce, castForceTarget
 
@@ -116,6 +116,8 @@ function X.SkillsComplement()
 			bot:ActionQueue_MoveDirectly( moveRLocation )
 		end
 		return;
+	elseif moveRLocation ~= nil then
+		bot:ActionQueue_MoveDirectly( moveRLocation )
 	end
 	
 	
@@ -161,7 +163,7 @@ function X.ConsiderQ()
 	-- Get some of its values
 	local nRadius = abilityQ:GetSpecialValueInt( "radius" );
 	local nCastRange = abilityQ:GetCastRange();
-	local nCastPoint = abilityQ:GetCastPoint( );
+	local nCastPoint = abilityQ:GetCastPoint();
 
 	--------------------------------------
 	-- Mode based usage
@@ -323,14 +325,20 @@ end
 
 function X.ConsiderR()
 
+	local AllyLocation = J.GetEscapeLoc()
+
+	if bot:HasModifier('modifier_batrider_flaming_lasso_self') then
+		return BOT_ACTION_DESIRE_NONE, AllyLocation, 0;
+	end
+
 	if not abilityR:IsFullyCastable() then return 0 end
 
 	-- Get some of its values
 	local nCastRange = abilityR:GetCastRange();
 
 	local tableAllyHeroes = bot:GetNearbyHeroes( 1600, false, BOT_MODE_NONE );
-	local AllyLocation = nil
-	if tableAllyHeroes ~= nil and #tableAllyHeroes >= 2 and tableAllyHeroes[1] ~= nil then AllyLocation = tableAllyHeroes[1]:GetLocation()
+	
+	if tableAllyHeroes ~= nil and #tableAllyHeroes >= 2 and tableAllyHeroes[1] ~= nil then AllyLocation = tableAllyHeroes[1]:GetLocation() end
 	
 	-- If we're going after someone
 	if J.IsGoingOnSomeone(bot)
@@ -388,7 +396,7 @@ function X.ConsiderB()
 		end
 	end
 	
-	if J.IsGoingOnSomeone(bot) and blink ~= nil and blink:IsFullyCastable() and abilityFL:IsFullyCastable()
+	if J.IsGoingOnSomeone(bot) and blink ~= nil and blink:IsFullyCastable() and abilityE:IsFullyCastable()
 	then
 		local npcTarget = bot:GetTarget();
 		if ( J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and not J.IsInRange(npcTarget, bot, 600) and J.IsInRange(npcTarget, bot, 1000) ) 

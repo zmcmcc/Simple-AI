@@ -3319,7 +3319,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_medusa",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_dark_seer"] = {
   ["hero_name"] = "dark_seer",
   ["proposal"] = {
@@ -3386,7 +3386,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_ancient_apparition"] = {
   ["hero_name"] = "ancient_apparition",
   ["proposal"] = {

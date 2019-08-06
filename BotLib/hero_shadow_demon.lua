@@ -62,12 +62,14 @@ end
 local abilityQ = bot:GetAbilityByName( sAbilityList[1] )
 local abilityW = bot:GetAbilityByName( sAbilityList[2] )
 local abilityE = bot:GetAbilityByName( sAbilityList[3] )
+local abilityE2 = bot:GetAbilityByName( sAbilityList[4] )
 local abilityR = bot:GetAbilityByName( sAbilityList[6] )
 
 
 local castQDesire, castQTarget
 local castWDesire, castWLocation
 local castEDesire, castELocation
+local castE2Desire
 local castRDesire, castRTarget
 
 
@@ -101,6 +103,15 @@ function X.SkillsComplement()
 	
 		bot:ActionQueue_UseAbilityOnLocation( abilityE, castELocation )
 		return;
+	end
+
+	castE2Desire = X.ConsiderE2();
+	if ( castE2Desire > 0 ) 
+	then
+
+		bot:ActionQueue_UseAbility( abilityE2 )
+		return;
+	
 	end
 	
 	castRDesire, castRTarget = X.ConsiderR();
@@ -353,6 +364,41 @@ function X.ConsiderR()
 	
 	return BOT_ACTION_DESIRE_NONE, 0;
 
+end
+
+function X.ConsiderE2()
+
+	if not abilityE2:IsFullyCastable() then return 0 end
+
+	local nSkillLV = abilityE:GetLevel()
+
+	local gEnemies = GetUnitList(UNIT_LIST_ENEMY_HEROES);
+	for _,npcEnemy in pairs( gEnemies )
+	do
+		local nStack = 0
+		local nPoisonDamage = 0
+		local modIdx = npcEnemy:GetModifierByName("modifier_shadow_demon_shadow_poison");
+		if modIdx > -1 then
+			nStack = npcEnemy:GetModifierStackCount(modIdx);
+		end
+
+		if nStack <= 5 then
+			nPoisonDamage = (5 + (nSkillLV * 15)) * 2^(nStack - 1)
+		else
+			nPoisonDamage = ((5 + (nSkillLV * 15)) * 16) + (50 * (nStack - 5))
+		end
+
+		if npcEnemy:GetHealth() < nPoisonDamage then
+			return BOT_ACTION_DESIRE_HIGH
+		end
+
+	end
+
+	if nHP < 0.05 then
+		return BOT_ACTION_DESIRE_HIGH
+	end
+
+	return BOT_ACTION_DESIRE_NONE
 end
 
 
