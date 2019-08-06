@@ -604,6 +604,8 @@ ItemModule['item_warlock_outfit']          = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_jakiro_outfit']           = { 'item_tango', 'item_flask', 'item_double_branches', 'item_branches', 'item_magic_stick', 'item_crown', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
+ItemModule['item_batrider_outfit']         = { 'item_tango', 'item_flask', 'item_magic_wand', 'item_tranquil_boots', 'item_blink' , "item_force_staff", "item_black_king_bar", "item_cyclone", "item_ultimate_scepter", "item_hurricane_pike", "item_octarine_core" }
+
 ItemModule['item_disruptor_outfit']        = { 'item_tango', 'item_clarity' , 'item_clarity' , 'item_enchanted_mango', 'item_enchanted_mango', 'item_arcane_boots', 'item_glimmer_cape' , 'item_cyclone' , 'item_aether_lens' , 'item_ultimate_scepter' , 'item_spirit_vessel' , 'item_sheepstick' }
 
 ItemModule['item_shadow_demon_outfit']     = { 'item_tango', 'item_enchanted_mango', 'item_double_branches', 'item_clarity', 'item_tranquil_boots', 'item_force_staff', 'item_glimmer_cape', 'item_rod_of_atos' , 'item_ultimate_scepter' , 'item_pipe' , 'item_heavens_halberd' }
