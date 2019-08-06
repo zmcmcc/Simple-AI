@@ -34,7 +34,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_grimstroke",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_rubick",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_sven"] = {
   ["hero_name"] = "sven",
   ["proposal"] = {
@@ -65,7 +65,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_lone_druid",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_tiny"] = {
   ["hero_name"] = "tiny",
   ["proposal"] = {
@@ -92,7 +92,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_juggernaut",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_kunkka"] = {
   ["hero_name"] = "kunkka",
   ["proposal"] = {
@@ -119,7 +119,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_keeper_of_the_light",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_obsidian_destroyer",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_beastmaster"] = {
   ["hero_name"] = "beastmaster",
   ["proposal"] = {
@@ -154,7 +154,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_kunkka",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_dragon_knight"] = {
   ["hero_name"] = "dragon_knight",
   ["proposal"] = {
@@ -191,7 +191,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_doom",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_ancient_apparition",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_rattletrap"] = {
   ["hero_name"] = "rattletrap",
   ["proposal"] = {
@@ -226,7 +226,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_arc_warden",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_omniknight"] = {
   ["hero_name"] = "omniknight",
   ["proposal"] = {
@@ -258,7 +258,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_shredder",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_weaver",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_huskar"] = {
   ["hero_name"] = "huskar",
   ["proposal"] = {
@@ -285,7 +285,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_phantom_assassin",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_alchemist"] = {
   ["hero_name"] = "alchemist",
   ["proposal"] = {
@@ -312,7 +312,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_life_stealer",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_leshrac",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_brewmaster"] = {
   ["hero_name"] = "brewmaster",
   ["proposal"] = {
@@ -342,7 +342,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_faceless_void",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_treant"] = {
   ["hero_name"] = "treant",
   ["proposal"] = {
@@ -369,7 +369,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_winter_wyvern",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_wisp"] = {
   ["hero_name"] = "wisp",
   ["proposal"] = {
@@ -400,7 +400,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_terrorblade",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_medusa",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_centaur"] = {
   ["hero_name"] = "centaur",
   ["proposal"] = {
@@ -432,7 +432,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_death_prophet",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bane",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_shredder"] = {
   ["hero_name"] = "shredder",
   ["proposal"] = {
@@ -459,7 +459,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_elder_titan",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_pugna",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_bristleback"] = {
   ["hero_name"] = "bristleback",
   ["proposal"] = {
@@ -488,7 +488,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_dazzle",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_furion",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_tusk"] = {
   ["hero_name"] = "tusk",
   ["proposal"] = {
@@ -517,7 +517,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_phoenix",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_elder_titan"] = {
   ["hero_name"] = "elder_titan",
   ["proposal"] = {
@@ -549,7 +549,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_venomancer",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_juggernaut",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_legion_commander"] = {
   ["hero_name"] = "legion_commander",
   ["proposal"] = {
@@ -576,7 +576,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_spirit_breaker",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_earth_spirit"] = {
   ["hero_name"] = "earth_spirit",
   ["proposal"] = {
@@ -603,7 +603,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_life_stealer",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bane",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_phoenix"] = {
   ["hero_name"] = "phoenix",
   ["proposal"] = {
@@ -637,7 +637,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_arc_warden",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_mars"] = {
   ["hero_name"] = "mars",
   ["proposal"] = {
@@ -664,7 +664,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_riki",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_earth_spirit",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_antimage"] = {
   ["hero_name"] = "antimage",
   ["proposal"] = {
@@ -697,7 +697,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_axe",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_riki",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_drow_ranger"] = {
   ["hero_name"] = "drow_ranger",
   ["proposal"] = {
@@ -728,7 +728,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_rattletrap",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_juggernaut"] = {
   ["hero_name"] = "juggernaut",
   ["proposal"] = {
@@ -755,7 +755,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_shredder",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_puck",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_mirana"] = {
   ["hero_name"] = "mirana",
   ["proposal"] = {
@@ -791,7 +791,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_axe",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_spectre",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_morphling"] = {
   ["hero_name"] = "morphling",
   ["proposal"] = {
@@ -818,7 +818,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_ursa",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_centaur_warrunner",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_phantom_lancer"] = {
   ["hero_name"] = "phantom_lancer",
   ["proposal"] = {
@@ -852,7 +852,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_leshrac",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_vengefulspirit"] = {
   ["hero_name"] = "vengefulspirit",
   ["proposal"] = {
@@ -885,7 +885,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_mars",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_phoenix",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "general", ["bot"] = true,},
 ["npc_dota_hero_riki"] = {
   ["hero_name"] = "riki",
   ["proposal"] = {
@@ -916,7 +916,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_winter_wyvern",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bristleback",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_sniper"] = {
   ["hero_name"] = "sniper",
   ["proposal"] = {
@@ -951,7 +951,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_mars",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_templar_assassin"] = {
   ["hero_name"] = "templar_assassin",
   ["proposal"] = {
@@ -985,7 +985,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_luna"] = {
   ["hero_name"] = "luna",
   ["proposal"] = {
@@ -1012,7 +1012,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_pudge",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_bounty_hunter"] = {
   ["hero_name"] = "bounty_hunter",
   ["proposal"] = {
@@ -1039,7 +1039,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_storm_spirit",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_queenofpain",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_ursa"] = {
   ["hero_name"] = "ursa",
   ["proposal"] = {
@@ -1069,7 +1069,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_rattletrap",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_gyrocopter"] = {
   ["hero_name"] = "gyrocopter",
   ["proposal"] = {
@@ -1101,7 +1101,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_zuus",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_pudge",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_lone_druid"] = {
   ["hero_name"] = "lone_druid",
   ["proposal"] = {
@@ -1128,7 +1128,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_slardar",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_naga_siren"] = {
   ["hero_name"] = "naga_siren",
   ["proposal"] = {
@@ -1162,7 +1162,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_zuus",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_axe",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_troll_warlord"] = {
   ["hero_name"] = "troll_warlord",
   ["proposal"] = {
@@ -1196,7 +1196,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_ogre_magi",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_jakiro",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_ember_spirit"] = {
   ["hero_name"] = "ember_spirit",
   ["proposal"] = {
@@ -1227,7 +1227,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_dragon_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_monkey_king"] = {
   ["hero_name"] = "monkey_king",
   ["proposal"] = {
@@ -1260,7 +1260,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_storm_spirit",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_skywrath_mage",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_pangolier"] = {
   ["hero_name"] = "pangolier",
   ["proposal"] = {
@@ -1287,7 +1287,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_enchantress",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_drow_ranger",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_crystal_maiden"] = {
   ["hero_name"] = "crystal_maiden",
   ["proposal"] = {
@@ -1319,7 +1319,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_bristleback",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_juggernaut",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_puck"] = {
   ["hero_name"] = "puck",
   ["proposal"] = {
@@ -1352,7 +1352,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_storm_spirit"] = {
   ["hero_name"] = "storm_spirit",
   ["proposal"] = {
@@ -1382,7 +1382,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_puck",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_windrunner"] = {
   ["hero_name"] = "windrunner",
   ["proposal"] = {
@@ -1413,7 +1413,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_shadow_demon",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_ember_spirit",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_zuus"] = {
   ["hero_name"] = "zuus",
   ["proposal"] = {
@@ -1446,7 +1446,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_earth_spirit",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_lina"] = {
   ["hero_name"] = "lina",
   ["proposal"] = {
@@ -1473,7 +1473,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_pugna",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_shadow_shaman"] = {
   ["hero_name"] = "shadow_shaman",
   ["proposal"] = {
@@ -1506,7 +1506,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_pugna",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_arc_warden",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_tinker"] = {
   ["hero_name"] = "tinker",
   ["proposal"] = {
@@ -1533,7 +1533,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_arc_warden",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_furion"] = {
   ["hero_name"] = "furion",
   ["proposal"] = {
@@ -1564,7 +1564,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_wraith_king",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_lycan",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_enchantress"] = {
   ["hero_name"] = "enchantress",
   ["proposal"] = {
@@ -1595,7 +1595,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_furion",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bristleback",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_jakiro"] = {
   ["hero_name"] = "jakiro",
   ["proposal"] = {
@@ -1622,7 +1622,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_juggernaut",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_oracle",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_chen"] = {
   ["hero_name"] = "chen",
   ["proposal"] = {
@@ -1649,7 +1649,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_slardar",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_silencer"] = {
   ["hero_name"] = "silencer",
   ["proposal"] = {
@@ -1680,7 +1680,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_medusa",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_ogre_magi"] = {
   ["hero_name"] = "ogre_magi",
   ["proposal"] = {
@@ -1711,7 +1711,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_earth_spirit",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_rubick"] = {
   ["hero_name"] = "rubick",
   ["proposal"] = {
@@ -1738,7 +1738,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_gyrocopter",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_disruptor"] = {
   ["hero_name"] = "disruptor",
   ["proposal"] = {
@@ -1770,7 +1770,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "general", ["bot"] = true,},
 ["npc_dota_hero_keeper_of_the_light"] = {
   ["hero_name"] = "keeper_of_the_light",
   ["proposal"] = {
@@ -1802,7 +1802,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_obsidian_destroyer",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_storm_spirit",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_skywrath_mage"] = {
   ["hero_name"] = "skywrath_mage",
   ["proposal"] = {
@@ -1837,7 +1837,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_oracle"] = {
   ["hero_name"] = "oracle",
   ["proposal"] = {
@@ -1867,7 +1867,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_tusk",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_techies"] = {
   ["hero_name"] = "techies",
   ["proposal"] = {
@@ -1894,7 +1894,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_spectre",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_dark_willow"] = {
   ["hero_name"] = "dark_willow",
   ["proposal"] = {
@@ -1926,7 +1926,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_oracle",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_axe"] = {
   ["hero_name"] = "axe",
   ["proposal"] = {
@@ -1959,7 +1959,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_earth_spirit",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "general", ["bot"] = true,},
 ["npc_dota_hero_pudge"] = {
   ["hero_name"] = "pudge",
   ["proposal"] = {
@@ -1992,7 +1992,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_puck",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_sand_king"] = {
   ["hero_name"] = "sand_king",
   ["proposal"] = {
@@ -2025,7 +2025,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_life_stealer",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_slardar"] = {
   ["hero_name"] = "slardar",
   ["proposal"] = {
@@ -2056,7 +2056,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_windranger",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_phantom_assassin",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_tidehunter"] = {
   ["hero_name"] = "tidehunter",
   ["proposal"] = {
@@ -2086,7 +2086,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_lone_druid",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "general", ["bot"] = true,},
 ["npc_dota_hero_skeleton_king"] = {
   ["hero_name"] = "skeleton_king",
   ["proposal"] = {
@@ -2119,7 +2119,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_alchemist",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_life_stealer"] = {
   ["hero_name"] = "life_stealer",
   ["proposal"] = {
@@ -2146,7 +2146,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_windranger",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_night_stalker"] = {
   ["hero_name"] = "night_stalker",
   ["proposal"] = {
@@ -2178,7 +2178,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_bounty_hunter",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_troll_warlord",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_doom_bringer"] = {
   ["hero_name"] = "doom_bringer",
   ["proposal"] = {
@@ -2209,7 +2209,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_arc_warden",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_spirit_breaker"] = {
   ["hero_name"] = "spirit_breaker",
   ["proposal"] = {
@@ -2243,7 +2243,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_winter_wyvern",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_mars",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_lycan"] = {
   ["hero_name"] = "lycan",
   ["proposal"] = {
@@ -2273,7 +2273,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_chaos_knight"] = {
   ["hero_name"] = "chaos_knight",
   ["proposal"] = {
@@ -2311,7 +2311,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_sand_king",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_undying"] = {
   ["hero_name"] = "undying",
   ["proposal"] = {
@@ -2342,7 +2342,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_magnataur"] = {
   ["hero_name"] = "magnataur",
   ["proposal"] = {
@@ -2369,7 +2369,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_medusa",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_faceless_void",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_abaddon"] = {
   ["hero_name"] = "abaddon",
   ["proposal"] = {
@@ -2407,7 +2407,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_ancient_apparition",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "excellent", ["bot"] = true,},
 ["npc_dota_hero_abyssal_underlord"] = {
   ["hero_name"] = "abyssal_underlord",
   ["proposal"] = {
@@ -2434,7 +2434,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_rubick",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_bloodseeker"] = {
   ["hero_name"] = "bloodseeker",
   ["proposal"] = {
@@ -2465,7 +2465,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_tusk",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_zuus",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_nevermore"] = {
   ["hero_name"] = "nevermore",
   ["proposal"] = {
@@ -2492,7 +2492,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_tiny",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_techies",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_razor"] = {
   ["hero_name"] = "razor",
   ["proposal"] = {
@@ -2521,7 +2521,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_elder_titan",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_venomancer"] = {
   ["hero_name"] = "venomancer",
   ["proposal"] = {
@@ -2548,7 +2548,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_treant",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_terrorblade",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_faceless_void"] = {
   ["hero_name"] = "faceless_void",
   ["proposal"] = {
@@ -2581,7 +2581,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_enchantress",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_phantom_assassin"] = {
   ["hero_name"] = "phantom_assassin",
   ["proposal"] = {
@@ -2615,7 +2615,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_queenofpain",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_earth_spirit",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_viper"] = {
   ["hero_name"] = "viper",
   ["proposal"] = {
@@ -2642,7 +2642,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_life_stealer",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_rubick",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_clinkz"] = {
   ["hero_name"] = "clinkz",
   ["proposal"] = {
@@ -2669,7 +2669,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_phantom_assassin",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abaddon",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_broodmother"] = {
   ["hero_name"] = "broodmother",
   ["proposal"] = {
@@ -2700,7 +2700,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_mars",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_dragon_knight",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_weaver"] = {
   ["hero_name"] = "weaver",
   ["proposal"] = {
@@ -2727,7 +2727,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_puck",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_spectre"] = {
   ["hero_name"] = "spectre",
   ["proposal"] = {
@@ -2754,7 +2754,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_warlock",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_meepo"] = {
   ["hero_name"] = "meepo",
   ["proposal"] = {
@@ -2788,7 +2788,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_leshrac",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sand_king",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_nyx_assassin"] = {
   ["hero_name"] = "nyx_assassin",
   ["proposal"] = {
@@ -2824,7 +2824,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_slark"] = {
   ["hero_name"] = "slark",
   ["proposal"] = {
@@ -2855,7 +2855,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_medusa"] = {
   ["hero_name"] = "medusa",
   ["proposal"] = {
@@ -2882,7 +2882,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_monkey_king",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_invoker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_terrorblade"] = {
   ["hero_name"] = "terrorblade",
   ["proposal"] = {
@@ -2912,7 +2912,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_phoenix",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_juggernaut",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_arc_warden"] = {
   ["hero_name"] = "arc_warden",
   ["proposal"] = {
@@ -2944,7 +2944,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_bane"] = {
   ["hero_name"] = "bane",
   ["proposal"] = {
@@ -2981,7 +2981,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_phantom_lancer",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_lich"] = {
   ["hero_name"] = "lich",
   ["proposal"] = {
@@ -3013,7 +3013,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_jakiro",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_lion"] = {
   ["hero_name"] = "lion",
   ["proposal"] = {
@@ -3046,7 +3046,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_pugna",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_medusa",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_witch_doctor"] = {
   ["hero_name"] = "witch_doctor",
   ["proposal"] = {
@@ -3080,7 +3080,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_enigma"] = {
   ["hero_name"] = "enigma",
   ["proposal"] = {
@@ -3107,7 +3107,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_drow_ranger",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abaddon",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_necrolyte"] = {
   ["hero_name"] = "necrolyte",
   ["proposal"] = {
@@ -3138,7 +3138,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_terrorblade",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_silencer",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_warlock"] = {
   ["hero_name"] = "warlock",
   ["proposal"] = {
@@ -3165,7 +3165,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "elite", ["bot"] = true,},
 ["npc_dota_hero_queenofpain"] = {
   ["hero_name"] = "queenofpain",
   ["proposal"] = {
@@ -3196,7 +3196,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_riki",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_treant",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_death_prophet"] = {
   ["hero_name"] = "death_prophet",
   ["proposal"] = {
@@ -3225,7 +3225,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_pugna"] = {
   ["hero_name"] = "pugna",
   ["proposal"] = {
@@ -3258,7 +3258,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_luna",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_weaver",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_dazzle"] = {
   ["hero_name"] = "dazzle",
   ["proposal"] = {
@@ -3287,7 +3287,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_monkey_king",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "excellent", ["bot"] = true,},
 ["npc_dota_hero_leshrac"] = {
   ["hero_name"] = "leshrac",
   ["proposal"] = {
@@ -3319,7 +3319,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_medusa",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_dark_seer"] = {
   ["hero_name"] = "dark_seer",
   ["proposal"] = {
@@ -3352,7 +3352,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_faceless_void",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_warlock",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_batrider"] = {
   ["hero_name"] = "batrider",
   ["proposal"] = {
@@ -3386,7 +3386,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_ancient_apparition"] = {
   ["hero_name"] = "ancient_apparition",
   ["proposal"] = {
@@ -3421,7 +3421,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_leshrac",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_invoker"] = {
   ["hero_name"] = "invoker",
   ["proposal"] = {
@@ -3448,7 +3448,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_tusk",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_obsidian_destroyer"] = {
   ["hero_name"] = "obsidian_destroyer",
   ["proposal"] = {
@@ -3484,7 +3484,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_drow_ranger",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_enchantress",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_shadow_demon"] = {
   ["hero_name"] = "shadow_demon",
   ["proposal"] = {
@@ -3517,7 +3517,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_ember_spirit",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_phoenix",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "general", ["bot"] = true,},
 ["npc_dota_hero_visage"] = {
   ["hero_name"] = "visage",
   ["proposal"] = {
@@ -3549,7 +3549,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_brewmaster",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_winter_wyvern"] = {
   ["hero_name"] = "winter_wyvern",
   ["proposal"] = {
@@ -3579,7 +3579,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_pugna",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_arc_warden",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_grimstroke"] = {
   ["hero_name"] = "grimstroke",
   ["proposal"] = {
@@ -3606,7 +3606,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["bot"] = true,},
+  ["evaluation"] = "excellent", ["bot"] = true,},
 }
 D.team = {
 {["name"] = "Evil Geniuses";["alias"] = "Evil Geniuses";

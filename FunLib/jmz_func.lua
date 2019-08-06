@@ -2287,6 +2287,8 @@ function J.IsSpecialSupport(bot)
 			or botName == "npc_dota_hero_skywrath_mage"
 			or botName == "npc_dota_hero_warlock"		  
 			or botName == "npc_dota_hero_zuus" 
+			or botName == "npc_dota_hero_dazzle" 
+			or botName == "npc_dota_hero_batrider" 
 end 
 
 	

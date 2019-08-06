@@ -196,7 +196,19 @@ function X.ConsiderQ()
 	local nSkillLV   = abilityQ:GetLevel();
 	
 	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius - 80, true, BOT_MODE_NONE );
-	
+
+	if J.IsRetreating(npcBot)
+	then
+		local tableEnemyHeroes = bot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
+		for _,npcEnemy in pairs( tableEnemyHeroes )
+		do
+			if bot:WasRecentlyDamagedByHero( npcEnemy, 1.0 )
+			then
+				return BOT_ACTION_DESIRE_MODERATE;
+			end
+		end
+	end
+
 	-- If we're doing Roshan
 	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
 	then
