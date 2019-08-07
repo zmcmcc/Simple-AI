@@ -54,7 +54,7 @@ local beNormalFarmer = false;
 local beHighFarmer = false;
 local beVeryHighFarmer = false;
 
-local sBotVersion,sVersionDate = J.Role.GetBotVersion();
+local sBotVersion,sVersionDate,sABAVersionDate = J.Role.GetBotVersion();
 local bPushNoticeDone = false;
 local bAllNotice = true;
 local nPushNoticeTime = nil;
@@ -93,7 +93,7 @@ function GetDesire()
 		if sBotVersion ~= "1V5"
 		then
 			fMessage = "Simple AI: "..sVersionDate;
-			sMessage = "This script is adapted from A Beginner AI: "..sVersionDate;
+			sMessage = "This script is adapted from A Beginner AI: "..sABAVersionDate;
 		else 
 			fMessage, sMessage = 'null','null'
 		end
@@ -728,6 +728,34 @@ function Think()
 	
 	bot:SetTarget(nil);
 	if preferedCamp == nil then preferedCamp = J.Site.GetClosestNeutralSpwan(bot, AvailableCamp);end
+	--尝试转移塔仇恨
+	if bot:WasRecentlyDamagedByTower(1) then
+
+		local nNearHero = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
+		local nNearCreep = bot:GetNearbyCreeps(800, false);
+
+		if nNearCreep ~= nil then
+			for _,allyTarget in pairs(nNearCreep)
+			do
+				if bot:IsFacingLocation(allyTarget:GetLocation(),30) then
+					bot:Action_AttackUnit(allyTarget, true);
+					Action_ClearActions(false);
+				end
+			end
+		end
+
+		if nNearHero ~= nil then
+			for _,allyTarget in pairs(nNearHero)
+			do
+				if bot:IsFacingLocation(allyTarget:GetLocation(),30) then
+					bot:Action_AttackUnit(allyTarget, true);
+					Action_ClearActions(false);
+				end
+			end
+		end
+
+	end
+	
 	bot:Action_MoveToLocation( ( RB + DB )/2 );
 	return;
 end
@@ -744,6 +772,78 @@ function X.IsHumanPlayerInTeam()
 	return false;
 end
 
+--尝试拉线野
+function X.PullAWild()
+	local lTOPWildLoc = Vector();
+	local lBOTWildLoc = Vector();
+	local lTOPWildCreepLoc = Vector();
+	local lBOTWildCreepLoc = Vector();
+	
+	local tTOPPullTime = 45;
+	local tBOTPullTime = 48;
+
+	local tNowTime = math.fmod( DotaTime(), 60 )
+
+	if GetTeam() == TEAM_RADIANT then
+		lTOPWildLoc = Vector();
+		lBOTWildLoc = Vector();
+		lTOPWildCreepLoc = Vector();
+		lBOTWildCreepLoc = Vector();
+		tTOPPullTime = 48;
+		tBOTPullTime = 45;
+	end
+
+	local TOPDistance = GetUnitToLocationDistance(bot, lTOPWildLoc)
+	local BOTDistance = GetUnitToLocationDistance(bot, lBOTWildLoc)
+
+	local nAttackRange = bot:GetAttackRange()
+	--只有辅助英雄参与拉野
+	if J.IsSpecialSupport(bot) then
+	--移动到目标
+	if TOPDistance < 2400 and
+	(tNowTime - (tTOPPullTime - (TOPDistance / bot:GetCurrentMovementSpeed()))) < 2
+	then
+		bot:ActionQueue_MoveDirectly(TOPDistance)
+	end
+
+	if BOTDistance < 2400 and
+	(tNowTime - (tBOTPullTime - (BOTDistance / bot:GetCurrentMovementSpeed()))) < 2
+	then
+		bot:ActionQueue_MoveDirectly(BOTDistance)
+	end
+
+	if TOPDistance < 2400 and
+	(tNowTime - (tTOPPullTime - (TOPDistance / bot:GetCurrentMovementSpeed()))) < 2
+	then
+		bot:ActionQueue_MoveDirectly(TOPDistance)
+	end
+
+	--勾怪
+	if bot:IsLocationVisible(TOPDistance) and
+	   nAttackRange > TOPDistance
+	then
+		local nCreeps = bot:GetNearbyNeutralCreeps (true, nAttackRange)
+
+		if nCreeps[1] ~= nil then
+			bot:ActionQueue_AttackUnit(nCreeps[1], true)
+			bot:ActionQueue_MoveDirectly(lTOPWildLoc)
+		end
+	end
+
+	if bot:IsLocationVisible(BOTDistance) and
+	   nAttackRange > BOTDistance
+	then
+		local nCreeps = bot:GetNearbyNeutralCreeps (true, nAttackRange)
+
+		if nCreeps[1] ~= nil then
+			bot:ActionQueue_AttackUnit(nCreeps[1], true)
+			bot:ActionQueue_MoveDirectly(lBOTWildLoc)
+		end
+	end
+
+	end
+
+end
 
 function X.IsThereT3Detroyed()
 	
