@@ -276,6 +276,10 @@ function Think()
 		return;
 	end
 	
+	--if X.PullAWild() then
+	--	return;	
+	--end
+
 	if towerCreepMode then
 		bot:Action_AttackUnit( towerCreep, true );
 		return;	
@@ -1864,5 +1868,84 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 		end
 	end
 	return AvailableCamp;
+end
+
+function X.PullAWild()
+	local testtime = {
+		74
+	}
+	local lTOPWildLoc = Vector(-2500, 4800);
+	local lBOTWildLoc = Vector(4800, -4200);
+	local lTOPWildCreepLoc = Vector(-3300, 5800);
+	local lBOTWildCreepLoc = Vector(6200, -3000);
+	
+	local tTOPPullTime = 14;
+	local tBOTPullTime = 18;
+
+	local tNowTime = math.fmod( DotaTime(), 60 )
+
+	if GetTeam() == TEAM_RADIANT then
+		lTOPWildLoc = Vector(-4250, 3500);
+		lBOTWildLoc = Vector(3300, -4500);
+		lTOPWildCreepLoc = Vector(-5850, 3000);
+		lBOTWildCreepLoc = Vector(3600, -6000);
+		tTOPPullTime = 18;
+		tBOTPullTime = 14;
+	end
+
+	local TOPDistance = GetUnitToLocationDistance(bot, lTOPWildLoc)
+	local BOTDistance = GetUnitToLocationDistance(bot, lBOTWildLoc)
+
+	local nAttackRange = bot:GetAttackRange()
+	--只有辅助英雄参与拉野
+	if true or J.IsSpecialSupport(bot) then
+	--移动到目标
+	if TOPDistance < 3200 and
+	(tNowTime - (tTOPPullTime - (TOPDistance / bot:GetCurrentMovementSpeed()))) < 3
+	then
+		print(bot:GetUnitName()..'移动到目标');
+		bot:Action_MoveToLocation(lTOPWildLoc)
+		return false;
+	end
+
+	if BOTDistance < 3200 and
+	(tNowTime - (tBOTPullTime - (BOTDistance / bot:GetCurrentMovementSpeed()))) < 3
+	then
+		print(bot:GetUnitName()..'移动到目标');
+		bot:Action_MoveToLocation(lBOTWildLoc)
+		return false;
+	end
+
+	--勾怪
+	if bot:IsLocationVisible(TOPDistance) and
+	   nAttackRange > TOPDistance
+	then
+		print('勾怪');
+		local nCreeps = bot:GetNearbyNeutralCreeps (true, nAttackRange)
+
+		if nCreeps[1] ~= nil then
+			bot:ActionQueue_AttackUnit(nCreeps[1], true)
+			bot:Action_MoveToLocation(lTOPWildCreepLoc)
+			return false;
+		end
+	end
+
+	if bot:IsLocationVisible(BOTDistance) and
+	   nAttackRange > BOTDistance
+	then
+		print('勾怪');
+		local nCreeps = bot:GetNearbyNeutralCreeps (true, nAttackRange)
+
+		if nCreeps[1] ~= nil then
+			bot:ActionQueue_AttackUnit(nCreeps[1], true)
+			bot:Action_MoveToLocation(lBOTWildCreepLoc)
+			return false;
+		end
+	end
+
+	end
+
+	return false;
+
 end
 -- dota2jmz@163.com QQ:2462331592
