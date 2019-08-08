@@ -65,7 +65,6 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 X["test_hero"] = {
     'npc_dota_hero_disruptor',
     --'npc_dota_hero_axe',
-    'npc_dota_hero_earthshaker',
     'npc_dota_hero_batrider',
     'npc_dota_hero_shadow_demon',
 }

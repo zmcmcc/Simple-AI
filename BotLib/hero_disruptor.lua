@@ -213,7 +213,7 @@ function X.ConsiderQ()
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
 				and not J.IsDisabled(true, npcEnemy)
 			then
-				local enemyCount = J.GetEnemyUnitCountAroundTarget(npcEnemy, 600)
+				local enemyCount = J.GetAroundTargetEnemyUnitCount(npcEnemy, 600)
 				if enemyCount ~= nil
 				   and enemyCount >= 4
 				then
