@@ -245,7 +245,8 @@ function GetDesire()
 	if bot:IsAlive() and
 	   J.IsSpecialSupport(bot) and
 	   DotaTime() > 60 and
-	   DotaTime() < 1200
+	   DotaTime() < 1200 and
+	   healthP > 0.4
 	then
 		pulltargetUnit, pulltargetLoc= X.PullAWild()
 		if pulltargetUnit ~= nil or pulltargetLoc ~= nil then
@@ -1904,7 +1905,7 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 	end
 	return AvailableCamp;
 end
-
+-- 拉线野测试程序
 function X.PullAWild()
 
 	local lTOPWildLoc =      Vector(-2500.000000, 4800.000000, 0.000000);
@@ -1912,8 +1913,8 @@ function X.PullAWild()
 	local lTOPWildCreepLoc = Vector(-3300.000000, 5800.000000, 0.000000);
 	local lBOTWildCreepLoc = Vector(6200.000000, -3000.000000, 0.000000);
 
-	local tTOPPullTime = 17;
-	local tBOTPullTime = 13;
+	local tTOPPullTime = 19;
+	local tBOTPullTime = 15;
 
 	local tNowTime = math.fmod( DotaTime(), 60 )
 
@@ -1922,8 +1923,8 @@ function X.PullAWild()
 		lBOTWildLoc =      Vector(3300.000000, -4500.000000, 0.000000);
 		lTOPWildCreepLoc = Vector(-5850.000000, 3000.000000, 0.000000);
 		lBOTWildCreepLoc = Vector(3600.000000, -6000.000000, 0.000000);
-		tTOPPullTime = 13;
-		tBOTPullTime = 17;
+		tTOPPullTime = 15;
+		tBOTPullTime = 19;
 	end
 
 	local TOPDistance = GetUnitToLocationDistance(bot, lTOPWildLoc)
@@ -1933,50 +1934,64 @@ function X.PullAWild()
 	local goTOPTime = tTOPPullTime - (TOPDistance / bot:GetCurrentMovementSpeed())
 	local goBOTTime = tBOTPullTime - (BOTDistance / bot:GetCurrentMovementSpeed())
 	
-	if TOPDistance > 2200 and BOTDistance > 2200 then
+	local enemyHeros = bot:GetNearbyHeroes(1000, true, BOT_MODE_NONE);
+	
+	if TOPDistance > 2200 and BOTDistance > 2200 and enemyHeros ~= nil then
 		return nil, nil;
 	end
 
-	--勾怪
+	--勾怪 ok
 	if pullAWildMod then
-	if lTOPWildLoc ~= nil and
-	   IsLocationVisible(lTOPWildLoc) and
-	   nAttackRange > TOPDistance and
-	   tNowTime - tTOPPullTime <= 1
-	then
-		local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
+		if lTOPWildLoc ~= nil and
+		IsLocationVisible(lTOPWildLoc) and
+		nAttackRange > TOPDistance and
+		tNowTime - tTOPPullTime <= 1
+		then
+			local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
 
-		if nCreeps[1] ~= nil then
-			
-			return nCreeps[1], lTOPWildCreepLoc;
+			if nCreeps[1] ~= nil then
+				
+				return nCreeps[1], lTOPWildCreepLoc;
+			end
 		end
-	end
 
-	if lBOTWildLoc ~= nil and
-	   IsLocationVisible(lBOTWildLoc) and
-	   nAttackRange > BOTDistance and
-	   tNowTime - tBOTPullTime <= 1
-	then
-		local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
+		if lBOTWildLoc ~= nil and
+		IsLocationVisible(lBOTWildLoc) and
+		nAttackRange > BOTDistance and
+		tNowTime - tBOTPullTime <= 1
+		then
+			local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
 
-		if nCreeps[1] ~= nil then
-			return nCreeps[1], lBOTWildCreepLoc;
+			if nCreeps[1] ~= nil then
+				return nCreeps[1], lBOTWildCreepLoc;
+			end
 		end
-	end
 	end
 
 	--移动到目标 OK
 	if not pullAWildMod then 
+		local TOPCreepsDistance = TOPDistance
+		local BOTCreepsDistance = BOTDistance
+		if TOPCreepsDistance > 1600 then TOPCreepsDistance = 1600 end
+		if BOTCreepsDistance > 1600 then BOTCreepsDistance = 1600 end
+
+		local onTOPCreeps = bot:GetNearbyLaneCreeps(TOPCreepsDistance, true)
+		local onBOTCreeps = bot:GetNearbyLaneCreeps(BOTCreepsDistance, true)
+
 		if TOPDistance ~= nil and
 		   TOPDistance < 2200 and
-		   (tNowTime - goTOPTime) < 2
+		   (tNowTime - goTOPTime) < 2 and
+		   onTOPCreeps[1] ~= nil and
+		   GetUnitToUnitDistance(bot, onTOPCreeps[1]) > TOPDistance
 		then
 			return nil, lTOPWildLoc;
 		end
 
 		if BOTDistance ~= nil and
 		   BOTDistance < 2200 and
-		   (tNowTime - goBOTTime) < 2
+		   (tNowTime - goBOTTime) < 2 and
+		   onBOTCreeps[1] ~= nil and
+		   GetUnitToUnitDistance(bot, onBOTCreeps[1]) > BOTDistance
 		then
 			return nil, lBOTWildLoc;
 		end
