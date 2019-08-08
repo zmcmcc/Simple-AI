@@ -137,6 +137,7 @@ function X.ConsiderQ()
 	then
 		local npcEnemy = tableNearbyEnemyHeroes[1];
 		if J.IsValid(npcEnemy) 
+			and npcEnemy ~= nil
 			and (bot:IsFacingLocation(npcEnemy:GetLocation(),10) or #nEnemyHeroes <= 1)
 			and bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) 
 			and J.CanCastOnNonMagicImmune(npcEnemy)

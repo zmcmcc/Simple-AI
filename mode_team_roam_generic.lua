@@ -41,6 +41,10 @@ local refShardCheck = -90;
 local pickedItem = nil;
 local lastBootSlotCheck = -90;
 
+local pullAWildMod = false
+local pulltargetUnit = nil
+local pulltargetLoc = nil
+
 --可优化补充捡物品的逻辑在这里,移动换物品的逻辑到物品购买里
 
 function GetDesire()
@@ -237,8 +241,21 @@ function GetDesire()
 			return BOT_MODE_DESIRE_ABSOLUTE *0.9;
 		end
 	end
-	
-	
+
+	if bot:IsAlive() and
+	   J.IsSpecialSupport(bot) and
+	   DotaTime() > 60 and
+	   DotaTime() < 1200
+	then
+		pulltargetUnit, pulltargetLoc= X.PullAWild()
+		if pulltargetUnit ~= nil or pulltargetLoc ~= nil then
+			pullAWildMod = true
+			return BOT_MODE_DESIRE_ABSOLUTE *0.9;
+		else
+			pullAWildMod = false
+		end
+	end
+
 	return 0.0;
 	
 end
@@ -257,6 +274,9 @@ function OnEnd()
 	towerTime = 0;
 	towerCreepMode = false;
 	bot:SetTarget(nil);
+	pullAWildMod = false
+	pulltargetUnit = nil
+	pulltargetLoc = nil
 	
 end
 
@@ -275,10 +295,25 @@ function Think()
 	then 
 		return;
 	end
-	
-	--if X.PullAWild() then
-	--	return;	
-	--end
+
+	if pullAWildMod then
+
+		if pulltargetUnit ~= nil then
+			bot:ActionPush_AttackUnit(pulltargetUnit, true);
+			if bot:WasRecentlyDamagedByCreep(0.5) then
+				pulltargetUnit = nil; --判断勾到了怪
+				bot:Action_MoveToLocation(pulltargetLoc);
+			end
+
+		elseif pulltargetLoc ~= nil then
+			bot:Action_MoveToLocation(pulltargetLoc);
+			if GetUnitToLocationDistance(bot, pulltargetLoc) < 100 then
+				pulltargetLoc = nil
+			end
+		end
+
+		return;
+	end
 
 	if towerCreepMode then
 		bot:Action_AttackUnit( towerCreep, true );
@@ -1871,81 +1906,87 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 end
 
 function X.PullAWild()
-	local testtime = {
-		74
-	}
-	local lTOPWildLoc = Vector(-2500, 4800);
-	local lBOTWildLoc = Vector(4800, -4200);
-	local lTOPWildCreepLoc = Vector(-3300, 5800);
-	local lBOTWildCreepLoc = Vector(6200, -3000);
-	
-	local tTOPPullTime = 14;
-	local tBOTPullTime = 18;
+
+	local lTOPWildLoc =      Vector(-2500.000000, 4800.000000, 0.000000);
+	local lBOTWildLoc =      Vector(4800.000000, -4200.000000, 0.000000);
+	local lTOPWildCreepLoc = Vector(-3300.000000, 5800.000000, 0.000000);
+	local lBOTWildCreepLoc = Vector(6200.000000, -3000.000000, 0.000000);
+
+	local tTOPPullTime = 17;
+	local tBOTPullTime = 13;
 
 	local tNowTime = math.fmod( DotaTime(), 60 )
 
 	if GetTeam() == TEAM_RADIANT then
-		lTOPWildLoc = Vector(-4250, 3500);
-		lBOTWildLoc = Vector(3300, -4500);
-		lTOPWildCreepLoc = Vector(-5850, 3000);
-		lBOTWildCreepLoc = Vector(3600, -6000);
-		tTOPPullTime = 18;
-		tBOTPullTime = 14;
+		lTOPWildLoc =      Vector(-4250.000000, 3500.000000, 0.000000);
+		lBOTWildLoc =      Vector(3300.000000, -4500.000000, 0.000000);
+		lTOPWildCreepLoc = Vector(-5850.000000, 3000.000000, 0.000000);
+		lBOTWildCreepLoc = Vector(3600.000000, -6000.000000, 0.000000);
+		tTOPPullTime = 13;
+		tBOTPullTime = 17;
 	end
 
 	local TOPDistance = GetUnitToLocationDistance(bot, lTOPWildLoc)
 	local BOTDistance = GetUnitToLocationDistance(bot, lBOTWildLoc)
 
-	local nAttackRange = bot:GetAttackRange()
-	--只有辅助英雄参与拉野
-	if true or J.IsSpecialSupport(bot) then
-	--移动到目标
-	if TOPDistance < 3200 and
-	(tNowTime - (tTOPPullTime - (TOPDistance / bot:GetCurrentMovementSpeed()))) < 3
-	then
-		print(bot:GetUnitName()..'移动到目标');
-		bot:Action_MoveToLocation(lTOPWildLoc)
-		return false;
-	end
-
-	if BOTDistance < 3200 and
-	(tNowTime - (tBOTPullTime - (BOTDistance / bot:GetCurrentMovementSpeed()))) < 3
-	then
-		print(bot:GetUnitName()..'移动到目标');
-		bot:Action_MoveToLocation(lBOTWildLoc)
-		return false;
+	local nAttackRange = bot:GetAttackRange() + 300
+	local goTOPTime = tTOPPullTime - (TOPDistance / bot:GetCurrentMovementSpeed())
+	local goBOTTime = tBOTPullTime - (BOTDistance / bot:GetCurrentMovementSpeed())
+	
+	if TOPDistance > 2200 and BOTDistance > 2200 then
+		return nil, nil;
 	end
 
 	--勾怪
-	if bot:IsLocationVisible(TOPDistance) and
-	   nAttackRange > TOPDistance
+	if pullAWildMod then
+	if lTOPWildLoc ~= nil and
+	   IsLocationVisible(lTOPWildLoc) and
+	   nAttackRange > TOPDistance and
+	   tNowTime - tTOPPullTime <= 1
 	then
-		print('勾怪');
-		local nCreeps = bot:GetNearbyNeutralCreeps (true, nAttackRange)
+		local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
 
 		if nCreeps[1] ~= nil then
-			bot:ActionQueue_AttackUnit(nCreeps[1], true)
-			bot:Action_MoveToLocation(lTOPWildCreepLoc)
-			return false;
+			
+			return nCreeps[1], lTOPWildCreepLoc;
 		end
 	end
 
-	if bot:IsLocationVisible(BOTDistance) and
-	   nAttackRange > BOTDistance
+	if lBOTWildLoc ~= nil and
+	   IsLocationVisible(lBOTWildLoc) and
+	   nAttackRange > BOTDistance and
+	   tNowTime - tBOTPullTime <= 1
 	then
-		print('勾怪');
-		local nCreeps = bot:GetNearbyNeutralCreeps (true, nAttackRange)
+		local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
 
 		if nCreeps[1] ~= nil then
-			bot:ActionQueue_AttackUnit(nCreeps[1], true)
-			bot:Action_MoveToLocation(lBOTWildCreepLoc)
-			return false;
+			return nCreeps[1], lBOTWildCreepLoc;
+		end
+	end
+	end
+
+	--移动到目标 OK
+	if not pullAWildMod then 
+		if TOPDistance ~= nil and
+		   TOPDistance < 2200 and
+		   (tNowTime - goTOPTime) < 2
+		then
+			return nil, lTOPWildLoc;
+		end
+
+		if BOTDistance ~= nil and
+		   BOTDistance < 2200 and
+		   (tNowTime - goBOTTime) < 2
+		then
+			return nil, lBOTWildLoc;
 		end
 	end
 
+	if pullAWildMod then
+		return pulltargetUnit, pulltargetLoc;
 	end
 
-	return false;
+	return nil, nil;
 
 end
 -- dota2jmz@163.com QQ:2462331592
