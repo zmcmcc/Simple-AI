@@ -1,4 +1,5 @@
--- CAPTAIN'S MODE
+------------------------------------------CAPTAIN'S GAME MODE-------------------------------------------
+
 local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
 
 local U = {};
@@ -239,5 +240,191 @@ function UpdateSelectedHeroes(selected)
 		end
 	end
 end
+
+
+local oboselect = false;
+------------------------------------------1 VS 1 GAME MODE-------------------------------------------
+function U.OneVsOneLogic()
+	print('The game mode is 1 VS 1')
+	local hero;
+	if IsHumanPlayerExist() then --有人类玩家存在
+		oboselect = true;
+	end
+
+	for _,i in pairs(GetTeamPlayers(GetTeam())) --阵容玩家id
+	do 
+		if not oboselect and IsPlayerBot(i) and IsPlayerInHeroSelectionControl(i) and GetSelectedHeroName(i) == "" -- 没有人类、是电脑、能选英雄且没选英雄
+		then
+			if IsHumanPresentInGame() then--如果有人类玩家
+				hero = GetSelectedHumanHero(GetOpposingTeam());--敌对阵容人类玩家选择的英雄
+			else
+				hero = targetdata.getApHero();--函数获取英雄
+			end
+			if hero ~= nil then
+				SelectHero(i, hero);
+				oboselect = true;
+			end
+			return
+		elseif oboselect and IsPlayerBot(i) and IsPlayerInHeroSelectionControl(i) and GetSelectedHeroName(i) == ""
+		then
+			SelectHero(i, 'npc_dota_hero_techies');
+			return
+		end
+	end
+end
+-------------------------------------------------------------------------------------------------------
+
+------------------------------------------ALL RANDOM GAME MODE-------------------------------------------
+
+function U.AllRandomLogic()
+	print('The game mode is ALL RANDOM')
+	for i,id in pairs(GetTeamPlayers(GetTeam())) 
+	 do
+		if  GetHeroPickState() == HEROPICK_STATE_AR_SELECT and IsPlayerInHeroSelectionControl(id) and GetSelectedHeroName(id) == ""
+		then
+			hero = targetdata.getApHero();
+			SelectHero(id, hero);
+			return;
+		end
+	end
+end
+------------------------------------------MID ONLY SAME HERO GAME MODE-----------------------------------------------
+--Picking logic for Mid Only Same Hero Game Mode
+local RandomedHero = nil;
+function U.MidOnlyLogic()
+	print('The game mode is MID ONLY SAME HERO')
+	if IsHumanPresentInGame() then--如果有人类玩家
+		if IsHumansDonePicking() then--已经选择英雄
+			if IsHumanPlayerExist() then
+				local selectedHero = GetSelectedHumanHero(GetTeam())
+				if selectedHero ~= "" and  selectedHero ~= nil then
+					for i,id in pairs(GetTeamPlayers(GetTeam())) 
+					 do 
+						if  GetHeroPickState() == HEROPICK_STATE_AP_SELECT and IsPlayerBot(id) and IsPlayerInHeroSelectionControl(id) and GetSelectedHeroName(id) == ""
+						then 
+							SelectHero(id, selectedHero); 
+							return;
+						end
+					end 
+				end 
+			else
+				local selectedHero = GetSelectedHumanHero(GetOpposingTeam())
+				if selectedHero ~= "" and  selectedHero ~= nil then
+					for i,id in pairs(GetTeamPlayers(GetTeam())) 
+					do 
+						if  GetHeroPickState() == HEROPICK_STATE_AP_SELECT and IsPlayerBot(id) and IsPlayerInHeroSelectionControl(id) and GetSelectedHeroName(id) == ""
+						then 
+							SelectHero(id, selectedHero); 
+							return;
+						end
+					end 
+				end 
+			end 
+		end 
+	else
+		if GetTeam() ==	TEAM_DIRE then
+			if not IsOpposingTeamDonePicking() then
+				return
+			else
+				local selectedHero = GetOpposingTeamSelectedHero()
+				for i,id in pairs(GetTeamPlayers(GetTeam())) 
+				do 
+					if  GetHeroPickState() == HEROPICK_STATE_AP_SELECT and IsPlayerBot(id) and IsPlayerInHeroSelectionControl(id) and GetSelectedHeroName(id) == ""
+					then 
+						SelectHero(id, selectedHero); 
+						return;
+					end
+				end 
+			end
+		else
+			local selectedHero = SetRandomHero();
+			for i,id in pairs(GetTeamPlayers(GetTeam())) 
+			do 
+				if  GetHeroPickState() == HEROPICK_STATE_AP_SELECT and IsPlayerBot(id) and IsPlayerInHeroSelectionControl(id) and GetSelectedHeroName(id) == ""
+				then 
+					SelectHero(id, selectedHero); 
+					return;
+				end
+			end 
+		end
+	end	
+end
+
+----------------------------------------------------------------------------------------------------
+--检查人类玩家是否已经选择英雄
+function IsHumansDonePicking() 
+	-- check radiant 
+	for _,i in pairs(GetTeamPlayers(GetTeam())) 
+	do 
+		if GetSelectedHeroName(i) == "" and not IsPlayerBot(i) then 
+			return false; 
+		end 
+	end 
+	-- check dire 
+	for _,i in pairs(GetTeamPlayers(GetOpposingTeam())) 
+	do 
+		if GetSelectedHeroName(i) == "" and not IsPlayerBot(i) then 
+			return false; 
+		end 
+	end 
+	-- else humans have picked 
+	return true; 
+end
+
+--获取人类玩家选择的英雄
+function GetSelectedHumanHero(team)
+	for i,id in pairs(GetTeamPlayers(team)) 
+	do 
+		if not IsPlayerBot(id) and GetSelectedHeroName(id) ~= ""
+		then 
+			return  GetSelectedHeroName(id);
+		end
+	end 
+end
+
+--检查整场游戏是否有人类玩家
+function IsHumanPresentInGame()
+	for i,id in pairs(GetTeamPlayers(GetTeam()))
+	do
+		if not IsPlayerBot(id)
+		then
+			return true;
+		end
+	end
+	for i,id in pairs(GetTeamPlayers(GetOpposingTeam()))
+	do
+		if not IsPlayerBot(id)
+		then
+			return true;
+		end
+	end
+	return false;
+end
+
+---------------------------------------------------------MID ONLY LANE ASSIGNMENT------------------------------------------------------
+function U.MOLaneAssignment()
+	local lanes = {
+        [1] = LANE_MID,
+        [2] = LANE_MID,
+        [3] = LANE_MID,
+        [4] = LANE_MID,
+        [5] = LANE_MID,
+        };
+	return lanes;	
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------1 VS 1 LANE ASSIGNMENT------------------------------------------------------
+function U.OneVsOneLaneAssignment()
+	local lanes = {
+        [1] = LANE_MID,
+        [2] = LANE_TOP,
+        [3] = LANE_TOP,
+        [4] = LANE_TOP,
+        [5] = LANE_TOP,
+        };
+	return lanes;	
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 
 return U

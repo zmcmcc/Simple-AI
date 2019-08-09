@@ -102,6 +102,7 @@ function GetDesire()
 		if bAllNotice
 		then
 			bot:ActionImmediate_Chat( sMessage, true);
+			bot:ActionImmediate_Chat( "Please use hard or unfair mode and do not play Monkey king. 请使用困难或疯狂难度，不要使用齐天大圣。", true);
 		end
 		bPushNoticeDone = true
 	end
@@ -728,33 +729,6 @@ function Think()
 	
 	bot:SetTarget(nil);
 	if preferedCamp == nil then preferedCamp = J.Site.GetClosestNeutralSpwan(bot, AvailableCamp);end
-	--尝试转移塔仇恨
-	if bot:WasRecentlyDamagedByTower(1) then
-
-		local nNearHero = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
-		local nNearCreep = bot:GetNearbyCreeps(800, false);
-
-		if nNearCreep ~= nil then
-			for _,allyTarget in pairs(nNearCreep)
-			do
-				if bot:IsFacingLocation(allyTarget:GetLocation(),30) then
-					bot:Action_AttackUnit(allyTarget, true);
-					Action_ClearActions(false);
-				end
-			end
-		end
-
-		if nNearHero ~= nil then
-			for _,allyTarget in pairs(nNearHero)
-			do
-				if bot:IsFacingLocation(allyTarget:GetLocation(),30) then
-					bot:Action_AttackUnit(allyTarget, true);
-					Action_ClearActions(false);
-				end
-			end
-		end
-
-	end
 	
 	bot:Action_MoveToLocation( ( RB + DB )/2 );
 	return;

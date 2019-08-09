@@ -11,7 +11,7 @@
 --My E-mail:dota2jmz@163.come,just have fun!  \o(∩_∩)o /
 -------------------------------
 local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
-local cMod = require(GetScriptDirectory() .. "/AuxiliaryScript/CaptainMode");
+local otherGameMod = require(GetScriptDirectory() .. "/AuxiliaryScript/OtherGameMod");
 
 local X = {};
 local bDebugMode = false
@@ -570,14 +570,20 @@ function Think()
 
 	if not bInitLineUpDone then X.SetLaneUpInit() return end
 
-	if GetGameMode() == 1 then
+	if GetGameMode() == GAMEMODE_AP then
 		if GetGameState() == GAME_STATE_HERO_SELECTION then
 			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
 		end
 		AllPickLogic();
-	elseif GetGameMode() == 2 then
-		cMod.CaptainModeLogic();
-		cMod.AddToList();
+	elseif GetGameMode() == GAMEMODE_CM then
+		otherGameMod.CaptainModeLogic();
+		otherGameMod.AddToList();
+	--elseif GetGameMode() == GAMEMODE_AR then
+	--	otherGameMod.AllRandomLogic();
+	--elseif GetGameMode() == GAMEMODE_MO then
+	--	otherGameMod.MidOnlyLogic();
+	--elseif GetGameMode() == GAMEMODE_1V1MID then
+	--	otherGameMod.OneVsOneLogic();
 	else
 		if GetGameState() == GAME_STATE_HERO_SELECTION then
 			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
@@ -656,7 +662,13 @@ then
 
 function UpdateLaneAssignments()  
 
-	return tLaneAssignList;
+	if  GetGameMode() == GAMEMODE_AP or GetGameMode() == GAMEMODE_CM or GetGameMode() == GAMEMODE_TM or GetGameMode() == GAMEMODE_SD then
+		return tLaneAssignList;
+	elseif GetGameMode() == GAMEMODE_MO then
+		return otherGameMod.MOLaneAssignment()	
+	elseif GetGameMode() == GAMEMODE_1V1MID then
+		return otherGameMod.OneVsOneLaneAssignment()			
+	end
 	
 end
 

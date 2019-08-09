@@ -12,10 +12,12 @@ if GetBot():IsInvulnerable() or not GetBot():IsHero() or not string.find(GetBot(
 end
 
 local Site = require( GetScriptDirectory()..'/FunLib/jmz_site')
+local additionlF = require(GetScriptDirectory() .. "/AuxiliaryScript/AdditionalFunction")
 local bot = GetBot();
 local X = {}
 local AvailableSpots = {};
 local nWardCastRange = 500; --插眼范围
+local wt = nil;
 local itemWard = nil;
 local targetLoc = nil;
 local wardCastTime = -90; --眼持续时间
@@ -28,8 +30,8 @@ bot.ward = false;
 local vNonStuck = Vector(-2610.000000, 538.000000, 0.000000);
 
 
-local walkMode = false;
-local walkLocation = Vector(0,0);
+local walkMode = false; -- 步行模式
+local walkLocation = Vector(0,0); -- 步行位置
 
 local nStartTime = RandomInt(1,30);
 
@@ -77,7 +79,12 @@ function GetDesire()
 	end	
 	
 	if itemWard ~= nil  then--有眼的情况下
-		
+		--在玩家ping的位置插眼
+		pinged, wt = additionlF.IsPingedByHumanPlayer(bot);
+		if pinged then	
+			return RemapValClamped(GetUnitToUnitDistance(bot, wt), 1000, 0, BOT_MODE_DESIRE_HIGH, BOT_MODE_DESIRE_VERYHIGH);
+		end
+		--在插眼位置插眼
 		AvailableSpots = Site.GetAvailableSpot(bot);--获取插眼位置
 		targetLoc, targetDist = Site.GetClosestSpot(bot, AvailableSpots);--获得可用眼位中最近的一个
 		if targetLoc ~= nil and DotaTime() > wardCastTime + 1.0 then
@@ -108,6 +115,7 @@ end
 function OnEnd()
 	AvailableSpots = {};
 	itemWard = nil;
+	wt = nil;
 	walkMode = false;
 end
 
@@ -115,6 +123,11 @@ function Think()
 
 	if GetGameState()~=GAME_STATE_PRE_GAME and GetGameState()~= GAME_STATE_GAME_IN_PROGRESS then
 		return;
+	end
+
+	if wt ~= nil then
+		bot:Action_UseAbilityOnEntity(itemWard, wt);
+		return
 	end
 	
 
