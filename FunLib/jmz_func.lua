@@ -97,6 +97,7 @@ local tSleevelHeros = {
 	'npc_dota_hero_dazzle',
 	'npc_dota_hero_abaddon',
 	'npc_dota_hero_grimstroke',
+	'npc_dota_hero_puck',
 	--原脚本
 	'npc_dota_hero_antimage',
 	'npc_dota_hero_arc_warden',
@@ -237,6 +238,9 @@ function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellL
 end
 
 function IsSleevelHeros() 
+
+	local bot = GetBot()
+
 	for _,u in pairs(tSleevelHeros) do
 		if bot:GetUnitName() == u
 		then

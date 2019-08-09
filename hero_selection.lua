@@ -11,7 +11,7 @@
 --My E-mail:dota2jmz@163.come,just have fun!  \o(∩_∩)o /
 -------------------------------
 local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
-local otherGameMod = require(GetScriptDirectory() .. "/AuxiliaryScript/otherGameMod");
+local otherGameMod = require(GetScriptDirectory() .. "/AuxiliaryScript/OtherGameMod");
 
 local X = {};
 local bDebugMode = false
@@ -578,12 +578,12 @@ function Think()
 	elseif GetGameMode() == GAMEMODE_CM then
 		otherGameMod.CaptainModeLogic();
 		otherGameMod.AddToList();
-	elseif GetGameMode() == GAMEMODE_AR then
-		otherGameMod.AllRandomLogic();
-	elseif GetGameMode() == GAMEMODE_MO then
-		otherGameMod.MidOnlyLogic();
-	elseif GetGameMode() == GAMEMODE_1V1MID then
-		otherGameMod.OneVsOneLogic();
+	--elseif GetGameMode() == GAMEMODE_AR then
+	--	otherGameMod.AllRandomLogic();
+	--elseif GetGameMode() == GAMEMODE_MO then
+	--	otherGameMod.MidOnlyLogic();
+	--elseif GetGameMode() == GAMEMODE_1V1MID then
+	--	otherGameMod.OneVsOneLogic();
 	else
 		if GetGameState() == GAME_STATE_HERO_SELECTION then
 			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);

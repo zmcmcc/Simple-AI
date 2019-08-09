@@ -244,7 +244,8 @@ end
 
 local oboselect = false;
 ------------------------------------------1 VS 1 GAME MODE-------------------------------------------
-function OneVsOneLogic()
+function U.OneVsOneLogic()
+	print('The game mode is 1 VS 1')
 	local hero;
 	if IsHumanPlayerExist() then --有人类玩家存在
 		oboselect = true;
@@ -276,6 +277,7 @@ end
 ------------------------------------------ALL RANDOM GAME MODE-------------------------------------------
 
 function U.AllRandomLogic()
+	print('The game mode is ALL RANDOM')
 	for i,id in pairs(GetTeamPlayers(GetTeam())) 
 	 do
 		if  GetHeroPickState() == HEROPICK_STATE_AR_SELECT and IsPlayerInHeroSelectionControl(id) and GetSelectedHeroName(id) == ""
@@ -289,7 +291,8 @@ end
 ------------------------------------------MID ONLY SAME HERO GAME MODE-----------------------------------------------
 --Picking logic for Mid Only Same Hero Game Mode
 local RandomedHero = nil;
-function MidOnlyLogic()
+function U.MidOnlyLogic()
+	print('The game mode is MID ONLY SAME HERO')
 	if IsHumanPresentInGame() then--如果有人类玩家
 		if IsHumansDonePicking() then--已经选择英雄
 			if IsHumanPlayerExist() then

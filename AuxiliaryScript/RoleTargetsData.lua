@@ -63,24 +63,23 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 }]]
 
 X["test_hero"] = {
-    'npc_dota_hero_disruptor',
+    --'npc_dota_hero_disruptor',
     --'npc_dota_hero_axe',
-    'npc_dota_hero_earthshaker',
-    'npc_dota_hero_batrider',
-    'npc_dota_hero_shadow_demon',
+    --'npc_dota_hero_batrider',
+    --'npc_dota_hero_puck',
 }
 
 X["onlyCM_hero"] = {
-    ----'npc_dota_hero_abaddon',
-    --'npc_dota_hero_vengefulspirit',
-    --'npc_dota_hero_disruptor',
-    ----'npc_dota_hero_shadow_demon',
-    ----'npc_dota_hero_grimstroke',
-    --'npc_dota_hero_tidehunter',
-    --'npc_dota_hero_axe',
-    ----'npc_dota_hero_dazzle',
-    --'npc_dota_hero_leshrac',
-    --'npc_dota_hero_batrider'
+    --'npc_dota_hero_abaddon',
+    'npc_dota_hero_vengefulspirit',
+    'npc_dota_hero_disruptor',
+    --'npc_dota_hero_shadow_demon',
+    --'npc_dota_hero_grimstroke',
+    'npc_dota_hero_tidehunter',
+    'npc_dota_hero_axe',
+    --'npc_dota_hero_dazzle',
+    'npc_dota_hero_leshrac',
+    'npc_dota_hero_batrider'
 }
 
 function X.CounterWeightList(hero) --获取推荐阵容列表
@@ -250,18 +249,18 @@ function IsBanBychat( sHero )
 end
 
 function GetNotRepeatHero(nTable)
-
-    if next(X['onlyCM_hero']) ~= nil then
-        local testheroList = {};
-        for i, v in ipairs(nTable) do
-            if X.ScreeningHeroList(X['onlyCM_hero'],v) then
-                table.insert(testheroList,v);
-            end
-        end
-        if next(testheroList) ~= nil then
-            nTable = testheroList;
-        end
-    end
+    --仅限CM选择英雄
+    --if next(X['onlyCM_hero']) ~= nil then
+    --    local testheroList = {};
+    --    for i, v in ipairs(nTable) do
+    --        if X.ScreeningHeroList(X['onlyCM_hero'],v) then
+    --            table.insert(testheroList,v);
+    --        end
+    --    end
+    --    if next(testheroList) ~= nil then
+    --        nTable = testheroList;
+    --    end
+    --end
 	
 	local sHero = nTable[1];
 	local maxCount = #nTable ;

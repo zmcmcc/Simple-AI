@@ -622,6 +622,8 @@ ItemModule['item_grimstroke_outfit']       = { 'item_tango', 'item_enchanted_man
 
 ItemModule['item_earthshaker_outfit']      = { 'item_tango', 'item_flask', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_energy_booster', 'item_recipe_magic_wand' , 'item_blink' , 'item_recipe_force_staff' , 'item_wind_lace' , 'item_blade_of_alacrity' , 'item_recipe_greater_crit' }
 
+ItemModule['item_puck_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand', 'item_veil_of_discord' , 'item_blink' , 'item_cyclone' , 'item_ultimate_scepter' , 'item_sheepstick' , 'item_octarine_core' }
+
 end
 ------------------------------------------------------------------------------------------------------
 
