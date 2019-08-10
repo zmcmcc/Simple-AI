@@ -624,6 +624,8 @@ ItemModule['item_earthshaker_outfit']      = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_puck_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand', 'item_veil_of_discord' , 'item_blink' , 'item_cyclone' , 'item_ultimate_scepter' , 'item_sheepstick' , 'item_octarine_core' }
 
+ItemModule['item_invoker_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand' }
+
 end
 ------------------------------------------------------------------------------------------------------
 

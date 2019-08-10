@@ -6,6 +6,7 @@ local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
+local illuOrbLoc = nil
 
 local tTalentTreeList = {
 						['t25'] = {10, 0},
@@ -90,7 +91,7 @@ function X.SkillsComplement()
 	then
 	
 		J.SetQueuePtToINT(bot, false)
-	
+		illuOrbLoc = castQLocation
 		bot:ActionQueue_UseAbilityOnLocation( abilityQ, castQLocation )
 		return;
 	end
@@ -101,7 +102,7 @@ function X.SkillsComplement()
 	
 		J.SetQueuePtToINT(bot, false)
 	
-		bot:ActionQueue_MoveDirectly( abilityQ2 )
+		bot:ActionQueue_MoveDirectly(abilityQ2)
 		return;
 	end
 	
@@ -292,20 +293,54 @@ function X.ConsiderW()
 		return BOT_ACTION_DESIRE_NONE;
 	end
 
-	-- If we want to cast priorities at all, bail
-	if ( castEDesire > 0 or castRDesire > 50) then
-		return BOT_ACTION_DESIRE_NONE;
+	-- Get some of its values
+	local nRadius    = abilityQ:GetSpecialValueInt( "radius" );
+	local nCastPoint = abilityQ:GetCastPoint();
+	local nManaCost  = abilityQ:GetManaCost();
+	local nDamage = abilityW:GetAbilityDamage();
+	local nSkillLV   = abilityQ:GetLevel();
+	
+	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
+
+	if J.IsRetreating(bot)
+	then
+		local tableEnemyHeroes = bot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
+		for _,npcEnemy in pairs( tableEnemyHeroes )
+		do
+			if bot:WasRecentlyDamagedByHero( npcEnemy, 1.0 )
+			then
+				return BOT_ACTION_DESIRE_MODERATE;
+			end
+		end
 	end
 
-	-- Get some of its values
-	local nRadius = abilityW:GetSpecialValueInt( "radius" );
-	local nCastRange = 0;
-	local nDamage = abilityW:GetAbilityDamage();
+	-- If we're doing Roshan
+	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
+	then
+		local npcTarget = bot:GetAttackTarget();
+		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(bot, npcTarget, nRadius - 80)  )
+		then
+			return BOT_ACTION_DESIRE_MODERATE;
+		end
+	end
+	
+	if J.IsInTeamFight(bot, 1200)
+	then
+		if tableNearbyEnemyHeroes ~= nil and #tableNearbyEnemyHeroes >= 1 then
+			return BOT_ACTION_DESIRE_LOW;
+		end
+	end
+	
+	-- If we're going after someone
+	if J.IsGoingOnSomeone(bot)
+	then
+		local npcTarget = J.GetProperTarget(bot);
+		if J.IsValidHero(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nRadius-100)
+		then
+			return BOT_ACTION_DESIRE_MODERATE;
+		end
+	end
 
-	--------------------------------------
-	-- Mode based usage
-	--------------------------------------
-	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
 	if tableNearbyEnemyHeroes ~= nil and #tableNearbyEnemyHeroes  >= 3 
 	then
 		return BOT_ACTION_DESIRE_MODERATE;
@@ -313,7 +348,6 @@ function X.ConsiderW()
 	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
 	if ( bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH ) 
 	then
-		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nRadius, true, BOT_MODE_NONE );
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
 			if ( bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) and CanCastWaningRiftOnTarget( npcEnemy )  ) 
@@ -351,38 +385,17 @@ function X.ConsiderE()
 	-- Get some of its values
 	local nDuration = abilityE:GetSpecialValueFloat("duration");
 
-	if bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH  then
-		local incProj = bot:GetIncomingTrackingProjectiles()
-		for _,p in pairs(incProj)
-		do
-			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
-		end
-	end
-	
-	
-	if bot:GetActiveMode() == BOT_MODE_LANING then
-		local incProj = bot:GetIncomingTrackingProjectiles()
-		for _,p in pairs(incProj)
-		do
-			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
-		end
-	end
-	
-	if ( bot:GetActiveMode() == BOT_MODE_ROAM or
-		 bot:GetActiveMode() == BOT_MODE_ATTACK or
-		 bot:GetActiveMode() == BOT_MODE_GANK or
-		 bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY ) 
+	if J.IsUnitTargetProjectileIncoming(bot, 400)
 	then
-		local incProj = bot:GetIncomingTrackingProjectiles()
-		for _,p in pairs(incProj)
-		do
-			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
+		return BOT_ACTION_DESIRE_HIGH;
+	end
+	
+	if not bot:HasModifier("modifier_sniper_assassinate") 
+		and not bot:IsMagicImmune() 
+	then
+		if J.IsWillBeCastUnitTargetSpell(bot,1400)
+		then
+			return BOT_ACTION_DESIRE_HIGH;
 		end
 	end
 

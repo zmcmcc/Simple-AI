@@ -1352,7 +1352,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = true,},
+  ["evaluation"] = "", ["bot"] = false,},
 ["npc_dota_hero_storm_spirit"] = {
   ["hero_name"] = "storm_spirit",
   ["proposal"] = {
@@ -3448,7 +3448,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_tusk",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_obsidian_destroyer"] = {
   ["hero_name"] = "obsidian_destroyer",
   ["proposal"] = {
