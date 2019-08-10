@@ -25,7 +25,6 @@ local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 X['sBuyList'] = {
 				sOutfit,
-				"item_phase_boots",
 				"item_ultimate_scepter",
 				"item_cyclone",
 				"item_force_staff",

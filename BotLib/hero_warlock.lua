@@ -121,6 +121,7 @@ function X.SkillsComplement()
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	
+	J.Skill.AbilityReadinessReminder(abilityR, 5);
 	
 	
 	nKeepMana = 400

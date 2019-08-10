@@ -133,6 +133,27 @@ function X.GetOutfitName(bot)
 
 end
 
+-- test OnAbilityPinged
+function X.AbilityReadinessReminder(tAbility, nTime)
+
+	local bot = GetBot()
+	
+	local playid = bot:GetPlayerID();
+	local cooldownTime = nil;
+	
+	if tAbility ~= nil then
+		cooldownTime = tAbility:GetCooldownTimeRemaining()
+	end
+
+	if cooldownTime ~= nil and
+	   playid ~= nil and
+	   math.floor(cooldownTime) == nTime 
+	then
+		OnAbilityPinged(playid, tAbility)
+	end
+
+end
+
 
 return X
 -- dota2jmz@163.com QQ:2462331592

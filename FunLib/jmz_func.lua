@@ -2322,6 +2322,7 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_viper" 
 			or botName == "npc_dota_hero_weaver"
 			or botName == "npc_dota_hero_earthshaker"
+			or botName == "npc_dota_hero_invoker"
 		 
 end
 
