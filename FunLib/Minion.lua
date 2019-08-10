@@ -230,6 +230,8 @@ end
 
 function X.GetIllusionAttackTarget(minion)
 	local target = bot:GetAttackTarget();
+	if target == nil then target = bot:GetTarget() end
+	
 	if ( target == nil and bot:GetActiveMode() == BOT_MODE_RETREAT) 
 		or ( target == nil and bot:GetLevel() > 12 ) 
 		or ( not bot:IsAlive() )

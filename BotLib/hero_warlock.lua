@@ -416,6 +416,7 @@ function X.ConsiderW()
 			do
 				if  J.IsValid(npcEnemy)
 					and J.CanCastOnNonMagicImmune(npcEnemy) 
+					and J.CanCastOnTargetAdvanced(npcEnemy)
 					and not npcEnemy:HasModifier("modifier_warlock_shadow_word")
 				then
 					local npcEnemyHealth = npcEnemy:GetHealth();
@@ -440,6 +441,7 @@ function X.ConsiderW()
 		local target = J.GetProperTarget(bot);
 		if J.IsValidHero(target) 
 		   and J.CanCastOnNonMagicImmune(target) 
+		   and J.CanCastOnTargetAdvanced(target)
 		   and J.IsInRange(target, bot, nCastRange) 
 		   and not target:HasModifier("modifier_warlock_shadow_word")
 		then
@@ -465,7 +467,7 @@ function X.ConsiderQ()
 	local nCount     = abilityQ:GetSpecialValueInt( "count" );
 	
 	
-	if J.IsInTeamFight(bot, 1200) 
+	if J.IsInTeamFight(bot, 1000) 
 	then
 		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
 		if ( locationAoE.count >= 2 ) 
@@ -473,6 +475,7 @@ function X.ConsiderQ()
 			local nEnemyHeroes = bot:GetNearbyHeroes(nCastRange,true,BOT_MODE_NONE);
 			if J.IsValidHero(nEnemyHeroes[1])
 				and J.CanCastOnNonMagicImmune(nEnemyHeroes[1])
+				and J.CanCastOnTargetAdvanced(nEnemyHeroes[1])
 			then
 				return  BOT_ACTION_DESIRE_HIGH, nEnemyHeroes[1];
 			end
@@ -492,6 +495,7 @@ function X.ConsiderQ()
 		local target = J.GetProperTarget(bot);
 		if J.IsValidHero(target) 
 		   and J.CanCastOnNonMagicImmune(target) 
+		   and J.CanCastOnTargetAdvanced(target)
 		   and J.IsInRange(target, bot, nCastRange) 
 		then
 			if J.GetAroundTargetEnemyUnitCount(target, nRadius) >= 3 then

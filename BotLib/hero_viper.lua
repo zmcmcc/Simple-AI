@@ -44,6 +44,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_ultimate_scepter",
 	"item_urn_of_shadows",
+	
+	'item_mjollnir',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -169,11 +172,13 @@ function X.ConsiderRQ()
 			then
 				if J.IsInRange(npcTarget, bot, nCastRange + 80)   
 					and J.CanCastOnMagicImmune(npcTarget)
+					and J.CanCastOnTargetAdvanced(npcTarget)
 					and not npcTarget:IsAttackImmune()
 				then					
 					return BOT_ACTION_DESIRE_HIGH,npcTarget;
 				else
 					if not nWeakestEnemyHeroInCastRange:IsAttackImmune()
+					   and J.CanCastOnTargetAdvanced(nWeakestEnemyHeroInCastRange)
 					then
 						return BOT_ACTION_DESIRE_HIGH,nWeakestEnemyHeroInCastRange;
 					end
@@ -182,6 +187,7 @@ function X.ConsiderRQ()
 		end
 		
 		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1])
+		   and J.CanCastOnTargetAdvanced(nEnemysHerosInCastRange[1])
 		   and not nEnemysHerosInCastRange[1]:IsAttackImmune()
 		then
 			return BOT_ACTION_DESIRE_HIGH,nEnemysHerosInCastRange[1];
@@ -282,8 +288,7 @@ function X.ConsiderQ()
 	end
 	
 	
-	if bot:GetActiveMode() == BOT_MODE_RETREAT 
-		and bot:GetActiveModeDesire() > BOT_MODE_DESIRE_MODERATE
+	if J.IsRetreating(bot)
 	then
 		local enemys = bot:GetNearbyHeroes(nAttackRange,true,BOT_MODE_NONE)
 		if  enemys[1] ~= nil and enemys[1]:IsAlive()
@@ -298,10 +303,10 @@ function X.ConsiderQ()
 	end	
 	
 	
-	if  bot:GetActiveMode() == BOT_MODE_ROSHAN  
+	if bot:GetActiveMode() == BOT_MODE_ROSHAN  
 	then
 	    local nAttackTarget = bot:GetAttackTarget();
-		if  J.IsValid(nAttackTarget) 
+		if J.IsValid(nAttackTarget) 
 			and not nAttackTarget:HasModifier("modifier_viper_poison_attack_slow")			
 		then
 			castRTarget = nAttackTarget;
@@ -475,17 +480,22 @@ function X.ConsiderR()
 			then
 				if J.IsInRange(npcTarget, bot, nCastRange + 80)   
 					and J.CanCastOnMagicImmune(npcTarget)
+					and J.CanCastOnTargetAdvanced(npcTarget)
 				then					
 					castRTarget = npcTarget;
 					return BOT_ACTION_DESIRE_HIGH,castRTarget;
 				else
-					castRTarget = nWeakestEnemyHeroInCastRange;                    
-					return BOT_ACTION_DESIRE_HIGH,castRTarget;
+					if J.CanCastOnTargetAdvanced(nWeakestEnemyHeroInCastRange)
+					then
+						castRTarget = nWeakestEnemyHeroInCastRange;                    
+						return BOT_ACTION_DESIRE_HIGH,castRTarget;
+					end
 				end
 			end	
 		end
 		
 		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1])
+		   and J.CanCastOnTargetAdvanced(nEnemysHerosInCastRange[1])
 		then
 			castRTarget = nEnemysHerosInCastRange[1];   
 			return BOT_ACTION_DESIRE_HIGH,castRTarget;

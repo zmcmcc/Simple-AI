@@ -47,6 +47,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_hurricane_pike",
 	"item_urn_of_shadows",
+	
+	'item_satanic',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -104,10 +107,16 @@ function X.SkillsComplement()
 	if ( castRDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(bot, false)
-	
-		bot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
-		return;
+		J.SetQueuePtToINT(bot, true)
+		
+		if bot:HasScepter() 
+		then
+			bot:ActionQueue_UseAbilityOnLocation( abilityR, castRTarget:GetLocation() )
+			return;
+		else		
+			bot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
+			return;
+		end
 	end
 	
 	castEDesire = X.ConsiderE();

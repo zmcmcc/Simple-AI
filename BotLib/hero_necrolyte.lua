@@ -346,6 +346,7 @@ function X.ConsiderR()
 		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and J.CanCastOnTargetAdvanced(npcTarget)
 		   and not J.IsHaveAegis(npcTarget)
 		   and not npcTarget:HasModifier("modifier_arc_warden_tempest_double")
 		   and J.IsInRange(npcTarget, bot, nCastRange + 200)
@@ -370,6 +371,7 @@ function X.ConsiderR()
 		do
 			if J.IsValidHero(npcEnemy)
 			   and J.CanCastOnNonMagicImmune(npcEnemy)
+			   and J.CanCastOnTargetAdvanced(npcEnemy)
 			   and not J.IsHaveAegis(npcEnemy) 
 			   and not npcEnemy:HasModifier("modifier_arc_warden_tempest_double")
 			then
@@ -393,6 +395,7 @@ function X.ConsiderR()
 	do
 		if J.IsValidHero(npcEnemy) 
 		   and not J.IsHaveAegis(npcEnemy) 
+		   and J.CanCastOnTargetAdvanced(npcEnemy)
 		   and not npcEnemy:HasModifier("modifier_arc_warden_tempest_double")
 		then
 			local EstDamage = X.GetEstDamage(bot,npcEnemy,nDamagePerHealth);

@@ -12,7 +12,7 @@ local X = {}
 local sBotVersion = "New";
 --local sBotVersion = "Mid";
 local sVersionDate = sBotVersion.." 7.22,2019/08/10."
-local sABAVersionDate = sBotVersion.." 7.22,2019/08/04."
+local sABAVersionDate = sBotVersion.." 7.22,2019/08/10."
 
 function X.GetBotVersion()
 	return sBotVersion,sVersionDate,sABAVersionDate;
@@ -1172,7 +1172,7 @@ X["hero_roles"] = {
 	},
 
 	["npc_dota_hero_ogre_magi"] = {
-		['carry'] = 0,
+		['carry'] = 1,
 		['disabler'] = 2,
 		['durable'] = 1,
 		['escape'] = 0,
@@ -1651,7 +1651,9 @@ X['safe'] = {
 	'npc_dota_hero_ursa',
 	'npc_dota_hero_shredder',
 	'npc_dota_hero_axe',
-	'npc_dota_hero_weaver'
+	'npc_dota_hero_weaver',
+	'npc_dota_hero_ogre_magi',
+	'npc_dota_hero_omniknight',
 }
 
 X['supp'] = {
@@ -1671,9 +1673,10 @@ X['supp'] = {
 	'npc_dota_hero_jakiro',
 	'npc_dota_hero_keeper_of_the_light',
 	'npc_dota_hero_lich',
+	'npc_dota_hero_lina',
 	'npc_dota_hero_lion',
 	'npc_dota_hero_nyx_assassin',
-	'npc_dota_hero_ogre_magi',
+--	'npc_dota_hero_ogre_magi',
 	'npc_dota_hero_oracle',
 	'npc_dota_hero_phoenix',
 	'npc_dota_hero_pudge',
@@ -1932,6 +1935,10 @@ local sGaoHeroList = {
 	'npc_dota_hero_sniper',
 	'npc_dota_hero_bristleback',
 	'npc_dota_hero_viper',
+	'npc_dota_hero_ogre_magi',
+	'npc_dota_hero_phantom_lancer',
+	'npc_dota_hero_razor',
+	'npc_dota_hero_lina',
 }
 
 function X.IsUserHero()

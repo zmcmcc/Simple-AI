@@ -664,6 +664,7 @@ function X.ConsiderE()
 		do
 			if  J.IsValidHero(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 			then
 				local npcEnemyDamage = npcEnemy:GetEstimatedDamageToTarget( false, bot, 3.0, DAMAGE_TYPE_ALL );
@@ -691,6 +692,7 @@ function X.ConsiderE()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy) 
 				and not npcEnemy:IsIllusion()
 				and bot:IsFacingLocation(npcEnemy:GetLocation(),30)
@@ -744,6 +746,7 @@ function X.ConsiderE()
 	    local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
+			and J.CanCastOnTargetAdvanced(npcTarget)
 			and J.IsInRange(npcTarget, bot, nCastRange + 150) 
 			and not J.IsDisabled(true, npcTarget)
 		then
@@ -759,6 +762,7 @@ function X.ConsiderE()
 			if J.IsValid(npcEnemy)
 			    and bot:WasRecentlyDamagedByHero( npcEnemy, 3.1 ) 
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy) 
 				and J.IsInRange(npcEnemy, bot, nCastRange) 
 				and ( not J.IsInRange(npcEnemy, bot, 450) or bot:IsFacingLocation(npcEnemy:GetLocation(), 45) )
@@ -862,6 +866,7 @@ function X.sil_GetWeakestUnit( nEnemyUnits )
 	do
 		if 	unit:IsAlive() 
 			and J.CanCastOnNonMagicImmune(unit)
+			and J.CanCastOnTargetAdvanced(unit)
 		then
 			if unit:GetHealth() < nWeakestUnitLowestHealth
 			then

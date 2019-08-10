@@ -20,12 +20,12 @@
   '( () )'多重括号嵌套的外层括号内侧.
 3, 需要使用循环逻辑时尽量不用除 for 语句外的关键字, 
   需要进行多个条件逻辑运算时, 每个条件块单独一行.
-4, 函数参数中包含了 bot(句柄) 的话, 将其放在第一位, 同一文件内, 要么均为npcBot, 要么均为bot
+4, 函数参数中包含了 bot(句柄) 的话, 尽量将其放在第一位
 如有遗漏或矛盾的情况以文件内同类代码的主流规范为准.
 附: 常用词汇  放最后: 表示布尔值 bDone bError bSuccess bFound  bReady  如: bUpdateDone
     表修饰时(放最后) Total、 Sum、 Average、 Max、 Min、 Record、 String、 Pointer、 First、 Last、 Lim  如: creepCountMax
 	句柄handle = h, 坐标矢量vector = v, 布尔值bool = b, 字符串string = s, 
-	一般的数量normal = n, 特殊的小数float = f, 全局命名空间变量goble = g, 未确定类型的单位unknow = u, 
+	一般的变量normal = n, 特殊的小数float = f, 全局命名空间变量goble = g, 未确定类型的单位unknow = u, 
 	表名以表内容类型....List命名, 即 'sBotList' 表示内容为英雄名的线性表, 非线性表或表中表table = t, 
 --]]
 
@@ -69,13 +69,13 @@ if gTime == nil then gTime = 0 end
 ---------------------------通过文件使用的
 --]]
 local sDota2Version= '7.22d'
-local sDebugVersion= '20190812ver1.1a'
+local sDebugVersion= '20190810ver1.2a'
 local nPrintTime   = 9999
 local nDebugTime   = 9999
 local bDebugMode   = false
 local bDebugTeam   = (GBotTeam == TEAM_RADIANT)
 local sDebugHero   = 'npc_dota_hero_luna'
-local tAllyIDList    = GetTeamPlayers(GBotTeam)
+local tAllyIDList  = GetTeamPlayers(GBotTeam)
 local tAllyHeroList = {}
 local tAllyHumanList  = {}
 local nAllyTotalKill = 0
@@ -97,7 +97,8 @@ local tSleevelHeros = {
 	'npc_dota_hero_dazzle',
 	'npc_dota_hero_abaddon',
 	'npc_dota_hero_grimstroke',
-	'npc_dota_hero_puck',
+	--'npc_dota_hero_puck',
+	'npc_dota_hero_invoker',
 	--原脚本
 	'npc_dota_hero_antimage',
 	'npc_dota_hero_arc_warden',
@@ -123,6 +124,10 @@ local tSleevelHeros = {
 	'npc_dota_hero_warlock',
 	'npc_dota_hero_zuus',
 	'npc_dota_hero_skywrath_mage',
+	'npc_dota_hero_razor',
+	'npc_dota_hero_phantom_lancer',
+	'npc_dota_hero_ogre_magi',
+	'npc_dota_hero_lina',
 }
 
 
@@ -257,18 +262,18 @@ function J.ConsiderUpdateEnvironment(bot)
 
 end
 
-
-function J.PrintInitStatus(nFlag, nNum, sMessage1, sMessage2)
+local tInitList = {}
+function J.PrintInitMessage(sFlag, sMessage)
 
 	local bot = GetBot()
 
-	if nFlag +1 ~= nNum 
-	   or not J.IsDebugHero(bot, sDebugHero)
-	then return nFlag end
+	if not J.IsDebugHero(bot, sDebugHero) or tInitList[sFlag] ~= nil then return end
+	
+	tInitList[sFlag] = true;
 	
 	local botName = string.gsub(string.sub(bot:GetUnitName(), 15), '_', '');
-	print('Simple AI '..string.sub(botName, 1, 4)..': '..string.sub(sMessage1, 1, 5)..' of '..sMessage2..' init successful!')
-	return nNum
+	
+	print('Simple AI '..string.sub(botName, 1, 4)..': '..string.sub(sFlag, 1, 5)..' with '..sMessage..' init successful!')
 	
 end
 
@@ -280,10 +285,21 @@ function J.IsDebugHero(bot, sName)
 
 end
 
+function J.CanNotUseAction(bot)
+	return not bot:IsAlive()
+		   or bot:NumQueuedActions() > 0
+		   or bot:IsInvulnerable() 
+		   or bot:IsCastingAbility() 
+		   or bot:IsUsingAbility() 
+		   or bot:IsChanneling()  
+		   or bot:IsStunned() 
+		   or bot:HasModifier('modifier_item_forcestaff_active')
+		   or bot:HasModifier('modifier_phantom_lancer_phantom_edge_boost')
+end
 
 function J.CanNotUseAbility(bot)
-	return bot:NumQueuedActions() > 0 
-		   or not bot:IsAlive()
+	return not bot:IsAlive()
+		   or bot:NumQueuedActions() > 0 
 		   or bot:IsInvulnerable() 
 		   or bot:IsCastingAbility() 
 		   or bot:IsUsingAbility() 
@@ -411,6 +427,7 @@ function J.GetVulnerableUnitNearLoc(bHero, bEnemy, nCastRange, nRadius, vLoc, bo
 	return weakest;
 end
 
+
 function J.GetAoeEnemyHeroLocation(bot, nCastRange, nRadius, nCount)
 
 	local nAoe = bot:FindAoELocation(true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0);
@@ -454,7 +471,7 @@ end
 
 function J.IsAllyCanKill(target)
 	
-	if target:GetHealth()/target:GetMaxHealth() > 0.38
+	if target:GetHealth()/target:GetMaxHealth() > 0.38  
 	then
 		return false;
 	end	
@@ -467,13 +484,13 @@ function J.IsAllyCanKill(target)
 		local ally = GetTeamMember(i);
 		if ally ~= nil and ally:IsAlive() 
 		   and ( ally:GetAttackTarget() == target )
-		   and GetUnitToUnitDistance(ally, target) <= ally:GetAttackRange() + 100
+		   and GetUnitToUnitDistance(ally, target) <= ally:GetAttackRange() + 50
 		then
 			nTotalDamage = nTotalDamage + ally:GetAttackDamage();
 		end
 	end
 	
-	nTotalDamage = nTotalDamage * 1.88 + J.GetAttackProjectileDamageByRange(target, 1200);
+	nTotalDamage = nTotalDamage * 2.44 + J.GetAttackProjectileDamageByRange(target, 1200);
 	
 	if J.CanKillTarget(target, nTotalDamage, nDamageType)
 	then
@@ -502,13 +519,13 @@ function J.IsOtherAllyCanKillTarget(bot, target)
 		   and not J.IsDisabled(true, ally)
 		   and ally:GetHealth()/ally:GetMaxHealth() > 0.15
 		   and ally:IsFacingLocation(target:GetLocation(), 45)
-		   and GetUnitToUnitDistance(ally, target) <= ally:GetAttackRange() + 90
+		   and GetUnitToUnitDistance(ally, target) <= ally:GetAttackRange() + 40
 		then
 			local allyTarget = J.GetProperTarget(ally);
-			if allyTarget == nil or allyTarget == target
+			if allyTarget == nil or allyTarget == target or J.IsHumanPlayer(ally)
 			then
 				local allyDamageTime = 2.8;
-				if J.IsHumanPlayer(ally) then allyDamageTime = 4.2 end;
+				if J.IsHumanPlayer(ally) then allyDamageTime = 8.2 end;
 				nTotalDamage = nTotalDamage + ally:GetEstimatedDamageToTarget(true, target, allyDamageTime, DAMAGE_TYPE_PHYSICAL);
 			end
 		end
@@ -527,7 +544,10 @@ function J.GetAlliesNearLoc(vLoc, nRadius)
 	local allies = {};
 	for i,id in pairs(GetTeamPlayers(GetTeam())) do
 		local member = GetTeamMember(i);
-		if member ~= nil and member:IsAlive() and GetUnitToLocationDistance(member, vLoc) <= nRadius then
+		if member ~= nil 
+		   and member:IsAlive() 
+		   and GetUnitToLocationDistance(member, vLoc) <= nRadius 
+		then
 			table.insert(allies, member);
 		end
 	end
@@ -749,13 +769,33 @@ function J.CanCastOnNonMagicImmune(npcTarget)
 		   and not npcTarget:IsInvulnerable() 
 		   and not J.IsSuspiciousIllusion(npcTarget) 
 		   and not J.HasForbiddenModifier(npcTarget) 
-		   and not J.IsAllyCanKill(npcTarget);
+		   and not J.IsAllyCanKill(npcTarget)
 end
 
 
 function J.CanCastOnTargetAdvanced( npcTarget )
-	return not npcTarget:HasModifier("modifier_antimage_spell_shield")
-			and not npcTarget:HasModifier("modifier_item_sphere_target")
+
+	if npcTarget:GetUnitName() == 'npc_dota_hero_antimage'
+	then
+		if npcTarget:IsSilenced()
+		   or npcTarget:IsStunned()
+		   or npcTarget:IsHexed()
+		   or npcTarget:IsNightmared() 
+		   or J.IsTaunted(npcTarget) 
+		   or npcTarget:GetMana() < 45
+		   or ( npcTarget:HasModifier( "modifier_antimage_spell_shield" )
+				and J.GetModifierTime( npcTarget,"modifier_antimage_spell_shield" ) < 0.27 )
+		then
+			return not npcTarget:HasModifier("modifier_item_sphere_target")
+			   and not npcTarget:HasModifier("modifier_item_lotus_orb_active")
+			   and not npcTarget:HasModifier("modifier_item_aeon_disk_buff")
+			   and not npcTarget:HasModifier("modifier_dazzle_shallow_grave")
+		end
+		
+		return false;
+	end
+
+	return  not npcTarget:HasModifier("modifier_item_sphere_target")
 			and not npcTarget:HasModifier("modifier_item_lotus_orb_active")
 			and not npcTarget:HasModifier("modifier_item_aeon_disk_buff")
 			and not npcTarget:HasModifier("modifier_dazzle_shallow_grave")
@@ -906,7 +946,7 @@ function J.IsDisabled(bEnemy, npcTarget)
 		       or npcTarget:IsStunned() 
 			   or npcTarget:IsHexed() 
 			   or npcTarget:IsNightmared() 
-			   or J.IsTaunted(npcTarget); 
+			   or J.IsTaunted(npcTarget) 
 	else
 	
 		if npcTarget:IsStunned() and J.GetRemainStunTime(npcTarget) > 0.8
@@ -947,7 +987,7 @@ end
 
 
 function J.IsInTeamFight(bot, range)
-	if range > 1600 then range = 1600 end;
+	if range == nil or range > 1600 then range = 1600 end;
 	local tableNearbyAttackingAlliedHeroes = bot:GetNearbyHeroes( range, false, BOT_MODE_ATTACK );
 	return #tableNearbyAttackingAlliedHeroes >= 2 and bot:GetActiveMode() ~= BOT_MODE_RETREAT;
 end
@@ -968,26 +1008,26 @@ end
 
 function J.IsGoingOnSomeone(bot)
 	local mode = bot:GetActiveMode();
-	return mode == BOT_MODE_ROAM or
-		   mode == BOT_MODE_TEAM_ROAM or
-		   mode == BOT_MODE_ATTACK or
-		   mode == BOT_MODE_DEFEND_ALLY
+	return mode == BOT_MODE_ROAM 
+		or mode == BOT_MODE_TEAM_ROAM 
+		or mode == BOT_MODE_ATTACK 
+		or mode == BOT_MODE_DEFEND_ALLY
 end
 
 
 function J.IsDefending(bot)
 	local mode = bot:GetActiveMode();
-	return mode == BOT_MODE_DEFEND_TOWER_TOP or
-		   mode == BOT_MODE_DEFEND_TOWER_MID or
-		   mode == BOT_MODE_DEFEND_TOWER_BOT 
+	return mode == BOT_MODE_DEFEND_TOWER_TOP 
+		or mode == BOT_MODE_DEFEND_TOWER_MID
+		or mode == BOT_MODE_DEFEND_TOWER_BOT 
 end
 
 
 function J.IsPushing(bot)
 	local mode = bot:GetActiveMode();
-	return mode == BOT_MODE_PUSH_TOWER_TOP or
-		   mode == BOT_MODE_PUSH_TOWER_MID or
-		   mode == BOT_MODE_PUSH_TOWER_BOT 
+	return mode == BOT_MODE_PUSH_TOWER_TOP
+		or mode == BOT_MODE_PUSH_TOWER_MID
+		or mode == BOT_MODE_PUSH_TOWER_BOT 
 end
 
 
@@ -1009,8 +1049,8 @@ function J.IsShopping(bot)
 	
 	local mode = bot:GetActiveMode();
 	return mode == BOT_MODE_RUNE 
-	       or mode == BOT_MODE_SECRET_SHOP 
-		   or mode == BOT_MODE_SIDE_SHOP 
+	    or mode == BOT_MODE_SECRET_SHOP 
+		or mode == BOT_MODE_SIDE_SHOP 
 end
 
 
@@ -1109,17 +1149,17 @@ end
 
 function J.IsAllyUnitSpell(sAbilityName)
 
-	local  nSpell = {
-					"bloodseeker_bloodrage", 
-					"omniknight_purification", 
-					"omniknight_repel", 
-					"medusa_mana_shield", 
-					"grimstroke_spirit_walk", 
-					"dazzle_shallow_grave", 
-					"ogre_magi_bloodlust", 
-					"lich_frost_shield", 
-					};
-	for _,name in pairs(nSpell)
+	local sSpellList = {
+						"bloodseeker_bloodrage", 
+						"omniknight_purification", 
+						"omniknight_repel", 
+						"medusa_mana_shield", 
+						"grimstroke_spirit_walk", 
+						"dazzle_shallow_grave", 
+						"ogre_magi_bloodlust", 
+						"lich_frost_shield", 
+						};
+	for _,name in pairs(sSpellList) --此处可优化排序算法
 	do
 		if sAbilityName == name
 		then
@@ -1134,20 +1174,22 @@ end
 
 function J.IsProjectileUnitSpell(sAbilityName)
 
-	local nSpell = {
-					"chaos_knight_chaos_bolt", 
-					"grimstroke_ink_creature", 
-					"lich_chain_frost", 
-					"medusa_mystic_snake", 
-					"phantom_assassin_stifling_dagger", 
-					"skeleton_king_hellfire_blast", 
-					"skywrath_mage_arcane_bolt", 
-					"sven_storm_bolt", 
-					"viper_viper_strike", 
-					"witch_doctor_paralyzing_cask", 
-					};
+	local sSpellList = {
+						"chaos_knight_chaos_bolt", 
+						"grimstroke_ink_creature", 
+						"lich_chain_frost", 
+						"medusa_mystic_snake", 
+						"phantom_assassin_stifling_dagger", 
+						"phantom_lancer_spirit_lance",
+						"skeleton_king_hellfire_blast", 
+						"skywrath_mage_arcane_bolt", 
+						"sven_storm_bolt", 
+						"vengefulspirit_magic_missile",
+						"viper_viper_strike", 
+						"witch_doctor_paralyzing_cask", 
+						};
 					
-	for _,name in pairs(nSpell)
+	for _,name in pairs(sSpellList) --此处可优化排序算法
 	do
 		if sAbilityName == name
 		then
@@ -1163,7 +1205,7 @@ end
 
 function J.IsOnlyProjectileSpell(sAbilityName)
 
-	local nSpell = {
+	local sSpellList = {
 					"necrolyte_death_pulse", 
 					"arc_warden_spark_wraith", 
 					"tinker_heat_seeking_missile", 
@@ -1171,7 +1213,7 @@ function J.IsOnlyProjectileSpell(sAbilityName)
 					"rattletrap_battery_assault", 
 					};
 					
-	for _,name in pairs(nSpell)
+	for _,name in pairs(sSpellList) --此处可优化排序算法
 	do
 		if sAbilityName == name
 		then
@@ -1369,7 +1411,7 @@ function J.GetAttackProDelayTime(bot, nCreep)
 		nAttackProDelayTime = nAttackProDelayTime + (nDist - botAttackRange - 50)/botMoveSpeed;
 	end
 	
-	return nAttackProDelayTime ;
+	return nAttackProDelayTime
 
 end
 
@@ -1422,7 +1464,7 @@ function J.GetCreepAttackProjectileWillRealDamage(nUnit, nTime)
 		then
 			local nProjectSpeed = p.caster:GetAttackProjectileSpeed();
 			if p.caster:IsTower() then nProjectSpeed = nProjectSpeed * 0.9 end;
-			local nProjectDist  = nProjectSpeed * nTime * 0.95;
+			local nProjectDist  = nProjectSpeed * nTime * 0.96;
 			local nDistance     = GetUnitToLocationDistance(nUnit, p.location);
 			if nProjectDist > nDistance 
 			then
@@ -1463,10 +1505,20 @@ end
 
 function J.GetCorrectLoc(target, delay)
 	
+	-- if target:GetMovementDirectionStability() < 0.6 
+	-- then
+		-- return target:GetExtrapolatedLocation(delay *0.38);
+	-- elseif target:GetMovementDirectionStability() < 0.9 
+		-- then
+			-- return target:GetExtrapolatedLocation(delay *0.62);
+	-- else
+		-- return target:GetExtrapolatedLocation(delay);	
+	-- end
+	
 	if target:GetMovementDirectionStability() < 0.6 
 	then
 		return (target:GetLocation() + target:GetExtrapolatedLocation(delay *0.68))/2;
-	elseif target:GetMovementDirectionStability() < 0.9 
+	elseif target:GetMovementDirectionStability() < 0.95 
 		then
 			return (target:GetLocation() + target:GetExtrapolatedLocation(delay *0.88))/2;
 	else
@@ -1611,7 +1663,7 @@ end
 
 function J.GetDistanceFromAncient(bot, bEnemy)
 	local targetAncient = GetAncient(GetTeam());
-	if bEnemy then  targetAncient = GetAncient(GetOpposingTeam()); end
+	if bEnemy then targetAncient = GetAncient(GetOpposingTeam()); end
 	
 	return GetUnitToUnitDistance(bot, targetAncient);
 end
@@ -1779,11 +1831,14 @@ function J.SetReportAndPingLocation(vLoc, nMessage, nNumber)
 	end
 end
 
+
 function J.SetReportMotive(bDebugFile, sMotive)
 	
 	if bDebugMode and bDebugTeam and bDebugFile and sMotive ~= nil
 	then
 		GetBot():ActionImmediate_Chat(sMotive, true);
+		local nowTime = J.GetOne(DotaTime()/10)*10;
+		print(J.Chat.GetNormName(GetBot()).."  "..(J.GetOne(nowTime/600)*10)..":"..(nowTime%60).."  "..sMotive)
 	end
 
 end
@@ -1829,17 +1884,17 @@ function J.GetDelayCastLocation(bot, npcTarget, nCastRange, nRadius, nTime)
 	local nFutureLoc = J.GetCorrectLoc(npcTarget, nTime);
 	local nDistance = GetUnitToLocationDistance(bot, nFutureLoc);
 	
-	if nDistance > nCastRange + nRadius
+	if nDistance > nCastRange + nRadius - 32
 	then
 		return nil;
 	end
 	
-	if nDistance > nCastRange - nRadius *0.62
+	if nDistance > nCastRange - nRadius *0.38
 	then
-		return J.GetLocationTowardDistanceLocation(bot, nFutureLoc, nCastRange);
+		return J.GetLocationTowardDistanceLocation(bot, nFutureLoc, nCastRange +8);
 	end
 
-	return J.GetLocationTowardDistanceLocation(bot, nFutureLoc, nDistance + nRadius *0.38);
+	return nFutureLoc;
 
 end
 
@@ -1903,8 +1958,6 @@ function J.SetQueuePtToINT(bot, bSoulRingUsed)
 end
 
 
-
-
 function J.IsPTReady(bot, status)
 	if  not bot:IsAlive()
 		or bot:IsMuted()
@@ -1953,8 +2006,8 @@ end
 
 function J.IsOtherAllysTarget(unit)
 	local bot = GetBot();
-	local allys = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
-	for _,ally in pairs(allys) do
+	local hAllyList = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
+	for _,ally in pairs(hAllyList) do
 		if J.IsValid(ally)
 		    and ally ~= bot 
 			and ( J.GetProperTarget(ally) == unit 
@@ -1969,8 +2022,8 @@ end
 
 function J.IsAllysTarget(unit)
 	local bot = GetBot();
-	local allys = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
-	for _,ally in pairs(allys) do
+	local hAllyList = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
+	for _,ally in pairs(hAllyList) do
 		if  J.IsValid(ally)
 			and ( J.GetProperTarget(ally) == unit 
 					or ally:IsFacingLocation(unit:GetLocation(), 12) )
@@ -1982,9 +2035,9 @@ function J.IsAllysTarget(unit)
 end
 
 
-function J.IsKeyWordUnit(keyWord, Unit)
+function J.IsKeyWordUnit(keyWord, uUnit)
 	
-	if string.find(Unit:GetUnitName(), keyWord) ~= nil 
+	if string.find(uUnit:GetUnitName(), keyWord) ~= nil 
 	then
 		return true;  
 	end
@@ -2293,14 +2346,12 @@ function J.IsSpecialCarry(bot)
     
 	local botName = bot:GetUnitName();
 	
-	return  botName == "npc_dota_hero_axe"
-			or botName == "npc_dota_hero_antimage"
+	return  botName == "npc_dota_hero_antimage"
 			or botName == "npc_dota_hero_arc_warden"
+			or botName == "npc_dota_hero_axe"
 			or botName == "npc_dota_hero_abaddon"
-			or botName == "npc_dota_hero_alchemist"		
 			or botName == "npc_dota_hero_bloodseeker"
 			or botName == "npc_dota_hero_bristleback" 
-			or botName == "npc_dota_hero_clinkz"
 			or botName == "npc_dota_hero_chaos_knight" 
 			or botName == "npc_dota_hero_dragon_knight"
 			or botName == "npc_dota_hero_drow_ranger"
@@ -2308,20 +2359,16 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_luna"
 			or botName == "npc_dota_hero_medusa"
 			or botName == "npc_dota_hero_nevermore"
-			or botName == "npc_dota_hero_night_stalker"
 			or botName == "npc_dota_hero_omniknight"
+			or botName == "npc_dota_hero_ogre_magi"
 			or botName == "npc_dota_hero_phantom_assassin"
-			or botName == 'npc_dota_hero_phantom_lancer'
-			or botName == "npc_dota_hero_queenofpain"
+			or botName == "npc_dota_hero_phantom_lancer"
 			or botName == "npc_dota_hero_razor"
 			or botName == "npc_dota_hero_skeleton_king"
 			or botName == "npc_dota_hero_sven"
 			or botName == "npc_dota_hero_sniper"
 			or botName == "npc_dota_hero_templar_assassin"
-			or botName == "npc_dota_hero_terrorblade"		 
 			or botName == "npc_dota_hero_viper" 
-			or botName == "npc_dota_hero_weaver"
-			or botName == "npc_dota_hero_earthshaker"
 			or botName == "npc_dota_hero_invoker"
 		 
 end
@@ -2331,16 +2378,11 @@ function J.IsSpecialSupport(bot)
     
 	local botName = bot:GetUnitName();
 	
-	return  botName == "npc_dota_hero_crystal_maiden"
-			or botName == "npc_dota_hero_death_prophet"		
+	return  botName == "npc_dota_hero_crystal_maiden"	
 			or botName == "npc_dota_hero_jakiro"
-			or botName == "npc_dota_hero_lich"
 			or botName == "npc_dota_hero_lina"
 			or botName == "npc_dota_hero_necrolyte"
-			or botName == "npc_dota_hero_ogre_magi"
-			or botName == "npc_dota_hero_oracle"
 			or botName == "npc_dota_hero_silencer"
-			or botName == "npc_dota_hero_shadow_shaman"
 			or botName == "npc_dota_hero_skywrath_mage"
 			or botName == "npc_dota_hero_warlock"		  
 			or botName == "npc_dota_hero_zuus" 
@@ -2437,7 +2479,7 @@ function J.GetEnemyList(bot, nRange)
 	do
 		if enemy ~= nil and enemy:IsAlive()
 			and not J.IsSuspiciousIllusion(enemy)
-			and not J.IsExistInTable(enemy, nRealEnemys)
+			and not J.IsExistInTable(enemy, nRealEnemys) --是否多余
 		then
 			table.insert(nRealEnemys, enemy);
 		end
@@ -2641,10 +2683,10 @@ end
 
 function J.IsInAllyArea(bot)
    
-   local AllyAcient = GetAncient(GetTeam());
-   local EnemyAcient = GetAncient(GetOpposingTeam());
+   local hAllyAcient = GetAncient(GetTeam());
+   local hEnemyAcient = GetAncient(GetOpposingTeam());
       
-   if GetUnitToUnitDistance(bot, AllyAcient) + 768 < GetUnitToUnitDistance(bot, EnemyAcient)
+   if GetUnitToUnitDistance(bot, hAllyAcient) + 768 < GetUnitToUnitDistance(bot, hEnemyAcient)
    then
 		return true;
    end
@@ -2655,10 +2697,10 @@ end
 
 function J.IsInEnemyArea(bot)
    
-   local AllyAcient = GetAncient(GetTeam());
-   local EnemyAcient = GetAncient(GetOpposingTeam());
+   local hAllyAcient = GetAncient(GetTeam());
+   local hEnemyAcient = GetAncient(GetOpposingTeam());
       
-   if GetUnitToUnitDistance(bot, EnemyAcient) + 1280 < GetUnitToUnitDistance(bot, AllyAcient)
+   if GetUnitToUnitDistance(bot, hEnemyAcient) + 1280 < GetUnitToUnitDistance(bot, hAllyAcient)
    then
 		return true;
    end
@@ -2733,71 +2775,6 @@ function J.GetNumOfTeamTotalKills(bEnemy)
 end
 
 
-local dismantleForBtCheckTime = 600;
-local lifestealForBtDismantleDone = false;
-local staffForBtDismantleDone = false;
-function J.ConsiderForBtDisassembleMask(bot)
-	
-	if staffForBtDismantleDone then return; end
-	
-	if dismantleForBtCheckTime < DotaTime() + 1.0
-	then
-		dismantleForBtCheckTime = DotaTime();	
-		
-		local mask     = bot:FindItemSlot("item_mask_of_madness");
-		local claymore = bot:FindItemSlot("item_claymore");
-		local reaver   = bot:FindItemSlot("item_reaver");
-				
-		if bot:GetItemInSlot(6) == nil
-			or bot:GetItemInSlot(7) == nil
-			or bot:GetItemInSlot(8) == nil
-		then
-						
-			if mask >= 0 and mask <= 8
-			   and ( ( reaver >= 0 and reaver <= 8 ) or claymore >= 0 )
-			   and ( bot:GetGold() >= 1400 or bot:GetStashValue() >= 1400 or bot:GetCourierValue() >= 1400 )
-			then
-				bot:ActionImmediate_DisassembleItem( bot:GetItemInSlot(mask) );
-				return;
-			end
-			
-			if mask >= 0 and mask <= 8
-			   and claymore >= 0 and claymore <= 8
-			   and reaver >= 0 and reaver <= 8
-			then
-				bot:ActionImmediate_DisassembleItem( bot:GetItemInSlot(mask) );
-				return;
-			end
-		end
-		
-		local lifesteal = bot:FindItemSlot("item_lifesteal");
-		local staff = bot:FindItemSlot("item_quarterstaff");
-		
-		if lifesteal >= 0 then -- and not lifestealForBtDismantleDone then
-			bot:ActionImmediate_SetItemCombineLock( bot:GetItemInSlot(lifesteal), false );
---			lifestealForBtDismantleDone = true;
-			return;
-		end
-		
-		local satanic  = bot:FindItemSlot("item_satanic");
-		
-		if satanic >= 0 and staff >= 0 then
-			bot:ActionImmediate_SetItemCombineLock( bot:GetItemInSlot(staff), false );
-			staffForBtDismantleDone = true;
-			return;
-		end
-		
-		-- if satanic >= 0 
-		   -- and bot:GetGold() > GetItemCost("item_quarterstaff") 
-		-- then
-			-- bot:ActionImmediate_PurchaseItem("item_quarterstaff");
-			-- staffForBtDismantleDone = true;
-			-- return;
-		-- end
-	end
-end
-
-
 local dismantleForMkbCheckTime = 600;
 local lifestealForMkbDismantleDone = false;
 local staffForMkbDismantleDone = false;
@@ -2819,7 +2796,7 @@ function J.ConsiderForMkbDisassembleMask(bot)
 		then
 						
 			if mask >= 0 and mask <= 8
-			   and ( ( reaver >= 0 and reaver <= 8 ) or claymore >= 0 )
+			   and ( ( reaver >= 0 and reaver <= 8 ) or ( claymore >= 0 and claymore <= 8 ))
 			   and ( bot:GetGold() >= 1400 or bot:GetStashValue() >= 1400 or bot:GetCourierValue() >= 1400 )
 			then
 				bot:ActionImmediate_DisassembleItem( bot:GetItemInSlot(mask) );
@@ -2872,7 +2849,7 @@ function J.HasNotActionLast(nCD, nNumber)
 end
 
 
-function J.GetCastPoint(bot, unit, nPointTime, nProjectSpeed)	
+function J.GetCastDelay(bot, unit, nPointTime, nProjectSpeed)	
 				
 	local nDist = GetUnitToUnitDistance(bot, unit);
 	
@@ -3637,7 +3614,7 @@ ACTIVITY_TAUNT - 1536
 --[[
 J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellList)
 J.ConsiderUpdateEnvironment(bot)
-J.PrintInitStatus(nFlag, nNum, sMessage1, sMessage2)
+J.PrintInitMessage(sFlag, sMessage)
 J.IsDebugHero(bot, sName)
 J.CanNotUseAbility(bot)
 J.GetVulnerableWeakestUnit(bHero, bEnemy, nRadius, bot)
@@ -3791,7 +3768,7 @@ J.GetNumOfTeamTotalKills(bEnemy)
 J.ConsiderForBtDisassembleMask(bot)
 J.ConsiderForMkbDisassembleMask(bot)
 J.HasNotActionLast(nCD, nNumber)
-J.GetCastPoint(bot, unit, nPointTime, nProjectSpeed)	
+J.GetCastDelay(bot, unit, nPointTime, nProjectSpeed)	
 J.CanBreakTeleport(bot, unit, nPointTime, nProjectSpeed)	
 J.GetMagicToPhysicalDamage(bot, nUnit, nMagicDamage)
 --]]

@@ -12,7 +12,7 @@ if GetBot():IsInvulnerable() or not GetBot():IsHero() or not string.find(GetBot(
 end
 
 local X = {}
-local role = require( GetScriptDirectory()..'/FunLib/jmz_role')
+local Role = require( GetScriptDirectory()..'/FunLib/jmz_role')
 local bot = GetBot();
 local minute = 0;
 local sec = 0;
@@ -25,7 +25,7 @@ local bottle = nil;
 
 local runeLocation = nil;
 
-local nStopWaitTime = role.GetRuneActionTime();
+local nStopWaitTime = Role.GetRuneActionTime();
 
 
 local hasPingAndSay = false;
@@ -85,12 +85,12 @@ function GetDesire()
 	sec = DotaTime() % 60
 	
 	if DotaTime() < 39 *60
-		and not role.IsPowerRuneKnown()
+		and not Role.IsPowerRuneKnown()
 		and (    GetRuneStatus( RUNE_POWERUP_1 ) == RUNE_STATUS_AVAILABLE 
 		      or GetRuneStatus( RUNE_POWERUP_1 ) == RUNE_STATUS_AVAILABLE )
 --		      or enemyHasPowerRuneBuff
 	then
-		role["lasPowerRuneTime"] = DotaTime();
+		Role["lasPowerRuneTime"] = DotaTime();
 	end
 	
 	if not X.IsSuitableToPick() then
@@ -245,7 +245,7 @@ function Think()
 			if nAttactRange > 1400 then nAttactRange = 1400 end;
 			local nEnemys = bot:GetNearbyHeroes(nAttactRange,true,BOT_MODE_NONE);
 			if nEnemys[1] ~= nil and nEnemys[1]:IsAlive() and nEnemys[1]:CanBeSeen()
-				and not role.CanBeSupport(bot:GetUnitName())
+				and not Role.CanBeSupport(bot:GetUnitName())
 				and bot:GetHealth() > 500
 			then
 				bot:Action_AttackUnit(nEnemys[1], true);
@@ -367,7 +367,7 @@ function X.IsKnown(r)
 		
 		if ( minute % 2 == 0 or sec < 52 )
 			and runeStatus == RUNE_STATUS_UNKNOWN
-			and role.IsPowerRuneKnown()
+			and Role.IsPowerRuneKnown()
 		then
 			return true;
 		end
@@ -464,7 +464,7 @@ function X.IsThereCarry(runeLoc)
 	for k,v in pairs(teamPlayers)
 	do
 		local member = GetTeamMember(k);
-		if member ~= nil and not member:IsIllusion() and member:IsAlive() and role.CanBeSafeLaneCarry(member:GetUnitName()) 
+		if member ~= nil and not member:IsIllusion() and member:IsAlive() and Role.CanBeSafeLaneCarry(member:GetUnitName()) 
 		   and ( (GetTeam()==TEAM_DIRE and member:GetAssignedLane()==LANE_TOP) or (GetTeam()==TEAM_RADIANT and member:GetAssignedLane()==LANE_BOT)  )	
 		then
 			local dist1 = GetUnitToLocationDistance(member, runeLoc);

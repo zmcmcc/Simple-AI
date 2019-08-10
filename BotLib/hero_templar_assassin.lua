@@ -46,6 +46,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_black_king_bar",
 	"item_urn_of_shadows",
+	
+	'item_satanic',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);

@@ -54,7 +54,7 @@ local beNormalFarmer = false;
 local beHighFarmer = false;
 local beVeryHighFarmer = false;
 
-local sBotVersion,sVersionDate,sABAVersionDate = J.Role.GetBotVersion();
+local sBotVersion,sVersionDate, sABAVersionDate = J.Role.GetBotVersion();
 local bPushNoticeDone = false;
 local bAllNotice = true;
 local nPushNoticeTime = nil;
@@ -116,7 +116,7 @@ function GetDesire()
 		bInitDone = true
 		beNormalFarmer = X.IsNormalFarmer(bot);
 		beHighFarmer = X.IsHighFarmer(bot);
-		beVeryHighFarmer = X.IsVeryHighFarmerr(bot);
+		beVeryHighFarmer = X.IsVeryHighFarmer(bot);
 	end
 	
 	if DotaTime() < 50 then return 0.0 end
@@ -447,13 +447,7 @@ end
 
 function Think()
 	
-	if  bot:IsChanneling() 
-		or bot:NumQueuedActions() > 0
-		or bot:IsCastingAbility()
-		or bot:IsUsingAbility()
-	then 
-		return;
-	end
+	if J.CanNotUseAction(bot) then return end
 	
 	if runMode then
 		if not bot:IsInvisible() and bot:GetLevel() > 14
@@ -541,21 +535,22 @@ function Think()
 			
 			if farmTarget:GetTeam() ~= bot:GetTeam()
 			then
-				--如果小兵正在被友方小兵攻击且生命值略高于自己的击杀线则stop自己的出手
+				--如果小兵正在被友方小兵攻击且生命值略高于自己的击杀线则S自己的出手
 				local allyTower = bot:GetNearbyTowers(1000,true)[1];
 				if bot:GetAttackTarget() == farmTarget
 				   and ( J.GetAttackTargetEnemyCreepCount(farmTarget, 800) > 0
 						   or ( allyTower ~= nil and allyTower:GetAttackTarget() == farmTarget ) )
 				then
 					local botDamage = bot:GetAttackDamage();
+					local nDamageReduce = bot:GetAttackCombatProficiency(farmTarget)
 					if bot:FindItemSlot("item_quelling_blade") > 0
 						or bot:FindItemSlot("item_bfury") > 0
 					then
 						botDamage = botDamage + 24;
 					end
 					
-					if not J.CanKillTarget(farmTarget, botDamage , DAMAGE_TYPE_PHYSICAL)
-						and J.CanKillTarget(farmTarget, botDamage + 99, DAMAGE_TYPE_PHYSICAL)
+					if not J.CanKillTarget(farmTarget, botDamage * nDamageReduce, DAMAGE_TYPE_PHYSICAL)
+					   and J.CanKillTarget(farmTarget, (botDamage +99) * nDamageReduce, DAMAGE_TYPE_PHYSICAL)
 					then
 						bot:Action_ClearActions( true );
 					    return
@@ -588,6 +583,7 @@ function Think()
 	end
 	
 	
+	if preferedCamp == nil then preferedCamp = J.Site.GetClosestNeutralSpwan(bot, AvailableCamp);end
 	if preferedCamp ~= nil then
 		local targetFarmLoc = preferedCamp.cattr.location;
 		local cDist = GetUnitToLocationDistance(bot, targetFarmLoc);
@@ -670,6 +666,12 @@ function Think()
 					end					
 				end
 				
+				if hLaneCreepList[1] ~= nil and hLaneCreepList[1]:IsAlive()
+				then
+					bot:Action_MoveToLocation( hLaneCreepList[1]:GetLocation() );
+					return;
+				end
+				
 				if X.CouldBlink(bot,targetFarmLoc) then return end;
 				
 				if X.CouldBlade(bot,targetFarmLoc) then return end;
@@ -727,9 +729,8 @@ function Think()
 	end
 	
 	
-	bot:SetTarget(nil);
-	if preferedCamp == nil then preferedCamp = J.Site.GetClosestNeutralSpwan(bot, AvailableCamp);end
 	
+	bot:SetTarget(nil);
 	bot:Action_MoveToLocation( ( RB + DB )/2 );
 	return;
 end
@@ -745,6 +746,7 @@ function X.IsHumanPlayerInTeam()
 	
 	return false;
 end
+
 
 function X.IsThereT3Detroyed()
 	
@@ -848,15 +850,8 @@ end
 
 
 local enemyPids = nil;
---local runCD = 0.1;
---local lastRunCheckTime = -90;
 function X.ShouldRun(bot)
-	
-	-- if DotaTime() < lastRunCheckTime + runCD
-	-- then
-		-- return 0;
-	-- end
-	
+		
 	if bot:IsChanneling() 
 	   or not bot:IsAlive()
 	then
@@ -890,21 +885,21 @@ function X.ShouldRun(bot)
 	
 	--防止低等级过于深入追击
 	if botLevel < 4
-		and enemyFountainDistance < 6000
+		and enemyFountainDistance < 7666
 	then
 		return 3.33;
 	end
 	
-	--禁止低等级追到南天门
+	--防止低等级追到南天门
 	if botLevel < 6
-		and DotaTime() > 60
-		and DotaTime() < 60 *8
-		and enemyFountainDistance < 7800
+		and DotaTime() > 30
+		and DotaTime() < 8 *60
+		and enemyFountainDistance < 8111
 	then
 		if botTarget ~= nil and botTarget:IsHero()
 		   and J.GetHPR(botTarget) > 0.38
 		   and (  not J.IsInRange(bot,botTarget,bot:GetAttackRange() + 150) 
-				  or not J.CanKillTarget(botTarget, bot:GetAttackDamage() * 3.33, DAMAGE_TYPE_PHYSICAL) )
+				  or not J.CanKillTarget(botTarget, bot:GetAttackDamage() * 2.33, DAMAGE_TYPE_PHYSICAL) )
 		then
 			return 2.88;
 		end
@@ -999,9 +994,10 @@ function X.ShouldRun(bot)
 	end
 	
 	--低等级避免近塔
-	if #hEnemyHeroList > 0 or bot:GetHealth() < 500
+	if  botLevel <= 10
+		and (#hEnemyHeroList > 0 or bot:GetHealth() < 500)
 	then
-		local nLongEnemyTowers = bot:GetNearbyTowers(918, true);
+		local nLongEnemyTowers = bot:GetNearbyTowers(928, true);
 		if bot:GetAssignedLane() == LANE_MID 
 		then 
 			 nLongEnemyTowers = bot:GetNearbyTowers(898, true); 
@@ -1026,6 +1022,7 @@ function X.ShouldRun(bot)
 		end
 	end
 	
+	--隐身了别浪
 	if  bot:IsInvisible()
 		and botMode == BOT_MODE_RETREAT
 		and bot:GetActiveModeDesire() > 0.4
@@ -1097,7 +1094,7 @@ function X.ShouldRun(bot)
 		
 	end	
 	
-	--lastRunCheckTime = DotaTime();
+
 	return 0;
 end
 
@@ -1249,18 +1246,15 @@ function X.IsNormalFarmer(bot)
 
 	local botName = bot:GetUnitName();
 	
-	return  botName == "npc_dota_hero_chaos_knight" 
+	 return botName == "npc_dota_hero_chaos_knight" 
 		 or botName == "npc_dota_hero_dragon_knight"
-		 or botName == "npc_dota_hero_shredder"
+		 or botName == "npc_dota_hero_ogre_magi"
 		 or botName == "npc_dota_hero_bristleback" 
 		 or botName == "npc_dota_hero_skeleton_king"
 		 or botName == "npc_dota_hero_abaddon"
 		 or botName == "npc_dota_hero_kunkka"
 		 or botName == "npc_dota_hero_sniper"
-		 or botName == "npc_dota_hero_clinkz"
-		 or botName == "npc_dota_hero_queenofpain"
 		 or botName == "npc_dota_hero_viper" 
-		 or botName == "npc_dota_hero_axe"
 		 or botName == "npc_dota_hero_disruptor"
 		 or botName == "npc_dota_hero_shadow_demon"
 		 or botName == "npc_dota_hero_vengefulspirit"
@@ -1275,6 +1269,7 @@ function X.IsHighFarmer(bot)
 	return botName == "npc_dota_hero_nevermore"
 		or botName == "npc_dota_hero_templar_assassin"
 		or botName == "npc_dota_hero_phantom_assassin"
+		or botName == "npc_dota_hero_phantom_lancer"
 		or botName == "npc_dota_hero_drow_ranger"
 		or botName == "npc_dota_hero_luna"
 		or botName == "npc_dota_hero_axe"
@@ -1282,6 +1277,7 @@ function X.IsHighFarmer(bot)
 		or botName == "npc_dota_hero_arc_warden"
 		or botName == "npc_dota_hero_bloodseeker"
 		or botName == "npc_dota_hero_medusa"
+		or botName == "npc_dota_hero_razor"
 		or botName == "npc_dota_hero_grimstroke"
 		or botName == "npc_dota_hero_dazzle"
 		or botName == "npc_dota_hero_batrider"
@@ -1289,15 +1285,16 @@ function X.IsHighFarmer(bot)
 end
 
 
-function X.IsVeryHighFarmerr(bot)
+function X.IsVeryHighFarmer(bot)
 
 	local botName = bot:GetUnitName();
 	
 	return botName == "npc_dota_hero_nevermore"
-		or botName == "npc_dota_hero_axe"
 		or botName == "npc_dota_hero_luna"
 		or botName == "npc_dota_hero_antimage"
 		or botName == "npc_dota_hero_medusa"
+		or botName == "npc_dota_hero_phantom_lancer"
+		or botName == "npc_dota_hero_razor"
 		
 end
 

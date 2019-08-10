@@ -23,7 +23,7 @@ local tTalentTreeList = {
 }
 
 local tAllAbilityBuildList = {
-						{1,3,1,2,1,6,2,2,2,3,6,3,3,1,6},
+						{1,2,1,3,1,6,2,2,2,3,6,3,3,1,6},
 }
 
 local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
@@ -45,6 +45,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_power_treads",
 	"item_stout_shield",
+	
+	'item_satanic',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -62,6 +65,12 @@ function X.MinionThink(hMinionUnit)
 	end
 
 end
+
+--[[
+npc_dota_hero_phantom_assassin
+
+--]]
+
 
 local abilityQ = bot:GetAbilityByName( sAbilityList[1] )
 local abilityW = bot:GetAbilityByName( sAbilityList[2] )
@@ -95,8 +104,7 @@ function X.SkillsComplement()
 	hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
 	
 	
-	
-	
+
 	castEDesire  = X.ConsiderE();	
 	if castEDesire > 0
 	then
@@ -169,8 +177,9 @@ function X.ConsiderQ()
 	do
 		if J.IsValid(npcEnemy)
 		   and J.CanCastOnNonMagicImmune(npcEnemy)
+		   and J.CanCastOnTargetAdvanced(npcEnemy)
 		   and GetUnitToUnitDistance(bot,npcEnemy) <= nCastRange + 80
-		   and ( J.CanKillTarget(npcEnemy,nDamage,nDamageType) 
+		   and ( J.CanKillTarget(npcEnemy,nDamage *1.38,nDamageType) 
 		         or ( npcEnemy:IsChanneling() and J.GetHPR(npcEnemy) < 0.25))
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
@@ -188,6 +197,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 			then
 				local npcEnemyHealth = npcEnemy:GetHealth();
 				if ( npcEnemyHealth < npcWeakestEnemyHealth )
@@ -225,7 +235,7 @@ function X.ConsiderQ()
 			end
 		end
 		
-		if bot:GetMana() > 150 + nLV * 10
+		if bot:GetMana() > 100 + nLV * 10
 		then
 			local keyWord = "melee";
 			for _,creep in pairs(nLaneCreeps)
@@ -233,7 +243,7 @@ function X.ConsiderQ()
 				if J.IsValid(creep)
 					and not creep:HasModifier("modifier_fountain_glyph")
 					and J.IsKeyWordUnit(keyWord,creep)
-					and GetUnitToUnitDistance(creep,bot) > 360 + nLV * 20
+					and GetUnitToUnitDistance(creep,bot) > 320 + nLV * 20
 				then
 					local nTime = nCastPoint + GetUnitToUnitDistance(bot,creep)/1250;
 					if J.WillKillTarget(creep,nDamage + nBonusDamage,nDamageType,nTime *0.9)
@@ -245,12 +255,12 @@ function X.ConsiderQ()
 			end
 		end
 		
-		-- 对线期间对敌人使用
+		--对线期间对敌人使用
 		local nWeakestEnemyLaneCreep = J.GetVulnerableWeakestUnit(false, true, nCastRange +100, bot);
 		local nWeakestEnemyLaneHero  = J.GetVulnerableWeakestUnit(true , true, nCastRange +40, bot);
 		if nWeakestEnemyLaneCreep == nil 
 		   or (nWeakestEnemyLaneCreep ~= nil 
-				and not J.CanKillTarget(nWeakestEnemyLaneCreep,(nDamage+nBonusDamage) *3,nDamageType) )
+				and not J.CanKillTarget(nWeakestEnemyLaneCreep,(nDamage+nBonusDamage) *2,nDamageType) )
 		then
 			if nWeakestEnemyLaneHero ~= nil 
 				and ( J.GetHPR(nWeakestEnemyLaneHero) <= 0.48
@@ -283,10 +293,13 @@ function X.ConsiderQ()
 	    local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
+			and J.CanCastOnTargetAdvanced(npcTarget)
 			and J.IsInRange(npcTarget, bot, nCastRange +50) 
 		then
-			if nSkillLV >= 3 or nMP > 0.68 
-			   or J.GetHPR(npcTarget) < 0.38 or DotaTime() > 6 *60
+			if nSkillLV >= 3 
+			   or nMP > 0.6 or nHP < 0.4  
+			   or J.GetHPR(npcTarget) < 0.38 
+			   or DotaTime() > 6 *60
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			end
@@ -303,8 +316,8 @@ function X.ConsiderQ()
 			if  J.IsValid(npcEnemy)
 			    and bot:WasRecentlyDamagedByHero( npcEnemy, 5.0 ) 
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy) 
-				and not npcEnemy:IsDisarmed()
 				and ( bot:IsFacingLocation(npcEnemy:GetLocation(),45)
 						or not J.IsInRange(npcEnemy,bot,nCastRange - 300) )
 			then
@@ -412,6 +425,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)			
 				and bot:IsFacingLocation(npcEnemy:GetLocation(),80)
 			then
@@ -480,9 +494,9 @@ function X.ConsiderW()
 			    and J.CanCastOnMagicImmune(npcEnemy) 
 			then
 				local npcEnemyHealth = npcEnemy:GetHealth();
-				local tableNearbyAllysHeroes = npcEnemy:GetNearbyHeroes( 600, true, BOT_MODE_NONE );
+				local tableNearbyAllyHeroes = npcEnemy:GetNearbyHeroes( 600, true, BOT_MODE_NONE );
 				if npcEnemyHealth < npcWeakestEnemyHealth 
-					and ( #tableNearbyAllysHeroes >= 1 or aliveEnemyCount <= 2 )
+					and ( #tableNearbyAllyHeroes >= 1 or aliveEnemyCount <= 2 )
 				then
 					npcWeakestEnemyHealth = npcEnemyHealth;
 					npcWeakestEnemy = npcEnemy;
@@ -533,10 +547,10 @@ function X.ConsiderW()
 			and J.IsInRange(npcTarget, bot, nCastRange +50) 
 		then
 			local tableNearbyEnemyHeroes = npcTarget:GetNearbyHeroes( 800, false, BOT_MODE_NONE );
-			local tableNearbyAllysHeroes = npcTarget:GetNearbyHeroes( 800, true, BOT_MODE_NONE );
+			local tableNearbyAllyHeroes = npcTarget:GetNearbyHeroes( 800, true, BOT_MODE_NONE );
 			local tableAllEnemyHeroes    = npcTarget:GetNearbyHeroes( 1600, false, BOT_MODE_NONE );
 			if  ( J.WillKillTarget(npcTarget,nAttackDamage * 3,DAMAGE_TYPE_PHYSICAL,1.0) )
-				or ( #tableNearbyEnemyHeroes <= #tableNearbyAllysHeroes )
+				or ( #tableNearbyEnemyHeroes <= #tableNearbyAllyHeroes )
 				or ( #tableAllEnemyHeroes <= 1 )
 				or GetUnitToUnitDistance(bot,npcTarget) <= 400
 				or aliveEnemyCount <= 2 
@@ -688,9 +702,10 @@ function X.ConsiderE()
 	-- 过河道接近敌方基地
 	if J.IsInEnemyArea(bot) and nLV >= 7
 	then
-		local nEnemys = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
-		local nAllys  = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
-		if #nEnemys == 0 and #nAllys <= 2
+		local nEnemies = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
+		local nAllies  = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
+		local nEnemyTowers = bot:GetNearbyTowers(1600,true);
+		if #nEnemies == 0 and #nAllies <= 2 and nEnemyTowers == 0
 		then
 			return BOT_ACTION_DESIRE_HIGH;
 		end

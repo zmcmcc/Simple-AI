@@ -62,10 +62,10 @@ local tAllLineUpList = {
 				[6]={	"npc_dota_hero_viper",
 						"npc_dota_hero_skeleton_king",
 						"npc_dota_hero_phantom_assassin",
-						"npc_dota_hero_jakiro",
+						"npc_dota_hero_skywrath_mage",
 						"npc_dota_hero_necrolyte" },
 				[7]={	"npc_dota_hero_viper",
-						"npc_dota_hero_chaos_knight",
+						"npc_dota_hero_ogre_magi",
 						"npc_dota_hero_antimage",
 						"npc_dota_hero_jakiro",
 						"npc_dota_hero_necrolyte" },
@@ -76,7 +76,7 @@ local tAllLineUpList = {
 						"npc_dota_hero_necrolyte" },
 				[9]={	"npc_dota_hero_viper",
 						"npc_dota_hero_chaos_knight",
-						"npc_dota_hero_antimage",
+						"npc_dota_hero_phantom_lancer",
 						"npc_dota_hero_jakiro",
 						"npc_dota_hero_necrolyte" },
 						
@@ -210,11 +210,17 @@ local tAllLineUpList = {
 						"npc_dota_hero_antimage",
 						"npc_dota_hero_jakiro",
 						"npc_dota_hero_necrolyte" },
-				[35]={	"npc_dota_hero_templar_assassin",
+				
+				[35]={	"npc_dota_hero_razor",
 						"npc_dota_hero_bristleback",
-						"npc_dota_hero_antimage",
-						"npc_dota_hero_jakiro",
-						"npc_dota_hero_necrolyte" },
+						"npc_dota_hero_bloodseeker",
+						"npc_dota_hero_zuus",
+						"npc_dota_hero_silencer" },
+				[36]={	"npc_dota_hero_razor",
+						"npc_dota_hero_ogre_magi",
+						"npc_dota_hero_phantom_lancer",
+						"npc_dota_hero_lina",
+						"npc_dota_hero_warlock" },
 };
 
 local sFirstList = {
@@ -223,6 +229,7 @@ local sFirstList = {
 	"npc_dota_hero_nevermore",
 	"npc_dota_hero_medusa",	
 	"npc_dota_hero_templar_assassin",
+	"npc_dota_hero_razor",
 }
 
 local sSecondList = {
@@ -231,6 +238,7 @@ local sSecondList = {
 	"npc_dota_hero_dragon_knight",
 	"npc_dota_hero_kunkka",
 	"npc_dota_hero_skeleton_king",	
+	"npc_dota_hero_ogre_magi",
 }
 
 local sThirdList = {	
@@ -241,6 +249,7 @@ local sThirdList = {
 	"npc_dota_hero_drow_ranger",
 	"npc_dota_hero_bloodseeker",
 	"npc_dota_hero_phantom_assassin",
+	"npc_dota_hero_phantom_lancer",
 }
 
 local sFourthList = {
@@ -248,6 +257,7 @@ local sFourthList = {
 	"npc_dota_hero_zuus",
 	"npc_dota_hero_jakiro",
 	"npc_dota_hero_skywrath_mage",
+	"npc_dota_hero_lina",
 }
 
 local sFifthList = {
@@ -519,6 +529,124 @@ function X.IsBanByChat( sHero )
 	return false;
 end
 
+
+local sTianStarList =
+{
+"天罡星",
+"天魁星",
+"天机星",
+"天闲星",
+"天勇星",
+"天雄星",
+"天猛星",
+"天英星",
+"天贵星",
+"天富星",
+"天满星",
+"天孤星",
+"天伤星",
+"天立星",
+"天捷星",
+"天暗星",
+"天佑星",
+"天空星",
+"天速星",
+"天异星",
+"天杀星",
+"天微星",
+"天究星",
+"天退星",
+"天寿星",
+"天剑星",
+"天平星",
+"天罪星",
+"天损星",
+"天牢星",
+"天慧星",
+"天暴星",
+"天巧星",
+--"天威星",
+--"天哭星",
+--"天败星",
+}
+
+
+local sDiStarsList = 
+{
+"地煞星",
+"地魁星",
+"地勇星",
+"地杰星",
+"地雄星",
+"地英星",
+"地奇星",
+"地猛星",
+"地文星",
+"地正星",
+"地阔星",
+"地阖星",
+"地强星",
+"地暗星",
+"地轴星",
+"地会星",
+"地佐星",
+"地佑星",
+"地灵星",
+"地兽星",
+"地微星",
+"地慧星",
+"地暴星",
+"地然星",
+"地猖星",
+"地狂星",
+"地飞星",
+"地走星",
+"地巧星",
+"地明星",
+"地进星",
+"地退星",
+"地满星",
+"地遂星",
+"地周星",
+"地隐星",
+"地异星",
+"地理星",
+"地俊星",
+"地乐星",
+"地捷星",
+"地速星",
+"地镇星",
+"地嵇星",
+"地魔星",
+"地妖星",
+"地幽星",
+"地伏星",
+"地僻星",
+"地空星",
+"地孤星",
+"地全星",
+"地短星",
+"地角星",
+"地平星",
+"地察星",
+"地数星",
+"地阴星",
+"地刑星",
+"地壮星",
+"地健星",
+"地耗星",
+--"地贼星",
+--"地狗星",
+--"地威星",
+--"地劣星",
+--"地劣星",
+--"地损星",
+--"地奴星",
+--"地囚星",
+--"地藏星",
+}
+
+
 function X.GetRandNameList(sStarList)
 	
 	local sNameList = {};
@@ -578,17 +706,17 @@ function Think()
 	elseif GetGameMode() == GAMEMODE_CM then
 		otherGameMod.CaptainModeLogic();
 		otherGameMod.AddToList();
-	--elseif GetGameMode() == GAMEMODE_AR then
-	--	otherGameMod.AllRandomLogic();
-	--elseif GetGameMode() == GAMEMODE_MO then
-	--	otherGameMod.MidOnlyLogic();
-	--elseif GetGameMode() == GAMEMODE_1V1MID then
-	--	otherGameMod.OneVsOneLogic();
-	else
-		if GetGameState() == GAME_STATE_HERO_SELECTION then
-			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
-		end
-		AllPickLogic();
+		--elseif GetGameMode() == GAMEMODE_AR then
+		--	otherGameMod.AllRandomLogic();
+		--elseif GetGameMode() == GAMEMODE_MO then
+		--	otherGameMod.MidOnlyLogic();
+		--elseif GetGameMode() == GAMEMODE_1V1MID then
+		--	otherGameMod.OneVsOneLogic();
+		else
+			if GetGameState() == GAME_STATE_HERO_SELECTION then
+				InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
+			end
+			AllPickLogic();
 	end
 end
 

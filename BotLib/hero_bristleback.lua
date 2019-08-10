@@ -43,6 +43,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_crimson_guard",
 	"item_quelling_blade",
+	
+	"item_lotus_orb",
+	"item_magic_wand",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -137,10 +140,10 @@ function X.ConsiderQ()
 	then
 		local npcEnemy = tableNearbyEnemyHeroes[1];
 		if J.IsValid(npcEnemy) 
-			and npcEnemy ~= nil
 			and (bot:IsFacingLocation(npcEnemy:GetLocation(),10) or #nEnemyHeroes <= 1)
 			and bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) 
 			and J.CanCastOnNonMagicImmune(npcEnemy)
+			and J.CanCastOnTargetAdvanced(npcEnemy)
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 		end  
@@ -155,9 +158,13 @@ function X.ConsiderQ()
 		end
 	end
 
-	if J.IsInTeamFight(bot, 1200) and bot:HasScepter()
+	if J.IsInTeamFight(bot, 1400) and bot:HasScepter()
 	then
-		if tableNearbyEnemyHeroes ~= nil and #tableNearbyEnemyHeroes >= 1 then
+		if tableNearbyEnemyHeroes ~= nil 
+		   and #tableNearbyEnemyHeroes >= 1 
+		   and J.IsValidHero(tableNearbyEnemyHeroes[1])
+		   and J.CanCastOnNonMagicImmune(tableNearbyEnemyHeroes[1])
+		then
 			return BOT_ACTION_DESIRE_LOW, tableNearbyEnemyHeroes[1];
 		end
 	end
@@ -166,16 +173,20 @@ function X.ConsiderQ()
 	if J.IsGoingOnSomeone(bot)
 	then
 		local npcTarget = J.GetProperTarget(bot);
-		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nRadius) 
+		if J.IsValidHero(npcTarget) 
+		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and J.IsInRange(npcTarget, bot, nRadius) 
+		   and J.CanCastOnTargetAdvanced(npcTarget)
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcTarget;
 		end
 		
-		if J.IsValid(npcTarget) 
+		if J.IsValid(npcTarget) and #hEnemyHeroList == 0
 		   and J.IsAllowedToSpam(bot, nManaCost) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and J.CanCastOnTargetAdvanced(npcTarget)
 		   and J.IsInRange(npcTarget, bot, nRadius) 
-		   and not J.CanKillTarget(npcTarget,bot:GetAttackDamage() *1.38,DAMAGE_TYPE_PHYSICAL)
+		   and not J.CanKillTarget(npcTarget,bot:GetAttackDamage() *1.48,DAMAGE_TYPE_PHYSICAL)
 		then
 			local nCreeps = bot:GetNearbyCreeps(800,true);
 			if #nCreeps >= 1

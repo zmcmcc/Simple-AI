@@ -16,7 +16,7 @@ local bDebugMode = (bot:GetUnitName() == "npc_dota_hero_medusa")
 local X = {}
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local items = require( GetScriptDirectory()..'/FunLib/jmz_item')
+
 
 local botName = bot:GetUnitName();
 local cAbility = nil;
@@ -41,10 +41,6 @@ local refShardCheck = -90;
 local pickedItem = nil;
 local lastBootSlotCheck = -90;
 
-local pullAWildMod = false
-local pulltargetUnit = nil
-local pulltargetLoc = nil
-
 --可优化补充捡物品的逻辑在这里,移动换物品的逻辑到物品购买里
 
 function GetDesire()
@@ -58,7 +54,7 @@ function GetDesire()
 	if bot:GetLevel() > 15 then
 		if DotaTime() >= droppedCheck + 2.0 then
 			local mostCDHero = J.GetMostUltimateCDUnit();
-			if mostCDHero ~= nil and mostCDHero:IsBot() and bot == mostCDHero and items.GetEmptyInventoryAmount(bot) > 0 then
+			if mostCDHero ~= nil and mostCDHero:IsBot() and bot == mostCDHero and J.Item.GetEmptyInventoryAmount(bot) > 0 then
 				local item = nil;
 				local dropped = GetDroppedItemList();
 				for _,drop in pairs(dropped) do
@@ -78,7 +74,7 @@ function GetDesire()
 			if pickScepterHero ~= nil 
 			   and pickScepterHero:IsBot() 
 			   and bot == pickScepterHero 
-			   and items.GetEmptyInventoryAmount(bot) > 0 
+			   and J.Item.GetEmptyInventoryAmount(bot) > 0 
 			then
 				local item = nil;
 				local dropped = GetDroppedItemList();
@@ -103,7 +99,7 @@ function GetDesire()
 		if 	DotaTime() >= cheeseCheck + 2.0 and bot:GetActiveMode() ~= BOT_MODE_WARD then
 			local cSlot = bot:FindItemSlot('item_cheese');
 			if bot:GetItemSlotType(cSlot) == ITEM_SLOT_TYPE_BACKPACK then
-				local lessValItem = items.GetMainInvLessValItemSlot(bot);
+				local lessValItem = J.Item.GetMainInvLessValItemSlot(bot);
 				if lessValItem ~= -1 then
 					bot:ActionImmediate_SwapItems( cSlot, lessValItem );
 				end
@@ -115,7 +111,7 @@ function GetDesire()
 		if 	DotaTime() >= refShardCheck + 2.0 and bot:GetActiveMode() ~= BOT_MODE_WARD then
 			local rSlot = bot:FindItemSlot('item_refresher_shard');
 			if bot:GetItemSlotType(rSlot) == ITEM_SLOT_TYPE_BACKPACK then
-				local lessValItem = items.GetMainInvLessValItemSlot(bot);
+				local lessValItem = J.Item.GetMainInvLessValItemSlot(bot);
 				if lessValItem ~= -1 then
 					bot:ActionImmediate_SwapItems( rSlot, lessValItem );
 				end
@@ -127,8 +123,8 @@ function GetDesire()
 	--换鞋和换书的逻辑可优化到物品购买里
 	if bot:GetActiveMode() ~= BOT_MODE_WARD and DotaTime() > lastBootSlotCheck + 1.0 then
 		local itemSlot = -1;
-		for i=1,#items['tEarlyBoots'] do
-			local slot = bot:FindItemSlot(items['tEarlyBoots'][i]);
+		for i=1,#J.Item['tEarlyBoots'] do
+			local slot = bot:FindItemSlot(J.Item['tEarlyBoots'][i]);
 			if slot >= 0 then
 				itemSlot = slot;
 				break;
@@ -138,7 +134,7 @@ function GetDesire()
 			itemSlot = bot:FindItemSlot("item_boots")
 		end
 		if itemSlot ~= -1 and bot:GetItemSlotType(itemSlot) == ITEM_SLOT_TYPE_BACKPACK then
-			local lessValItem = items.GetMainInvLessValItemSlot(bot);
+			local lessValItem = J.Item.GetMainInvLessValItemSlot(bot);
 			if lessValItem ~= -1 and bot:GetItemInSlot(lessValItem):GetName() ~= "item_tome_of_knowledge"	
 				and GetItemCost(bot:GetItemInSlot(lessValItem):GetName()) < GetItemCost(bot:GetItemInSlot(itemSlot):GetName()) 
 			then
@@ -154,7 +150,7 @@ function GetDesire()
 			if bot:GetItemSlotType(tom) == ITEM_SLOT_TYPE_BACKPACK 
 			   and hTom:IsFullyCastable() 
 			then
-				local lessValItem = items.GetMainInvLessValItemSlot(bot);
+				local lessValItem = J.Item.GetMainInvLessValItemSlot(bot);
 				if lessValItem ~= -1 
 				then
 					bot:ActionImmediate_SwapItems( tom, lessValItem );
@@ -241,7 +237,7 @@ function GetDesire()
 			return BOT_MODE_DESIRE_ABSOLUTE *0.9;
 		end
 	end
-
+	
 	if bot:IsAlive() and
 	   J.IsSpecialSupport(bot) and
 	   DotaTime() > 60 and
@@ -256,7 +252,7 @@ function GetDesire()
 			pullAWildMod = false
 		end
 	end
-
+	
 	return 0.0;
 	
 end
@@ -289,14 +285,7 @@ function Think()
 		return; 
 	end
 	
-	if  bot:IsChanneling() 
-		or bot:NumQueuedActions() > 0
-		or bot:IsUsingAbility()
-		or bot:IsCastingAbility()
-	then 
-		return;
-	end
-
+	if J.CanNotUseAction(bot) then return end
 	if pullAWildMod then
 
 		if pulltargetUnit ~= nil then
@@ -315,7 +304,7 @@ function Think()
 
 		return;
 	end
-
+	
 	if towerCreepMode then
 		bot:Action_AttackUnit( towerCreep, true );
 		return;	
@@ -808,6 +797,12 @@ function X.CarryFindTarget( bot )
 	end
 	
 	
+	if bot:HasModifier('modifier_phantom_lancer_phantom_edge_boost')
+	then
+		return nil,0 
+	end
+	
+	
 	local enemyCourier = X.GetEnemyCourier(bot, nAttackRange +200);
 	if enemyCourier ~= nil
 	then
@@ -1232,6 +1227,7 @@ function X.CanBeAttacked(unit)
 	return  unit ~= nil
 			and unit:IsAlive()
 			and unit:CanBeSeen()
+			and not unit:IsNull()
 			and not unit:IsAttackImmune()
 			and not unit:IsInvulnerable()
 			and not unit:HasModifier("modifier_fountain_glyph")

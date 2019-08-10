@@ -81,7 +81,6 @@ local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
 
 
 
-
 function X.SkillsComplement()
 
 	
@@ -259,17 +258,15 @@ function X.ConsiderW()
 	
 	
 	local skThere, skLoc = J.IsSandKingThere(bot, nCastRange, 2.0);	
-	if skThere and not bot:IsInvisible() then
+	if skThere then
 		nTargetLocation = skLoc;
 		return BOT_ACTION_DESIRE_HIGH, nTargetLocation;
 	end	
 	
 	
 	if bot:GetActiveMode() == BOT_MODE_RETREAT 
-		and not bot:IsInvisible()
 	then
-	
-		
+			
 		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange-100, nRadius, nCastPoint, 0 );
 		if locationAoE.count >= 2 
 		   or (locationAoE.count >= 1 and bot:GetHealth()/bot:GetMaxHealth() < 0.5 ) 
@@ -293,7 +290,6 @@ function X.ConsiderW()
 	
 	
 	if J.IsGoingOnSomeone(bot)
-	   and not bot:IsInvisible()
 	then
 		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 

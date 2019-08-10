@@ -44,6 +44,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_ultimate_scepter",
 	"item_arcane_boots",
+	
+	'item_ultimate_scepter',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -184,13 +187,14 @@ function X.ConsiderQ()
 	local nDamage   = abilityQ:GetSpecialValueInt( "arc_damage" );
 	local nEnemyHeroesInSkillRange = bot:GetNearbyHeroes(nCastRange,true,BOT_MODE_NONE);
 	
-	for _,enemy in pairs(nEnemyHeroesInSkillRange)
+	for _,npcEnemy in pairs(nEnemyHeroesInSkillRange)
 	do
-		if J.IsValidHero(enemy)
-			and J.CanCastOnNonMagicImmune(enemy)
-			and J.GetHPR(enemy) <= 0.2
+		if J.IsValidHero(npcEnemy)
+			and J.CanCastOnNonMagicImmune(npcEnemy)
+			and J.CanCastOnTargetAdvanced(npcEnemy)
+			and J.GetHPR(npcEnemy) <= 0.2
 		then
-			return BOT_ACTION_DESIRE_HIGH, enemy;
+			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 		end
 	end
 	
@@ -216,7 +220,10 @@ function X.ConsiderQ()
 	if J.IsRetreating(bot) and bot:WasRecentlyDamagedByAnyHero(2.0)
 	then
 		local target = J.GetVulnerableWeakestUnit(true, true, nCastRange, bot);
-		if target ~= nil and bot:IsFacingLocation(target:GetLocation(),45) then
+		if target ~= nil 
+		   and J.CanCastOnTargetAdvanced(target)
+		   and bot:IsFacingLocation(target:GetLocation(),45) 
+		then
 			return BOT_ACTION_DESIRE_HIGH, target;
 		end
 	end
@@ -226,7 +233,7 @@ function X.ConsiderQ()
 		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
 		if ( locationAoE.count >= 2 ) then
 			local target = J.GetVulnerableUnitNearLoc(true, true, nCastRange, nRadius, locationAoE.targetloc, bot);
-			if target ~= nil then
+			if target ~= nil and J.CanCastOnTargetAdvanced(target) then
 				return BOT_ACTION_DESIRE_HIGH, target;
 			end
 		end
@@ -248,6 +255,7 @@ function X.ConsiderQ()
 		local target = J.GetProperTarget(bot);
 		if J.IsValidHero(target) 
 		   and J.CanCastOnNonMagicImmune(target) 
+		   and J.CanCastOnTargetAdvanced(target)
 		   and J.IsInRange(target, bot, nCastRange)
 		then
 			return BOT_ACTION_DESIRE_HIGH, target;
@@ -269,7 +277,7 @@ function X.ConsiderW()
 	if J.IsRetreating(bot) and bot:WasRecentlyDamagedByAnyHero(2.0)
 	then
 		local target = J.GetVulnerableWeakestUnit(true, true, nCastRange, bot);
-		if target ~= nil then
+		if target ~= nil and J.CanCastOnTargetAdvanced(target) then
 			return BOT_ACTION_DESIRE_HIGH, target;
 		end
 	end
@@ -279,6 +287,7 @@ function X.ConsiderW()
 		local target = J.GetProperTarget(bot);
 		if J.IsValidHero(target) 
 		   and J.CanCastOnNonMagicImmune(target) 
+		   and J.CanCastOnTargetAdvanced(target)
 		   and J.IsInRange(target, bot, nCastRange)
 		then
 			return BOT_ACTION_DESIRE_HIGH, target;
@@ -326,13 +335,13 @@ function X.ConsiderW2()
 		end
 	end
 	
-	for _,enemy in pairs(nEnemyHeroesInSkillRange)
+	for _,npcEnemy in pairs(nEnemyHeroesInSkillRange)
 	do
-		if J.IsValid(enemy)
-			and enemy:IsChanneling()
-			and not enemy:IsMagicImmune()
+		if J.IsValid(npcEnemy)
+			and npcEnemy:IsChanneling()
+			and not npcEnemy:IsMagicImmune()
 		then
-			local nTargetLocation = J.GetCastLocation(bot,enemy,nCastRange,nRadius);
+			local nTargetLocation = J.GetCastLocation(bot,npcEnemy,nCastRange,nRadius);
 			if nTargetLocation ~= nil
 			then
 				return BOT_ACTION_DESIRE_HIGH, nTargetLocation;

@@ -84,7 +84,7 @@ function X.SkillsComplement()
 	X.ConsiderCombo()
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
-
+	
 	J.Skill.AbilityReadinessReminder(abilityR, 5);
 	
 	nKeepMana = 220 
@@ -238,7 +238,7 @@ function X.ConsiderQ()
 		end
 	end
 	
-	--撤退事保护自己
+	--撤退时保护自己
 	if  bot:GetActiveMode() == BOT_MODE_RETREAT 
 		and bot:WasRecentlyDamagedByAnyHero(2.0)
 	then
@@ -325,7 +325,7 @@ function X.ConsiderQ()
 		end		
 	end
 	
-	--撤退事的逻辑
+	--非撤退的逻辑
 	if bot:GetActiveMode() ~= BOT_MODE_RETREAT 
 	then
 		if  J.IsValid(nWeakestEnemyHeroInBonus)

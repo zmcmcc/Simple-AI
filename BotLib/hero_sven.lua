@@ -47,10 +47,15 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_phase_boots",
 	"item_stout_shield",
+	
 	"item_echo_sabre",
 	"item_quelling_blade",
+	
 	"item_bloodthorn",
 	"item_phase_boots",
+	
+	'item_black_king_bar',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -84,7 +89,7 @@ local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
 function X.SkillsComplement()
 
 	
-	J.ConsiderForBtDisassembleMask(bot);
+	J.ConsiderForMkbDisassembleMask(bot);
 	X.SvenConsiderTarget();
 	
 	
@@ -175,6 +180,7 @@ function X.ConsiderQ()
 	do
 		if J.IsValid(npcEnemy)
 		   and J.CanCastOnNonMagicImmune(npcEnemy)
+		   and J.CanCastOnTargetAdvanced(npcEnemy)
 		   and not J.IsDisabled(true,npcEnemy)
 		then
 			if npcEnemy:IsChanneling()
@@ -189,6 +195,7 @@ function X.ConsiderQ()
 					if J.IsValid(enemy)
 						and J.IsInRange(npcEnemy,enemy,nRadius)
 						and J.CanCastOnNonMagicImmune(enemy)
+						and J.CanCastOnTargetAdvanced(enemy)
 					then
 						nBetterTarget = enemy;
 						break;
@@ -222,6 +229,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and not npcEnemy:IsDisarmed()
 			then
@@ -265,6 +273,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and J.GetAttackTargetEnemyCreepCount(npcEnemy, 1400) >= 5
 			then
@@ -280,6 +289,7 @@ function X.ConsiderQ()
 	    local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
+			and J.CanCastOnTargetAdvanced(npcTarget)
 			and J.IsInRange(npcTarget, bot, nCastRange +60) 
 			and not J.IsDisabled(true, npcTarget)
 			and not npcTarget:IsDisarmed()
@@ -301,6 +311,7 @@ function X.ConsiderQ()
 						or nMP > 0.8
 						or GetUnitToUnitDistance(bot,npcEnemy) <= 400 )
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy) 
 				and not npcEnemy:IsDisarmed()
 			then
@@ -375,7 +386,6 @@ function X.ConsiderQ()
 	--通用受到伤害时保护自己
 	if bot:WasRecentlyDamagedByAnyHero(3.0) 
 		and bot:GetActiveMode() ~= BOT_MODE_RETREAT
-		and not bot:IsInvisible()
 		and #nEnemysHerosInRange >= 1
 		and nLV >= 7
 	then
@@ -383,6 +393,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValidHero(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
                 and not npcEnemy:IsDisarmed()				
 				and bot:IsFacingLocation(npcEnemy:GetLocation(),45)
@@ -403,6 +414,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValidHero(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)			
 			then
 				J.SetReport("通用的情况:",npcEnemy:GetUnitName());

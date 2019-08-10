@@ -37,15 +37,19 @@ X['sBuyList'] = {
 				"item_echo_sabre",
 				"item_heavens_halberd",
 				"item_manta",
---				"item_heart",
 				"item_assault",
+			  --"item_heart",
 }
 
 X['sSellList'] = {
 	"item_crimson_guard",
 	"item_quelling_blade",
-	"item_assault",
+	
+	"item_manta",
 	"item_echo_sabre",
+	
+	"item_heavens_halberd",
+	"item_magic_wand",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -93,12 +97,18 @@ function X.SkillsComplement()
 	
 	
 	
-	castRDesire              = X.ConsiderR();
+	castRDesire = X.ConsiderR();
 	if ( castRDesire > 0 ) 
 	then
 	
-		bot:ActionQueue_UseAbility( abilityR )
-		return;
+		if bot:HasScepter() 
+		then
+			bot:ActionQueue_UseAbilityOnEntity( abilityR, bot )
+			return;
+		else
+			bot:ActionQueue_UseAbility( abilityR )
+			return;
+		end
 	
 	end
 	
@@ -143,6 +153,7 @@ function X.ConsiderQ()
 		for i=1, #nEnemysHeroesInCastRange do
 			if J.IsValid(nEnemysHeroesInCastRange[i])
 			   and J.CanCastOnNonMagicImmune(nEnemysHeroesInCastRange[i]) 
+			   and J.CanCastOnTargetAdvanced(nEnemysHeroesInCastRange[i])
 			   and nEnemysHeroesInCastRange[i]:GetHealth() < nEnemysHeroesInCastRange[i]:GetActualIncomingDamage(nDamage,DAMAGE_TYPE_MAGICAL)
 			   and not (GetUnitToUnitDistance(nEnemysHeroesInCastRange[i],bot) <= bot:GetAttackRange() + 60)
 			   and not J.IsDisabled(true, nEnemysHeroesInCastRange[i]) 
@@ -157,6 +168,7 @@ function X.ConsiderQ()
 		for i=1, #nEnemysHeroesInView do
 			if J.IsValid(nEnemysHeroesInView[i])
 			   and J.CanCastOnNonMagicImmune(nEnemysHeroesInView[i]) 
+			   and J.CanCastOnTargetAdvanced(nEnemysHeroesInView[i])
 			   and nEnemysHeroesInView[i]:IsChanneling()
 			then
 				return BOT_ACTION_DESIRE_HIGH, nEnemysHeroesInCastRange[i];
@@ -176,6 +188,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and not npcEnemy:IsDisarmed()
 				and not npcEnemy:HasModifier("modifier_chaos_knight_reality_rift_debuff")
@@ -201,6 +214,7 @@ function X.ConsiderQ()
 	do
 		if  J.IsValid(npcEnemy)
 		    and J.CanCastOnNonMagicImmune(npcEnemy) 
+			and J.CanCastOnTargetAdvanced(npcEnemy)
 			and not J.IsDisabled(true, npcEnemy)
 			and not npcEnemy:IsDisarmed()
 			and npcEnemy:HasModifier("modifier_chaos_knight_reality_rift")
@@ -226,6 +240,7 @@ function X.ConsiderQ()
 		local target = J.GetProperTarget(bot)
 		if J.IsValidHero(target) 
 			and J.CanCastOnNonMagicImmune(target) 
+			and J.CanCastOnTargetAdvanced(target)
 			and J.IsInRange(target, bot, nCastRange) 
 		    and not J.IsDisabled(true, target)
 			and not target:IsDisarmed()
@@ -240,6 +255,7 @@ function X.ConsiderQ()
 	then
 		if J.IsValid(nEnemysHeroesInCastRange[1]) 
 		   and J.CanCastOnNonMagicImmune(nEnemysHeroesInCastRange[1]) 
+		   and J.CanCastOnTargetAdvanced(nEnemysHeroesInCastRange[1])
 		   and not J.IsDisabled(true, nEnemysHeroesInCastRange[1])
 		   and not nEnemysHeroesInCastRange[1]:IsDisarmed()
 		   and GetUnitToUnitDistance(bot,nEnemysHeroesInCastRange[1]) <= nCastRange - 60 
@@ -256,6 +272,7 @@ function X.ConsiderQ()
 		local target =  bot:GetAttackTarget();
 		
 		if target ~= nil and target:IsAlive()
+		    and J.GetHPR(target) > 0.2
 			and not J.IsDisabled(true, target)
 			and not target:IsDisarmed()
 		then
@@ -287,6 +304,7 @@ function X.ConsiderW()
 		do
 			if  J.IsValid(npcEnemy)
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and not npcEnemy:IsAttackImmune()
 				and npcEnemy:GetPrimaryAttribute() == ATTRIBUTE_INTELLECT
@@ -310,6 +328,7 @@ function X.ConsiderW()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and not npcEnemy:IsAttackImmune()
 				and npcEnemy:GetPrimaryAttribute() == ATTRIBUTE_AGILITY
@@ -333,6 +352,7 @@ function X.ConsiderW()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not npcEnemy:IsAttackImmune()
 				and not J.IsDisabled(true, npcEnemy)
 			then
@@ -358,6 +378,7 @@ function X.ConsiderW()
 		local target = J.GetProperTarget(bot)
 		if  J.IsValidHero(target) 
 			and J.CanCastOnNonMagicImmune(target) 
+			and J.CanCastOnTargetAdvanced(target)
 			and J.IsInRange(target, bot, nCastRange) 
 		    and not J.IsDisabled(true, target)
 		then
@@ -373,6 +394,7 @@ function X.ConsiderW()
 		if J.IsValid(enemies[1])
 		   and bot:IsFacingLocation(enemies[1]:GetLocation(),45)
 		   and J.CanCastOnNonMagicImmune(enemies[1])
+		   and J.CanCastOnTargetAdvanced(enemies[1])
 		   and J.IsInRange(enemies[1], bot, 150)
 		   and not J.IsDisabled(true, enemies[1])
 		   and not enemies[1]:IsDisarmed()

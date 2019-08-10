@@ -16,11 +16,11 @@ local additionlF = require(GetScriptDirectory() .. "/AuxiliaryScript/AdditionalF
 local bot = GetBot();
 local X = {}
 local AvailableSpots = {};
-local nWardCastRange = 500; --插眼范围
+local nWardCastRange = 500;
 local wt = nil;
 local itemWard = nil;
 local targetLoc = nil;
-local wardCastTime = -90; --眼持续时间
+local wardCastTime = -90;
 
 
 bot.lastSwapWardTime = -90;
@@ -30,29 +30,29 @@ bot.ward = false;
 local vNonStuck = Vector(-2610.000000, 538.000000, 0.000000);
 
 
-local walkMode = false; -- 步行模式
-local walkLocation = Vector(0,0); -- 步行位置
+local walkMode = false;
+local walkLocation = Vector(0,0);
 
 local nStartTime = RandomInt(1,30);
 
 function GetDesire()
 	
-	if bot:GetUnitName() == "npc_dota_hero_necrolyte" --瘟疫法师
-	   and bot:GetLevel() > 10 --等级大于10
+	if bot:GetUnitName() == "npc_dota_hero_necrolyte" 
+	   and bot:GetLevel() > 10
 	   and bot:IsAlive()
 	   and not bot:IsChanneling()
 	   and not bot:IsCastingAbility()
-	   and bot:NumQueuedActions() <= 0 --没有其他操作
+	   and bot:NumQueuedActions() <= 0
 	then
-		local cAbilty = bot:GetAbilityByName( "necrolyte_death_pulse" );--脉冲技能
-		local nEnemys = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE); --1600内敌人
-		if cAbilty ~= nil and #nEnemys == 0--学了脉冲并且1600内没敌人
-		   and ( cAbilty:IsFullyCastable() or (cAbilty:GetCooldownTimeRemaining() < 3 and bot:GetMana() > 180) )--脉冲就绪或即将就绪
+		local cAbilty = bot:GetAbilityByName( "necrolyte_death_pulse" );
+		local nEnemys = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE); 
+		if cAbilty ~= nil and #nEnemys == 0
+		   and ( cAbilty:IsFullyCastable() or (cAbilty:GetCooldownTimeRemaining() < 3 and bot:GetMana() > 180) )
 		then
-			local nAoe = bot:FindAoELocation( true, false, bot:GetLocation(),700, 475, 0.5, 0);--计算技能释放最佳位置
-			local nLaneCreeps = bot:GetNearbyLaneCreeps(1000,true);--1000范围内敌兵
-			if nAoe.count >= 3 --计算出的敌兵数量
-				and #nLaneCreeps >= 3--范围内的敌兵数量
+			local nAoe = bot:FindAoELocation( true, false, bot:GetLocation(),700, 475, 0.5, 0);
+			local nLaneCreeps = bot:GetNearbyLaneCreeps(1000,true);
+			if nAoe.count >= 3 
+				and #nLaneCreeps >= 3
 			then
 				walkMode = true;
 				walkLocation = nAoe.targetloc;
@@ -61,9 +61,8 @@ function GetDesire()
 		end
 	end
 	
-	itemWard = Site.GetItemWard(bot);--是否有眼
+	itemWard = Site.GetItemWard(bot);
 
-	--死了或无法施展
 	if bot:IsChanneling() 
 	   or bot:IsIllusion() 
 	   or bot:IsInvulnerable() 
@@ -78,15 +77,15 @@ function GetDesire()
 		return BOT_MODE_DESIRE_NONE;
 	end	
 	
-	if itemWard ~= nil  then--有眼的情况下
+	if itemWard ~= nil  then
 		--在玩家ping的位置插眼
 		pinged, wt = additionlF.IsPingedByHumanPlayer(bot);
 		if pinged then	
 			return RemapValClamped(GetUnitToUnitDistance(bot, wt), 1000, 0, BOT_MODE_DESIRE_HIGH, BOT_MODE_DESIRE_VERYHIGH);
 		end
 		--在插眼位置插眼
-		AvailableSpots = Site.GetAvailableSpot(bot);--获取插眼位置
-		targetLoc, targetDist = Site.GetClosestSpot(bot, AvailableSpots);--获得可用眼位中最近的一个
+		AvailableSpots = Site.GetAvailableSpot(bot);
+		targetLoc, targetDist = Site.GetClosestSpot(bot, AvailableSpots);
 		if targetLoc ~= nil and DotaTime() > wardCastTime + 1.0 then
 			bot.ward = true;
 			return math.floor((RemapValClamped(targetDist, 6000, 0, BOT_MODE_DESIRE_MODERATE, BOT_MODE_DESIRE_VERYHIGH))*20)/20;
@@ -124,12 +123,12 @@ function Think()
 	if GetGameState()~=GAME_STATE_PRE_GAME and GetGameState()~= GAME_STATE_GAME_IN_PROGRESS then
 		return;
 	end
-
+	
 	if wt ~= nil then
 		bot:Action_UseAbilityOnEntity(itemWard, wt);
 		return
 	end
-	
+
 
 	if walkMode then
 		local nCreep = bot:GetNearbyLaneCreeps(1000,true);

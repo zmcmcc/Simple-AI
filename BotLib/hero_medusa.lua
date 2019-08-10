@@ -50,8 +50,12 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_manta",
 	"item_urn_of_shadows",
+	
 	"item_black_king_bar",
 	"item_dragon_lance",
+	
+	"item_black_king_bar",
+	"item_magic_wand",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -188,6 +192,7 @@ function X.ConsiderW()
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
 			if ( bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) ) 
 			then
 				return BOT_ACTION_DESIRE_MODERATE, npcEnemy;
@@ -206,6 +211,7 @@ function X.ConsiderW()
 		do
 			if  J.IsValidHero(npcEnemy)
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 			then
 				local nMaxMana = npcEnemy:GetMaxMana();
 				if ( nMaxMana > nEnemyMaxMana )
@@ -229,6 +235,7 @@ function X.ConsiderW()
 		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and J.CanCastOnTargetAdvanced(npcTarget)
 		   and J.IsInRange(npcTarget, bot, nCastRange +90)
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcTarget;

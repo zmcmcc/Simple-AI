@@ -67,7 +67,7 @@ X["test_hero"] = {
     --'npc_dota_hero_axe',
     --'npc_dota_hero_batrider',
     --'npc_dota_hero_puck',
-    'npc_dota_hero_invoker',
+    --'npc_dota_hero_invoker',
 }
 
 X["onlyCM_hero"] = {

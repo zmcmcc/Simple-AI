@@ -49,6 +49,9 @@ X['sSellList'] = {
 	"item_diffusal_blade",
 	"item_mjollnir",
 	"item_hand_of_midas",
+	
+	'item_sheepstick',
+	'item_magic_wand',
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -455,6 +458,7 @@ function X.ConsiderQ()
 	-- If a mode has set a target, and we can kill them, do it
 	if J.IsValidHero(npcTarget) 
 	   and J.CanCastOnNonMagicImmune(npcTarget) 
+	   and J.CanCastOnTargetAdvanced(npcTarget)
 	   and J.CanKillTarget(npcTarget, nDamage, DAMAGE_TYPE_MAGICAL) 
 	   and J.IsInRange(npcTarget, bot, nCastRange)
 	then
@@ -472,7 +476,8 @@ function X.ConsiderQ()
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
 			if J.IsValid(npcEnemy) 
-			   and  J.CanCastOnNonMagicImmune(npcEnemy) 
+			   and J.CanCastOnNonMagicImmune(npcEnemy) 
+			   and J.CanCastOnTargetAdvanced(npcEnemy)
 			then
 				local nDamage = npcEnemy:GetEstimatedDamageToTarget( false, bot, 3.0, DAMAGE_TYPE_ALL );
 				if ( nDamage > nMostDangerousDamage )
@@ -491,7 +496,9 @@ function X.ConsiderQ()
 
 	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
 	then
-		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange)  )
+		if J.IsRoshan(npcTarget) 
+		   and J.CanCastOnMagicImmune(npcTarget) 
+		   and J.IsInRange(npcTarget, bot, nCastRange)  
 		then
 			return BOT_ACTION_DESIRE_LOW, npcTarget;
 		end
@@ -503,6 +510,7 @@ function X.ConsiderQ()
 	then
 		if J.IsValidHero(npcTarget) 
 		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and J.CanCastOnTargetAdvanced(npcTarget)
 		   and J.IsInRange(npcTarget, bot, nCastRange +40)
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcTarget;
@@ -519,6 +527,7 @@ function X.ConsiderQ()
 			and (bot:IsFacingLocation(npcEnemy:GetLocation(),10) or #nEnemyHeroes <= 1)
 			and bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) 
 			and J.CanCastOnNonMagicImmune(npcEnemy)
+			and J.CanCastOnTargetAdvanced(npcEnemy)
 		then
 			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 		end  

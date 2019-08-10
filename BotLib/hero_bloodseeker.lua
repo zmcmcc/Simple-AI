@@ -41,8 +41,12 @@ X['sBuyList'] = {
 }
 
 X['sSellList'] = {
+
 	"item_sange_and_yasha",
 	"item_quelling_blade",
+	
+	"item_abyssal_blade",
+	"item_magic_wand",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -392,6 +396,8 @@ function X.ConsiderR()
 		do
 			if bot:WasRecentlyDamagedByHero( npcEnemy, 1.0 ) 
 			   and J.CanCastOnMagicImmune( npcEnemy )
+			   and J.CanCastOnTargetAdvanced(npcEnemy)
+			   and not npcEnemy:HasModifier('modifier_bloodseeker_bloodrage')
 			then
 				return BOT_ACTION_DESIRE_MODERATE, npcEnemy;
 			end
@@ -403,6 +409,7 @@ function X.ConsiderR()
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
 			if J.CanCastOnMagicImmune(npcEnemy) 
+			   and J.CanCastOnTargetAdvanced(npcEnemy)
 			   and J.Role.IsCarry(npcEnemy:GetUnitName()) 
 			   and not npcEnemy:HasModifier('modifier_bloodseeker_bloodrage')
 			   and not J.IsDisabled(true, npcEnemy) 
@@ -418,6 +425,7 @@ function X.ConsiderR()
 		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 		   and J.CanCastOnMagicImmune(npcTarget)
+		   and J.CanCastOnTargetAdvanced(npcTarget)
 		   and J.IsInRange(npcTarget, bot, nCastRange +100)
 		   and not npcTarget:HasModifier('modifier_bloodseeker_bloodrage')
 		   and not J.IsDisabled(true, npcTarget)

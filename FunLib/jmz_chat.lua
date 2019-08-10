@@ -32,6 +32,21 @@ Chat['sExpandedList'] = {
 	'npc_dota_hero_warlock',
 	'npc_dota_hero_zuus',
 	'npc_dota_hero_skywrath_mage',
+	'npc_dota_hero_ogre_magi',
+	'npc_dota_hero_phantom_lancer',
+	'npc_dota_hero_razor',
+	'npc_dota_hero_lina',
+	'npc_dota_hero_vengefulspirit',
+	'npc_dota_hero_shadow_demon',
+	'npc_dota_hero_tidehunter',
+	'npc_dota_hero_disruptor',
+	'npc_dota_hero_axe',
+	'npc_dota_hero_leshrac',
+	'npc_dota_hero_batrider',
+	'npc_dota_hero_dazzle',
+	'npc_dota_hero_abaddon',
+	'npc_dota_hero_grimstroke',
+	'npc_dota_hero_puck',
 }
 
 
@@ -3049,7 +3064,7 @@ Chat['tHeroNameList'] = {
 
 	--040
 	['npc_dota_hero_arc_warden'] = {
-		['sNormName'] = '电狗',
+		['sNormName'] = '弧光',
 		['sShortName'] = 'arc',
 		['sCnName'] = '天穹守望者',
 		['sEnName'] = 3,

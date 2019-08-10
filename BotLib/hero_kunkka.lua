@@ -37,12 +37,18 @@ X['sBuyList'] = {
 				"item_echo_sabre",
 				"item_heavens_halberd",
 				"item_assault",
---				"item_heart",
+				"item_heart",
 }
 
 X['sSellList'] = {
 	"item_crimson_guard",
 	"item_quelling_blade",
+	
+	"item_assault",
+	"item_echo_sabre",
+	
+	"item_heavens_halberd",
+	"item_magic_wand",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -84,9 +90,9 @@ local Combo1Time = 0; --X船水  0.4,0.3,0.4,0.4.
 local Combo2Time = 0; --X船
 local Combo3Time = 0; --X水
 
-local C1Delay = 2.1; --2.3MAX
-local C2Delay = 3.2; --3.4MAX
-local C3Delay = 1.8; --2.0MAX
+local C1Delay = 2.23; --2.3MAX
+local C2Delay = 3.33; --3.4MAX
+local C3Delay = 1.93; --2.0MAX 0.4 + 0.4 + 1.6 -0.4
 
 function X.SkillsComplement()
 
@@ -95,11 +101,10 @@ function X.SkillsComplement()
 		Combo1Time = 0
 		Combo2Time = 0
 		Combo3Time = 0
-	end
-	
+	end	
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
-	
+		
 	J.Skill.AbilityReadinessReminder(abilityR, 5);
 	
 	

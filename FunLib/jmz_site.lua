@@ -368,11 +368,13 @@ function Site.IsSpecialFarmer(bot)
 
 	return     botName == "npc_dota_hero_nevermore"
 			or botName == "npc_dota_hero_medusa"
+			or botName == "npc_dota_hero_razor"
 			or botName == "npc_dota_hero_luna"
 			or botName == 'npc_dota_hero_sven'
 			or botName == 'npc_dota_hero_antimage'
 			or botName == 'npc_dota_hero_abaddon'
 			or botName == 'npc_dota_hero_phantom_assassin'
+			or botName == "npc_dota_hero_phantom_lancer"
 			or botName == "npc_dota_hero_templar_assassin"
 end
 
@@ -392,7 +394,9 @@ function Site.IsShouldFarmHero(bot)
 		or botName == 'npc_dota_hero_vengefulspirit'
 		or botName == "npc_dota_hero_bloodseeker"
 		or botName == "npc_dota_hero_medusa"
+		or botName == "npc_dota_hero_razor"
 		or botName == 'npc_dota_hero_phantom_assassin'
+		or botName == "npc_dota_hero_phantom_lancer"
 		or botName == "npc_dota_hero_templar_assassin"
 		
 end
@@ -581,8 +585,8 @@ function Site.FindFarmNeutralTarget(Creeps)
 	
 	if botName == "npc_dota_hero_templar_assassin"
 	   or botName == "npc_dota_hero_sven"
-	   or botName == "npc_dota_hero_abaddon"
 	   or botName == "npc_dota_hero_drow_ranger"
+	   or botName == "npc_dota_hero_phantom_lancer"
 	   or ( botName == "npc_dota_hero_phantom_assassin" 
 	        and Site.IsHaveItem(bot,"item_bfury") and bot:GetLevel() >= 15 )
 	then
@@ -608,6 +612,8 @@ function Site.FindFarmNeutralTarget(Creeps)
 	
 	if botName == 'npc_dota_hero_axe'
 	   or botName == "npc_dota_hero_viper"
+	   or botName == "npc_dota_hero_razor"
+	   or botName == "npc_dota_hero_ogre_magi"
 	   or ( botName == "npc_dota_hero_medusa"
 			and bot:GetLevel() >= 8  )
 	   or ( botName == "npc_dota_hero_luna"
@@ -644,6 +650,7 @@ function Site.GetFarmLaneTarget(Creeps,bStrongest)
 	
 	if botName ~= "npc_dota_hero_drow_ranger"
 	   and botName ~= "npc_dota_hero_medusa"
+	   and botName ~= "npc_dota_hero_razor"
 	   and #nAllyCreeps > 0
 	then
 		
@@ -688,6 +695,7 @@ function Site.GetFarmLaneTarget(Creeps,bStrongest)
 
 	
 	hTarget = Site.GetMinHPCreep(Creeps);
+	
 	return hTarget;
 	
 end
@@ -865,7 +873,7 @@ function Site.IsTimeToFarm(bot)
 	
 	if botName == "npc_dota_hero_dragon_knight"
 	   and not Site.IsHaveItem(bot,"item_assault")
-	then
+	then	
 		local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
 		if bot:GetAttackRange() > 300
 			and #allies < 3
@@ -877,6 +885,36 @@ function Site.IsTimeToFarm(bot)
 			and bot:GetCurrentVisionRange() < 1000
 			and #allies < 2
 		then
+			return true;
+		end
+	end	
+	
+	if botName == "npc_dota_hero_skeleton_king"
+	   or botName == "npc_dota_hero_kunkka"
+	   or botName == "npc_dota_hero_chaos_knight"
+	   or botName == "npc_dota_hero_bristleback"
+	   or botName == "npc_dota_hero_ogre_magi"
+	then
+		local botKills = GetHeroKills(bot:GetPlayerID());
+		local botDeaths = GetHeroDeaths(bot:GetPlayerID());
+		local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+		if botKills - 3 >=  botDeaths
+		   and botDeaths <= 3
+		then
+			return false;
+		end
+	
+		if bot:GetLevel() > 12
+			and #allies < 3
+			and bot:GetNetWorth() < 12222
+		then 
+			return true;
+		end
+		
+		if bot:GetLevel() > 20
+		   and #allies < 2
+		   and bot:GetNetWorth() < 21111
+		then 
 			return true;
 		end
 	end	
@@ -927,7 +965,7 @@ function Site.IsTimeToFarm(bot)
 		end		
 	end
 	
-	if  botName == "npc_dota_hero_templar_assassin"
+	if botName == "npc_dota_hero_templar_assassin"
 	then
 		if DotaTime() > 9 *60
 			and bot:GetLevel() < 25
@@ -992,6 +1030,38 @@ function Site.IsTimeToFarm(bot)
 		end			
 	end
 	
+	if botName == "npc_dota_hero_phantom_lancer"
+	then
+		if DotaTime() > 9 *60
+			and bot:GetLevel() < 25
+		then
+			return true;
+		end
+		
+		if not Site.IsHaveItem(bot,"item_skadi")
+		then
+			return true;
+		end
+				
+		if not Site.IsHaveItem(bot,"item_sphere")
+		then
+			local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+			if #allies < 3
+			then
+				return true;
+			end
+		end
+		
+		if not Site.IsHaveItem(bot,"item_heart") 
+		then
+			local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+			if #allies < 2
+			then
+				return true;
+			end
+		end			
+	end
+	
 	if botName == "npc_dota_hero_phantom_assassin"
 	then
 		if DotaTime() > 9 *60
@@ -1028,6 +1098,29 @@ function Site.IsTimeToFarm(bot)
 	then
 		if DotaTime() > 10 *60
 			and bot:GetLevel() < 25
+		then
+			return true;
+		end
+		
+		if not Site.IsHaveItem(bot,"item_black_king_bar")
+		then
+			return true;
+		end
+		
+		if not Site.IsHaveItem(bot,"item_satanic")
+		then
+			local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+			if #allies < 2
+			then
+				return true;
+			end
+		end		
+	end
+	
+	if botName == "npc_dota_hero_razor"
+	then
+		if DotaTime() > 7 *60
+		   and bot:GetLevel() < 25
 		then
 			return true;
 		end
@@ -1129,7 +1222,7 @@ function Site.IsTimeToFarm(bot)
 		
 		if  Site.IsHaveItem(bot,"item_yasha")
 			and not Site.IsHaveItem(bot,"item_manta")
-			and bot:GetGold() > 1600
+			and bot:GetGold() > 1000
 		then
 			return true;
 		end

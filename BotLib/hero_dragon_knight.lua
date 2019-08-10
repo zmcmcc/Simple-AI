@@ -35,7 +35,6 @@ X['sBuyList'] = {
 				sOutfit,
 				"item_crimson_guard",
 				"item_heavens_halberd",
---				"item_black_king_bar",
 				"item_assault",
 				"item_heart",
 }
@@ -43,6 +42,9 @@ X['sBuyList'] = {
 X['sSellList'] = {
 	"item_crimson_guard",
 	"item_quelling_blade",
+	
+	"item_assault",
+	"item_magic_wand",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -143,7 +145,9 @@ function X.ConsiderQ()
 	--if we can kill any enemies
 	for _,npcEnemy in pairs(tableNearbyEnemyHeroes)
 	do
-		if J.CanCastOnNonMagicImmune(npcEnemy) and J.CanKillTarget(npcEnemy, nDamage, DAMAGE_TYPE_MAGICAL) then
+		if J.CanCastOnNonMagicImmune(npcEnemy) 
+		   and J.CanKillTarget(npcEnemy, nDamage, DAMAGE_TYPE_MAGICAL) 
+		then
 			return BOT_ACTION_DESIRE_HIGH, npcEnemy:GetLocation();
 		end
 	end
@@ -193,20 +197,20 @@ function X.ConsiderQ()
 		and bot:GetLevel() >= 6 
 		and #nEnemysHeroesInView == 0
 	then
-		local lanecreeps = bot:GetNearbyLaneCreeps(nCastRange+200, true);
+		local laneCreepList = bot:GetNearbyLaneCreeps(nCastRange+200, true);
 		local allyHeroes  = bot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);
-		if #lanecreeps >= 2 
+		if #laneCreepList >= 2 
 		   and #allyHeroes <= 2 
-		   and J.IsValid(lanecreeps[1])
-		   and not lanecreeps[1]:HasModifier("modifier_fountain_glyph")
+		   and J.IsValid(laneCreepList[1])
+		   and not laneCreepList[1]:HasModifier("modifier_fountain_glyph")
 		then
 			local locationAoE = bot:FindAoELocation( true, false, bot:GetLocation(), nCastRange, nRadius, 0, nDamage );
-			if ( locationAoE.count >= 2 and #lanecreeps >= 2  and bot:GetLevel() < 25 and #allyHeroes == 1) 
+			if ( locationAoE.count >= 2 and #laneCreepList >= 2  and bot:GetLevel() < 25 and #allyHeroes == 1) 
 			then
 				return BOT_ACTION_DESIRE_HIGH, locationAoE.targetloc;
 			end
 			local locationAoE = bot:FindAoELocation( true, false, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
-			if ( locationAoE.count >= 4 and #lanecreeps >= 4  ) 
+			if ( locationAoE.count >= 4 and #laneCreepList >= 4  ) 
 			then
 				return BOT_ACTION_DESIRE_HIGH, locationAoE.targetloc;
 			end
@@ -258,15 +262,15 @@ function X.ConsiderQ()
 	
 	if bot:GetLevel() < 18
 	then
-		local lanecreeps = bot:GetNearbyLaneCreeps(nCastRange+200, true);
+		local laneCreepList = bot:GetNearbyLaneCreeps(nCastRange+200, true);
 		local allyHeroes  = bot:GetNearbyHeroes(1000,true,BOT_MODE_NONE);
-		if #lanecreeps >= 3 
+		if #laneCreepList >= 3 
 		   and #allyHeroes < 3
-		   and J.IsValid(lanecreeps[1])
-		   and not lanecreeps[1]:HasModifier("modifier_fountain_glyph")
+		   and J.IsValid(laneCreepList[1])
+		   and not laneCreepList[1]:HasModifier("modifier_fountain_glyph")
 		then
 			local locationAoE = bot:FindAoELocation( true, false, bot:GetLocation(), nCastRange, nRadius, 0, nDamage );
-			if ( locationAoE.count >= 3 and #lanecreeps >= 3  ) 
+			if ( locationAoE.count >= 3 and #laneCreepList >= 3  ) 
 			then
 				return BOT_ACTION_DESIRE_HIGH, locationAoE.targetloc;
 			end
@@ -300,7 +304,10 @@ function X.ConsiderW()
 	--if we can kill any enemies
 	for _,npcEnemy in pairs(tableNearbyEnemyHeroes)
 	do
-		if J.CanCastOnNonMagicImmune(npcEnemy) and ( J.CanKillTarget(npcEnemy, nDamage, DAMAGE_TYPE_MAGICAL) or npcEnemy:IsChanneling() ) then
+		if J.CanCastOnNonMagicImmune(npcEnemy) 
+		   and J.CanCastOnTargetAdvanced(npcEnemy)
+		   and ( J.CanKillTarget(npcEnemy, nDamage, DAMAGE_TYPE_MAGICAL) or npcEnemy:IsChanneling() ) 
+		then
 			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 		end
 	end
@@ -311,6 +318,7 @@ function X.ConsiderW()
 		for i=1, #nEnemysHeroesInView do
 			if J.IsValid(nEnemysHeroesInView[i])
 			   and J.CanCastOnNonMagicImmune(nEnemysHeroesInView[i]) 
+			   and J.CanCastOnTargetAdvanced(nEnemysHeroesInView[i])
 			   and nEnemysHeroesInView[i]:IsChanneling()
 			then
 				return BOT_ACTION_DESIRE_HIGH, nEnemysHeroesInView[i];
@@ -327,6 +335,7 @@ function X.ConsiderW()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and not npcEnemy:IsDisarmed()
 			then
@@ -374,6 +383,7 @@ function X.ConsiderW()
 		local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 		    and J.CanCastOnNonMagicImmune(npcTarget) 
+			and J.CanCastOnTargetAdvanced(npcTarget)
 			and J.IsInRange(npcTarget, bot, nCastRange + 200) 
             and not J.IsDisabled(true, npcTarget) 		
 		then

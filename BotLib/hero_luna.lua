@@ -101,10 +101,16 @@ function X.SkillsComplement()
 	if ( castRDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(bot, false)
-	
-		bot:ActionQueue_UseAbility( abilityR );
-		return;
+		J.SetQueuePtToINT(bot, true)
+		
+		if bot:HasScepter() 
+		then
+			bot:ActionQueue_UseAbilityOnEntity( abilityR, bot );
+			return;
+		else
+			bot:ActionQueue_UseAbility( abilityR );
+			return;
+		end
 	
 	end
 	
@@ -112,7 +118,7 @@ function X.SkillsComplement()
 	if ( castQDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(bot, false)
+		J.SetQueuePtToINT(bot, true)
 	
 		bot:ActionQueue_UseAbilityOnEntity( abilityQ, castQTarget )
 		return;
@@ -150,6 +156,7 @@ function X.ConsiderQ()
 	do
 		if J.IsValid(npcEnemy)
 		   and J.CanCastOnNonMagicImmune(npcEnemy)
+		   and J.CanCastOnTargetAdvanced(npcEnemy)
 		then
 			if npcEnemy:IsChanneling()
 			then
@@ -175,6 +182,7 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 			then
 				local npcEnemyHealth = npcEnemy:GetHealth();
@@ -203,11 +211,50 @@ function X.ConsiderQ()
 		do
 			if  J.IsValid(npcEnemy)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
                 and not npcEnemy:IsDisarmed()				
 				and bot:IsFacingLocation(npcEnemy:GetLocation(),45)
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy
+			end
+		end
+	end
+	
+	
+	--打架时先手	
+	if J.IsGoingOnSomeone(bot) and nLV >= 5
+	then
+	    local npcTarget = J.GetProperTarget(bot);
+		if J.IsValidHero(npcTarget) 
+			and J.CanCastOnNonMagicImmune(npcTarget) 
+			and J.CanCastOnTargetAdvanced(npcTarget)
+			and J.IsInRange(npcTarget, bot, nCastRange +50) 
+			and not J.IsDisabled(true, npcTarget)
+			and not npcTarget:IsDisarmed()
+		then
+			if nSkillLV >= 4 or nMP > 0.88 or J.GetHPR(npcTarget) < 0.38
+			then
+				return BOT_ACTION_DESIRE_HIGH, npcTarget;
+			end
+		end
+	end
+	
+	--撤退时保护自己
+	if J.IsRetreating(bot) 
+		and not bot:IsInvisible()
+		and #nEnemysHerosInBonus <= 2
+	then
+		for _,npcEnemy in pairs( nEnemysHerosInRange )
+		do
+			if  J.IsValid(npcEnemy)
+			    and bot:WasRecentlyDamagedByHero( npcEnemy, 5.0 ) 
+				and J.CanCastOnNonMagicImmune(npcEnemy) 
+				and J.CanCastOnTargetAdvanced(npcEnemy)
+				and not J.IsDisabled(true, npcEnemy) 
+				and not npcEnemy:IsDisarmed()
+			then
+				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
 		end
 	end
@@ -246,41 +293,6 @@ function X.ConsiderQ()
 			end
 		end
 	end	
-	
-	--打架时先手	
-	if J.IsGoingOnSomeone(bot) and nLV >= 5
-	then
-	    local npcTarget = J.GetProperTarget(bot);
-		if J.IsValidHero(npcTarget) 
-			and J.CanCastOnNonMagicImmune(npcTarget) 
-			and J.IsInRange(npcTarget, bot, nCastRange +50) 
-			and not J.IsDisabled(true, npcTarget)
-			and not npcTarget:IsDisarmed()
-		then
-			if nSkillLV >= 4 or nMP > 0.88 or J.GetHPR(npcTarget) < 0.38
-			then
-				return BOT_ACTION_DESIRE_HIGH, npcTarget;
-			end
-		end
-	end
-	
-	--撤退时保护自己
-	if J.IsRetreating(bot) 
-		and not bot:IsInvisible()
-		and #nEnemysHerosInBonus <= 2
-	then
-		for _,npcEnemy in pairs( nEnemysHerosInRange )
-		do
-			if  J.IsValid(npcEnemy)
-			    and bot:WasRecentlyDamagedByHero( npcEnemy, 5.0 ) 
-				and J.CanCastOnNonMagicImmune(npcEnemy) 
-				and not J.IsDisabled(true, npcEnemy) 
-				and not npcEnemy:IsDisarmed()
-			then
-				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
-			end
-		end
-	end
 	
 	--发育时对野怪输出
 	if  J.IsFarming(bot) 
@@ -397,7 +409,8 @@ function X.ConsiderR()
 	then
 		return BOT_ACTION_DESIRE_HIGH;
 	end
-				
+
+
 	return 0;
 end
 
