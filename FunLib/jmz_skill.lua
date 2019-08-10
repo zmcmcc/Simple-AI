@@ -204,7 +204,8 @@ function X.AbilityReadinessReminder(tAbility, nTime)
 	   playid ~= nil and
 	   math.floor(cooldownTime) == nTime 
 	then
-		OnAbilityPinged(playid, tAbility)
+		print(playid)
+		--tAbility:OnAbilityPinged(playid, false)
 	end
 
 end

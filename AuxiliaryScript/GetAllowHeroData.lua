@@ -432,7 +432,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_death_prophet",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bane",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_shredder"] = {
   ["hero_name"] = "shredder",
   ["proposal"] = {
@@ -1352,7 +1352,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_storm_spirit"] = {
   ["hero_name"] = "storm_spirit",
   ["proposal"] = {
@@ -2581,7 +2581,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_enchantress",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_phantom_assassin"] = {
   ["hero_name"] = "phantom_assassin",
   ["proposal"] = {
