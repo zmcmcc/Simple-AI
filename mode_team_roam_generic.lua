@@ -1903,7 +1903,7 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 end
 -- 拉线野测试程序
 function X.PullAWild()
-
+	return nil, nil;
 	local lTOPWildLoc =      Vector(-2500.000000, 4800.000000, 0.000000);
 	local lBOTWildLoc =      Vector(4800.000000, -4200.000000, 0.000000);
 	local lTOPWildCreepLoc = Vector(-3300.000000, 5800.000000, 0.000000);

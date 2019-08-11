@@ -634,7 +634,7 @@ ItemModule['item_earthshaker_outfit']      = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_puck_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand' , 'item_boots', 'item_veil_of_discord', 'item_blink', 'item_cyclone', 'item_ultimate_scepter', 'item_sheepstick', 'item_octarine_core'}
 
-ItemModule['item_invoker_outfit']          = { 'item_tango', 'item_flask', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand' , 'item_phase_boots' ,'item_ultimate_scepter', 'item_cyclone', 'item_force_staff', 'item_sheepstick', 'item_hurricane_pike', 'item_octarine_core', 'item_shivas_guard'}
+ItemModule['item_invoker_outfit']          = { 'item_tango', 'item_flask', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand' , 'item_phase_boots' , 'item_urn_of_shadows', 'item_ultimate_scepter', 'item_cyclone', 'item_force_staff', 'item_sheepstick', 'item_hurricane_pike', 'item_octarine_core', 'item_shivas_guard'}
 
 ItemModule['item_faceless_void_outfit']    = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_power_treads_agi', 'item_yasha', 'item_mjollnir', 'item_black_king_bar', 'item_silver_edge', 'item_manta', 'item_ultimate_scepter'} 
 

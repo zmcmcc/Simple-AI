@@ -24,7 +24,8 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 X['sBuyList'] = {
-				sOutfit,
+                sOutfit,
+                "item_urn_of_shadows",
 				"item_ultimate_scepter",
 				"item_cyclone",
 				"item_force_staff",
@@ -75,16 +76,16 @@ if abilityQ == "" then abilityQ = bot:GetAbilityByName( sAbilityList[1] ) end
 if abilityW == "" then abilityW = bot:GetAbilityByName( sAbilityList[2] ) end
 if abilityE == "" then abilityE = bot:GetAbilityByName( sAbilityList[3] ) end
 if abilityR == "" then abilityR = bot:GetAbilityByName( sAbilityList[6] ) end
-if abilityTO == "" then abilityTO = bot:GetAbilityByName( "invoker_tornado" ) end
-if abilityCS == "" then abilityCS = bot:GetAbilityByName( "invoker_cold_snap" ) end
-if abilityAC == "" then abilityAC = bot:GetAbilityByName( "invoker_alacrity" ) end
-if abilityGW == "" then abilityGW = bot:GetAbilityByName( "invoker_ghost_walk" ) end
-if abilityEMP == "" then abilityEMP = bot:GetAbilityByName( "invoker_emp" ) end
-if abilityCM == "" then abilityCM = bot:GetAbilityByName( "invoker_chaos_meteor" ) end
-if abilityDB == "" then abilityDB = bot:GetAbilityByName( "invoker_deafening_blast" ) end
-if abilityIW == "" then abilityIW = bot:GetAbilityByName( "invoker_ice_wall" ) end
-if abilitySS == "" then abilitySS = bot:GetAbilityByName( "invoker_sun_strike" ) end
-if abilityFS == "" then abilityFS = bot:GetAbilityByName( "invoker_forge_spirit" ) end
+if abilityTO == "" then abilityTO = bot:GetAbilityByName( "invoker_tornado" ) end --强袭飓风
+if abilityCS == "" then abilityCS = bot:GetAbilityByName( "invoker_cold_snap" ) end --急速冷却
+if abilityAC == "" then abilityAC = bot:GetAbilityByName( "invoker_alacrity" ) end --灵动迅捷
+if abilityGW == "" then abilityGW = bot:GetAbilityByName( "invoker_ghost_walk" ) end --幽灵漫步
+if abilityEMP == "" then abilityEMP = bot:GetAbilityByName( "invoker_emp" ) end --电磁脉冲
+if abilityCM == "" then abilityCM = bot:GetAbilityByName( "invoker_chaos_meteor" ) end --混沌陨石
+if abilityDB == "" then abilityDB = bot:GetAbilityByName( "invoker_deafening_blast" ) end --超振声波
+if abilityIW == "" then abilityIW = bot:GetAbilityByName( "invoker_ice_wall" ) end --寒冰之墙
+if abilitySS == "" then abilitySS = bot:GetAbilityByName( "invoker_sun_strike" ) end --阳炎冲击
+if abilityFS == "" then abilityFS = bot:GetAbilityByName( "invoker_forge_spirit" ) end --熔岩精灵
 
 
 local castQDesire, castQTarget
@@ -103,6 +104,8 @@ local castACDesire
 local castGWDesire
 local castIWDesire
 local castFSDesire
+
+local castTEDesire, castTELocation
 
 local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
 local aetherRange = 0
@@ -130,7 +133,8 @@ function X.SkillsComplement()
 	
 	--移植写法，后续分析
 	castTODesire, castTOLocation = ConsiderTornado(bot, nearbyEnemyHeroes)
-    castEMPDesire, castEMPLocation = ConsiderEMP(bot)
+    --castEMPDesire, castEMPLocation = ConsiderEMP(bot)
+    castEMPDesire = 0
     castCMDesire, castCMLocation = ConsiderChaosMeteor(bot,nearbyEnemyHeroes)
     castDBDesire, castDBLocation = ConsiderDeafeningBlast(bot)
     castSSDesire, castSSLocation = ConsiderSunStrike(bot)
@@ -139,23 +143,45 @@ function X.SkillsComplement()
     castGWDesire = ConsiderGhostWalk(bot, nearbyEnemyHeroes)
     castIWDesire = ConsiderIceWall(bot, nearbyEnemyHeroes)
 	castFSDesire = ConsiderForgedSpirit(bot,  nearbyEnemyHeroes, nearbyEnemyCreep, nearbyEnemyTowers)
-	
+    
+    --组合
+    castTEDesire, castTELocation = ConsiderTornadoEMP(bot)
+
 	ConsiderEarlySpeels(bot)
 
-	if not inGhostWalk(bot) then
-		if castTODesire > 0 then
+    if not inGhostWalk(bot) then --如果不在影身状态（仅限幽灵漫步）
+        --吹风雷暴施法程序
+		if castTEDesire > 0 then 
 			--print("cast TO")
-            if not abilityTO:IsHidden() then
+            if not abilityTO:IsHidden() and not abilityEMP:IsHidden() then --技能可用
+                bot:ActionQueue_UseAbilityOnLocation( abilityTO, castTELocation )
+                bot:ActionQueue_UseAbilityOnLocation( abilityEMP, castTELocation )
+                return true
+            elseif abilityR:IsFullyCastable() then --可用切换技能
+                bot:Action_ClearActions(false)
+                invokeTornado(bot) --将该技能切换出来
+                bot:ActionQueue_UseAbilityOnLocation( abilityTO, castTELocation )
+                bot:Action_ClearActions(false)
+                invokeEMP(bot)
+                bot:ActionQueue_UseAbilityOnLocation( abilityEMP, castTELocation )
+                return true
+            end
+        end
+
+        --强袭飓风施法程序
+		if castTODesire > 0 then 
+			--print("cast TO")
+            if not abilityTO:IsHidden() then --技能可用
                 bot:Action_UseAbilityOnLocation( abilityTO, castTOLocation )
                 return true
-            elseif abilityR:IsFullyCastable() then
+            elseif abilityR:IsFullyCastable() then --可用切换技能
                 bot:Action_ClearActions(false)
-                invokeTornado(bot)
+                invokeTornado(bot) --将该技能切换出来
                 bot:ActionQueue_UseAbilityOnLocation( abilityTO, castTOLocation )
                 return true
             end
         end
-        
+        --混沌陨石施法程序
         if castCMDesire > 0 then
 			--print("cast CM")
             if not abilityCM:IsHidden() then
@@ -168,7 +194,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-
+        --电磁脉冲施法程序
         if castEMPDesire > 0 then
 			--print("cast EMP")
             if not abilityEMP:IsHidden() then
@@ -181,7 +207,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-
+        --超振声波施法程序
         if castDBDesire > 0 then
 			--print("cast DB")
             if not abilityDB:IsHidden() then
@@ -194,7 +220,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-
+        --急速冷却施法程序
         if castCSDesire > 0 then
 			--print("cast CS")
             if not abilityCS:IsHidden() then
@@ -206,8 +232,14 @@ function X.SkillsComplement()
                 bot:ActionQueue_UseAbilityOnEntity( abilityCS, castCSTarget )
                 return true
             end
-        end
 
+            local urn = J.IsItemAvailable("item_urn_of_shadows")
+            if urn ~= nil then 
+                ConsiderUrn(castCSTarget)
+            end
+
+        end
+        --阳炎冲击施法程序
         if castSSDesire > 0 then
 			--print("cast SS")
             if not abilitySS:IsHidden() then
@@ -220,7 +252,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-        
+        --灵动迅捷施法程序
         if castACDesire > 0 then
 			--print("cast AC")
             if not abilityAC:IsHidden() then
@@ -233,7 +265,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-
+        --熔岩精灵施法程序
         if castFSDesire > 0 then
 			--print("cast FS")
             if not abilityFS:IsHidden() then
@@ -246,7 +278,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-        
+        --幽灵漫步施法程序
         if castGWDesire > 0 then
 			--print("cast GW")
             if not abilityGW:IsHidden() then
@@ -259,7 +291,7 @@ function X.SkillsComplement()
                 return true
             end
         end
-
+        --寒冰之墙施法程序
         if castIWDesire > 0 then
 			--print("cast IW")
             if not abilityIW:IsHidden() then
@@ -288,25 +320,151 @@ function X.SkillsComplement()
 
 end
 
+--组合技
+
+--吹风雷暴
+function ConsiderTornadoEMP(bot)
+    if not quasTrained() or not wexTrained() then
+        return BOT_ACTION_DESIRE_NONE, 0
+    end
+
+    if not abilityTO:IsFullyCastable() or not abilityEMP:IsFullyCastable() then
+        return BOT_ACTION_DESIRE_NONE, 0
+    end
+
+    local nCastRange = abilityEMP:GetCastRange()
+    local nCastPoint = abilityEMP:GetCastPoint();
+    local nDelay	 = abilityEMP:GetSpecialValueFloat( 'delay' );
+    local nRadius = abilityEMP:GetSpecialValueInt( "area_of_effect" )
+    local nBurn = abilityEMP:GetSpecialValueInt( "mana_burned" )
+    local nPDamage = abilityEMP:GetSpecialValueInt( "damage_per_mana_pct" )
+    local nManaCost  = abilityEMP:GetManaCost();
+    
+
+    local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
+	local tableNearbyAllyHeroes = bot:GetNearbyHeroes( 800, false, BOT_MODE_NONE );
+	
+	--有把握在困住后击杀
+	for _,npcEnemy in pairs(tableNearbyEnemyHeroes)
+	do
+		if  J.IsValid(npcEnemy) and J.CanCastOnNonMagicImmune(npcEnemy) and J.IsOtherAllyCanKillTarget(bot, npcEnemy)
+		then
+			if  npcEnemy:GetMovementDirectionStability() >= 0.75 then
+				return BOT_ACTION_DESIRE_HIGH, npcEnemy:GetExtrapolatedLocation(nDelay);
+			else
+				return BOT_MODE_DESIRE_MODERATE, J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius,1.45);
+			end
+		end
+	end
+	
+	-- 撤退时尝试留住敌人
+	for _,npcAlly in pairs(tableNearbyAllyHeroes)
+	do
+		if J.IsRetreating(npcAlly)
+		then
+			for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
+			do
+				if ( J.IsValid(npcEnemy) and npcAlly:WasRecentlyDamagedByHero( npcEnemy, 1.0 ) ) 
+				then
+					return BOT_ACTION_DESIRE_HIGH, J.GetDelayCastLocation(npcAlly,npcEnemy,nCastRange,nRadius,1.45);
+				end
+			end
+		end
+	end
+
+	--团战
+	if J.IsInTeamFight(bot, 1200)
+	then
+		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange - 200, nRadius/2, nCastPoint, 0 );
+		if ( locationAoE.count >= 2 ) 
+		then
+			local nInvUnit = J.GetInvUnitInLocCount(bot, nCastRange, nRadius/2, locationAoE.targetloc, false);
+			if nInvUnit >= locationAoE.count then
+				return BOT_ACTION_DESIRE_MODERATE, locationAoE.targetloc;
+			end
+		end
+	end
+	
+	-- 追击
+	if J.IsGoingOnSomeone(bot)
+	then
+		local npcTarget = J.GetProperTarget(bot);
+		if J.IsValidHero(npcTarget) 
+		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and J.IsInRange(npcTarget, bot, nCastRange + nRadius) 
+		then
+			local nCastLoc = J.GetDelayCastLocation(bot,npcTarget,nCastRange,nRadius,1.45)
+			if nCastLoc ~= nil 
+			then
+				return BOT_ACTION_DESIRE_HIGH, nCastLoc;
+			end
+		end
+	end
+
+	--对线
+	if ( J.IsPushing(bot) or J.IsDefending(bot) ) 
+	then
+		if #tableNearbyEnemyHeroes >= 4 and tableNearbyEnemyHeroes[1] ~= nil
+		then
+			local nCastLoc = J.GetDelayCastLocation(bot,tableNearbyEnemyHeroes[1],nCastRange,nRadius,1.45)
+			if nCastLoc ~= nil and nMP > 0.6
+			then
+				return BOT_MODE_DESIRE_LOW, nCastLoc;
+			end
+		end
+	end
+
+    --local tableNearbyAttackingAlliedHeroes = bot:GetNearbyHeroes( 1400, false, BOT_MODE_ATTACK )
+    --if ( #tableNearbyAttackingAlliedHeroes >= 1 )
+    --then
+    --    local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, ( nRadius/2 ), 0, 0 )
+
+    --    if ( locationAoE.count >= 2 )
+    --    then
+    --        return BOT_ACTION_DESIRE_HIGH, locationAoE.targetloc
+    --    end
+    --end
+
+    ---- If we're going after someone
+    --if ( bot:GetActiveMode() == BOT_MODE_ROAM or
+    --     bot:GetActiveMode() == BOT_MODE_TEAM_ROAM or
+    --     bot:GetActiveMode() == BOT_MODE_GANK or
+    --     bot:GetActiveMode() == BOT_MODE_ATTACK or
+    --     bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY )
+    --then
+    --    local npcTarget = bot:GetTarget()
+
+    --    if ( npcTarget ~= nil and CanCastEMPOnTarget(npcTarget) and npcTarget:HasModifier("modifier_invoker_tornado") and GetUnitToUnitDistance( npcTarget, bot ) < (nCastRange - (nRadius / 2)) )
+    --    then
+    --        return BOT_ACTION_DESIRE_MODERATE, npcTarget:GetLocation( )
+    --    end
+    --end
+
+    return BOT_ACTION_DESIRE_NONE, 0
+
+end
+--吹风陨石推波
+function ConsiderTornadoChaosMeteor(bot, nearbyEnemyHeroes)
+
+end
+--组合技end
+
 
 function ConsiderTornado(bot, nearbyEnemyHeroes)
     if not quasTrained() or not wexTrained() then
-        return BOT_ACTION_DESIRE_NONE, {}
+        return BOT_ACTION_DESIRE_NONE, 0
     end
 
     -- Make sure it's castable
     if not abilityTO:IsFullyCastable() then
-        return BOT_ACTION_DESIRE_NONE, {}
+        return BOT_ACTION_DESIRE_NONE, 0
     end
 
-    -- Get some of its values
+    -- 获取参数
     local nDistance = abilityTO:GetSpecialValueInt( "travel_distance" )
     local nSpeed = 1000
     local nCastRange = abilityTO:GetCastRange()
     
-    --------------------------------------
-    -- Global high-priorty usage
-    --------------------------------------
 
     -- Check for a channeling enemy
     for _, npcEnemy in pairs( nearbyEnemyHeroes ) do
@@ -315,9 +473,6 @@ function ConsiderTornado(bot, nearbyEnemyHeroes)
         end
     end
 
-    --------------------------------------
-    -- Mode based usage
-    --------------------------------------
 
     --------- RETREATING -----------------------
     if IsRetreating(bot) then
@@ -796,7 +951,7 @@ end
 
 --补充函数
 
-function inGhostWalk(bot)
+function inGhostWalk(bot) --判断是否在幽灵漫步当中
     return bot:HasModifier("modifier_invoker_ghost_walk_self")
 end
 
@@ -849,6 +1004,26 @@ function ConsiderOrbs(bot)
     end
     
     return false
+end
+--骨灰
+function ConsiderUrn(Target)
+	local blink = nil;
+	
+	for i=0,5 do
+		local item = bot:GetItemInSlot(i)
+		if item ~= nil and item:GetName() == 'item_urn_of_shadows' then
+			blink = item;
+			break
+		end
+	end
+	
+	if J.IsGoingOnSomeone(bot) and blink ~= nil and blink:IsFullyCastable()
+	then
+		if J.IsValidHero(Target) and J.CanCastOnNonMagicImmune(Target)
+        then
+            bot:ActionQueue_UseAbilityOnEntity( blink, Target )
+		end
+	end
 end
 
 -- 组成技能
@@ -991,8 +1166,9 @@ function invokeIceWall(bot)
     bot:ActionPush_UseAbility( abilityE )
     return true
 end
-
+--如果影身被发现或可以显影击杀
 function ConsiderShowUp(bot, nearbyEnemyHeroes)
+    --出于幽灵漫步状态下，附件敌人只有一个或没有（1000范围），或被粉了，切换3雷输出或逃命
 	if inGhostWalk(bot) and #nearbyEnemyHeroes <= 1 or bot:HasModifier("modifier_item_dust") then
 		bot:ActionPush_UseAbility(abilityW )
 		bot:ActionPush_UseAbility(abilityW )

@@ -269,10 +269,10 @@ function X.ConsiderE()
 	local nAttackRange = bot:GetAttackRange();
 
 	-- If we're going after someone
-	if J.IsGoingOnSomeone(bot) 
+	if J.IsGoingOnSomeone(bot) or J.IsInTeamFight(bot, 1200)
 	then
 		local npcTarget = bot:GetTarget();
-		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nAttackRange+200)
+		if J.IsValidHero(npcTarget) and J.IsInRange(npcTarget, bot, nAttackRange+400)
 		then
 			return BOT_ACTION_DESIRE_HIGH;
 		end
