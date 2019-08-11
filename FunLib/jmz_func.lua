@@ -86,50 +86,6 @@ local tEnemyHumanList = {}
 local nEnemyTotalKill = 0
 local nEnemyAverageLevel = 1
 
-local tSleevelHeros = {
-	'npc_dota_hero_vengefulspirit',
-	'npc_dota_hero_shadow_demon',
-	'npc_dota_hero_tidehunter',
-	'npc_dota_hero_disruptor',
-	'npc_dota_hero_axe',
-	'npc_dota_hero_leshrac',
-	'npc_dota_hero_batrider',
-	'npc_dota_hero_dazzle',
-	'npc_dota_hero_abaddon',
-	'npc_dota_hero_grimstroke',
-	--'npc_dota_hero_puck',
-	'npc_dota_hero_invoker',
-	--原脚本
-	'npc_dota_hero_antimage',
-	'npc_dota_hero_arc_warden',
-	'npc_dota_hero_bloodseeker',
-	'npc_dota_hero_bristleback',
-	'npc_dota_hero_chaos_knight',
-	'npc_dota_hero_crystal_maiden',
-	'npc_dota_hero_dragon_knight',
-	'npc_dota_hero_drow_ranger',
-	'npc_dota_hero_jakiro',
-	'npc_dota_hero_kunkka',
-	'npc_dota_hero_luna',
-	'npc_dota_hero_medusa',
-	'npc_dota_hero_necrolyte',
-	'npc_dota_hero_nevermore',
-	'npc_dota_hero_phantom_assassin',
-	'npc_dota_hero_silencer',
-	'npc_dota_hero_skeleton_king',
-	'npc_dota_hero_sniper',
-	'npc_dota_hero_sven',
-	'npc_dota_hero_templar_assassin',
-	'npc_dota_hero_viper',
-	'npc_dota_hero_warlock',
-	'npc_dota_hero_zuus',
-	'npc_dota_hero_skywrath_mage',
-	'npc_dota_hero_razor',
-	'npc_dota_hero_phantom_lancer',
-	'npc_dota_hero_ogre_magi',
-	'npc_dota_hero_lina',
-}
-
 
 local RB = Vector(-7174.000000, -6671.00000, 0.000000)
 local DB = Vector(7023.000000, 6450.000000, 0.000000)
@@ -217,16 +173,18 @@ end
 function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellList)
 
 	local bot = GetBot()
-	
-	if not IsSleevelHeros() then --不是锦囊英雄
-		return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
-	end
 
 	if J.Role.IsUserMode() and J.Role.IsUserHero()
 	then
 		local nDirType = J.Role.GetDirType()
 		local sBotDir = J.Chat.GetHeroDirName(bot, nDirType)
-		local BotSet = require( sBotDir );
+		local BotSet = nil;
+		if pcall(function(loadDir) require( loadDir ) end, sBotDir) then
+			BotSet = require( sBotDir )
+		else
+			return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
+		end
+		
 		if J.Chat.GetRawGameWord(BotSet['ShiFouShengXiao']) == true
 		then
 			nAbilityBuildList = BotSet['JiNeng'];
@@ -240,19 +198,6 @@ function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellL
 
 	return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
 	
-end
-
-function IsSleevelHeros() 
-
-	local bot = GetBot()
-
-	for _,u in pairs(tSleevelHeros) do
-		if bot:GetUnitName() == u
-		then
-			return true;
-		end
-	end
-	return false;
 end
 
 --在这里更新全局变量

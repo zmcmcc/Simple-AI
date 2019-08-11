@@ -405,52 +405,38 @@ function X.ConsiderE()
 		return BOT_ACTION_DESIRE_NONE, 0;
 	end
 
-	--if bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH  then
-	--	local incProj = bot:GetIncomingTrackingProjectiles()
-	--	for _,p in pairs(incProj)
-	--	do
-	--		if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-	--			return BOT_ACTION_DESIRE_HIGH;
-	--		end
-	--	end
-	--end
-	--
-	--
-	--if bot:GetActiveMode() == BOT_MODE_LANING then
-	--	local incProj = bot:GetIncomingTrackingProjectiles()
-	--	for _,p in pairs(incProj)
-	--	do
-	--		if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-	--			return BOT_ACTION_DESIRE_HIGH;
-	--		end
-	--	end
-	--end
-	--
-	--if ( bot:GetActiveMode() == BOT_MODE_ROAM or
-	--	 bot:GetActiveMode() == BOT_MODE_ATTACK or
-	--	 bot:GetActiveMode() == BOT_MODE_GANK or
-	--	 bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY ) 
-	--then
-	--	local incProj = bot:GetIncomingTrackingProjectiles()
-	--	for _,p in pairs(incProj)
-	--	do
-	--		if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-	--			return BOT_ACTION_DESIRE_HIGH;
-	--		end
-	--	end
-	--end
-
-	if J.IsUnitTargetProjectileIncoming(bot, 400)
-	then
-		return BOT_ACTION_DESIRE_HIGH;
+	if bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH  then
+		local incProj = bot:GetIncomingTrackingProjectiles()
+		for _,p in pairs(incProj)
+		do
+			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		end
 	end
 	
-	if not bot:HasModifier("modifier_sniper_assassinate") 
-		and not bot:IsMagicImmune() 
+	
+	if bot:GetActiveMode() == BOT_MODE_LANING then
+		local incProj = bot:GetIncomingTrackingProjectiles()
+		for _,p in pairs(incProj)
+		do
+			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
+		end
+	end
+	
+	if ( bot:GetActiveMode() == BOT_MODE_ROAM or
+		 bot:GetActiveMode() == BOT_MODE_ATTACK or
+		 bot:GetActiveMode() == BOT_MODE_GANK or
+		 bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY ) 
 	then
-		if J.IsWillBeCastUnitTargetSpell(bot,1400)
-		then
-			return BOT_ACTION_DESIRE_HIGH;
+		local incProj = bot:GetIncomingTrackingProjectiles()
+		for _,p in pairs(incProj)
+		do
+			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
+				return BOT_ACTION_DESIRE_HIGH;
+			end
 		end
 	end
 

@@ -640,6 +640,8 @@ ItemModule['item_faceless_void_outfit']    = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_centaur_outfit']          = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_power_treads_agi', 'item_vanguard', 'item_blink', 'item_pipe', 'item_ultimate_scepter', 'item_heart', 'item_shivas_guard'} 
 
+ItemModule['item_obsidian_destroyer_outfit']      = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand', 'item_hurricane_pike', 'item_yasha_and_kaya', 'item_black_king_bar', 'item_shivas_guard', 'item_ultimate_scepter_2', 'item_sheepstick'}
+
 end
 ------------------------------------------------------------------------------------------------------
 
