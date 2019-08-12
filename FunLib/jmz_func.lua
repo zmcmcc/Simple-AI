@@ -1212,6 +1212,46 @@ function J.IsWillBeCastUnitTargetSpell(bot, nRange)
 	return false;
 end
 
+function J.IsWillBeCastUnitTargetAndLocationSpell(bot, nRange)
+	
+	if nRange > 1600 then nRange = 1600 end
+	
+	local nEnemys = bot:GetNearbyHeroes(nRange, true, BOT_MODE_NONE);
+	for _,npcEnemy in pairs(nEnemys)
+	do
+		if npcEnemy ~= nil and npcEnemy:IsAlive()
+		   and ( npcEnemy:IsCastingAbility() or npcEnemy:IsUsingAbility() )
+		   and npcEnemy:IsFacingLocation(bot:GetLocation(), 20)
+		then
+			local nAbility = npcEnemy:GetCurrentActiveAbility();
+			if nAbility ~= nil 
+				and (nAbility:GetBehavior() == ABILITY_BEHAVIOR_UNIT_TARGET or nAbility:GetBehavior() == ABILITY_BEHAVIOR_UNIT_POINT)
+			then
+				local sAbilityName = nAbility:GetName();
+				if not J.IsAllyUnitSpell(sAbilityName)
+				then				
+					if J.IsInRange(npcEnemy, bot, 330)
+						or not J.IsProjectileUnitSpell(sAbilityName)
+					then	
+						if not J.IsHumanPlayer(npcEnemy)
+						then
+							return true;
+						else
+							local nCycle = npcEnemy:GetAnimCycle();
+							local nPoint = nAbility:GetCastPoint();
+							if nCycle > 0.1 and nPoint * ( 1 - nCycle) < 0.27 --极限时机0.26
+							then
+								return true;
+							end						
+						end
+					end
+				end
+			end		
+		end
+	end
+
+	return false;
+end
 
 function J.IsWillBeCastPointSpell(bot, nRange)
 	

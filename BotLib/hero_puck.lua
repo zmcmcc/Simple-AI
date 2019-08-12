@@ -76,6 +76,11 @@ local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
 
 function X.SkillsComplement()
 
+	if X.ConsiderStop() == true 
+	then 
+		bot:Action_ClearActions(true);
+		return; 
+	end
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	
@@ -158,6 +163,28 @@ function X.SkillsComplement()
 	end
 
 
+end
+
+function X.ConsiderStop()
+	
+	if bot:HasModifier("modifier_puck_phase_shift")
+	then
+		local tableEnemyHeroes = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
+		local tableAllyHeroes  = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+		if #tableEnemyHeroes >= 0
+		then
+			return true;
+		end
+
+		local incProj = bot:GetIncomingTrackingProjectiles()
+		for _,p in pairs(incProj)
+		do
+			if GetUnitToLocationDistance(bot, p.location) > 0 and ( p.is_attack or p.is_dodgeable ) then
+				return true;
+			end
+		end
+	end
+	return false;
 end
 
 function X.ConsiderQ()
@@ -405,38 +432,25 @@ function X.ConsiderE()
 		return BOT_ACTION_DESIRE_NONE, 0;
 	end
 
-	if bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH  then
-		local incProj = bot:GetIncomingTrackingProjectiles()
-		for _,p in pairs(incProj)
-		do
-			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
-		end
-	end
-	
-	
-	if bot:GetActiveMode() == BOT_MODE_LANING then
-		local incProj = bot:GetIncomingTrackingProjectiles()
-		for _,p in pairs(incProj)
-		do
-			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
-		end
-	end
-	
-	if ( bot:GetActiveMode() == BOT_MODE_ROAM or
-		 bot:GetActiveMode() == BOT_MODE_ATTACK or
-		 bot:GetActiveMode() == BOT_MODE_GANK or
-		 bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY ) 
+	if J.IsUnitTargetProjectileIncoming(bot, 400)
 	then
-		local incProj = bot:GetIncomingTrackingProjectiles()
-		for _,p in pairs(incProj)
-		do
-			if GetUnitToLocationDistance(bot, p.location) < 200 and ( p.is_attack or p.is_dodgeable ) then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
+		return BOT_ACTION_DESIRE_HIGH;
+	end
+	
+	if not bot:HasModifier("modifier_puck_phase_shift") 
+		and not bot:IsMagicImmune() 
+	then
+		if J.IsWillBeCastUnitTargetAndLocationSpell(bot,1400)
+		then
+			return BOT_ACTION_DESIRE_HIGH;
+		end
+	end
+	
+	local incProj = bot:GetIncomingTrackingProjectiles()
+	for _,p in pairs(incProj)
+	do
+		if GetUnitToLocationDistance(bot, p.location) <= 100 and ( p.is_attack or p.is_dodgeable ) then
+			return BOT_ACTION_DESIRE_HIGH;
 		end
 	end
 
