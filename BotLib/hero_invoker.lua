@@ -588,16 +588,16 @@ end
 
 
 function ConsiderSunStrike(bot)
-    if not exortTrained() then
+    if not exortTrained() then --无法切换到天火
         return BOT_ACTION_DESIRE_NONE, {}
     end
 
     -- Make sure it's castable
-    if not abilitySS:IsFullyCastable() then
+    if not abilitySS:IsFullyCastable() then  --天火冷却
         return BOT_ACTION_DESIRE_NONE, {}
     end
 
-    -- Get some of its values
+    -- 获取天火的一些属性
     local nRadius = 175
     local nDelay = 2.0 -- 0.05 cast point, 1.7 delay, + some forgiveness
     local nDamage = abilitySS:GetSpecialValueFloat("damage")
@@ -605,9 +605,9 @@ function ConsiderSunStrike(bot)
     --------------------------------------
     -- Global Usage
     --------------------------------------
-    local globalEnemies = GetUnitList(UNIT_LIST_ENEMY_HEROES)
+    local globalEnemies = GetUnitList(UNIT_LIST_ENEMY_HEROES)--获取可见敌对英雄列表
     for _,enemy in pairs(globalEnemies) do
-        if enemy:GetHealth() <= nDamage and CanCastSunStrikeOnTarget(enemy) then
+        if enemy:GetHealth() <= nDamage and CanCastSunStrikeOnTarget(enemy) then --敌人生命小于技能伤害且敌人可以被伤害到
             if IsDisabled(enemy) then
                 return BOT_ACTION_DESIRE_MODERATE, enemy:GetLocation()
             else
@@ -617,7 +617,8 @@ function ConsiderSunStrike(bot)
     end
 
     ------- CHASING --------------------------------
-    local target = bot:GetTarget()
+    local target = bot:GetTarget()--获取电脑目前的目标
+    --  目标是存活的英雄                可以被技能伤害                              单位是敌对的
     if IsValidTarget(target) and CanCastSunStrikeOnTarget(target) and GetTeamForPlayer(target:GetPlayerID()) ~= GetTeam() then
         if IsDisabled(target) then
             return BOT_ACTION_DESIRE_MODERATE, target:GetLocation()

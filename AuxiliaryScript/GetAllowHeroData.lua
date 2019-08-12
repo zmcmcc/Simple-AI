@@ -69,6 +69,13 @@ D.hero = {
 ["npc_dota_hero_tiny"] = {
   ["hero_name"] = "tiny",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_beastmaster",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_keeper_of_the_light",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_troll_warlord",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_vengeful_spirit",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_elder_titan",["weight"] = 3,},
@@ -96,6 +103,11 @@ D.hero = {
 ["npc_dota_hero_kunkka"] = {
   ["hero_name"] = "kunkka",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_shadow_demon",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_disruptor",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_dark_seer",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
@@ -262,6 +274,9 @@ D.hero = {
 ["npc_dota_hero_huskar"] = {
   ["hero_name"] = "huskar",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_dazzle",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_abaddon",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_ember_spirit",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
@@ -289,6 +304,10 @@ D.hero = {
 ["npc_dota_hero_alchemist"] = {
   ["hero_name"] = "alchemist",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_vengeful_spirit",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_slardar",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_visage",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
@@ -346,6 +365,11 @@ D.hero = {
 ["npc_dota_hero_treant"] = {
   ["hero_name"] = "treant",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_templar_assassin",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_timbersaw",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_bristleback",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_dragon_knight",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_spectre",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_life_stealer",["weight"] = 3,},
@@ -436,6 +460,9 @@ D.hero = {
 ["npc_dota_hero_shredder"] = {
   ["hero_name"] = "shredder",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_keeper_of_the_light",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_treant_protector",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_phantom_lancer",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
@@ -553,6 +580,17 @@ D.hero = {
 ["npc_dota_hero_legion_commander"] = {
   ["hero_name"] = "legion_commander",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_abaddon",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_ancient_apparition",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lina",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lion",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_pudge",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_skywrath_mage",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_storm_spirit",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_zeus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_windranger",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
@@ -580,6 +618,11 @@ D.hero = {
 ["npc_dota_hero_earth_spirit"] = {
   ["hero_name"] = "earth_spirit",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_timbersaw",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_doom",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_slark",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_alchemist",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_shredder",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_winter_wyvern",["weight"] = 3,},
@@ -732,6 +775,10 @@ D.hero = {
 ["npc_dota_hero_juggernaut"] = {
   ["hero_name"] = "juggernaut",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_mirana",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_terrorblade",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
@@ -795,6 +842,8 @@ D.hero = {
 ["npc_dota_hero_morphling"] = {
   ["hero_name"] = "morphling",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_warlock",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_keeper_of_the_light",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
@@ -989,6 +1038,10 @@ D.hero = {
 ["npc_dota_hero_luna"] = {
   ["hero_name"] = "luna",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tidehunter",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_puck",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_vengeful_spirit",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_slardar",["weight"] = 3,},
@@ -1016,6 +1069,12 @@ D.hero = {
 ["npc_dota_hero_bounty_hunter"] = {
   ["hero_name"] = "bounty_hunter",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_bristleback",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lifestealer",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_slark",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_weaver",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_warlock",["weight"] = 3,},
@@ -1105,6 +1164,11 @@ D.hero = {
 ["npc_dota_hero_lone_druid"] = {
   ["hero_name"] = "lone_druid",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_alchemist",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_beastmaster",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_clockwerk",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_jakiro",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_shredder",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
@@ -1264,6 +1328,11 @@ D.hero = {
 ["npc_dota_hero_pangolier"] = {
   ["hero_name"] = "pangolier",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_ancient_apparition",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_clockwerk",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tusk",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_dark_seer",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
@@ -1450,6 +1519,17 @@ D.hero = {
 ["npc_dota_hero_lina"] = {
   ["hero_name"] = "lina",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_bane",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_beastmaster",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_clockwerk",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_legion_commander",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lion",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_mirana",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_pudge",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_shadow_shaman",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_pugna",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_shadow_demon",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_broodmother",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
@@ -1510,6 +1590,8 @@ D.hero = {
 ["npc_dota_hero_tinker"] = {
   ["hero_name"] = "tinker",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_beastmaster",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
@@ -1599,6 +1681,10 @@ D.hero = {
 ["npc_dota_hero_jakiro"] = {
   ["hero_name"] = "jakiro",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_shadow_demon",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_dark_seer",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
@@ -1626,6 +1712,10 @@ D.hero = {
 ["npc_dota_hero_chen"] = {
   ["hero_name"] = "chen",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_mirana",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_natures_prophet",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_enchantress",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_shredder",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
@@ -1715,6 +1805,9 @@ D.hero = {
 ["npc_dota_hero_rubick"] = {
   ["hero_name"] = "rubick",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_jakiro",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
@@ -1871,6 +1964,12 @@ D.hero = {
 ["npc_dota_hero_techies"] = {
   ["hero_name"] = "techies",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_tiny",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_dark_seer",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_pudge",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_ember_spirit",["weight"] = 3,},
@@ -2123,6 +2222,10 @@ D.hero = {
 ["npc_dota_hero_life_stealer"] = {
   ["hero_name"] = "life_stealer",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_natures_prophet",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_wraith_king",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_storm_spirit",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_puck",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_spectre",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_abyssal_underlord",["weight"] = 3,},
@@ -2346,6 +2449,11 @@ D.hero = {
 ["npc_dota_hero_magnataur"] = {
   ["hero_name"] = "magnataur",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_kunkka",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_sand_king",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_warlock",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_io",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_lycan",["weight"] = 3,},
@@ -2411,6 +2519,11 @@ D.hero = {
 ["npc_dota_hero_abyssal_underlord"] = {
   ["hero_name"] = "abyssal_underlord",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_skywrath_mage",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_queen_of_pain",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_riki",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_faceless_void",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_luna",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_naga_siren",["weight"] = 3,},
@@ -2469,6 +2582,12 @@ D.hero = {
 ["npc_dota_hero_nevermore"] = {
   ["hero_name"] = "nevermore",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_beastmaster",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_faceless_void",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_silencer",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tidehunter",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_alchemist",["weight"] = 3,},
@@ -2525,6 +2644,12 @@ D.hero = {
 ["npc_dota_hero_venomancer"] = {
   ["hero_name"] = "venomancer",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_tiny",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_natures_prophet",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_chen",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_leshrac",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_shadow_shaman",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_templar_assassin",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_ursa",["weight"] = 3,},
@@ -2619,6 +2744,8 @@ D.hero = {
 ["npc_dota_hero_viper"] = {
   ["hero_name"] = "viper",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_abaddon",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_spectre",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bristleback",["weight"] = 3,},
@@ -2646,6 +2773,8 @@ D.hero = {
 ["npc_dota_hero_clinkz"] = {
   ["hero_name"] = "clinkz",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_alchemist",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_batrider",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
@@ -2704,6 +2833,12 @@ D.hero = {
 ["npc_dota_hero_weaver"] = {
   ["hero_name"] = "weaver",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tidehunter",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_sand_king",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_kunkka",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_brewmaster",["weight"] = 3,},
@@ -2731,6 +2866,14 @@ D.hero = {
 ["npc_dota_hero_spectre"] = {
   ["hero_name"] = "spectre",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lion",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_shadow_shaman",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tidehunter",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_vengeful_spirit",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lich",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_keeper_of_the_light",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_luna",["weight"] = 3,},
@@ -2859,6 +3002,15 @@ D.hero = {
 ["npc_dota_hero_medusa"] = {
   ["hero_name"] = "medusa",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_crystal_maiden",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lion",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_shadow_shaman",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tidehunter",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_vengeful_spirit",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_lich",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_keeper_of_the_light",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_visage",["weight"] = 3,},
@@ -2882,7 +3034,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_monkey_king",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_invoker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "elite", ["bot"] = true,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_terrorblade"] = {
   ["hero_name"] = "terrorblade",
   ["proposal"] = {
@@ -3084,6 +3236,8 @@ D.hero = {
 ["npc_dota_hero_enigma"] = {
   ["hero_name"] = "enigma",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_omniknight",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_silencer",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_visage",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
@@ -3142,6 +3296,11 @@ D.hero = {
 ["npc_dota_hero_warlock"] = {
   ["hero_name"] = "warlock",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_enigma",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_tidehunter",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_sand_king",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_earthshaker",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_kunkka",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_chaos_knight",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
@@ -3425,6 +3584,11 @@ D.hero = {
 ["npc_dota_hero_invoker"] = {
   ["hero_name"] = "invoker",
   ["proposal"] = {
+         {["hero"] = "npc_dota_hero_clockwerk",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_ancient_apparition",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_magnus",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_dark_seer",["weight"] = 3,},
+         {["hero"] = "npc_dota_hero_faceless_void",["weight"] = 3,},
   },["restraint"] = {
          {["hero"] = "npc_dota_hero_viper",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_meepo",["weight"] = 3,},
@@ -3609,8 +3773,8 @@ D.hero = {
   ["evaluation"] = "excellent", ["bot"] = true,},
 }
 D.team = {
-{["name"] = "Evil Geniuses";["alias"] = "Evil Geniuses";
-["players"] = {
+         {["name"] = "Evil Geniuses";["alias"] = "Evil Geniuses";
+          ["players"] = {
 "EG.Cr1t-",
 "EG.Arteezy",
 "EG.Suma1L",
@@ -3618,10 +3782,10 @@ D.team = {
 "EG.Fly",
 "EG.BuLba",
 "Newbee.CCnC",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Team Liquid";["alias"] = "Team Liquid";
-["players"] = {
+         {["name"] = "Team Liquid";["alias"] = "Team Liquid";
+          ["players"] = {
 "Liquid.Miracle-",
 "Liquid.gh",
 "Chaos.w33",
@@ -3629,10 +3793,10 @@ D.team = {
 "Liquid.MinD_ContR…",
 "Chaos.MATUMBAMAN",
 "shadow",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Team Secret";["alias"] = "Team Secret";
-["players"] = {
+         {["name"] = "Team Secret";["alias"] = "Team Secret";
+          ["players"] = {
 "Secret.YapzOr",
 "Secret.Puppey",
 "Secret.Nisha",
@@ -3640,10 +3804,10 @@ D.team = {
 "Secret.MidOne",
 "eyyou",
 "Na`Vi.Dendi",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Virtus.pro";["alias"] = "Virtus.pro";
-["players"] = {
+         {["name"] = "Virtus.pro";["alias"] = "Virtus.pro";
+          ["players"] = {
 "VP.9pasha",
 "VP.Solo",
 "VP.No[o]ne-♥",
@@ -3651,10 +3815,10 @@ D.team = {
 "VP.RodjER",
 "Empire.fn",
 "Afoninje",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "OG";["alias"] = "OG";
-["players"] = {
+         {["name"] = "OG";["alias"] = "OG";
+          ["players"] = {
 "Topson",
 "OG.7mad",
 "ana",
@@ -3662,10 +3826,10 @@ D.team = {
 "OG.JerAx",
 "OG.N0tail",
 "ILTW",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Alliance";["alias"] = "Alliance";
-["players"] = {
+         {["name"] = "Alliance";["alias"] = "Alliance";
+          ["players"] = {
 "Alliance.iNSaNiA",
 "Alliance.miCKe",
 "Alliance.Taiga❤",
@@ -3673,10 +3837,10 @@ D.team = {
 "Alliance.qojqva",
 "Madara",
 "Illidan Stormrage",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "PSG.LGD";["alias"] = "PSG.LGD";
-["players"] = {
+         {["name"] = "PSG.LGD";["alias"] = "PSG.LGD";
+          ["players"] = {
 "PSG.LGD.fy",
 "PSG.LGD.Chalice",
 "LGD.Maybe",
@@ -3684,10 +3848,10 @@ D.team = {
 "PSG.LGD.xNova",
 "Xm",
 "LFY.Yao",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Fnatic";["alias"] = "Fnatic";
-["players"] = {
+         {["name"] = "Fnatic";["alias"] = "Fnatic";
+          ["players"] = {
 "Fnatic.Dj",
 "Fnatic.Jabz",
 "Fnatic.iceiceice",
@@ -3695,10 +3859,10 @@ D.team = {
 "Fnatic.MP",
 "Fnatic.EternaLEnVy",
 "FWD.Universe",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "	Vici Gaming";["alias"] = "	Vici Gaming";
-["players"] = {
+         {["name"] = "	Vici Gaming";["alias"] = "	Vici Gaming";
+          ["players"] = {
 "VG.Ori",
 "VG.Fade",
 "VG.Dy",
@@ -3706,10 +3870,10 @@ D.team = {
 "VG.Yang",
 "VGJ.T.ddc",
 "Agressif",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Natus Vincere";["alias"] = "Natus Vincere";
-["players"] = {
+         {["name"] = "Natus Vincere";["alias"] = "Natus Vincere";
+          ["players"] = {
 "Na`Vi.Crystallize",
 "Vega.Zayac",
 "Na`Vi.SoNNeikO",
@@ -3717,10 +3881,10 @@ D.team = {
 "Na`Vi.Magical",
 "Misha",
 "Na'Vi.Chu",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "EHOME";["alias"] = "EHOME";
-["players"] = {
+         {["name"] = "EHOME";["alias"] = "EHOME";
+          ["players"] = {
 "EHOME.Innocence",
 "EHOME.XinQ",
 "Newbee.B.Ferrari_…",
@@ -3728,10 +3892,10 @@ D.team = {
 "EHOME.END",
 "Newbee.B.xiao8",
 "fattiger",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Ninjas in Pyjamas";["alias"] = "Ninjas in Pyjamas";
-["players"] = {
+         {["name"] = "Ninjas in Pyjamas";["alias"] = "Ninjas in Pyjamas";
+          ["players"] = {
 "NiP.ppd",
 "NiP.Fata",
 "NiP.Ace",
@@ -3739,19 +3903,19 @@ D.team = {
 "NiP.33",
 "Chaos.MiLAN",
 "Liquid.MinD_ContR…",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Vega Squadron";["alias"] = "Vega Squadron";
-["players"] = {
+         {["name"] = "Vega Squadron";["alias"] = "Vega Squadron";
+          ["players"] = {
 "what's next.",
 "cAtfiSh",
 "Fishman",
 "HR.j4",
 "5",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "The Final Tribe";["alias"] = "The Final Tribe";
-["players"] = {
+         {["name"] = "The Final Tribe";["alias"] = "The Final Tribe";
+          ["players"] = {
 "Era",
 "Frost",
 "Xibbe",
@@ -3759,20 +3923,29 @@ D.team = {
 "Handsken",
 "Okcya",
 "jonassomfan",
+         };
+["sponsorship"] = "";},
+{["name"] = "Alcedo";["alias"] = "Alcedo";
+ ["players"] = {
+"Halcyonの玲莺",
+"BlackDream",
+"死刑犯",
+"forthegov@5156",
+"小脚冰凉",
 };
 ["sponsorship"] = "";},
-{["name"] = "Newbee";["alias"] = "Newbee";
-["players"] = {
+         {["name"] = "Newbee";["alias"] = "Newbee";
+          ["players"] = {
 "VG.Fenrir",
 "JiaJia",
 "Newbee.Sccc",
 "Waixi",
 "Newbee.uuu9/Moogy",
 "Newbee.Sansheng",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Minus Modus";["alias"] = "Minus Modus";
-["players"] = {
+         {["name"] = "Minus Modus";["alias"] = "Minus Modus";
+          ["players"] = {
 "DkFogas",
 "Modus.Ainkrad",
 "Dukalis(positive)",
@@ -3780,10 +3953,10 @@ D.team = {
 "Cерёжа",
 "бездельник",
 "Fp mid",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "TNC Predator";["alias"] = "TNC Predator";
-["players"] = {
+         {["name"] = "TNC Predator";["alias"] = "TNC Predator";
+          ["players"] = {
 "TNC.Kuku",
 "TnC.TIMS",
 "Xctn.Gabbi",
@@ -3791,10 +3964,10 @@ D.team = {
 "TNC.Armel",
 "TNC.Raven",
 "Mski.nb",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "compLexity Gaming";["alias"] = "compLexity Gaming";
-["players"] = {
+         {["name"] = "compLexity Gaming";["alias"] = "compLexity Gaming";
+          ["players"] = {
 "Chaos.tavo",
 "CoL.Meracle-",
 "adam",
@@ -3802,10 +3975,10 @@ D.team = {
 "coL.Limmp",
 "monkeys-forever",
 "Deth-sama",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Mineski";["alias"] = "Mineski";
-["players"] = {
+         {["name"] = "Mineski";["alias"] = "Mineski";
+          ["players"] = {
 "XctN.Raging Potato",
 "Mski.Nana",
 "Mineski.Nikobaby",
@@ -3813,10 +3986,10 @@ D.team = {
 "Mski.nb",
 "Mski.AhJit",
 "Mski.Febby",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Athletico";["alias"] = "Athletico";
-["players"] = {
+         {["name"] = "Athletico";["alias"] = "Athletico";
+          ["players"] = {
 "=",
 "Two Faced",
 "ttv/tekcorocket",
@@ -3824,30 +3997,30 @@ D.team = {
 "SplickoMode",
 "ningy",
 "rudy",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "TheLastJedis";["alias"] = "TheLastJedis";
-["players"] = {
+         {["name"] = "TheLastJedis";["alias"] = "TheLastJedis";
+          ["players"] = {
 "SAMOSES",
 "sua jiu",
 "ZoGraF",
 "Senjougahara",
 "minecraft.solji",
 "just_kakostas",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Golden Mulas";["alias"] = "Golden Mulas";
-["players"] = {
+         {["name"] = "Golden Mulas";["alias"] = "Golden Mulas";
+          ["players"] = {
 "[!]BabyRAta^_^!♥",
 "→ OPERATIVO",
 "kazuma",
 "Dreamer",
 "Blizhe",
 "ESSKEETIT",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Smiley Face";["alias"] = "Smiley Face";
-["players"] = {
+         {["name"] = "Smiley Face";["alias"] = "Smiley Face";
+          ["players"] = {
 "Bury",
 "Poncho",
 "EmeraldPage",
@@ -3855,10 +4028,10 @@ D.team = {
 "Zoompa",
 "*Kisses*",
 "logical",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Complete Nonsense";["alias"] = "Complete Nonsense";
-["players"] = {
+         {["name"] = "Complete Nonsense";["alias"] = "Complete Nonsense";
+          ["players"] = {
 "Аllιssоη",
 "Perpetual State o…",
 "Löllö",
@@ -3866,10 +4039,10 @@ D.team = {
 "TripleSteal-",
 "Maki :3",
 "kosma",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Retards on ICe";["alias"] = "Retards on ICe";
-["players"] = {
+         {["name"] = "Retards on ICe";["alias"] = "Retards on ICe";
+          ["players"] = {
 "hey izumi ( ° ͜ʖ͡…",
 "Kreygasm",
 "XxX.CrYzTaL_MaIdE…",
@@ -3877,10 +4050,10 @@ D.team = {
 "i report invoker …",
 "The Senate",
 "BlackOut",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Dark Sided";["alias"] = "Dark Sided";
-["players"] = {
+         {["name"] = "Dark Sided";["alias"] = "Dark Sided";
+          ["players"] = {
 "have u seen my ni…",
 "Zavier",
 "Tobz",
@@ -3888,20 +4061,21 @@ D.team = {
 "yong chen",
 "x",
 "Boo Boo",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Mother DUCKING DOGS";["alias"] = "Mother DUCKING DOGS";
-["players"] = {
+         {["name"] = "Mother DUCKING DOGS";["alias"] = "Mother DUCKING DOGS";
+          ["players"] = {
 "Villain",
 "Little Duckie",
 "logical",
 "Banned Toxic LoL …",
 "potato",
+"他妈的你新手",
 "WTFBBQTHEANGRY",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Infinity Gaming";["alias"] = "Infinity Gaming";
-["players"] = {
+         {["name"] = "Infinity Gaming";["alias"] = "Infinity Gaming";
+          ["players"] = {
 "K-Tastic",
 "DUDE>",
 "Mode: Tryhard to …",
@@ -3909,10 +4083,10 @@ D.team = {
 "twitch.tv/filorul…",
 "Lyanden",
 "Zavier",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Signify";["alias"] = "Signify";
-["players"] = {
+         {["name"] = "Signify";["alias"] = "Signify";
+          ["players"] = {
 "Swifty",
 "BlizzarD",
 "Crowley",
@@ -3920,17 +4094,17 @@ D.team = {
 "NO_Chanc3",
 "Think and Grow Ri…",
 "1",
-};
+         };
 ["sponsorship"] = "";},
-{["name"] = "Team Anvorgesa";["alias"] = "Team Anvorgesa";
-["players"] = {
+         {["name"] = "Team Anvorgesa";["alias"] = "Team Anvorgesa";
+          ["players"] = {
 "ESSKEETIT",
 "Dotalicious",
 "(",
 "322",
 "Катюша",
 ".",
-};
+         };
 ["sponsorship"] = "";},
 }
-return D
+ return D
