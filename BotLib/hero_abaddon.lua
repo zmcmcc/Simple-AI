@@ -63,9 +63,7 @@ end
 --将英雄技能初始入变量
 local abilityQ = bot:GetAbilityByName( sAbilityList[1] )
 local abilityW = bot:GetAbilityByName( sAbilityList[2] )
-local abilityE = bot:GetAbilityByName( sAbilityList[3] )
 local abilityR = bot:GetAbilityByName( sAbilityList[6] )
-local talent5 = bot:GetAbilityByName( sTalentList[5] );
 --初始化技能欲望与点变量
 local castQDesire, castQTarget
 local castWDesire, castWTarget
@@ -543,8 +541,6 @@ function X.ConsiderW()
 end
 --是否应当节省魔法
 function X.ShouldSaveMana(nAbility)
-	
-	if talent5:IsTrained() then return false end;
 
 	if  nLV >= 6
 	    and abilityR:GetCooldownTimeRemaining() <= 3.0
