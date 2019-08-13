@@ -1,11 +1,14 @@
 ## Simple AI
 更加简单，快捷的构建DOTA2机器人脚本，不需要深入了解脚本制作流程，只需编写你需要的内容，脚本会自动加载。
 ### 说明
-此脚本主要用作快速开发、学习和了解DOTA2机器人脚本，内容基于目前流行的[A Beginner AI:Mid 中路版(7/12)](https://steamcommunity.com/sharedfiles/filedetails/?id=1573671599)改写而来，其中包含绝大多数（90%以上）原作者编写的脚本内容。
+此脚本主要用作快速开发、学习和了解DOTA2机器人脚本，内容基于目前流行的[A Beginner AI:Mid](https://steamcommunity.com/sharedfiles/filedetails/?id=1573671599)改写而来，其中包含绝大多数（90%以上）原作者编写的脚本内容。
 ### 教程
 相关开发教程还在编写当中。
+### 讨论
+有关此脚本的开发讨论可以登录[论坛](http://discuss.alcedogroup.com/t/simple-ai-dev)进行讨论
 ### 支持的模式
 队长模式
+反队长模式
 全英雄模式
 ### 额外英雄
 目前仅限队长模式的额外英雄有（暂时取消限制，全模式可选）

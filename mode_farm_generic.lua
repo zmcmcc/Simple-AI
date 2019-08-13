@@ -98,11 +98,11 @@ function GetDesire()
 			fMessage, sMessage = 'null','null'
 		end
 	    
-		bot:ActionImmediate_Chat( fMessage, true);
+		bot:ActionImmediate_Chat( fMessage, false);
 		if bAllNotice
 		then
 			bot:ActionImmediate_Chat( sMessage, true);
-			bot:ActionImmediate_Chat( "Please use hard or unfair mode and do not play Monkey king. 请使用困难或疯狂难度，不要使用齐天大圣。", true);
+			bot:ActionImmediate_Chat( "请使用困难或疯狂难度，不要使用齐天大圣。", true);
 		end
 		bPushNoticeDone = true
 	end
