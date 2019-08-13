@@ -703,7 +703,7 @@ function Think()
 			InstallChatCallback(function ( tChat ) X.SetChatHeroBan( tChat.string ); end);
 		end
 		AllPickLogic();
-	elseif GetGameMode() == GAMEMODE_CM then
+	elseif GetGameMode() == GAMEMODE_CM or GetGameMode() == GAMEMODE_REVERSE_CM then
 		otherGameMod.CaptainModeLogic();
 		otherGameMod.AddToList();
 		--elseif GetGameMode() == GAMEMODE_AR then
