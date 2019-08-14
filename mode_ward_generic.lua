@@ -14,6 +14,7 @@ end
 local role = require( GetScriptDirectory()..'/FunLib/jmz_role')
 local Site = require( GetScriptDirectory()..'/FunLib/jmz_site')
 local additionlF = require(GetScriptDirectory() .. "/AuxiliaryScript/AdditionalFunction")
+local N = require( GetScriptDirectory()..'/AuxiliaryScript/Comicdialogue')
 local bot = GetBot();
 local X = {}
 local AvailableSpots = {};
@@ -28,17 +29,56 @@ bot.lastSwapWardTime = -90;
 bot.ward = false;
 bot.steal = false;
 
-local route = {
-	Vector(-108.000000, 2271.000000, 0.000000),
-	Vector(-1276.000000, 3644.000000, 0.000000),
-	Vector(-3148.000000, 3720.000000, 0.000000)
+if Site["RandomIntRoute"] == nil then
+	Site["RandomIntRoute"] = RandomInt(1,4)
+end
+local routelist = {
+	{
+		Vector(-108.000000, 2271.000000, 0.000000),
+		Vector(-1276.000000, 3644.000000, 0.000000),
+		Vector(-3148.000000, 3720.000000, 0.000000)
+	},
+	{
+		Vector(-5229.000000, 3687.000000, 0.000000),
+		Vector(-2509.000000, 4789.000000, 0.000000),
+		Vector(-3148.000000, 3720.000000, 0.000000)
+	},
+	{
+		Vector(-5229.000000, 3687.000000, 0.000000),
+		Vector(-1061.000000, 4795.000000, 0.000000),
+		Vector(-3148.000000, 3720.000000, 0.000000)
+	},
+	{
+		Vector(1387.000000, -2905.000000, 0.000000),
+		Vector(3532.000000, -792.000000, 0.000000),
+		Vector(4403.000000, -1604.000000, 0.000000)
+	}
 }
+local route = routelist[Site["RandomIntRoute"]]
 
-local route2 = {
-	Vector(3597.000000, 351.000000, 0.000000),
-	Vector(2186.000000, -3656.000000, 0.000000),
-	Vector(3689.000000, -3625.000000, 0.000000)
+local route2list = {
+	{
+		Vector(3597.000000, 351.000000, 0.000000),
+		Vector(4508.000000, -1669.000000, 0.000000),
+		Vector(5409.000000, -3787.000000, 0.000000)
+	},
+	{
+		Vector(3597.000000, 351.000000, 0.000000),
+		Vector(2186.000000, -3656.000000, 0.000000),
+		Vector(3689.000000, -3625.000000, 0.000000)
+	},
+	{
+		Vector(3.000000, 2058.000000, 0.000000),
+		Vector(-2745.000000, 282.000000, 0.000000),
+		Vector(-4242.000000, 649.000000, 0.000000)
+	},
+	{
+		Vector(3597.000000, 351.000000, 0.000000),
+		Vector(2186.000000, -3656.000000, 0.000000),
+		Vector(3689.000000, -3625.000000, 0.000000)
+	}
 }
+local route2 = route2list[Site["RandomIntRoute"]]
 
 local vNonStuck = Vector(-2610.000000, 538.000000, 0.000000);
 
@@ -87,8 +127,7 @@ function GetDesire()
 
 	if DotaTime() < 0 then
 		local enemies = bot:GetNearbyHeroes(500, true, BOT_MODE_NONE)
-		if not IsSafelaneCarry() and bot:GetAssignedLane() ~= LANE_MID 
-		   and ( (GetTeam() == TEAM_RADIANT and bot:GetAssignedLane() == LANE_TOP) 
+		if ( (GetTeam() == TEAM_RADIANT and bot:GetAssignedLane() == LANE_TOP) 
 		      or (GetTeam() == TEAM_DIRE and bot:GetAssignedLane() == LANE_BOT) 
 			  or  role.IsSupport(bot:GetUnitName()) 
 			  or ( bot:GetUnitName() == "npc_dota_hero_elder_titan" and DotaTime() > -59 ) 
@@ -221,6 +260,10 @@ function Think()
 		if smoke ~= nil and smoke:IsFullyCastable() and not bot:HasModifier('modifier_smoke_of_deceit') then
 			bot:Action_UseAbility(smoke);
 			return
+		end
+		
+		if ComicDialogue == nil then
+			ComicDialogue = N.ComicDialogue()
 		end
 		
 		if GetTeam() == TEAM_RADIANT then

@@ -8,16 +8,49 @@ local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
 local illuOrbLoc = nil
 
+--local tTalentTreeList = {
+--						['t25'] = {10, 0},
+--						['t20'] = {0, 10},
+--						['t15'] = {0, 10},
+--						['t10'] = {10, 0},
+--}
+--
+--local tAllAbilityBuildList = {
+--						{1,3,1,2,1,6,1,2,2,2,6,3,3,3,6},
+--						{1,3,1,2,2,6,1,2,1,2,6,3,3,3,6}
+--}
+
+--local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
+--
+--local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
+
+
+--X['sBuyList'] = {
+--				sOutfit,
+--				"item_veil_of_discord",
+--				"item_blink",
+--				"item_cyclone",
+--				"item_ultimate_scepter",
+--				"item_sheepstick",
+--				"item_octarine_core",
+--}
+
+--X['sSellList'] = {
+--	"item_travel_boots_1",
+--	"item_boots",
+--}
+
+-- 出装和加点来自于Misunderstand
+
 local tTalentTreeList = {
-						['t25'] = {10, 0},
-						['t20'] = {0, 10},
-						['t15'] = {0, 10},
-						['t10'] = {10, 0},
+						['t25'] = {0, 10},
+						['t20'] = {10, 10},
+						['t15'] = {10, 10},
+						['t10'] = {0, 10},
 }
 
 local tAllAbilityBuildList = {
-						{1,3,1,2,1,6,1,2,2,2,6,3,3,3,6},
-						{1,3,1,2,2,6,1,2,1,2,6,3,3,3,6}
+						{ 1, 3, 1, 2, 1, 6, 1, 2, 2, 2, 6, 3, 3, 3, 6 }
 }
 
 local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
@@ -26,18 +59,42 @@ local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 
 X['sBuyList'] = {
-				sOutfit,
-				"item_veil_of_discord",
+				"item_mantle",
+				"item_double_circlet",
+				"item_enchanted_mango",
+				"item_tango",
+				"item_bottle",
+				"item_null_talisman",
+				"item_double_enchanted_mango",
+				"item_clarity",
 				"item_blink",
+				"item_clarity",
 				"item_cyclone",
+				"item_dagon",
+				"item_sphere",
 				"item_ultimate_scepter",
-				"item_sheepstick",
-				"item_octarine_core",
+				"item_dagon_2",
+				"item_maelstrom",
+				"item_ultimate_scepter_2",
+				"item_mjollnir",
+				"item_dagon_3",
+				"item_dagon_5",
+				"item_travel_boots_2",
+				"item_moon_shard",
 }
 
 X['sSellList'] = {
-	"item_travel_boots_1",
-	"item_boots",
+	"item_blink",
+	"item_circlet",
+
+	"item_sphere",
+	"item_bottle",
+
+	"item_ultimate_scepter",
+	"item_null_talisman",
+
+	"item_travel_boots",
+	"item_power_treads",
 }
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
@@ -179,7 +236,7 @@ function X.ConsiderStop()
 		local incProj = bot:GetIncomingTrackingProjectiles()
 		for _,p in pairs(incProj)
 		do
-			if GetUnitToLocationDistance(bot, p.location) > 0 and ( p.is_attack or p.is_dodgeable ) then
+			if GetUnitToLocationDistance(bot, p.location) >= 0 and ( p.is_attack or p.is_dodgeable ) then
 				return true;
 			end
 		end
@@ -402,16 +459,6 @@ function X.ConsiderW()
 			end
 		end
 	end
-	
-	-- If Roshan
-	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
-	then
-		local npcTarget = bot:GetAttackTarget();
-		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(bot, npcTarget, nRadius)  )
-		then
-			return BOT_ACTION_DESIRE_MODERATE;
-		end
-	end
 
 	-- If mana is too much
 	if nMP > 0.95
@@ -432,11 +479,15 @@ function X.ConsiderE()
 		return BOT_ACTION_DESIRE_NONE, 0;
 	end
 
-	if J.IsUnitTargetProjectileIncoming(bot, 400)
+	if J.IsUnitTargetProjectileIncoming(bot, 1)
 	then
 		return BOT_ACTION_DESIRE_HIGH;
 	end
 	
+	if J.IsAttackProjectileIncoming(bot, 1)
+	then
+		return BOT_ACTION_DESIRE_LOW;
+	end
 	if not bot:HasModifier("modifier_puck_phase_shift") 
 		and not bot:IsMagicImmune() 
 	then

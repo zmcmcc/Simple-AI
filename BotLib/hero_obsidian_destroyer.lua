@@ -8,16 +8,53 @@ local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
 
+--local tTalentTreeList = {
+--						['t25'] = {10, 0},
+--						['t20'] = {10, 0},
+--						['t15'] = {10, 0},
+--						['t10'] = {10, 0},
+--}
+--
+--local tAllAbilityBuildList = {
+--						{2,3,1,3,3,6,3,2,1,2,6,2,1,1,6},
+--						{2,3,1,3,3,6,3,1,1,1,6,2,2,2,6}
+--}
+--
+--local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
+--
+--local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
+--
+--X['sBuyList'] = {
+--				sOutfit,
+--				"item_hurricane_pike",
+--				"item_yasha_and_kaya",
+--				"item_black_king_bar",
+--				"item_shivas_guard",
+--				"item_ultimate_scepter_2",
+--				"item_sheepstick",
+--}
+--
+--X['sSellList'] = {
+--
+--	"item_monkey_king_bar",
+--	"item_arcane_boots",
+--	
+--	"item_cyclone",
+--	"item_magic_wand",
+--
+--}
+
+-- 出装和加点来自于Misunderstand
+
 local tTalentTreeList = {
-						['t25'] = {10, 0},
+						['t25'] = {0, 10},
 						['t20'] = {10, 0},
-						['t15'] = {10, 0},
+						['t15'] = {0, 10},
 						['t10'] = {10, 0},
 }
 
 local tAllAbilityBuildList = {
-						{2,3,1,3,3,6,3,2,1,2,6,2,1,1,6},
-						{2,3,1,3,3,6,3,1,1,1,6,2,2,2,6}
+						{ 2, 3, 2, 1, 2, 6, 2, 3, 3, 1, 6, 1, 3, 1, 6 }
 }
 
 local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
@@ -25,22 +62,34 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 X['sBuyList'] = {
-				sOutfit,
-				"item_hurricane_pike",
+				"item_double_mantle",
+				"item_circlet",
+				"item_tango",
+				"item_magic_stick",
+				"item_double_null_talisman",
+				"item_flask",
+				"item_power_treads",
+				"item_kaya",
+				"item_blink",
 				"item_yasha_and_kaya",
 				"item_black_king_bar",
-				"item_shivas_guard",
-				"item_ultimate_scepter_2",
 				"item_sheepstick",
+				"item_refresher",
+				"item_hurricane_pike",
+				"item_ultimate_scepter_2",
+				"item_moon_shard",
 }
 
 X['sSellList'] = {
 
-	"item_monkey_king_bar",
-	"item_arcane_boots",
+	"item_black_king_bar",
+	"item_magic_stick",
 	
-	"item_cyclone",
-	"item_magic_wand",
+	"item_sheepstick",
+	"item_null_talisman",
+	
+	"item_hurricane_pike",
+	"item_blink",
 
 }
 

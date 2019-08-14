@@ -446,7 +446,7 @@ function X.ConsiderW()
 					
 					if ( npcMostDangerousEnemy ~= nil )
 					then
-						bot:SetTarget(npcMostDangerousEnemy, false);
+						bot:SetTarget(npcMostDangerousEnemy);
 					end	
 				end
 			return BOT_ACTION_DESIRE_HIGH, bot;

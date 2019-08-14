@@ -92,17 +92,17 @@ function GetDesire()
 		local fMessage, sMessage ;
 		if sBotVersion ~= "1V5"
 		then
-			fMessage = "Simple AI: "..sVersionDate;
+			fMessage = "Simple AI "..sVersionDate;
 			sMessage = "This script is adapted from A Beginner AI: "..sABAVersionDate;
 		else 
 			fMessage, sMessage = 'null','null'
 		end
 	    
-		bot:ActionImmediate_Chat( fMessage, false);
+		bot:ActionImmediate_Chat( fMessage, true);
 		if bAllNotice
 		then
-			bot:ActionImmediate_Chat( sMessage, true);
-			bot:ActionImmediate_Chat( "请使用困难或疯狂难度，不要使用齐天大圣。", true);
+			bot:ActionImmediate_Chat( sMessage, false);
+			bot:ActionImmediate_Chat( "请使用困难或疯狂难度，不要使用齐天大圣。", false);
 		end
 		bPushNoticeDone = true
 	end

@@ -410,6 +410,9 @@ function J.GetProperTarget(bot)
 	if target == nil then
 		target = bot:GetAttackTarget();
 	end
+	if  target ~= nil and target:GetTeam() == bot:GetTeam() then
+		target = bot:GetAttackTarget();
+	end
 	return target;
 end
 
@@ -1239,7 +1242,7 @@ function J.IsWillBeCastUnitTargetAndLocationSpell(bot, nRange)
 						else
 							local nCycle = npcEnemy:GetAnimCycle();
 							local nPoint = nAbility:GetCastPoint();
-							if nCycle > 0.1 and nPoint * ( 1 - nCycle) < 0.27 --极限时机0.26
+							if nCycle > 0.04 and nPoint * ( 1 - nCycle) < 0.08 --极限时机0.26
 							then
 								return true;
 							end						
@@ -2373,6 +2376,7 @@ function J.IsSpecialSupport(bot)
 			or botName == "npc_dota_hero_zuus" 
 			or botName == "npc_dota_hero_dazzle" 
 			or botName == "npc_dota_hero_batrider" 
+			or botName == "npc_dota_hero_puck" 
 end 
 
 	

@@ -90,6 +90,7 @@ Site["dire_bot_shrine"] = Vector(4173, -1613);
 Site["dire_bot_bounty_rune"] = Vector(3471, 295);
 Site["dire_top_bounty_rune"] = Vector(-2821, 4147);
 
+Site["RandomIntRoute"] = nil;
 
 Site["radiant_easy_and_medium"] = {
 				Vector(3017, -4525),
