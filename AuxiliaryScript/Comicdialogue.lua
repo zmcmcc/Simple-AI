@@ -107,11 +107,11 @@ function N.ComicDialogue()
     --冰女
     if heroName == 'npc_dota_hero_crystal_maiden' then
         --火女
-        if IsHaveHero('npc_dota_hero_crystal_maiden', false) then
+        if IsHaveHero('npc_dota_hero_lina', false) then
             bot:ActionImmediate_Chat( '丽娜～～～～', true);
             return true
         end
-        if IsHaveHero('npc_dota_hero_crystal_maiden', true) then
+        if IsHaveHero('npc_dota_hero_lina', true) then
             bot:ActionImmediate_Chat( '丽娜～～～～', true);
             return true
         end
