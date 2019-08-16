@@ -289,7 +289,7 @@ function X.ConsiderQ()
 		 bot:GetActiveMode() == BOT_MODE_GANK or
 		 bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY ) 
 	then
-		local npcTarget = bot:GetTarget();
+		local npcTarget = npcTarget;
 
 		if ( npcTarget ~= nil and npcTarget:IsHero() and J.CanCastOnMagicImmune( npcTarget ) and GetUnitToUnitDistance( bot, npcTarget ) < nCastRange ) 
 		then
@@ -338,7 +338,7 @@ function X.ConsiderQ2()
 		 bot:GetActiveMode() == BOT_MODE_GANK or
 		 bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY ) 
 	then
-		local npcTarget = bot:GetTarget();
+		local npcTarget = npcTarget;
 		if ( npcTarget ~= nil ) then
 			local pro = GetLinearProjectiles();
 			for _,pr in pairs(pro)
@@ -522,7 +522,7 @@ function X.ConsiderR()
 	local nRadius = abilityR:GetSpecialValueInt( "coil_radius" );
 
 	-- If enemy is channeling cancel it
-	local npcTarget = bot:GetTarget();
+	local npcTarget = npcTarget;
 	if (npcTarget ~= nil and npcTarget:IsChanneling() and GetUnitToUnitDistance( npcTarget, bot ) < ( nCastRange + nRadius ))
 	then
 		return BOT_ACTION_DESIRE_HIGH, npcTarget:GetLocation();
