@@ -640,8 +640,6 @@ ItemModule['item_centaur_outfit']          = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_obsidian_destroyer_outfit']      = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand', 'item_hurricane_pike', 'item_yasha_and_kaya', 'item_black_king_bar', 'item_shivas_guard', 'item_ultimate_scepter_2', 'item_sheepstick'}
 
-ItemModule['item_slardar_outfit']          = { 'item_tango', 'item_flask', 'item_quelling_blade', 'item_soul_ring', 'item_phase_boots', 'item_blade_mail', 'item_mjollnir' }
-
 end
 ------------------------------------------------------------------------------------------------------
 

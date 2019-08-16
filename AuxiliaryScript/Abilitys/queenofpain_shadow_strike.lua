@@ -10,7 +10,7 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('abaddon_death_coil')
+local ability = bot:GetAbilityByName('queenofpain_shadow_strike')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList;
 
 nKeepMana = 400 --魔法储量
@@ -25,9 +25,10 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget,compensation)
-	if compensation then X.Compensation() end
-	bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
-	return;
+    if castTarget ~= nil then
+        if compensation then X.Compensation() end
+        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+    end
 end
 
 --补偿功能
@@ -37,9 +38,9 @@ end
 
 --技能释放欲望
 function X.Consider()
-    print('欲望计算')
 	-- 确保技能可以使用
-	if not ability:IsFullyCastable()
+    if ability ~= nil
+       and not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
@@ -55,11 +56,12 @@ function X.Consider()
 	local nDamage     = nIDamage + (nDuration * (nDOT / 3));	--技能伤害
     local nDamageType = DAMAGE_TYPE_MAGICAL;		--伤害类型
 	
-	local nAlleys =  bot:GetNearbyHeroes(1200,false,BOT_MODE_NONE); --获取1200范围内盟友
+	local nAllies =  bot:GetNearbyHeroes(1200,false,BOT_MODE_NONE); --获取1200范围内盟友
 	
     local nEnemysHerosInView  = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE); --获取1600范围内敌人
 	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange +50,true,BOT_MODE_NONE);--获得施法范围内敌人
-	local nEnemysHerosInBonus = bot:GetNearbyHeroes(nCastRange + 300,true,BOT_MODE_NONE);--获得施法范围+150内敌人
+    local nEnemysHerosInBonus = bot:GetNearbyHeroes(nCastRange + 300,true,BOT_MODE_NONE);--获得施法范围+150内敌人
+    local nAllies =  bot:GetNearbyHeroes(1200,false,BOT_MODE_NONE);--获得1200范围内友军
 
     -----------
     --策略部分

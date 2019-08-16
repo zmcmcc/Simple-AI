@@ -3,15 +3,17 @@ local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func') --引入jmz_func文件
 
+local BotsInit = require( "game/botsinit" );
+
 local sAbilityList = J.Skill.GetAbilityList(bot)--获取技能列表
 
 --将英雄技能初始入变量
-local abilityQ = 'ability_'..sAbilityList[1]
-local abilityW = 'ability_'..sAbilityList[2]
-local abilityE = 'ability_'..sAbilityList[3]
-local abilityD = 'ability_'..sAbilityList[4]
-local abilityF = 'ability_'..sAbilityList[5]
-local abilityR = 'ability_'..sAbilityList[6]
+local abilityQ = sAbilityList[1]
+local abilityW = sAbilityList[2]
+local abilityE = sAbilityList[3]
+local abilityD = sAbilityList[4]
+local abilityF = sAbilityList[5]
+local abilityR = sAbilityList[6]
 
 --初始化技能欲望与点变量
 local castDesire = {
@@ -41,61 +43,81 @@ local castLocation = {
     ['R'] = nil,
 }
 
-    --尝试加载技能数据
-    local Consider = {}
-    
+--尝试加载技能数据
 
--- order技能检查顺序 {q,w,e,r}
-function X.Skills(order)
+local Consider = {}
 
-    if pcall(function(loadAbility) require( loadAbility ) end, abilityQ) then
-        Consider['Q'] = require( abilityQ )
-        print(abilityQ)
-    else
-        Consider['Q'] = nil
-    end
-    if pcall(function(loadAbility) require( loadAbility ) end, abilityW) then
-        Consider['W'] = require( abilityW )
-    else
-        Consider['W'] = nil
-    end
-    if pcall(function(loadAbility) require( loadAbility ) end, abilityE) then
-        Consider['E'] = require( abilityE )
-    else
-        Consider['E'] = nil
-    end
-    if pcall(function(loadAbility) require( loadAbility ) end, abilityD) then
-        Consider['D'] = require( abilityD )
-    else
-        Consider['D'] = nil
-    end
-    if pcall(function(loadAbility) require( loadAbility ) end, abilityF) then
-        Consider['F'] = require( abilityF )
-    else
-        Consider['F'] = nil
-    end
-    if pcall(function(loadAbility) require( loadAbility ) end, abilityR) then
-        Consider['R'] = require( abilityR )
-    else
-        Consider['R'] = nil
-    end
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
+    Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
+else
+    Consider['Q'] = nil
+end
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityW) then
+    Consider['W'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityW )
+else
+    Consider['W'] = nil
+end
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityE) then
+    Consider['E'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityE )
+else
+    Consider['E'] = nil
+end
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) then
+    Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
+else
+    Consider['D'] = nil
+end
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys'..loadAbility ) end, abilityF) then
+    Consider['F'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityF )
+else
+    Consider['F'] = nil
+end
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityR) then
+    Consider['R'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityR )
+else
+    Consider['R'] = nil
+end    
 
-for ability,desire in pairs(Consider) do
-    if desire ~= nil
-    then
-        castDesire[ability], castTarget[ability], castLocation[ability] = desire.Consider()
+if BotsInit["ABATiYanMa"] ~= nil then
+    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityQ) then
+        Consider['Q'] = require( 'game/AI锦囊/技能模组/'..abilityQ )
+    end
+    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityW) then
+        Consider['W'] = require( 'game/AI锦囊/技能模组/'..abilityW )
+    end
+    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityE) then
+        Consider['E'] = require( 'game/AI锦囊/技能模组/'..abilityE )
+    end
+    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityD) then
+        Consider['D'] = require( 'game/AI锦囊/技能模组/'..abilityD )
+    end
+    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityF) then
+        Consider['F'] = require( 'game/AI锦囊/技能模组/'..abilityF )
+    end
+    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityR) then
+        Consider['R'] = require( 'game/AI锦囊/技能模组/'..abilityR )
     end
 end
 
-    for _,abilityorder in pairs(order) do
-        if castDesire[abilityorder] > 0 then
-            local cast = castTarget[ability]
-            if cast == nil then cast = castLocation[ability] end
-            print('释放程序')
-            Consider[abilityorder].Release(cast, true)
-            return;
+-- order技能检查顺序 {q,w,e,r}
+function X.Skills(order)
+    for ability,desire in pairs(Consider) do
+        if desire ~= nil
+        then
+            castDesire[ability], castTarget[ability], castLocation[ability] = desire.Consider()
         end
     end
+
+    for _,abilityorder in pairs(order) do
+        if castDesire[abilityorder] > 0 then
+            local cast = castTarget[abilityorder]
+            if cast == nil then cast = castLocation[abilityorder] end
+            Consider[abilityorder].Release(cast, true)
+            return true;
+        end
+    end
+
+    return false;
 end
 
 return X

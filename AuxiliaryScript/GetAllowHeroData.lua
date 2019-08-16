@@ -2155,7 +2155,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_windranger",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_phantom_assassin",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_tidehunter"] = {
   ["hero_name"] = "tidehunter",
   ["proposal"] = {
@@ -3355,7 +3355,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_riki",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_treant",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_death_prophet"] = {
   ["hero_name"] = "death_prophet",
   ["proposal"] = {

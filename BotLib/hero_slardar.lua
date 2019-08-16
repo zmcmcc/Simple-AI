@@ -8,7 +8,6 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func') --引入jmz_func文
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion') --引入Minion文件
 local sTalentList = J.Skill.GetTalentList(bot) --获取当前英雄（当前电脑选择的英雄，一下省略为当前英雄）的天赋列表
 local sAbilityList = J.Skill.GetAbilityList(bot) --获取当前英雄的技能列表
-local sOutfit = J.Skill.GetOutfitName(bot) --获取当前英雄的装备信息
 
 ------------------------------------------------------------------------------------------------------------
 --	英雄加点及出装数据
@@ -37,7 +36,11 @@ local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 --基础出装在jmz_item.lua中编写，对应sOutfit项
 X['sBuyList'] = {
 				"item_stout_shield",
-				sOutfit,
+				'item_tango',
+				'item_flask',
+				'item_quelling_blade',
+				'item_soul_ring',
+				'item_phase_boots',
 				"item_echo_sabre",
 				"item_blade_mail",
 				"item_mjollnir",
@@ -206,13 +209,12 @@ function X.ConsiderQ()--使用一技能的欲望
 	if J.IsGoingOnSomeone(bot)
 	then 
 	
-	    local nEnemysHerosInView = bot:GetNearBbyHeroes(1200, true, BOT_MODE_NONE); --Enemy within 1200 range
-		
+	    local nEnemysHerosInView = bot:GetNearbyHeroes(1200, true, BOT_MODE_NONE); --Enemy within 1200 range
 
-		 if #nEnemysHerosInView >= 1
-         then
-              return BOT_ACTION_DESIRE_HIGH;
-         end	
+		if nEnemysHerosInView ~= nil and #nEnemysHerosInView >= 1
+        then
+             return BOT_ACTION_DESIRE_HIGH;
+        end
     end		 
 	
 	--打钱时使用
@@ -403,7 +405,7 @@ function X.ConsiderR()
 				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			end
 			
-			if J.IsValid(npcTarget) and #nEnemysHeros == 0
+			if J.IsValid(npcTarget) and #nEnemyHeroes == 0
 			and J.IsAllowedToSpam(bot, nManaCost) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
 			and J.CanCastOnTargetAdvanced(npcTarget)
