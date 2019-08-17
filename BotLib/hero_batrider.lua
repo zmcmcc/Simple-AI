@@ -5,7 +5,6 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
-local sOutfit = J.Skill.GetOutfitName(bot)
 
 local tTalentTreeList = {
 						['t25'] = {10, 0},
@@ -25,8 +24,11 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 
 
-X['sBuyList'] = {
-				sOutfit,
+X["sBuyList"] = {
+				"item_tango",
+				"item_flask",
+				"item_magic_wand",
+				"item_tranquil_boots",
 				"item_blink",
 				"item_force_staff",
 				"item_black_king_bar",

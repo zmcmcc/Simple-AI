@@ -114,7 +114,8 @@ X["test_hero"] = {
     --'npc_dota_hero_puck',
     --'npc_dota_hero_invoker',
     --'npc_dota_hero_obsidian_destroyer',
-    --'npc_dota_hero_queenofpain'
+    'npc_dota_hero_queenofpain',
+    'npc_dota_hero_shadow_demon',
 }
 
 X["onlyCM_hero"] = {

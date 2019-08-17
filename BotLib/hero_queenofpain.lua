@@ -6,9 +6,11 @@ local AbilityMode = require( GetScriptDirectory()..'/AuxiliaryScript/BotlibConve
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion') --引入Minion文件
 local sTalentList = J.Skill.GetTalentList(bot) --获取当前英雄（当前电脑选择的英雄，一下省略为当前英雄）的天赋列表
 local sAbilityList = J.Skill.GetAbilityList(bot) --获取当前英雄的技能列表
+
+--感谢 铅笔会有猫的w 提供的出装及加点
 --英雄天赋树
 local tTalentTreeList = {
-						['t25'] = {0, 10},
+						['t25'] = {10, 0},
 						['t20'] = {0, 10},
 						['t15'] = {0, 10},
 						['t10'] = {10, 0},
@@ -16,8 +18,7 @@ local tTalentTreeList = {
 
 --英雄技能树
 local tAllAbilityBuildList = {
-						{2,1,1,3,1,6,1,2,2,2,6,3,3,3,6},
-						{2,3,2,3,2,6,2,3,3,1,6,1,1,1,6},
+						{ 3, 1, 3, 2, 3, 6, 3, 2, 1, 1, 6, 1, 2, 2, 6 }
 }
 --从技能树中随机选择一套技能
 local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
@@ -25,22 +26,41 @@ local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
 local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
 --技能和天赋加点方案
 X['sBuyList'] = {
+				"item_circlet",
+				"item_enchanted_mango",
+				"item_double_clarity",
+				"item_double_branches",
 				"item_tango",
-				"item_flask",
-				"item_quelling_blade",
-				"item_soul_ring",
-				"item_phase_boots",
-				"item_blade_mail",
-				"item_mjollnir",
-				"item_sange_and_yasha",
-				"item_radiance",
-				"item_satanic",
-				"item_heart",
+				"item_boots",
+				"item_bottle",
+				"item_magic_wand",
+				"item_null_talisman",
+				"item_power_treads",
+				"item_orchid",
+				"item_ultimate_scepter",
+				"item_shivas_guard",
+				"item_black_king_bar",
+				"item_sheepstick",
+				"item_bloodthorn",
+				"item_ultimate_scepter_2",
+				"item_octarine_core",
+				"item_travel_boots",
+				"item_moon_shard",
+				"item_travel_boots_2",
 }
 
 X['sSellList'] = {
-	"item_crimson_guard",
-	"item_quelling_blade",
+	"item_shivas_guard",
+	"item_magic_wand",
+
+	"item_black_king_bar",
+	"item_null_talisman",
+	
+	"item_sheepstick",
+	"item_bottle",
+	
+	"item_travel_boots",
+	"item_power_treads",
 }
 
 
@@ -74,4 +94,5 @@ function X.SkillsComplement()
 	if AbilityMode.Skills(order) then return; end
 
 end
+
 return X

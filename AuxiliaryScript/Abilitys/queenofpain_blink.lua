@@ -70,7 +70,7 @@ function X.Consider()
     if J.IsStuck(bot)
     then
         local loc = J.GetEscapeLoc();
-        return BOT_ACTION_DESIRE_HIGH,nil , J.Site.GetXUnitsTowardsLocation(bot, loc, nCastRange );
+        return BOT_ACTION_DESIRE_HIGH, J.Site.GetXUnitsTowardsLocation(bot, loc, nCastRange );
     end
 
     if J.IsRetreating(bot) or ( bot:GetActiveMode() == BOT_MODE_RETREAT and nHP < 0.16 and bot:DistanceFromFountain() > 600 )
@@ -79,7 +79,7 @@ function X.Consider()
         then
             local loc = J.GetEscapeLoc();
             local location = J.Site.GetXUnitsTowardsLocation(bot, loc, nCastRange );
-            return BOT_ACTION_DESIRE_MODERATE,nil , location;
+            return BOT_ACTION_DESIRE_MODERATE, location;
         end
     end
 
@@ -109,7 +109,7 @@ function X.Consider()
             if GetUnitToLocationDistance(bot,bLocation) < nCastRange + 150
             then
                 bot:SetTarget(npcTarget);
-                return BOT_ACTION_DESIRE_HIGH,nil , bLocation;
+                return BOT_ACTION_DESIRE_HIGH, bLocation;
             end
         end
     end
@@ -151,7 +151,7 @@ function X.Consider()
             if GetUnitToLocationDistance(bot,bLocation) < nCastRange + 150
             then
                 bot:SetTarget(npcWeakestEnemy);
-                return BOT_ACTION_DESIRE_HIGH,nil , bLocation;
+                return BOT_ACTION_DESIRE_HIGH, bLocation;
             end
         end		
     end
@@ -173,7 +173,7 @@ function X.Consider()
                 if J.WillKillTarget(creep,nDamage,DAMAGE_TYPE_PHYSICAL,nTime *0.9)
                 then
                     bot:SetTarget(creep);
-                    return BOT_ACTION_DESIRE_HIGH,nil , creep:GetLocation();
+                    return BOT_ACTION_DESIRE_HIGH, creep:GetLocation();
                 end				
             end
         end
@@ -193,7 +193,7 @@ function X.Consider()
                 local location = J.Site.GetXUnitsTowardsLocation(bot, nLaneFrontLocation, nCastRange );
                 if IsLocationPassable(location)
                 then
-                    return BOT_ACTION_DESIRE_HIGH,nil , location;
+                    return BOT_ACTION_DESIRE_HIGH, location;
                 end
             end			
         end
@@ -205,7 +205,7 @@ function X.Consider()
             and GetUnitToUnitDistance(bot,npcTarget) > 550
             and ( nLV > 9 or not npcTarget:IsAncientCreep() )
         then
-            return BOT_ACTION_DESIRE_HIGH,nil , npcTarget:GetLocation();
+            return BOT_ACTION_DESIRE_HIGH, npcTarget:GetLocation();
         end
     end	
     
@@ -229,7 +229,7 @@ function X.Consider()
                 and IsLocationVisible(vLocation)
                 and GetUnitToLocationDistance(bot,bLocation) > 600
             then
-                return BOT_ACTION_DESIRE_HIGH,nil , bLocation;
+                return BOT_ACTION_DESIRE_HIGH, bLocation;
             end
         end				
     end

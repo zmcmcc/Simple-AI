@@ -104,15 +104,14 @@ function X.Skills(order)
     for ability,desire in pairs(Consider) do
         if desire ~= nil
         then
-            castDesire[ability], castTarget[ability], castLocation[ability] = desire.Consider()
+            castDesire[ability], castTarget[ability] = desire.Consider()
         end
     end
 
     for _,abilityorder in pairs(order) do
         if castDesire[abilityorder] > 0 then
             local cast = castTarget[abilityorder]
-            if cast == nil then cast = castLocation[abilityorder] end
-            Consider[abilityorder].Release(cast, true)
+            Consider[abilityorder].Release(cast)
             return true;
         end
     end

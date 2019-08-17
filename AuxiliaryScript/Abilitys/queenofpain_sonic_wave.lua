@@ -25,8 +25,10 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget,compensation)
-	if compensation then X.Compensation() end
-	bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
+	if castTarget ~= nil then
+		if compensation then X.Compensation() end
+		bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
+	end
 end
 
 --补偿功能
@@ -41,7 +43,7 @@ function X.Consider()
     if ability ~= nil
        and not ability:IsFullyCastable()
 	then 
-		return BOT_ACTION_DESIRE_NONE, 0, 0; --没欲望
+		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 
     -- 获取一些必要参数
@@ -49,7 +51,7 @@ function X.Consider()
 	local nCastPoint  = ability:GetCastPoint();	--施法点
 	local nManaCost   = ability:GetManaCost();		--魔法消耗
     local nSkillLV    = ability:GetLevel();    	--技能等级
-    local nRadius = ability:GetSpecialValueInt("area_of_effect");
+    local nRadius     = ability:GetSpecialValueInt("area_of_effect");
     local nDamage     = 250 + (90 * nSkillLV);	--技能伤害
 
 	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange,true,BOT_MODE_NONE);--获得施法范围内敌人
@@ -69,7 +71,7 @@ function X.Consider()
         local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius * 1.2, nCastPoint, 0 );
         if locationAoE.count >= 1 and #nEnemysHerosInRange >= 1
 		then
-			return BOT_ACTION_DESIRE_LOW, nil, locationAoE.targetloc;
+			return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
 		end
     end
 
@@ -77,12 +79,12 @@ function X.Consider()
     if J.IsPushing(bot) or J.IsDefending(bot)
 	then
 		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, nCastPoint, 0 );
-		if locationAoE.count >= 3
+		if locationAoE.count >= 2
 		then
 			local hTrueHeroList = J.GetEnemyList(bot,1200);
 			if #hTrueHeroList >= 2
 			then
-				return BOT_ACTION_DESIRE_LOW, nil, locationAoE.targetloc;
+				return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
 			end
 		end
     end
@@ -91,12 +93,12 @@ function X.Consider()
     if J.IsInTeamFight(bot, 1300)
 	then
 		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, nCastPoint, 0 );
-		if locationAoE.count >= 2
+		if locationAoE.count >= 1
 		then
 			local hTrueHeroList = J.GetEnemyList(bot,1300);
-			if #hTrueHeroList >= 2
+			if #hTrueHeroList >= 1
 			then
-				return BOT_ACTION_DESIRE_LOW, nil, locationAoE.targetloc;
+				return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
 			end
 		end
 	end
@@ -111,7 +113,7 @@ function X.Consider()
 			local targetAllies = target:GetNearbyHeroes(2 * nRadius, false, BOT_MODE_NONE);
 			if #targetAllies >= 2 or J.IsInRange(target, bot, 600) 
 			then
-				return BOT_ACTION_DESIRE_HIGH, nil, target:GetExtrapolatedLocation(nCastPoint);
+				return BOT_ACTION_DESIRE_HIGH, target:GetExtrapolatedLocation(nCastPoint);
 			end
 		end
     end

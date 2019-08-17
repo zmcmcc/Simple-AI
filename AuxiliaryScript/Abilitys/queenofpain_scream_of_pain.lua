@@ -44,7 +44,7 @@ function X.Consider()
 	end
 
     -- 获取一些必要参数
-    local nRadius = ability:GetSpecialValueInt( "radius" ); --影响范围
+    local nRadius = ability:GetSpecialValueInt( "final_aoe" ); --影响范围
     local nCastPoint  = ability:GetCastPoint();	--施法点
 	local nManaCost   = ability:GetManaCost();		--魔法消耗
     local nSkillLV    = ability:GetLevel();    	--技能等级

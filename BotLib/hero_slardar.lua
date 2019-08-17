@@ -41,12 +41,12 @@ X['sBuyList'] = {
 				'item_quelling_blade',
 				'item_soul_ring',
 				'item_phase_boots',
+				"item_ancient_janggo",
+				"item_blink",
 				"item_echo_sabre",
-				"item_blade_mail",
-				"item_mjollnir",
 				"item_sange_and_yasha",
-				"item_satanic",
-				"item_heart",
+				"item_black_king_bar",
+				"item_assault",
 }
 --后期更换装备方案
 X['sSellList'] = {
@@ -234,7 +234,9 @@ function X.ConsiderQ()--使用一技能的欲望
 	end
 	
 	--受到伤害时保护自己
-	if (#nEnemysHerosInView >= 1 and bot:WasRecentlyDamagedByAnyHero(3.0)) 
+	local nEnemies = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
+	local nAllies  = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+	if (#nEnemies >= 1 and bot:WasRecentlyDamagedByAnyHero(3.0)) 
 		and not bot:IsInvisible()
 	then
 		for _,npcEnemy in pairs( nEnemysHerosInView )
@@ -297,13 +299,13 @@ function X.ConsiderW()
 	
 	--可以击杀时击杀
 	for _,npcEnemy in pairs( tableNearbyEnemyHeroes2 )
-		do
-			if #nAlleys >= 1
-			   and J.CanCastOnNonMagicImmune(npcEnemy)
-			then
-				return BOT_ACTION_DESIRE_HIGH;
-			end
+	do
+		if #nAlleys >= 1
+		   and J.CanCastOnNonMagicImmune(npcEnemy)
+		then
+			return BOT_ACTION_DESIRE_HIGH;
 		end
+	end
 	
  	
 	
@@ -323,7 +325,7 @@ function X.ConsiderW()
 	if J.IsGoingOnSomeone(bot)
 	then 
 			if  #tableNearbyEnemyHeroes >= 1
-			    and J.CanCastOnNonMagicImmune(npcEnemy)
+			    --and J.CanCastOnNonMagicImmune(npcEnemy) BUG,没用npcEnemy
 			then
 				return BOT_ACTION_DESIRE_VERYHIGH;
 			end
@@ -331,7 +333,7 @@ function X.ConsiderW()
         end		 
 	
 	--打钱时使用
-	if  J.IsFarming(bot) and nSkillLV >= 3
+	if  J.IsFarming(bot) and nSkillLV >= 2
 
 	then
 		local nCreeps = bot:GetNearbyNeutralCreeps(nRadius);
@@ -369,9 +371,8 @@ function X.ConsiderR()
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
-    
-
 	local nSkillLV    = abilityR:GetLevel();    	--技能等级 
+	local nManaCost   = abilityQ:GetManaCost();		--魔法消耗
     local nCastRange  = 100* nSkillLV + 600;	--施法范围
 	local aTarget = bot:GetAttackTarget(); 
 
