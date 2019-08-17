@@ -270,7 +270,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_shredder",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_weaver",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_huskar"] = {
   ["hero_name"] = "huskar",
   ["proposal"] = {

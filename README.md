@@ -15,8 +15,31 @@
 
 目前使用技能模组构建的英雄
 > 痛苦女王
+> 全能骑士
+> 斯拉达
+> 戴泽
+> 干扰者
+> 暗影恶魔
 
 ### 支持自定义的技能列表
+- dazzle_poison_touch
+- dazzle_shadow_wave
+- dazzle_shallow_grave
+- disruptor_glimpse
+- disruptor_kinetic_field
+- disruptor_static_storm
+- disruptor_thunder_strike
+- omniknight_guardian_angel
+- omniknight_purification
+- omniknight_repel
+- shadow_demon_demonic_purge
+- shadow_demon_disruption
+- shadow_demon_shadow_poison_release
+- shadow_demon_shadow_poison
+- shadow_demon_soul_catcher
+- slardar_amplify_damage
+- slardar_slithereen_crush
+- slardar_sprint
 - queenofpain_blink
 - queenofpain_scream_of_pain
 - queenofpain_shadow_strike
@@ -28,7 +51,6 @@
 > 斧王
 > 拉席克
 > 蝙蝠骑士
-> 卡尔
 > 帕克
 > 虚空假面
 > 半人马战行者
@@ -41,3 +63,4 @@
 群友提供的英雄
 - 来自于 望天的稻草
 - > 斯拉达
+- > 全能骑士

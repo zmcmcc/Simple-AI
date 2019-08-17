@@ -1,8 +1,8 @@
 -----------------
---英雄：暗影恶魔
---技能：暗影剧毒
+--英雄：戴泽
+--技能：暗影波
 --键位：E
---类型：指向地点
+--类型：指向目标
 --作者：Halcyon
 -----------------
 local X = {}
@@ -12,10 +12,10 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('shadow_demon_shadow_poison')
+local ability = bot:GetAbilityByName('dazzle_shadow_wave')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
-nKeepMana = 300 --魔法储量
+nKeepMana = 400 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
@@ -33,7 +33,7 @@ U.init(nLV, nMP, nHP, bot);
 function X.Release(castTarget,compensation)
     if castTarget ~= nil then
         if compensation then X.Compensation() end
-        bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
+        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
     end
 end
 
@@ -52,37 +52,47 @@ function X.Consider()
 		return BOT_ACTION_DESIRE_NONE, 0, 0; --没欲望
 	end
 	
-	local nSkillLV    = ability:GetLevel()
-    local nRadius     = ability:GetSpecialValueInt("radius");
-	local nCastRange  = ability:GetCastRange() + aetherRange
-	local nCastPoint  = ability:GetCastPoint()
+	local nCastRange = ability:GetCastRange();
+	local nAllysHerosInCastRange = bot:GetNearbyHeroes(nCastRange + 80 ,false,BOT_MODE_NONE);
+	local Enemys = 0;
+	local targetally = nil
 
-    --满魔，攻击附近敌人
-    if ( bot:GetActiveMode() == BOT_MODE_LANING and 
-		nMP >= 0.65  ) 
-	then
-		local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius/2, 0, 0 );
-		if ( locationAoE.count >= 1 ) then
-			return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
+	for _,npcAlly in pairs( nAllysHerosInCastRange )
+	do
+		local tableNearbyEnemyHeroes = J.GetAroundTargetEnemyUnitCount(npcAlly, 185);
+		local allyHP = npcAlly:GetHealth()/npcAlly:GetMaxHealth();
+
+		if tableNearbyEnemyHeroes ~= nil and
+		 tableNearbyEnemyHeroes > 1 or
+		 allyHP <= 0.6
+		then
+			if targetally == nil then
+				targetally = npcAlly;
+			end
+			Enemys = Enemys + 1
+		end
+
+		if tableNearbyEnemyHeroes ~= nil and tableNearbyEnemyHeroes >= 2
+		then
+			if targetally == nil then
+				targetally = npcAlly;
+			end
+			Enemys = Enemys + 2
+		end
+
+		if allyHP <= 0.15 and nLV > 14
+		then
+			return BOT_ACTION_DESIRE_HIGH, npcAlly;
 		end
 	end
-    --防守时可以打到4人（包括小兵）以上
-    if ( J.IsDefending(bot) or J.IsPushing(bot) ) and  nMP >= 0.65
-	then
-		local locationAoE = bot:FindAoELocation( true, false, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
-		if ( locationAoE.count >= 4 ) 
-		then
-			return BOT_ACTION_DESIRE_MODERATE, locationAoE.targetloc;
-		end
-	end
-    --追击时
-    if J.IsGoingOnSomeone(bot)
-	then
-		local npcTarget = bot:GetTarget();
 
-		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange + 200)
-		then
-			return BOT_ACTION_DESIRE_MODERATE, npcTarget:GetExtrapolatedLocation( (GetUnitToUnitDistance(npcTarget, bot) / 1000) + nCastPoint );
+	if targetally ~= nil and nMP > 0.15 then
+		if Enemys > 7 then
+			return BOT_ACTION_DESIRE_VERYHIGH, targetally;
+		elseif Enemys > 5 and nLV >= 6 then
+			return BOT_ACTION_DESIRE_HIGH, targetally;
+		elseif Enemys > 3 and nMP > 0.3 and nLV >= 10 then
+			return BOT_ACTION_DESIRE_MODERATE, targetally;
 		end
 	end
 	

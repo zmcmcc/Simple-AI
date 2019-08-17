@@ -1,8 +1,8 @@
 -----------------
---英雄：暗影恶魔
---技能：释放暗影毒
---键位：D
---类型：无目标
+--英雄：干扰者
+--技能：恶念瞥视
+--键位：W
+--类型：指向目标
 --作者：Halcyon
 -----------------
 local X = {}
@@ -12,10 +12,10 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('shadow_demon_shadow_poison_release')
+local ability = bot:GetAbilityByName('disruptor_glimpse')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
-nKeepMana = 300 --魔法储量
+nKeepMana = 400 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
@@ -30,8 +30,11 @@ if aether ~= nil then aetherRange = 250 else aetherRange = 0 end
 U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
-function X.Release(castTarget)
-	bot:ActionQueue_UseAbility( ability ) --使用技能
+function X.Release(castTarget,compensation)
+    if castTarget ~= nil then
+        if compensation then X.Compensation() end
+        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+    end
 end
 
 --补偿功能
@@ -46,38 +49,44 @@ function X.Consider()
     if ability ~= nil
        and not ability:IsFullyCastable()
 	then 
-		return BOT_ACTION_DESIRE_NONE; --没欲望
+		return BOT_ACTION_DESIRE_NONE, 0, 0; --没欲望
 	end
 	
-	local nSkillLV = ability:GetLevel()
+	local nCastRange = ability:GetCastRange() + aetherRange;
 
+	if nCastRange > 1600 then nCastRange = 1600 end
 	local gEnemies = GetUnitList(UNIT_LIST_ENEMY_HEROES);
+
+	local npcMostDangerousEnemy = nil;
+	local nMostDangerousDamage = 0;	
+
 	for _,npcEnemy in pairs( gEnemies )
 	do
-		local nStack = 0
-		local nPoisonDamage = 0
-		local modIdx = npcEnemy:GetModifierByName("modifier_shadow_demon_shadow_poison");
-		if modIdx > -1 then
-			nStack = npcEnemy:GetModifierStackCount(modIdx);
-		end
+		if  J.IsValid(npcEnemy)
+			and J.IsInRange(npcEnemy, bot, nCastRange)
+			and J.CanCastOnNonMagicImmune(npcEnemy)
+			and not J.IsAllyCanKill(npcEnemy)
+		then
 
-		if nStack <= 5 then
-			nPoisonDamage = (5 + (nSkillLV * 15)) * 2^(nStack - 1)
-		else
-			nPoisonDamage = ((5 + (nSkillLV * 15)) * 16) + (50 * (nStack - 5))
-		end
+			if npcEnemy:IsHero()
+			then
+				local npcEnemyDamage = npcEnemy:GetEstimatedDamageToTarget( false, bot, 3.0, DAMAGE_TYPE_PHYSICAL );
+				if ( npcEnemyDamage > nMostDangerousDamage )
+				then
+					nMostDangerousDamage = npcEnemyDamage;
+					npcMostDangerousEnemy = npcEnemy;
+				end
+			end
 
-		if npcEnemy:GetHealth() < nPoisonDamage then
-			return BOT_ACTION_DESIRE_HIGH
 		end
-
 	end
 
-	if nHP < 0.05 then
-		return BOT_ACTION_DESIRE_HIGH
+	if ( npcMostDangerousEnemy ~= nil )
+	then
+		return BOT_ACTION_DESIRE_HIGH, npcMostDangerousEnemy;
 	end
 	
-	return BOT_ACTION_DESIRE_NONE;
+	return BOT_ACTION_DESIRE_NONE, 0;
 	
 end
 
