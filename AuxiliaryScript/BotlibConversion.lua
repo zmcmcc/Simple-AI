@@ -34,7 +34,7 @@ local castTarget = {
     ['R'] = nil,
 }
 
-local castLocation = {
+local castName = {
     ['Q'] = nil,
     ['W'] = nil,
     ['E'] = nil,
@@ -49,34 +49,42 @@ local Consider = {}
 
 if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
     Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
+    castName['Q'] = abilityQ
 else
     Consider['Q'] = nil
 end
 if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityW) then
     Consider['W'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityW )
+    castName['W'] = abilityW
 else
     Consider['W'] = nil
 end
 if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityE) then
     Consider['E'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityE )
+    castName['E'] = abilityE
 else
     Consider['E'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) then
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) and abilityD ~= 'rubick_empty1' then
     Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
+    castName['D'] = abilityD
 else
     Consider['D'] = nil
+    castName['D'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys'..loadAbility ) end, abilityF) then
+if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityF) and abilityF ~= 'rubick_empty2' then
     Consider['F'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityF )
+    castName['F'] = abilityF
 else
     Consider['F'] = nil
+    castName['F'] = nil
 end
 if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityR) then
     Consider['R'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityR )
+    castName['R'] = abilityR
 else
     Consider['R'] = nil
-end    
+end
 
 if BotsInit["ABATiYanMa"] ~= nil then
     if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityQ) then
@@ -101,6 +109,32 @@ end
 
 -- order技能检查顺序 {q,w,e,r}
 function X.Skills(order)
+
+    if (bot:GetUnitName() == 'npc_dota_hero_rubick')
+    then
+        sAbilityList = J.Skill.GetAbilityList(bot)
+        abilityQ = sAbilityList[1]
+        abilityD = sAbilityList[4]
+
+        if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] then
+            if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
+                Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
+                castName['Q'] = abilityQ
+            else
+                Consider['Q'] = nil
+                castName['Q'] = nil
+            end
+            if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) and abilityD ~= 'rubick_empty1' then
+                Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
+                castName['D'] = abilityD
+                --print(abilityD..'----'..castName['D']);
+            else
+                Consider['D'] = nil
+                castName['D'] = nil
+            end
+        end
+    end
+
     for ability,desire in pairs(Consider) do
         if desire ~= nil
         then
@@ -109,7 +143,11 @@ function X.Skills(order)
     end
 
     for _,abilityorder in pairs(order) do
-        if castDesire[abilityorder] > 0 then
+        if castDesire[abilityorder] ~= nil
+           and castDesire[abilityorder] > 0 
+           and Consider[abilityorder] ~= nil
+        then
+            if (bot:GetUnitName() == 'npc_dota_hero_rubick') then print(abilityorder..castDesire[abilityorder]) end
             local cast = castTarget[abilityorder]
             Consider[abilityorder].Release(cast)
             return true;

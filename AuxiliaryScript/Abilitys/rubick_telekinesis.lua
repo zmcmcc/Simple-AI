@@ -1,7 +1,7 @@
 -----------------
---英雄：暗影恶魔
---技能：邪恶净化
---键位：R
+--英雄：拉比克
+--技能：隔空取物
+--键位：Q
 --类型：指向目标
 --作者：Halcyon
 -----------------
@@ -12,8 +12,9 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('shadow_demon_demonic_purge')
+local ability = bot:GetAbilityByName('rubick_telekinesis')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
+local X.setTarget = false;
 
 nKeepMana = 300 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
@@ -25,21 +26,28 @@ hAlleyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内�
 --获取以太棱镜施法距离加成
 local aether = J.IsItemAvailable("item_aether_lens");
 if aether ~= nil then aetherRange = 250 else aetherRange = 0 end
-    
+
 --初始化函数库
 U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
+    print('rubick_telekinesis')
     if castTarget ~= nil then
-        X.Compensation() 
+        X.Compensation()
         bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+        X.setTarget = false;
     end
 end
 
 --补偿功能
 function X.Compensation()
     J.SetQueuePtToINT(bot, true)--临时补充魔法，使用魂戒
+end
+
+--导出数据
+function X.GetData()
+    return ability;
 end
 
 --技能释放欲望
@@ -52,56 +60,53 @@ function X.Consider()
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
-	local nCastRange  = ability:GetCastRange() + aetherRange
+	-- Get some of its values
+	local nCastRange = ability:GetCastRange();
 
-	local nInRangeEnemyHeroList = bot:GetNearbyHeroes(nCastRange, true, BOT_MODE_NONE);
+	--------------------------------------
+	-- Mode based usage
+	--------------------------------------
+
+	-- Check for a channeling enemy
+	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange + 200, true, BOT_MODE_NONE );
+	for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
+	do
+		if ( npcEnemy:IsChanneling() ) 
+		then
+			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+		end
+	end
 	
-	-- 撤退时控制敌人
+	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
+	then
+		local npcTarget = bot:GetAttackTarget();
+		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange)  )
+		then
+			return BOT_ACTION_DESIRE_LOW, npcTarget;
+		end
+	end
+	
+	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
 	if J.IsRetreating(bot)
 	then
-		for _,npcEnemy in pairs( nInRangeEnemyHeroList )
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
+		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
-			if ( bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) and J.CanCastOnMagicImmune(npcEnemy) 
-				and not npcEnemy:HasModifier("modifier_shadow_demon_purge_slow")  ) 
+			if ( bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) and J.CanCastOnNonMagicImmune(npcEnemy) ) 
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
 		end
 	end
-	
-	if J.IsInTeamFight(bot, 1200)
-	then
-		local npcMostDangerousEnemy = nil;
-		local nMostDangerousDamage = 0;
 
-		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange + 200, true, BOT_MODE_NONE );
-		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
-		do
-			if ( J.CanCastOnMagicImmune(npcEnemy) and not npcEnemy:HasModifier("modifier_shadow_demon_purge_slow") and not J.IsDisabled(true, npcEnemy) )
-			then
-				local nDamage = npcEnemy:GetEstimatedDamageToTarget( false, bot, 3.0, DAMAGE_TYPE_ALL );
-				if ( nDamage > nMostDangerousDamage )
-				then
-					nMostDangerousDamage = nDamage;
-					npcMostDangerousEnemy = npcEnemy;
-				end
-			end
-		end
-
-		if ( npcMostDangerousEnemy ~= nil )
-		then
-			return BOT_ACTION_DESIRE_MODERATE, npcMostDangerousEnemy;
-		end
-	end
-	
-	-- 追击时
+	-- If we're going after someone
 	if J.IsGoingOnSomeone(bot)
 	then
 		local npcTarget = bot:GetTarget();
-		if J.IsValidHero(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange + 200) 
-		   and not npcTarget:HasModifier("modifier_shadow_demon_purge_slow") and not J.IsDisabled(true, npcTarget)
+		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange + 200) and
+           not J.IsDisabled(true, npcTarget)		
 		then
-			return BOT_ACTION_DESIRE_MODERATE, npcTarget;
+			return BOT_ACTION_DESIRE_HIGH, npcTarget;
 		end
 	end
 	

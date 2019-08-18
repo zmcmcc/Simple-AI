@@ -26,8 +26,8 @@ hAlleyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内�
 U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
-function X.Release(castTarget,compensation)
-    if compensation then X.Compensation() end
+function X.Release(castTarget)
+    X.Compensation() 
     bot:ActionQueue_UseAbility( ability ) --使用技能
 end
 

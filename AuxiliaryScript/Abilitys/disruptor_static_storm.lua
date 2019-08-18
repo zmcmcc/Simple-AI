@@ -30,9 +30,9 @@ if aether ~= nil then aetherRange = 250 else aetherRange = 0 end
 U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
-function X.Release(castTarget,compensation)
+function X.Release(castTarget)
     if castTarget ~= nil then
-        if compensation then X.Compensation() end
+        X.Compensation() 
         bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
     end
 end
@@ -49,7 +49,7 @@ function X.Consider()
     if ability ~= nil
        and not ability:IsFullyCastable()
 	then 
-		return BOT_ACTION_DESIRE_NONE, 0, 0; --没欲望
+		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
 	local nRadius    = 450;
