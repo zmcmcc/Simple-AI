@@ -6,15 +6,12 @@ local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibCon
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
-local sOutfit = J.Skill.GetOutfitName(bot)
 local illuOrbLoc = nil
 
 local tGroupedDataList = {
 	{
 		--组合说明，不影响游戏
-		['info'] = '
-			Misunderstand锦囊内容
-		',
+		['info'] = 'Misunderstand锦囊内容',
 		--天赋树
 		['Talent'] = {
 			['t25'] = {0, 10},

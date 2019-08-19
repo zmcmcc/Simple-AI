@@ -138,16 +138,15 @@ function X.Consider()
 
 	-- If mana is too much
 	if nMP > 0.95
-		and nLV >= 6
-		and bot:DistanceFromFountain() > 2400
-		and J.IsAllowedToSpam(bot, nManaCost) 
+	   and nLV >= 6
+	   and bot:DistanceFromFountain() > 2400
+	   and J.IsAllowedToSpam(bot, nManaCost)
 	then
 		return BOT_ACTION_DESIRE_LOW;
 	end
 	
 	return BOT_ACTION_DESIRE_NONE;
 
-	return 0;
 end
 
 return X;

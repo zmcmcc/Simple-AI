@@ -22,22 +22,22 @@ local tGroupedDataList = {
 		['Ability'] = {2,1,1,3,1,6,1,2,2,2,6,3,3,3,6},
 		--装备
 		['Buy'] = {
-			"item_tango",
-			"item_flask",
-			"item_quelling_blade",
-			"item_soul_ring",
-			"item_phase_boots",
-			"item_blade_mail",
-			"item_mjollnir",
-			"item_sange_and_yasha",
-			"item_radiance",
-			"item_satanic",
-			"item_heart",
+			'item_tango',
+			'item_flask',
+			'item_quelling_blade',
+			'item_soul_ring',
+			'item_phase_boots',
+			'item_blade_mail',
+			'item_mjollnir',
+			'item_sange_and_yasha',
+			'item_radiance',
+			'item_satanic',
+			'item_heart',
 		},
 		--出售
 		['Sell'] = {
-			"item_crimson_guard",
-			"item_quelling_blade",
+			'item_crimson_guard',
+			'item_quelling_blade',
 		},
 	},
 	{
@@ -54,22 +54,22 @@ local tGroupedDataList = {
 		['Ability'] = {2,3,2,3,2,6,2,3,3,1,6,1,1,1,6},
 		--装备
 		['Buy'] = {
-			"item_tango",
-			"item_flask",
-			"item_quelling_blade",
-			"item_soul_ring",
-			"item_phase_boots",
-			"item_blade_mail",
-			"item_mjollnir",
-			"item_sange_and_yasha",
-			"item_radiance",
-			"item_satanic",
-			"item_heart",
+			'item_tango',
+			'item_flask',
+			'item_quelling_blade',
+			'item_soul_ring',
+			'item_phase_boots',
+			'item_blade_mail',
+			'item_mjollnir',
+			'item_sange_and_yasha',
+			'item_radiance',
+			'item_satanic',
+			'item_heart',
 		},
 		--出售
 		['Sell'] = {
-			"item_crimson_guard",
-			"item_quelling_blade",
+			'item_crimson_guard',
+			'item_quelling_blade',
 		},
 	},
 }
@@ -83,25 +83,27 @@ local tDefaultGroupedData = {
 	},
 	['Ability'] = {2,1,1,3,1,6,1,2,2,2,6,3,3,3,6},
 	['Buy'] = {
-		"item_tango",
-		"item_flask",
-		"item_quelling_blade",
-		"item_soul_ring",
-		"item_phase_boots",
-		"item_blade_mail",
-		"item_mjollnir",
-		"item_sange_and_yasha",
-		"item_radiance",
-		"item_satanic",
-		"item_heart",
+		'item_tango',
+		'item_flask',
+		'item_quelling_blade',
+		'item_soul_ring',
+		'item_phase_boots',
+		'item_blade_mail',
+		'item_mjollnir',
+		'item_sange_and_yasha',
+		'item_radiance',
+		'item_satanic',
+		'item_heart',
 	},
 	['Sell'] = {
-		"item_crimson_guard",
-		"item_quelling_blade",
+		'item_crimson_guard',
+		'item_quelling_blade',
 	}
 }
+
 --根据组数据生成技能、天赋、装备
 local nAbilityBuildList, nTalentBuildList;
+
 nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);

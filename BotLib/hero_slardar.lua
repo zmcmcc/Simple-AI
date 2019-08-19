@@ -81,7 +81,7 @@ function X.SkillsComplement()
 	--如果当前英雄无法使用技能或英雄处于隐形状态，则不做操作。
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	--技能检查顺序
-	local order = {'Q','W','R'}
+	local order = {'Q','W'}
 	--委托技能处理函数接管
 	if ConversionMode.Skills(order) then return; end
 
