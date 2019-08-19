@@ -157,4 +157,20 @@ function X.Skills(order)
     return false;
 end
 
+--装备组处理
+function X.Combination(tGroupedDataList, tDefaultGroupedData)
+    --获取随机一组数据
+    tGroupedDataList = tGroupedDataList[RandomInt(1,#tGroupedDataList)]
+    --检查数据是否缺失，如果缺失则使用默认数据
+    for item,datalist in pairs(tGroupedDataList) do
+        if datalist == nil or #datalist == 0 then
+            tGroupedDataList[item] = tDefaultGroupedData[item]
+        end
+    end
+    --处理天赋树
+    tGroupedDataList['Talent'] = J.Skill.GetTalentBuild(tGroupedDataList['Talent'])
+    --返回数据
+    return tGroupedDataList['Ability'], tGroupedDataList['Talent'], tGroupedDataList['Buy'], tGroupedDataList['Sell']
+end
+
 return X

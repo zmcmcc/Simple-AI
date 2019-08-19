@@ -22,7 +22,19 @@ nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
 hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内敌人
-hAlleyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内队友
+hAlleyHeroList = bot:GetNearbyHeroes(1600, false, BOT_MODE_NONE);--1600范围内队友
+
+local speelAbilityList = {
+    'npc_dota_hero_queenofpain',
+    'npc_dota_hero_omniknight',
+    'npc_dota_hero_slardar',
+    'npc_dota_hero_dazzle',
+    'npc_dota_hero_disruptor',
+    'npc_dota_hero_shadow_demon',
+    'npc_dota_hero_abaddon',
+    'npc_dota_hero_axe',
+    'npc_dota_hero_batrider',
+}
 
 --获取以太棱镜施法距离加成
 local aether = J.IsItemAvailable("item_aether_lens");
@@ -33,8 +45,10 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
-    print('rubick_spell_steal')
-    if castTarget ~= nil then
+    if castTarget ~= nil
+       or U.SearchHeroList(speelAbilityList, castTarget) --确保英雄已经转换技能格式
+    then
+        print('rubick_spell_steal')
         X.Compensation() 
         bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
         castUltTime = DotaTime();
@@ -57,7 +71,8 @@ function X.Consider()
 
 	-- 确保技能可以使用
     if ability ~= nil
-       and (not ability:IsFullyCastable() or DotaTime() - castUltTime <= castUltDelay)
+       or not ability:IsFullyCastable()
+       or DotaTime() - castUltTime <= castUltDelay
 	then
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end

@@ -1,6 +1,6 @@
 -----------------
---英雄：暗影恶魔
---技能：邪恶净化
+--英雄：斧王
+--技能：淘汰之刃
 --键位：R
 --类型：指向目标
 --作者：Halcyon
@@ -12,10 +12,10 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('shadow_demon_demonic_purge')
+local ability = bot:GetAbilityByName('axe_culling_blade')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
-nKeepMana = 300 --魔法储量
+nKeepMana = 180 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
@@ -32,7 +32,7 @@ U.init(nLV, nMP, nHP, bot);
 --技能释放功能
 function X.Release(castTarget)
     if castTarget ~= nil then
-        X.Compensation() 
+        X.Compensation()
         bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
     end
 end
@@ -48,60 +48,68 @@ function X.Consider()
 	-- 确保技能可以使用
     if ability ~= nil
        or not ability:IsFullyCastable()
-	then 
+	then
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
-	local nCastRange  = ability:GetCastRange() + aetherRange
+	-- Get some of its values
+	local nCastRange = ability:GetCastRange() + 600;
+	local nSkillLV   = ability:GetLevel();
+	local nKillHealth = 75 * nSkillLV + 175;
 
-	local nInRangeEnemyHeroList = bot:GetNearbyHeroes(nCastRange, true, BOT_MODE_NONE);
-	
-	-- 撤退时控制敌人
-	if J.IsRetreating(bot)
+	-- If we're going after someone
+	if J.IsGoingOnSomeone(bot)
 	then
-		for _,npcEnemy in pairs( nInRangeEnemyHeroList )
-		do
-			if ( bot:WasRecentlyDamagedByHero( npcEnemy, 2.0 ) and J.CanCastOnMagicImmune(npcEnemy) 
-				and not npcEnemy:HasModifier("modifier_shadow_demon_purge_slow")  ) 
+		local npcTarget = J.GetProperTarget(bot);
+		if J.IsValidHero(npcTarget) 
+		   and J.CanCastOnNonMagicImmune(npcTarget) 
+		   and not J.IsHaveAegis(npcTarget)
+		   and J.IsInRange(npcTarget, bot, nCastRange + 200)
+		then
+			if --J.CanKillTarget(npcTarget, nKillHealth, DAMAGE_TYPE_MAGICAL ) 
+			npcTarget:GetHealth() < nKillHealth
 			then
-				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			end
 		end
 	end
-	
+
+	-- If we're in a teamfight, use it on the scariest enemy
 	if J.IsInTeamFight(bot, 1200)
 	then
-		local npcMostDangerousEnemy = nil;
-		local nMostDangerousDamage = 0;
-
-		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange + 200, true, BOT_MODE_NONE );
+		local npcToKill = nil;
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 1200, true, BOT_MODE_NONE );
 		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 		do
-			if ( J.CanCastOnMagicImmune(npcEnemy) and not npcEnemy:HasModifier("modifier_shadow_demon_purge_slow") and not J.IsDisabled(true, npcEnemy) )
+			if J.IsValidHero(npcEnemy)
+			   and J.CanCastOnNonMagicImmune(npcEnemy)
+			   and not J.IsHaveAegis(npcEnemy) 
 			then
-				local nDamage = npcEnemy:GetEstimatedDamageToTarget( false, bot, 3.0, DAMAGE_TYPE_ALL );
-				if ( nDamage > nMostDangerousDamage )
+				if --J.CanKillTarget(npcEnemy, nKillHealth, DAMAGE_TYPE_MAGICAL )
+				npcEnemy:GetHealth() < nKillHealth
 				then
-					nMostDangerousDamage = nDamage;
-					npcMostDangerousEnemy = npcEnemy;
+					npcToKill = npcEnemy;
+					break;
 				end
 			end
 		end
-
-		if ( npcMostDangerousEnemy ~= nil )
+		if ( npcToKill ~= nil  )
 		then
-			return BOT_ACTION_DESIRE_MODERATE, npcMostDangerousEnemy;
+			return BOT_ACTION_DESIRE_HIGH, npcToKill;
 		end
 	end
 	
-	-- 追击时
-	if J.IsGoingOnSomeone(bot)
-	then
-		local npcTarget = bot:GetTarget();
-		if J.IsValidHero(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange + 200) 
-		   and not npcTarget:HasModifier("modifier_shadow_demon_purge_slow") and not J.IsDisabled(true, npcTarget)
+	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
+	for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
+	do
+		if J.IsValidHero(npcEnemy) 
+		   and not J.IsHaveAegis(npcEnemy) 
 		then
-			return BOT_ACTION_DESIRE_MODERATE, npcTarget;
+			if J.CanCastOnNonMagicImmune(npcEnemy) and --J.CanKillTarget(npcEnemy, nKillHealth, DAMAGE_TYPE_MAGICAL )
+			npcEnemy:GetHealth() < nKillHealth
+			then
+				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+			end
 		end
 	end
 	

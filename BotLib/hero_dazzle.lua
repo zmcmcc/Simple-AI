@@ -2,42 +2,10 @@ local X = {}
 local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local AbilityMode = require( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
+local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
-
---local tTalentTreeList = {
---						['t25'] = {0, 10},
---						['t20'] = {10, 0},
---						['t15'] = {0, 10},
---						['t10'] = {10, 0},
---}
---
---local tAllAbilityBuildList = {
---						{1,3,1,3,1,6,1,2,3,3,6,2,2,2,6},
---}
---
---local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
---
---local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
---
---X['sBuyList'] = {
---				'item_tango',
---				'item_enchanted_mango',
---				'item_double_branches',
---				'item_enchanted_mango',
---				'item_clarity',
---				'item_arcane_boots',
---				'item_rod_of_atos',
---				'item_sheepstick',
---				'item_ultimate_scepter',
---}
---
---X['sSellList'] = {
---	"item_crimson_guard",
---	"item_quelling_blade",
---}
 
 -- 出装和加点来自于Misunderstand
 
@@ -113,18 +81,14 @@ function X.MinionThink(hMinionUnit)
 
 end
 
-local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
-
 function X.SkillsComplement()
-	
-	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 
 	--如果当前英雄无法使用技能或英雄处于隐形状态，则不做操作。
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	--技能检查顺序
 	local order = {'W','Q','E'}
 	--委托技能处理函数接管
-	if AbilityMode.Skills(order) then return; end
+	if ConversionMode.Skills(order) then return; end
 
 end
 

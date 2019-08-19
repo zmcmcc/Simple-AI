@@ -119,6 +119,9 @@ X["test_hero"] = {
     'npc_dota_hero_disruptor',
     'npc_dota_hero_dazzle',
     'npc_dota_hero_shadow_demon',
+    'npc_dota_hero_abaddon',
+    'npc_dota_hero_axe',
+    'npc_dota_hero_batrider',
 }
 
 X["onlyCM_hero"] = {
