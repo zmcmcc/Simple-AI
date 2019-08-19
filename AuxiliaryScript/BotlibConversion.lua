@@ -168,7 +168,8 @@ function X.Skills(order)
         sAbilityList = J.Skill.GetAbilityList(bot)
         abilityQ = sAbilityList[1]
         abilityD = sAbilityList[4]
-        if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] then
+        abilityF = sAbilityList[5]
+        if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] or abilityF ~= castName['F'] then
             if SearchAbilityList(abilityNameList,abilityQ) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
                 Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
                 castName['Q'] = abilityQ
@@ -182,6 +183,13 @@ function X.Skills(order)
             else
                 Consider['D'] = nil
                 castName['D'] = nil
+            end
+            if SearchAbilityList(abilityNameList,abilityF) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityF) and abilityF ~= 'rubick_empty2' then
+                Consider['F'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityF )
+                castName['F'] = abilityF
+            else
+                Consider['F'] = nil
+                castName['F'] = nil
             end
         end
     end
