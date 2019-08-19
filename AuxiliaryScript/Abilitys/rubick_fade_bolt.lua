@@ -32,7 +32,6 @@ U.init(nLV, nMP, nHP, bot);
 --技能释放功能
 function X.Release(castTarget)
     if castTarget ~= nil then
-        print('rubick_fade_bolt')
         X.Compensation()
         bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
     end
@@ -45,7 +44,6 @@ end
 
 --技能释放欲望
 function X.Consider()
-    print('欲望检查')
 	-- 确保技能可以使用
     if ability ~= nil
        or not ability:IsFullyCastable()

@@ -31,7 +31,6 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
-    print('rubick_telekinesis')
     if castTarget ~= nil then
         X.Compensation()
         bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能

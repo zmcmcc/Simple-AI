@@ -47,62 +47,63 @@ local castName = {
 
 local Consider = {}
 
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
+if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
     Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
     castName['Q'] = abilityQ
 else
     Consider['Q'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityW) then
+if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityW) then
     Consider['W'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityW )
     castName['W'] = abilityW
 else
     Consider['W'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityE) then
+if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityE) then
     Consider['E'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityE )
     castName['E'] = abilityE
 else
     Consider['E'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) and abilityD ~= 'rubick_empty1' then
+if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityD) and abilityD ~= 'rubick_empty1' then
     Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
     castName['D'] = abilityD
 else
     Consider['D'] = nil
     castName['D'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityF) and abilityF ~= 'rubick_empty2' then
+if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityF) and abilityF ~= 'rubick_empty2' then
     Consider['F'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityF )
     castName['F'] = abilityF
 else
     Consider['F'] = nil
     castName['F'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityR) then
+if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityR) then
     Consider['R'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityR )
     castName['R'] = abilityR
 else
     Consider['R'] = nil
+    castName['R'] = nil
 end
 
 if BotsInit["ABATiYanMa"] ~= nil then
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityQ) then
+    if xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityQ) then
         Consider['Q'] = require( 'game/AI锦囊/技能模组/'..abilityQ )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityW) then
+    if xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityW) then
         Consider['W'] = require( 'game/AI锦囊/技能模组/'..abilityW )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityE) then
+    if xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityE) then
         Consider['E'] = require( 'game/AI锦囊/技能模组/'..abilityE )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityD) then
+    if xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityD) then
         Consider['D'] = require( 'game/AI锦囊/技能模组/'..abilityD )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityF) then
+    if xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityF) then
         Consider['F'] = require( 'game/AI锦囊/技能模组/'..abilityF )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityR) then
+    if xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityR) then
         Consider['R'] = require( 'game/AI锦囊/技能模组/'..abilityR )
     end
 end
@@ -117,17 +118,16 @@ function X.Skills(order)
         abilityD = sAbilityList[4]
 
         if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] then
-            if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
+            if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
                 Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
                 castName['Q'] = abilityQ
             else
                 Consider['Q'] = nil
                 castName['Q'] = nil
             end
-            if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) and abilityD ~= 'rubick_empty1' then
+            if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityD) and abilityD ~= 'rubick_empty1' then
                 Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
                 castName['D'] = abilityD
-                --print(abilityD..'----'..castName['D']);
             else
                 Consider['D'] = nil
                 castName['D'] = nil
@@ -171,6 +171,11 @@ function X.Combination(tGroupedDataList, tDefaultGroupedData)
     tGroupedDataList['Talent'] = J.Skill.GetTalentBuild(tGroupedDataList['Talent'])
     --返回数据
     return tGroupedDataList['Ability'], tGroupedDataList['Talent'], tGroupedDataList['Buy'], tGroupedDataList['Sell']
+end
+
+function errc(err)
+    if string.find(err, 'no field package.preload') ~= nil then return false; end
+    return true;
 end
 
 return X

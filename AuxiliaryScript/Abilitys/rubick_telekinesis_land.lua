@@ -34,7 +34,6 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
-    print('rubick_telekinesis_land')
     if castTarget ~= nil then
         X.Compensation()
         bot:Action_UseAbilityOnLocation( ability, castTarget ) --使用技能

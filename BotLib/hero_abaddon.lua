@@ -38,7 +38,7 @@ local tGroupedDataList = {
 		['Sell'] = {
 			"item_crimson_guard",
 			"item_quelling_blade",
-		}
+		},
 	},
 	{
 		--组合说明，不影响游戏
@@ -70,8 +70,8 @@ local tGroupedDataList = {
 		['Sell'] = {
 			"item_crimson_guard",
 			"item_quelling_blade",
-		}
-	}
+		},
+	},
 }
 --默认数据
 local tDefaultGroupedData = {
