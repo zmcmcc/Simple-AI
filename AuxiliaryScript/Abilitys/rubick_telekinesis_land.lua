@@ -37,7 +37,6 @@ function X.Release(castTarget)
     if castTarget ~= nil then
         X.Compensation()
         bot:Action_UseAbilityOnLocation( ability, castTarget ) --使用技能
-        Q.setTarget = true
     end
 end
 
@@ -50,7 +49,7 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
 	   or not ability:IsFullyCastable() 
 	   or ability:IsHidden()
 	then 

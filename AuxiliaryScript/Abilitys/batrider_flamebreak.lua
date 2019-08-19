@@ -2,7 +2,7 @@
 --英雄：蝙蝠骑士
 --技能：烈焰破击
 --键位：W
---类型：指向目标
+--类型：指向地点
 --作者：Halcyon
 -----------------
 local X = {}
@@ -33,7 +33,7 @@ U.init(nLV, nMP, nHP, bot);
 function X.Release(castTarget)
     if castTarget ~= nil then
         X.Compensation() 
-        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+        bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
     end
 end
 
@@ -46,7 +46,7 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望

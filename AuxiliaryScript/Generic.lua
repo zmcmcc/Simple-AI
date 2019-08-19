@@ -24,7 +24,7 @@ end
 function U.SearchHeroList(list,hero)
     if next(list) ~= nil then
         for _,value in pairs(list) do
-            if value == hero then
+            if value == hero:GetUnitName() then
                 return true;
             end
 		end

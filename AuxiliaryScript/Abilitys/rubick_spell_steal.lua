@@ -34,6 +34,7 @@ local speelAbilityList = {
     'npc_dota_hero_abaddon',
     'npc_dota_hero_axe',
     'npc_dota_hero_batrider',
+    'npc_dota_hero_faceless_void',
 }
 
 --获取以太棱镜施法距离加成
@@ -46,9 +47,8 @@ U.init(nLV, nMP, nHP, bot);
 --技能释放功能
 function X.Release(castTarget)
     if castTarget ~= nil
-       or U.SearchHeroList(speelAbilityList, castTarget) --确保英雄已经转换技能格式
+       and U.SearchHeroList(speelAbilityList, castTarget) --确保英雄已经转换技能格式
     then
-        print('rubick_spell_steal')
         X.Compensation() 
         bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
         castUltTime = DotaTime();
@@ -70,7 +70,7 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
        or DotaTime() - castUltTime <= castUltDelay
 	then

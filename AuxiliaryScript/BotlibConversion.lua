@@ -6,7 +6,7 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func') --引入jmz_func文
 local BotsInit = require( "game/botsinit" );
 
 local sAbilityList = J.Skill.GetAbilityList(bot)--获取技能列表
-
+--可用技能列表，其实不用检查的
 local abilityNameList = {
     'dazzle_poison_touch',
     'dazzle_shadow_wave',
@@ -42,6 +42,10 @@ local abilityNameList = {
     'faceless_void_chronosphere',
     'faceless_void_time_dilation',
     'faceless_void_time_walk',
+    'rubick_fade_bolt',
+    'rubick_spell_steal',
+    'rubick_telekinesis_land',
+    'rubick_telekinesis',
 }
 
 --将英雄技能初始入变量
@@ -164,7 +168,6 @@ function X.Skills(order)
         sAbilityList = J.Skill.GetAbilityList(bot)
         abilityQ = sAbilityList[1]
         abilityD = sAbilityList[4]
-
         if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] then
             if SearchAbilityList(abilityNameList,abilityQ) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
                 Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
@@ -195,7 +198,6 @@ function X.Skills(order)
            and castDesire[abilityorder] > 0 
            and Consider[abilityorder] ~= nil
         then
-            if (bot:GetUnitName() == 'npc_dota_hero_rubick') then print(abilityorder..castDesire[abilityorder]) end
             local cast = castTarget[abilityorder]
             Consider[abilityorder].Release(cast)
             return true;

@@ -74,7 +74,7 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
        or bot:IsRooted()
 	   or bot:HasModifier("modifier_abaddon_aphotic_shield") --有盾了

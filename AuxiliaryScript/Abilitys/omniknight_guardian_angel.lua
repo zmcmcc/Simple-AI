@@ -46,7 +46,7 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE; --没欲望
@@ -61,9 +61,9 @@ function X.Consider()
 	for _,npcAlly in pairs( nAlleys )
 	do
 		if npcAlly ~= nil
-           J.IsValidHero(npcAlly)
+           and J.IsValidHero(npcAlly)
            and J.CanCastOnNonMagicImmune(npcAlly)
-           and J.GetHealth(npcAlly) <= 0.45
+           and J.GetHPR(npcAlly) <= 0.45
         then
             nAllieslowhp = nAllieslowhp + 1;
         end
@@ -79,7 +79,9 @@ function X.Consider()
     if not ability:IsFullyCastable() 
 	   or abilityAhg == nil
 	   or not abilityef:IsFullyCastable()
-	then return BOT_ACTION_DESIRE_NONE, nil; end
+	then 
+		return BOT_ACTION_DESIRE_NONE, nil; 
+	end
 	
 	local base = bot:GetAncient(GetTeam());
 

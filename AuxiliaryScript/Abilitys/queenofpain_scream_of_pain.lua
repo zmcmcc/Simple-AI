@@ -39,7 +39,7 @@ end
 --技能释放欲望
 function X.Consider()
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
@@ -54,7 +54,7 @@ function X.Consider()
 	local nAllies =  J.GetAllyList(bot,1200); --获取1200范围内盟友
 	
     local nEnemysHerosInView  = hEnemyHeroList; --获取1600范围内敌人
-	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange,true,BOT_MODE_NONE);--获得施法范围内敌人
+	local nEnemysHerosInRange = bot:GetNearbyHeroes(nRadius,true,BOT_MODE_NONE);--获得施法范围内敌人
 
 
     -----------

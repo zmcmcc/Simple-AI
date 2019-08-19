@@ -41,7 +41,7 @@ end
 --技能释放欲望
 function X.Consider()
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
        or bot:IsRooted() 
 	then 

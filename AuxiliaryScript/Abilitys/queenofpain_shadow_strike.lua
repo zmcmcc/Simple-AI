@@ -41,7 +41,7 @@ end
 --技能释放欲望
 function X.Consider()
 	-- 确保技能可以使用
-    if ability ~= nil
+    if ability == nil
        or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望

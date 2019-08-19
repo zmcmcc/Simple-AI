@@ -136,3 +136,5 @@ function X.SkillsComplement()
 	if ConversionMode.Skills(order) then return; end
 
 end
+
+return X;
