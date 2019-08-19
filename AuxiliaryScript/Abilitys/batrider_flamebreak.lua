@@ -1,8 +1,8 @@
 -----------------
---英雄：戴泽
---技能：薄葬
+--英雄：蝙蝠骑士
+--技能：烈焰破击
 --键位：W
---类型：指向目标
+--类型：指向地点
 --作者：Halcyon
 -----------------
 local X = {}
@@ -12,7 +12,7 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('dazzle_shallow_grave')
+local ability = bot:GetAbilityByName('batrider_flamebreak')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
 nKeepMana = 400 --魔法储量
@@ -32,8 +32,8 @@ U.init(nLV, nMP, nHP, bot);
 --技能释放功能
 function X.Release(castTarget)
     if castTarget ~= nil then
-        X.Compensation()
-        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+        X.Compensation() 
+        bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
     end
 end
 
@@ -52,16 +52,38 @@ function X.Consider()
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
+	-- Get some of its values
+	local nRadius = ability:GetSpecialValueInt("explosion_radius");
+	local nSpeed = ability:GetSpecialValueInt("speed");
 	local nCastRange = ability:GetCastRange();
-	local nAllysHerosInCastRange = bot:GetNearbyHeroes(nCastRange + 80 ,false,BOT_MODE_NONE);
+	local nCastPoint = ability:GetCastPoint();
 
-	for _,npcAlly in pairs( nAllysHerosInCastRange )
-	do
-		local allyHP = npcAlly:GetHealth()/npcAlly:GetMaxHealth();
-
-		if allyHP <= 0.25
+	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
+	if J.IsRetreating(bot)
+	then
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
+		for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
+		do
+			if bot:WasRecentlyDamagedByHero( npcEnemy, 1.0 )
+			then
+				if GetUnitToUnitDistance(npcEnemy, bot) < nRadius then
+					return BOT_ACTION_DESIRE_LOW, bot:GetLocation()
+				else
+					return BOT_ACTION_DESIRE_LOW, npcEnemy:GetExtrapolatedLocation(nCastPoint)
+				end
+			end
+		end
+	end
+	
+	if J.IsGoingOnSomeone(bot)
+	then
+		local npcTarget = bot:GetTarget();
+		if J.IsValidHero(npcTarget) and
+		   J.CanCastOnNonMagicImmune(npcTarget) and
+		   J.IsInRange(npcTarget, bot, 1000)
 		then
-			return BOT_ACTION_DESIRE_HIGH, npcAlly;
+			local nDelay = ( GetUnitToUnitDistance( npcTarget, bot ) / nSpeed ) + nCastPoint
+			return BOT_ACTION_DESIRE_MODERATE, npcTarget:GetExtrapolatedLocation(nDelay);
 		end
 	end
 	

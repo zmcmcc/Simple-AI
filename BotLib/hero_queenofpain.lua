@@ -2,7 +2,7 @@ local X = {}
 local bot = GetBot() --获取当前电脑
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func') --引入jmz_func文件
-local AbilityMode = require( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
+local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion') --引入Minion文件
 local sTalentList = J.Skill.GetTalentList(bot) --获取当前英雄（当前电脑选择的英雄，一下省略为当前英雄）的天赋列表
 local sAbilityList = J.Skill.GetAbilityList(bot) --获取当前英雄的技能列表
@@ -91,7 +91,7 @@ function X.SkillsComplement()
 	--技能检查顺序
 	local order = {'Q','W','E','R'}
 	--委托技能处理函数接管
-	if AbilityMode.Skills(order) then return; end
+	if ConversionMode.Skills(order) then return; end
 
 end
 

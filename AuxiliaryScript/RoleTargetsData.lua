@@ -81,6 +81,7 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_queenofpain',
 --'npc_dota_hero_slardar',
 --'npc_dota_hero_omniknight',
+--'npc_dota_hero_rubick',
 ----原脚本
 --'npc_dota_hero_antimage',
 --'npc_dota_hero_arc_warden',
@@ -112,13 +113,7 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_lina',
 
 X["test_hero"] = {
-    'npc_dota_hero_rubick',
-    'npc_dota_hero_queenofpain',
-    'npc_dota_hero_slardar',
-    'npc_dota_hero_omniknight',
-    'npc_dota_hero_disruptor',
-    'npc_dota_hero_dazzle',
-    'npc_dota_hero_shadow_demon',
+    --'npc_dota_hero_rubick',
 }
 
 X["onlyCM_hero"] = {

@@ -6,6 +6,47 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func') --引入jmz_func文
 local BotsInit = require( "game/botsinit" );
 
 local sAbilityList = J.Skill.GetAbilityList(bot)--获取技能列表
+--可用技能列表，其实不用检查的
+local abilityNameList = {
+    'dazzle_poison_touch',
+    'dazzle_shadow_wave',
+    'dazzle_shallow_grave',
+    'disruptor_glimpse',
+    'disruptor_kinetic_field',
+    'disruptor_static_storm',
+    'disruptor_thunder_strike',
+    'omniknight_guardian_angel',
+    'omniknight_purification',
+    'omniknight_repel',
+    'shadow_demon_demonic_purge',
+    'shadow_demon_disruption',
+    'shadow_demon_shadow_poison_release',
+    'shadow_demon_shadow_poison',
+    'shadow_demon_soul_catcher',
+    'slardar_amplify_damage',
+    'slardar_slithereen_crush',
+    'slardar_sprint',
+    'queenofpain_blink',
+    'queenofpain_scream_of_pain',
+    'queenofpain_shadow_strike',
+    'queenofpain_sonic_wave',
+    'abaddon_aphotic_shield',
+    'abaddon_death_coil',
+    'axe_battle_hunger',
+    'axe_berserkers_call',
+    'axe_culling_blade',
+    'batrider_sticky_napalm',
+    'batrider_flamebreak',
+    'batrider_flaming_lasso',
+    'batrider_firefly',
+    'faceless_void_chronosphere',
+    'faceless_void_time_dilation',
+    'faceless_void_time_walk',
+    'rubick_fade_bolt',
+    'rubick_spell_steal',
+    'rubick_telekinesis_land',
+    'rubick_telekinesis',
+}
 
 --将英雄技能初始入变量
 local abilityQ = sAbilityList[1]
@@ -44,66 +85,78 @@ local castName = {
 }
 
 --尝试加载技能数据
+function SearchAbilityList(list, hero)
+    if next(list) ~= nil then
+        for _,value in pairs(list) do
+            if value == hero then
+                return true;
+            end
+		end
+	end
+	
+    return false;
+end
 
 local Consider = {}
 
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
+if SearchAbilityList(abilityNameList,abilityQ) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
     Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
     castName['Q'] = abilityQ
 else
     Consider['Q'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityW) then
+if SearchAbilityList(abilityNameList,abilityW) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityW) then
     Consider['W'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityW )
     castName['W'] = abilityW
 else
     Consider['W'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityE) then
+if SearchAbilityList(abilityNameList,abilityE) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityE) then
     Consider['E'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityE )
     castName['E'] = abilityE
 else
     Consider['E'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) and abilityD ~= 'rubick_empty1' then
+if SearchAbilityList(abilityNameList,abilityR) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityR) then
+    Consider['R'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityR )
+    castName['R'] = abilityR
+else
+    Consider['R'] = nil
+    castName['R'] = nil
+end
+if SearchAbilityList(abilityNameList,abilityD) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityD) and abilityD ~= 'rubick_empty1' then
     Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
     castName['D'] = abilityD
 else
     Consider['D'] = nil
     castName['D'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityF) and abilityF ~= 'rubick_empty2' then
+if SearchAbilityList(abilityNameList,abilityF) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityF) and abilityF ~= 'rubick_empty2' then
     Consider['F'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityF )
     castName['F'] = abilityF
 else
     Consider['F'] = nil
     castName['F'] = nil
 end
-if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityR) then
-    Consider['R'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityR )
-    castName['R'] = abilityR
-else
-    Consider['R'] = nil
-end
 
 if BotsInit["ABATiYanMa"] ~= nil then
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityQ) then
+    if SearchAbilityList(abilityNameList,abilityQ) and xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
         Consider['Q'] = require( 'game/AI锦囊/技能模组/'..abilityQ )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityW) then
+    if SearchAbilityList(abilityNameList,abilityW) and xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityW) then
         Consider['W'] = require( 'game/AI锦囊/技能模组/'..abilityW )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityE) then
+    if SearchAbilityList(abilityNameList,abilityE) and xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityE) then
         Consider['E'] = require( 'game/AI锦囊/技能模组/'..abilityE )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityD) then
+    if SearchAbilityList(abilityNameList,abilityR) and xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityR) then
+        Consider['R'] = require( 'game/AI锦囊/技能模组/'..abilityR )
+    end
+    if SearchAbilityList(abilityNameList,abilityD) and xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityD) then
         Consider['D'] = require( 'game/AI锦囊/技能模组/'..abilityD )
     end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityF) then
+    if SearchAbilityList(abilityNameList,abilityF) and xpcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityF) then
         Consider['F'] = require( 'game/AI锦囊/技能模组/'..abilityF )
-    end
-    if pcall(function(loadAbility) require( 'game/AI锦囊/技能模组/'..loadAbility ) end, abilityR) then
-        Consider['R'] = require( 'game/AI锦囊/技能模组/'..abilityR )
     end
 end
 
@@ -115,22 +168,28 @@ function X.Skills(order)
         sAbilityList = J.Skill.GetAbilityList(bot)
         abilityQ = sAbilityList[1]
         abilityD = sAbilityList[4]
-
-        if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] then
-            if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityQ) then
+        abilityF = sAbilityList[5]
+        if abilityQ ~= castName['Q'] or abilityD ~= castName['D'] or abilityF ~= castName['F'] then
+            if SearchAbilityList(abilityNameList,abilityQ) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityQ) then
                 Consider['Q'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityQ )
                 castName['Q'] = abilityQ
             else
                 Consider['Q'] = nil
                 castName['Q'] = nil
             end
-            if pcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, abilityD) and abilityD ~= 'rubick_empty1' then
+            if SearchAbilityList(abilityNameList,abilityD) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityD) and abilityD ~= 'rubick_empty1' then
                 Consider['D'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityD )
                 castName['D'] = abilityD
-                --print(abilityD..'----'..castName['D']);
             else
                 Consider['D'] = nil
                 castName['D'] = nil
+            end
+            if SearchAbilityList(abilityNameList,abilityF) and xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, abilityF) and abilityF ~= 'rubick_empty2' then
+                Consider['F'] = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..abilityF )
+                castName['F'] = abilityF
+            else
+                Consider['F'] = nil
+                castName['F'] = nil
             end
         end
     end
@@ -147,7 +206,6 @@ function X.Skills(order)
            and castDesire[abilityorder] > 0 
            and Consider[abilityorder] ~= nil
         then
-            if (bot:GetUnitName() == 'npc_dota_hero_rubick') then print(abilityorder..castDesire[abilityorder]) end
             local cast = castTarget[abilityorder]
             Consider[abilityorder].Release(cast)
             return true;
@@ -155,6 +213,30 @@ function X.Skills(order)
     end
 
     return false;
+end
+
+--装备组处理
+function X.Combination(tGroupedDataList, tDefaultGroupedData)
+    --获取随机一组数据
+    tGroupedDataList = tGroupedDataList[RandomInt(1,#tGroupedDataList)]
+    --检查数据是否缺失，如果缺失则使用默认数据
+    for item,datalist in pairs(tGroupedDataList) do
+        if datalist == nil or #datalist == 0 then
+            tGroupedDataList[item] = tDefaultGroupedData[item]
+        end
+    end
+    --处理天赋树
+    tGroupedDataList['Talent'] = J.Skill.GetTalentBuild(tGroupedDataList['Talent'])
+    --返回数据
+    return tGroupedDataList['Ability'], tGroupedDataList['Talent'], tGroupedDataList['Buy'], tGroupedDataList['Sell']
+end
+
+function errc(err)
+    --if string.find(err, 'rubick_empty1') ~= nil then return false; end
+    --if string.find(err, 'rubick_empty2') ~= nil then return false; end
+    --if string.find(err, 'generic_hidden') ~= nil then return false; end
+    
+    return true;
 end
 
 return X

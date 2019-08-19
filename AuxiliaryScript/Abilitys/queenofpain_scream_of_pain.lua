@@ -20,7 +20,7 @@ nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
 hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内敌人
-hAlleyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内队友
+hAlleyHeroList = bot:GetNearbyHeroes(1600, false, BOT_MODE_NONE);--1600范围内队友
 
 --初始化函数库
 U.init(nLV, nMP, nHP, bot);
@@ -39,8 +39,8 @@ end
 --技能释放欲望
 function X.Consider()
 	-- 确保技能可以使用
-    if ability ~= nil
-       and not ability:IsFullyCastable()
+    if ability == nil
+       or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
@@ -54,7 +54,7 @@ function X.Consider()
 	local nAllies =  J.GetAllyList(bot,1200); --获取1200范围内盟友
 	
     local nEnemysHerosInView  = hEnemyHeroList; --获取1600范围内敌人
-	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange,true,BOT_MODE_NONE);--获得施法范围内敌人
+	local nEnemysHerosInRange = bot:GetNearbyHeroes(nRadius,true,BOT_MODE_NONE);--获得施法范围内敌人
 
 
     -----------
@@ -138,16 +138,15 @@ function X.Consider()
 
 	-- If mana is too much
 	if nMP > 0.95
-		and nLV >= 6
-		and bot:DistanceFromFountain() > 2400
-		and J.IsAllowedToSpam(bot, nManaCost) 
+	   and nLV >= 6
+	   and bot:DistanceFromFountain() > 2400
+	   and J.IsAllowedToSpam(bot, nManaCost)
 	then
 		return BOT_ACTION_DESIRE_LOW;
 	end
 	
 	return BOT_ACTION_DESIRE_NONE;
 
-	return 0;
 end
 
 return X;

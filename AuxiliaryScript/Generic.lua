@@ -20,5 +20,17 @@ function U.ShouldSaveMana(nAbility)
 	
 	return false;
 end
+--检查英雄是否在列表中
+function U.SearchHeroList(list,hero)
+    if next(list) ~= nil then
+        for _,value in pairs(list) do
+            if value == hero:GetUnitName() then
+                return true;
+            end
+		end
+	end
+	
+    return false;
+end
 
 return U;

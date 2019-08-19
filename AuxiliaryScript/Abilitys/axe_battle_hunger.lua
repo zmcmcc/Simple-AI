@@ -1,7 +1,7 @@
 -----------------
---英雄：戴泽
---技能：剧毒之触
---键位：Q
+--英雄：斧王
+--技能：战斗饥渴
+--键位：W
 --类型：指向目标
 --作者：Halcyon
 -----------------
@@ -12,10 +12,10 @@ local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
-local ability = bot:GetAbilityByName('dazzle_poison_touch')
+local ability = bot:GetAbilityByName('axe_battle_hunger')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
-nKeepMana = 400 --魔法储量
+nKeepMana = 180 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
@@ -32,8 +32,13 @@ U.init(nLV, nMP, nHP, bot);
 --技能释放功能
 function X.Release(castTarget)
     if castTarget ~= nil then
-        X.Compensation()
-        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+		X.Compensation()
+		if bot:HasScepter() 
+		then
+			bot:ActionQueue_UseAbilityOnLocation( ability, castTarget:GetLocation() )
+		else
+			bot:ActionQueue_UseAbilityOnEntity( ability, castTarget )
+		end
     end
 end
 
@@ -54,54 +59,56 @@ function X.Consider()
 	
 	local nCastRange = ability:GetCastRange();
 	local nAttackRange = bot:GetAttackRange();
-	local nDamage = (ability:GetLevel() * 12 + 4) * (ability:GetLevel() + 3);
+	local nDamage = (ability:GetLevel() *8 + 8) * 12;
 	
 	local nEnemysHerosInCastRange = bot:GetNearbyHeroes(nCastRange + 80 ,true,BOT_MODE_NONE);
 	local nWeakestEnemyHeroInCastRange = J.GetVulnerableWeakestUnit(true, true, nCastRange + 80, bot);
 	local npcTarget = J.GetProperTarget(bot)
-	local nCastRTarget = nil
+	local castRTarget = nil
 	
 	
 	if J.IsValid(nEnemysHerosInCastRange[1])
 	then
 		--最弱目标和当前目标
 		if(nWeakestEnemyHeroInCastRange ~= nil)
-		then
+		then           
 			if nWeakestEnemyHeroInCastRange:GetHealth() < nWeakestEnemyHeroInCastRange:GetActualIncomingDamage(nDamage,DAMAGE_TYPE_MAGICAL)
-			then
-				nCastRTarget = nWeakestEnemyHeroInCastRange;
-				return BOT_ACTION_DESIRE_HIGH, nCastRTarget;
+			then				
+				castRTarget = nWeakestEnemyHeroInCastRange;
+				return BOT_ACTION_DESIRE_HIGH, castRTarget;
 			end
 			
-			if J.IsValidHero(npcTarget)
+			if J.IsValidHero(npcTarget) and
+				not npcTarget:HasModifier("modifier_axe_battle_hunger")
 			then
-				if J.IsInRange(npcTarget, bot, nCastRange + 80)
+				if J.IsInRange(npcTarget, bot, nCastRange + 80)   
 					and J.CanCastOnMagicImmune(npcTarget)
-				then
-					nCastRTarget = npcTarget;
-					return BOT_ACTION_DESIRE_HIGH,nCastRTarget;
+				then					
+					castRTarget = npcTarget;
+					return BOT_ACTION_DESIRE_HIGH,castRTarget;
 				else
-					nCastRTarget = nWeakestEnemyHeroInCastRange;
-					return BOT_ACTION_DESIRE_HIGH, nCastRTarget;
+					castRTarget = nWeakestEnemyHeroInCastRange;                    
+					return BOT_ACTION_DESIRE_HIGH,castRTarget;
 				end
 			end	
 		end
 		
-		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1])
+		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1]) and
+			not nEnemysHerosInCastRange[1]:HasModifier("modifier_axe_battle_hunger")
 		then
-			nCastRTarget = nEnemysHerosInCastRange[1];   
-			return BOT_ACTION_DESIRE_HIGH, nCastRTarget;
+			castRTarget = nEnemysHerosInCastRange[1];   
+			return BOT_ACTION_DESIRE_HIGH,castRTarget;
 		end
-	end
+	end	
 	
 	
 	if bot:GetActiveMode() == BOT_MODE_ROSHAN and bot:HasScepter()
 	then
 	    local nAttackTarget = bot:GetAttackTarget();
-        if nAttackTarget ~= nil 
-           and nAttackTarget:IsAlive()
+		if  nAttackTarget ~= nil and nAttackTarget:IsAlive() and
+		not nAttackTarget:HasModifier("modifier_axe_battle_hunger")
 		then
-			return BOT_ACTION_DESIRE_HIGH, nAttackTarget;
+			return BOT_ACTION_DESIRE_HIGH,nAttackTarget;
 		end
 	end
 	

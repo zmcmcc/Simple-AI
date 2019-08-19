@@ -20,7 +20,7 @@ nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
 hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内敌人
-hAlleyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内队友
+hAlleyHeroList = bot:GetNearbyHeroes(1600, false, BOT_MODE_NONE);--1600范围内队友
 
 --是否拥有蓝杖
 abilityAhg = J.IsItemAvailable("item_ultimate_scepter"); 
@@ -46,8 +46,8 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability ~= nil
-       and not ability:IsFullyCastable()
+    if ability == nil
+       or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE; --没欲望
 	end
@@ -61,9 +61,9 @@ function X.Consider()
 	for _,npcAlly in pairs( nAlleys )
 	do
 		if npcAlly ~= nil
-           J.IsValidHero(npcAlly)
+           and J.IsValidHero(npcAlly)
            and J.CanCastOnNonMagicImmune(npcAlly)
-           and J.GetHealth(npcAlly) <= 0.45
+           and J.GetHPR(npcAlly) <= 0.45
         then
             nAllieslowhp = nAllieslowhp + 1;
         end
@@ -79,7 +79,9 @@ function X.Consider()
     if not ability:IsFullyCastable() 
 	   or abilityAhg == nil
 	   or not abilityef:IsFullyCastable()
-	then return BOT_ACTION_DESIRE_NONE, nil; end
+	then 
+		return BOT_ACTION_DESIRE_NONE, nil; 
+	end
 	
 	local base = bot:GetAncient(GetTeam());
 

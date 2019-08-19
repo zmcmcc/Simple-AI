@@ -2358,6 +2358,8 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_templar_assassin"
 			or botName == "npc_dota_hero_viper" 
 			or botName == "npc_dota_hero_invoker"
+			or botName == "npc_dota_hero_slardar"
+			or botName == "npc_dota_hero_queenofpain"
 		 
 end
 
@@ -2366,17 +2368,20 @@ function J.IsSpecialSupport(bot)
     
 	local botName = bot:GetUnitName();
 	
-	return  botName == "npc_dota_hero_crystal_maiden"	
+	return  botName == "npc_dota_hero_crystal_maiden"
 			or botName == "npc_dota_hero_jakiro"
 			or botName == "npc_dota_hero_lina"
 			or botName == "npc_dota_hero_necrolyte"
 			or botName == "npc_dota_hero_silencer"
 			or botName == "npc_dota_hero_skywrath_mage"
-			or botName == "npc_dota_hero_warlock"		  
-			or botName == "npc_dota_hero_zuus" 
-			or botName == "npc_dota_hero_dazzle" 
-			or botName == "npc_dota_hero_batrider" 
-			or botName == "npc_dota_hero_puck" 
+			or botName == "npc_dota_hero_warlock"	  
+			or botName == "npc_dota_hero_zuus"
+			or botName == "npc_dota_hero_dazzle"
+			or botName == "npc_dota_hero_batrider"
+			or botName == "npc_dota_hero_puck"
+			or botName == "npc_dota_hero_shadow_demon"
+			or botName == "npc_dota_hero_disruptor"
+			or botName == "npc_dota_hero_rubick"
 end 
 
 	
