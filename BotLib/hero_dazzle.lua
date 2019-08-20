@@ -7,59 +7,104 @@ local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 
--- 出装和加点来自于Misunderstand
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		['info'] = 'By Misunderstand',
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		['Ability'] = { 1, 3, 1, 3, 2, 6, 1, 1, 3, 3, 6, 2, 2, 2, 6 },
+		['Buy'] = {
+			"item_blight_stone",
+			"item_double_tango",
+			"item_clarity",
+			"item_enchanted_mango",
+			"item_magic_stick",
+			"item_double_enchanted_mango",
+			"item_magic_wand",
+			"item_wind_lace",
+			"item_medallion_of_courage",
+			"item_arcane_boots",
+			"item_hand_of_midas",
+			"item_force_staff",
+			"item_guardian_greaves",
+			"item_pipe",
+			"item_solar_crest",
+			"item_necronomicon_3",
+			"item_sheepstick",
+			"item_ultimate_scepter_2",
+			"item_silver_edge",
+			"item_moon_shard",
+		},
+		['Sell'] = {
+			"item_aeon_disk",
+			"item_magic_wand",
+	
+			"item_necronomicon_3",
+			"item_force_staff",
+	
+			"item_silver_edge",
+			"item_hand_of_midas",
+	
+			"item_silver_edge",
+			"item_aeon_disk",
+		}
+	}
+}
+--默认数据
+local tDefaultGroupedData = {
+	['Talent'] = {
+		['t25'] = {10, 0},
+		['t20'] = {10, 0},
+		['t15'] = {10, 0},
+		['t10'] = {0, 10},
+	},
+	['Ability'] = { 1, 3, 1, 3, 2, 6, 1, 1, 3, 3, 6, 2, 2, 2, 6 },
+	['Buy'] = {
+		"item_blight_stone",
+		"item_double_tango",
+		"item_clarity",
+		"item_enchanted_mango",
+		"item_magic_stick",
+		"item_double_enchanted_mango",
+		"item_magic_wand",
+		"item_wind_lace",
+		"item_medallion_of_courage",
+		"item_arcane_boots",
+		"item_hand_of_midas",
+		"item_force_staff",
+		"item_guardian_greaves",
+		"item_pipe",
+		"item_solar_crest",
+		"item_necronomicon_3",
+		"item_sheepstick",
+		"item_ultimate_scepter_2",
+		"item_silver_edge",
+		"item_moon_shard",
+	},
+	['Sell'] = {
+		"item_aeon_disk",
+		"item_magic_wand",
 
-local tTalentTreeList = {
-						['t25'] = {10, 0},
-						['t20'] = {10, 0},
-						['t15'] = {10, 0},
-						['t10'] = {0, 10},
+		"item_necronomicon_3",
+		"item_force_staff",
+
+		"item_silver_edge",
+		"item_hand_of_midas",
+
+		"item_silver_edge",
+		"item_aeon_disk",
+	}
 }
 
-local tAllAbilityBuildList = {
-						{ 1, 3, 1, 3, 2, 6, 1, 1, 3, 3, 6, 2, 2, 2, 6 }
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-X['sBuyList'] = {
-				"item_blight_stone",
-				"item_double_tango",
-				"item_clarity",
-				"item_enchanted_mango",
-				"item_magic_stick",
-				"item_double_enchanted_mango",
-				"item_magic_wand",
-				"item_wind_lace",
-				"item_medallion_of_courage",
-				"item_arcane_boots",
-				"item_hand_of_midas",
-				"item_force_staff",
-				"item_guardian_greaves",
-				"item_pipe",
-				"item_solar_crest",
-				"item_necronomicon_3",
-				"item_sheepstick",
-				"item_ultimate_scepter_2",
-				"item_silver_edge",
-				"item_moon_shard",
-}
-
-X['sSellList'] = {
-	"item_aeon_disk",
-	"item_magic_wand",
-
-	"item_necronomicon_3",
-	"item_force_staff",
-
-	"item_silver_edge",
-	"item_hand_of_midas",
-
-	"item_silver_edge",
-	"item_aeon_disk",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

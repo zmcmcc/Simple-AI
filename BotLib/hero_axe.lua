@@ -7,39 +7,42 @@ local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 
-local tTalentTreeList = {
-						['t25'] = {10, 0},
-						['t20'] = {10, 0},
-						['t15'] = {0, 10},
-						['t10'] = {10, 0},
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	
+}
+--默认数据
+local tDefaultGroupedData = {
+	['Talent'] = {
+		['t25'] = {10, 0},
+		['t20'] = {10, 0},
+		['t15'] = {0, 10},
+		['t10'] = {10, 0},
+	},
+	['Ability'] = {2,3,1,2,2,6,2,3,3,3,6,1,1,1,6},
+	['Buy'] = {
+		"item_tango",
+		"item_flask",
+		"item_quelling_blade",
+		"item_magic_stick",
+		"item_phase_boots",
+		"item_vanguard",
+		"item_blink",
+		"item_blade_mail",
+		"item_mjollnir", 
+		"item_manta",
+		"item_octarine_core",
+	},
+	['Sell'] = {
+		"item_crimson_guard",
+		"item_quelling_blade",
+	}
 }
 
-local tAllAbilityBuildList = {
-						{2,3,1,2,2,6,2,3,3,3,6,1,1,1,6},
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-X['sBuyList'] = {
-				"item_tango",
-				"item_flask",
-				"item_quelling_blade",
-				"item_magic_stick",
-				"item_phase_boots",
-				"item_vanguard",
-				"item_blink",
-				"item_blade_mail",
-				"item_mjollnir", 
-				"item_manta",
-				"item_octarine_core",
-}
-
-X['sSellList'] = {
-	"item_crimson_guard",
-	"item_quelling_blade",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

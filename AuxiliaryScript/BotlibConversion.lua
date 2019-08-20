@@ -46,6 +46,22 @@ local abilityNameList = {
     'rubick_spell_steal',
     'rubick_telekinesis_land',
     'rubick_telekinesis',
+    'centaur_double_edge',
+    'centaur_hoof_stomp',
+    'centaur_return',
+    'centaur_stampede',
+    'tidehunter_anchor_smash',
+    'tidehunter_gush',
+    'tidehunter_ravage',
+    'leshrac_pulse_nova',
+    'leshrac_lightning_storm',
+    'leshrac_diabolic_edict',
+    'leshrac_split_earth',
+    'grimstroke_dark_artistry',
+    'grimstroke_ink_creature',
+    'grimstroke_scepter',
+    'grimstroke_spirit_walk',
+    'grimstroke_soul_chain',
 }
 
 --将英雄技能初始入变量
@@ -218,12 +234,18 @@ end
 --装备组处理
 function X.Combination(tGroupedDataList, tDefaultGroupedData)
     --获取随机一组数据
-    tGroupedDataList = tGroupedDataList[RandomInt(1,#tGroupedDataList)]
-    --检查数据是否缺失，如果缺失则使用默认数据
-    for item,datalist in pairs(tGroupedDataList) do
-        if datalist == nil or #datalist == 0 then
-            tGroupedDataList[item] = tDefaultGroupedData[item]
+    if #tGroupedDataList > 0 then
+        tGroupedDataList = tGroupedDataList[RandomInt(1,#tGroupedDataList)]
+
+        --检查数据是否缺失，如果缺失则使用默认数据
+        for item,datalist in pairs(tGroupedDataList) do
+            if datalist == nil or #datalist == 0 then
+                tGroupedDataList[item] = tDefaultGroupedData[item]
+            end
         end
+
+    else
+        tGroupedDataList = tDefaultGroupedData
     end
     --处理天赋树
     tGroupedDataList['Talent'] = J.Skill.GetTalentBuild(tGroupedDataList['Talent'])
@@ -232,10 +254,6 @@ function X.Combination(tGroupedDataList, tDefaultGroupedData)
 end
 
 function errc(err)
-    --if string.find(err, 'rubick_empty1') ~= nil then return false; end
-    --if string.find(err, 'rubick_empty2') ~= nil then return false; end
-    --if string.find(err, 'generic_hidden') ~= nil then return false; end
-    
     return true;
 end
 

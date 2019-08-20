@@ -1,9 +1,8 @@
 -----------------
---英雄：拉比克
---技能：隔空取物着陆
---键位：Q
---类型：指向地点
---前置：rubick_telekinesis
+--英雄：半人马战行者
+--技能：双刃剑
+--键位：W
+--类型：指向目标
 --作者：Halcyon
 -----------------
 local X = {}
@@ -11,14 +10,12 @@ local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
---前置技能
-local Q = require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/rubick_telekinesis')
 
 --初始数据
-local ability = bot:GetAbilityByName('rubick_telekinesis_land')
+local ability = bot:GetAbilityByName('centaur_double_edge')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
-nKeepMana = 300 --魔法储量
+nKeepMana = 180 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
 nMP = bot:GetMana()/bot:GetMaxMana(); --目前法力值/最大法力值（魔法剩余比）
 nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生命剩余比）
@@ -28,7 +25,7 @@ hAlleyHeroList = bot:GetNearbyHeroes(1600, false, BOT_MODE_NONE);--1600范围内
 --获取以太棱镜施法距离加成
 local aether = J.IsItemAvailable("item_aether_lens");
 if aether ~= nil then aetherRange = 250 else aetherRange = 0 end
-
+    
 --初始化函数库
 U.init(nLV, nMP, nHP, bot);
 
@@ -36,7 +33,7 @@ U.init(nLV, nMP, nHP, bot);
 function X.Release(castTarget)
     if castTarget ~= nil then
         X.Compensation()
-        bot:Action_UseAbilityOnLocation( ability, castTarget ) --使用技能
+        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
     end
 end
 
@@ -50,24 +47,41 @@ function X.Consider()
 
 	-- 确保技能可以使用
     if ability == nil
-	   or not ability:IsFullyCastable() 
-	   or ability:IsHidden()
-	then 
-		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
-    end
-    
-	local PreAbility = Q.GetData();
-	local nCastRange = PreAbility:GetCastRange();
-	local nRadius = ability:GetSpecialValueInt("radius");
-	
-	if ( bot:GetActiveMode() == BOT_MODE_DEFEND_ALLY or bot:GetActiveMode() == BOT_MODE_RETREAT  ) 
+       or not ability:IsFullyCastable()
 	then
-		return BOT_ACTION_DESIRE_MODERATE, U.GetXUnitsInFront(nCastRange + nRadius);
+		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
+	-- Get some of its values
+	local nCastRange = ability:GetCastRange();
+	local nDamage = ability:GetSpecialValueInt( "edge_damage" );
+	local nRadius = ability:GetSpecialValueInt( "radius" );
+	
+	-- If a mode has set a target, and we can kill them, do it
+	local npcTarget = bot:GetTarget();
+	if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and J.CanKillTarget(npcTarget, nDamage, DAMAGE_TYPE_MAGICAL) and 
+	   J.IsInRange(npcTarget, bot, nCastRange + 100) 
+	then
+		return BOT_ACTION_DESIRE_MODERATE, npcTarget;
+	end
+	
+	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
+	then
+		local npcTarget = bot:GetAttackTarget();
+		if ( J.IsRoshan(npcTarget) and J.CanCastOnMagicImmune(npcTarget) and J.IsInRange(npcTarget, bot, nCastRange)  )
+		then
+			return BOT_ACTION_DESIRE_LOW, npcTarget;
+		end
+	end
+	
+	-- If we're going after someone
 	if J.IsGoingOnSomeone(bot)
 	then
-		return BOT_ACTION_DESIRE_MODERATE, bot:GetLocation();
+		if J.IsValidHero(npcTarget) and J.CanCastOnNonMagicImmune(npcTarget) and 
+	       J.IsInRange(npcTarget, bot, nCastRange + 100) 
+		then   
+			return BOT_ACTION_DESIRE_MODERATE, npcTarget;
+		end
 	end
 	
 	return BOT_ACTION_DESIRE_NONE, 0;

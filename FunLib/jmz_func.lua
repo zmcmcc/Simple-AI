@@ -1245,7 +1245,7 @@ function J.IsWillBeCastUnitTargetAndLocationSpell(bot, nRange)
 							if nCycle > 0.04 and nPoint * ( 1 - nCycle) < 0.08 --极限时机0.26
 							then
 								return true;
-							end						
+							end
 						end
 					end
 				end

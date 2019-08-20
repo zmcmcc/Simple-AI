@@ -6,40 +6,73 @@ local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibCon
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
-local sOutfit = J.Skill.GetOutfitName(bot)
 
-local tTalentTreeList = {
-						['t25'] = {0, 10},
-						['t20'] = {0, 10},
-						['t15'] = {0, 10},
-						['t10'] = {10, 0},
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		['info'] = '默认出装',
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {0, 10},
+			['t15'] = {0, 10},
+			['t10'] = {10, 0},
+		},
+		['Ability'] = {1,3,3,2,1,6,1,3,1,3,6,2,2,2,6},
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_stout_shield",
+			"item_quelling_blade",
+			"item_magic_stick",
+			"item_double_branches",
+			"item_power_treads_agi",
+			"item_yasha",
+			"item_mjollnir",
+			"item_black_king_bar",
+			"item_silver_edge",
+			"item_manta", 
+			"item_ultimate_scepter",
+		},
+		['Sell'] = {
+			"item_monkey_king_bar",
+			"item_yasha",
+		}
+	}
+}
+--默认数据
+local tDefaultGroupedData = {
+	['Talent'] = {
+		['t25'] = {0, 10},
+		['t20'] = {0, 10},
+		['t15'] = {0, 10},
+		['t10'] = {10, 0},
+	},
+	['Ability'] = {1,3,3,2,1,6,1,3,1,3,6,2,2,2,6},
+	['Buy'] = {
+		"item_tango",
+		"item_flask",
+		"item_stout_shield",
+		"item_quelling_blade",
+		"item_magic_stick",
+		"item_double_branches",
+		"item_power_treads_agi",
+		"item_yasha",
+		"item_mjollnir",
+		"item_black_king_bar",
+		"item_silver_edge",
+		"item_manta", 
+		"item_ultimate_scepter",
+	},
+	['Sell'] = {
+		"item_monkey_king_bar",
+		"item_yasha",
+	}
 }
 
-local tAllAbilityBuildList = {
-						{1,3,3,1,3,6,3,1,1,2,6,2,2,2,6},
-						{1,3,1,3,1,6,1,3,3,2,6,2,2,2,6},
-						{1,3,3,2,1,6,1,3,1,3,6,2,2,2,6}
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-
-X['sBuyList'] = {
-				sOutfit,
-				"item_yasha",
-				"item_mjollnir",
-				"item_black_king_bar",
-				"item_silver_edge",
-				"item_manta", 
-				"item_ultimate_scepter",
-}
-
-X['sSellList'] = {
-	"item_monkey_king_bar",
-	"item_yasha",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

@@ -30,6 +30,10 @@
 > 斧王
 > 蝙蝠骑士
 > 虚空假面
+> 半人马战行者
+> 潮汐猎人
+> 拉席克
+> 天涯墨客
 
 ### 支持自定义的技能列表
 - dazzle_poison_touch
@@ -66,23 +70,45 @@
 - faceless_void_chronosphere
 - faceless_void_time_dilation
 - faceless_void_time_walk
+- rubick_fade_bolt
+- rubick_spell_steal
+- rubick_telekinesis_land
+- rubick_telekinesis
+- centaur_double_edge
+- centaur_hoof_stomp
+- centaur_return
+- centaur_stampede
+- tidehunter_anchor_smash
+- tidehunter_gush
+- tidehunter_ravage
+- leshrac_pulse_nova
+- leshrac_lightning_storm
+- leshrac_diabolic_edict
+- leshrac_split_earth
+- grimstroke_dark_artistry
+- grimstroke_ink_creature
+- grimstroke_scepter
+- grimstroke_spirit_walk
+- grimstroke_soul_chain
 
 ### 额外英雄
-> 复仇之魂
-> 潮汐猎人
+> 复仇之魂+
+> 潮汐猎人*
 > 干扰者*
 > 斧王*
-> 拉席克
+> 拉席克*
 > 蝙蝠骑士*
-> 帕克
+> 帕克+
 > 虚空假面*
-> 半人马战行者
-> 殁境神蚀者
+> 半人马战行者*
+> 殁境神蚀者+
 > 戴泽*
 > 亚巴顿*
-> 天涯墨客
+> 天涯墨客*
 > 暗影恶魔*
 > 痛苦女王*
+> 拉比克*
+
 群友提供的英雄
 - 来自于 望天的稻草
 - > 斯拉达*
