@@ -42,7 +42,12 @@
 > 复仇之魂
 > 帕克
 > 殁境神蚀者
+(以下为包含模组并未实施的英雄)
 > 杰奇洛
+> 昆卡
+> 水晶室女
+> 血魔
+> 敌法师
 
 ### 支持自定义的技能列表
 - dazzle_poison_touch
@@ -115,6 +120,20 @@
 - jakiro_ice_path
 - jakiro_liquid_fire
 - jakiro_macropyre
+- kunkka_x_marks_the_spot
+- kunkka_torrent
+- kunkka_tidebringer
+- kunkka_return
+- kunkka_ghostship
+- crystal_maiden_frostbite
+- crystal_maiden_crystal_nova
+- crystal_maiden_freezing_field
+- bloodseeker_rupture
+- bloodseeker_blood_bath
+- bloodseeker_bloodrage
+- antimage_mana_void
+- antimage_counterspell
+- antimage_blink
 
 ### 额外英雄
 > 复仇之魂

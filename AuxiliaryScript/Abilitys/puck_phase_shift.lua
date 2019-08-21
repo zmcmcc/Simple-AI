@@ -44,6 +44,7 @@ function X.Consider()
 
 	-- 确保技能可以使用
     if ability == nil
+	   or ability:IsNull()
        or not ability:IsFullyCastable()
        or bot:HasModifier("modifier_puck_phase_shift")
 	then

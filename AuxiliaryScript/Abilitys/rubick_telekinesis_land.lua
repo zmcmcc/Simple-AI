@@ -49,7 +49,8 @@ end
 function X.Consider()
 
 	-- 确保技能可以使用
-    if ability == nil
+	if ability == nil
+	   or ability:IsNull()
 	   or not ability:IsFullyCastable() 
 	   or ability:IsHidden()
 	then 

@@ -47,6 +47,7 @@ function X.Consider()
 
 	-- 确保技能可以使用
     if ability == nil
+	   or ability:IsNull()
        or not ability:IsFullyCastable()
        or (bot:WasRecentlyDamagedByAnyHero(1.5) and nHP < 0.38)
        or bot:DistanceFromFountain() < 600

@@ -1,8 +1,8 @@
 -----------------
 --英雄：殁境神蚀者
---技能：星体禁锢
+--技能：奥术天球
 --键位：Q
---类型：奥术天球
+--类型：指向目标
 --作者：Halcyon
 -----------------
 local X = {}
@@ -47,6 +47,7 @@ function X.Consider()
 
 	-- 确保技能可以使用
     if ability == nil
+	   or ability:IsNull()
        or not ability:IsFullyCastable()
 	then
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望

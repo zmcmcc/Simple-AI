@@ -78,6 +78,20 @@ local abilityNameList = {
     'jakiro_ice_path',
     'jakiro_liquid_fire',
     'jakiro_macropyre',
+    'kunkka_x_marks_the_spot',
+    'kunkka_torrent',
+    'kunkka_tidebringer',
+    'kunkka_return',
+    'kunkka_ghostship',
+    'crystal_maiden_frostbite',
+    'crystal_maiden_crystal_nova',
+    'crystal_maiden_freezing_field',
+    'bloodseeker_rupture',
+    'bloodseeker_blood_bath',
+    'bloodseeker_bloodrage',
+    'antimage_mana_void',
+    'antimage_counterspell',
+    'antimage_blink',
 }
 
 --将英雄技能初始入变量

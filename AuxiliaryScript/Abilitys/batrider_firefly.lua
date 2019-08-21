@@ -40,6 +40,7 @@ end
 function X.Consider()
 	-- 确保技能可以使用
     if ability == nil
+	   or ability:IsNull()
        or not ability:IsFullyCastable()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望

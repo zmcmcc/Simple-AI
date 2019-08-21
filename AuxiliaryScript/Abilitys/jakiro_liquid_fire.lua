@@ -2,8 +2,8 @@
 --英雄：杰奇洛
 --技能：液态火
 --键位：E
---类型：奥术天球
---作者：Halcyon
+--类型：指向目标
+--作者：决明子
 -----------------
 local X = {}
 local bot = GetBot()
@@ -47,6 +47,7 @@ function X.Consider()
 
 	-- 确保技能可以使用
     if ability == nil
+	   or ability:IsNull()
        or not ability:IsFullyCastable()
 	then
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
