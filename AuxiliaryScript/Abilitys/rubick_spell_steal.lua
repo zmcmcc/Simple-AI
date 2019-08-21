@@ -39,6 +39,10 @@ local speelAbilityList = {
     'npc_dota_hero_tidehunter',
     'npc_dota_hero_grimstroke',
     'npc_dota_hero_leshrac',
+    'npc_dota_hero_obsidian_destroyer',
+    'npc_dota_hero_vengefulspirit',
+    'npc_dota_hero_puck',
+    'npc_dota_hero_jakiro',
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {
@@ -66,6 +70,16 @@ local discardedAbilityList = {
     'abaddon_aphotic_shield',
     'omniknight_purification',
     'omniknight_repel',
+    'vengefulspirit_wave_of_terror',
+    'puck_waning_rift',
+    'puck_phase_shift',
+    'puck_illusory_orb',
+    'puck_ethereal_jaunt',
+    'obsidian_destroyer_equilibrium',
+    'obsidian_destroyer_arcane_orb',
+    'jakiro_liquid_fire',
+    'jakiro_dual_breath',
+
 }
 
 --敌方英雄已释放技能列表
@@ -140,7 +154,7 @@ function X.Consider()
            and J.CanCastOnNonMagicImmune(npcTarget) 
            and J.IsInRange(npcTarget, bot, nCastRange + 200) 
            and U.SearchHeroList(speelAbilityList, npcTarget) --确保英雄已经转换技能格式
-           and (nEnemyAbilityList[npcTarget:GetUnitName()] == nil or not SearchList(discardedAbilityList, nEnemyAbilityList[npcTarget:GetUnitName()]))--只获取有用的技能
+           --and (nEnemyAbilityList[npcTarget:GetUnitName()] == nil or not SearchList(discardedAbilityList, nEnemyAbilityList[npcTarget:GetUnitName()]))--只获取有用的技能
         then
             castUltDelay = GetUnitToUnitDistance(bot, npcTarget) / projSpeed + ( 2*0.1 ); 
             return BOT_ACTION_DESIRE_HIGH, npcTarget;

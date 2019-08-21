@@ -113,15 +113,15 @@ function X.Consider()
 			return BOT_ACTION_DESIRE_HIGH, bot;
 		end
 		--团队有人血量较低，自己血量充沛，给队友保命
-		for _,npcEnemy in pairs( nAlleys )
+		for _,nAlley in pairs( nAlleys )
 		do
-			npcEnemyHP = npcEnemy:GetHealth()/npcEnemy:GetMaxHealth();--队友血量比
-			if  J.IsValid(npcEnemy)
-				and J.CanCastOnNonMagicImmune(npcEnemy) 
-				and nHP > 0.7
-				and npcEnemyHP < 0.4
+			local npcnAlleyHP = nAlley:GetHealth()/nAlley:GetMaxHealth();--队友血量比
+			if  J.IsValid(nAlley)
+				and J.CanCastOnNonMagicImmune(nAlley) 
+				and nHP > 0.6
+				and npcnAlleyHP < 0.4
 			then
-				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+				return BOT_ACTION_DESIRE_HIGH, nAlley;
 			end
 		end
 		--魔法充裕，给自己套个套子
@@ -167,11 +167,11 @@ function X.Consider()
 		end
 		for _,npcEnemy in pairs( nAlleys )
 		do
-			npcEnemyHP = npcEnemy:GetHealth()/npcEnemy:GetMaxHealth();--队友血量比
+			local npcnAlleyHP = npcEnemy:GetHealth()/npcEnemy:GetMaxHealth();--队友血量比
 			if  J.IsValid(npcEnemy)
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
 				and nHP > 0.7
-				and npcEnemyHP < 0.4
+				and npcnAlleyHP < 0.4
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
@@ -223,11 +223,11 @@ function X.Consider()
 	then
 		for _,npcEnemy in pairs( nAlleys )
 		do
-			npcEnemyHP = npcEnemy:GetHealth()/npcEnemy:GetMaxHealth();--队友血量比
+			local npcnAlleyHP = npcEnemy:GetHealth()/npcEnemy:GetMaxHealth();--队友血量比
 			if  J.IsValid(npcEnemy)
 				and J.CanCastOnNonMagicImmune(npcEnemy) 
 				and nHP > 0.8
-				and npcEnemyHP < 0.2
+				and npcnAlleyHP < 0.2
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end

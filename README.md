@@ -11,6 +11,11 @@
 ### 讨论
 有关此脚本的开发讨论可以登录[论坛](http://discuss.alcedogroup.com/t/simple-ai-dev)进行讨论
 
+### 致谢
+感谢 @决明子 的A Beginner AI脚本
+感谢 @铅笔会有猫的w 、 @Misunderstand 的出装和技能加点
+感谢 @望天的稻草 的英雄技能策略
+
 ### 支持的模式
 队长模式
 反队长模式
@@ -34,6 +39,10 @@
 > 潮汐猎人
 > 拉席克
 > 天涯墨客
+> 复仇之魂
+> 帕克
+> 殁境神蚀者
+> 杰奇洛
 
 ### 支持自定义的技能列表
 - dazzle_poison_touch
@@ -90,26 +99,42 @@
 - grimstroke_scepter
 - grimstroke_spirit_walk
 - grimstroke_soul_chain
+- vengefulspirit_magic_missile
+- vengefulspirit_nether_swap
+- vengefulspirit_wave_of_terror
+- obsidian_destroyer_arcane_orb
+- obsidian_destroyer_astral_imprisonment
+- obsidian_destroyer_equilibrium
+- obsidian_destroyer_sanity_eclipse
+- puck_dream_coil
+- puck_ethereal_jaunt
+- puck_illusory_orb
+- puck_phase_shift
+- puck_waning_rift
+- jakiro_dual_breath
+- jakiro_ice_path
+- jakiro_liquid_fire
+- jakiro_macropyre
 
 ### 额外英雄
-> 复仇之魂+
-> 潮汐猎人*
-> 干扰者*
-> 斧王*
-> 拉席克*
-> 蝙蝠骑士*
-> 帕克+
-> 虚空假面*
-> 半人马战行者*
-> 殁境神蚀者+
-> 戴泽*
-> 亚巴顿*
-> 天涯墨客*
-> 暗影恶魔*
-> 痛苦女王*
-> 拉比克*
+> 复仇之魂
+> 潮汐猎人
+> 干扰者
+> 斧王
+> 拉席克
+> 蝙蝠骑士
+> 帕克
+> 虚空假面
+> 半人马战行者
+> 殁境神蚀者
+> 戴泽
+> 亚巴顿
+> 天涯墨客
+> 暗影恶魔
+> 痛苦女王
+> 拉比克
 
 群友提供的英雄
 - 来自于 望天的稻草
-- > 斯拉达*
-- > 全能骑士*
+- > 斯拉达
+- > 全能骑士

@@ -62,6 +62,22 @@ local abilityNameList = {
     'grimstroke_scepter',
     'grimstroke_spirit_walk',
     'grimstroke_soul_chain',
+    'vengefulspirit_magic_missile',
+    'vengefulspirit_nether_swap',
+    'vengefulspirit_wave_of_terror',
+    'obsidian_destroyer_arcane_orb',
+    'obsidian_destroyer_astral_imprisonment',
+    'obsidian_destroyer_equilibrium',
+    'obsidian_destroyer_sanity_eclipse',
+    'puck_dream_coil',
+    'puck_ethereal_jaunt',
+    'puck_illusory_orb',
+    'puck_phase_shift',
+    'puck_waning_rift',
+    'jakiro_dual_breath',
+    'jakiro_ice_path',
+    'jakiro_liquid_fire',
+    'jakiro_macropyre',
 }
 
 --将英雄技能初始入变量

@@ -1831,7 +1831,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_gyrocopter",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_disruptor"] = {
   ["hero_name"] = "disruptor",
   ["proposal"] = {
