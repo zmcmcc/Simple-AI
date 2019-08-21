@@ -114,11 +114,6 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 
 X["test_hero"] = {
     'npc_dota_hero_rubick',
-    'npc_dota_hero_antimage',
-    'npc_dota_hero_bloodseeker',
-    'npc_dota_hero_crystal_maiden',
-    'npc_dota_hero_kunkka',
-    'npc_dota_hero_obsidian_destroyer',
 }
 
 X["onlyCM_hero"] = {
