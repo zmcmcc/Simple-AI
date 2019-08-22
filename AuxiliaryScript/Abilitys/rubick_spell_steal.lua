@@ -159,7 +159,8 @@ function X.Consider()
     if J.IsGoingOnSomeone(bot)
     then
         local npcTarget = bot:GetTarget();
-        if J.IsValidHero(npcTarget) 
+        if npcTarget ~= nil
+           and J.IsValidHero(npcTarget) 
            and J.CanCastOnNonMagicImmune(npcTarget) 
            and J.IsInRange(npcTarget, bot, nCastRange + 200) 
            and U.SearchHeroList(speelAbilityList, npcTarget) --确保英雄已经转换技能格式
@@ -169,7 +170,20 @@ function X.Consider()
             return BOT_ACTION_DESIRE_HIGH, npcTarget;
         end
     end
-	
+
+    local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
+    for _,npcEnemy in pairs(tableNearbyEnemyHeroes)
+	do
+        if  J.IsValid(npcEnemy) 
+            and J.CanCastOnNonMagicImmune(npcEnemy) 
+            and J.IsOtherAllyCanKillTarget(bot, npcEnemy)
+            and U.SearchHeroList(speelAbilityList, npcTarget) --确保英雄已经转换技能格式
+            and (nEnemyAbilityList[npcEnemy:GetUnitName()] == nil or not SearchList(discardedAbilityList, nEnemyAbilityList[npcEnemy:GetUnitName()]))--只获取有用的技能
+		then
+			return BOT_ACTION_DESIRE_HIGH, npcEnemy;
+		end
+    end
+    
 	return BOT_ACTION_DESIRE_NONE, 0;
 	
 end
