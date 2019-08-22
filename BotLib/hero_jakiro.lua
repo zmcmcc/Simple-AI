@@ -194,6 +194,7 @@ local aetherRange = 0
 
 function X.SkillsComplement()
 	
+	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	--新技能构建方式
 	----如果当前英雄无法使用技能或英雄处于隐形状态，则不做操作。
 	--if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
@@ -201,9 +202,7 @@ function X.SkillsComplement()
 	--local order = {'W','R','Q','E'}
 	----委托技能处理函数接管
 	--if ConversionMode.Skills(order) then return; end
-	--
-	--if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
-	
+
 	
 	nKeepMana = 400; 
 	aetherRange = 0

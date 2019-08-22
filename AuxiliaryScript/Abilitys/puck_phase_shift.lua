@@ -45,7 +45,8 @@ function X.Consider()
 	-- 确保技能可以使用
     if ability == nil
 	   or ability:IsNull()
-       or not ability:IsFullyCastable()
+	   or not ability:IsFullyCastable()
+	   or bot:IsRooted()
        or bot:HasModifier("modifier_puck_phase_shift")
 	then
 		return BOT_ACTION_DESIRE_NONE; --没欲望
