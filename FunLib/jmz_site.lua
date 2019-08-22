@@ -90,7 +90,6 @@ Site["dire_bot_shrine"] = Vector(4173, -1613);
 Site["dire_bot_bounty_rune"] = Vector(3471, 295);
 Site["dire_top_bounty_rune"] = Vector(-2821, 4147);
 
-Site["RandomIntRoute"] = nil;
 
 Site["radiant_easy_and_medium"] = {
 				Vector(3017, -4525),
@@ -373,7 +372,6 @@ function Site.IsSpecialFarmer(bot)
 			or botName == "npc_dota_hero_luna"
 			or botName == 'npc_dota_hero_sven'
 			or botName == 'npc_dota_hero_antimage'
-			or botName == 'npc_dota_hero_abaddon'
 			or botName == 'npc_dota_hero_phantom_assassin'
 			or botName == "npc_dota_hero_phantom_lancer"
 			or botName == "npc_dota_hero_templar_assassin"
@@ -391,8 +389,6 @@ function Site.IsShouldFarmHero(bot)
 		or botName == 'npc_dota_hero_axe'
 		or botName == 'npc_dota_hero_antimage'
 		or botName == "npc_dota_hero_arc_warden"
-		or botName == 'npc_dota_hero_omniknight'
-		or botName == 'npc_dota_hero_vengefulspirit'
 		or botName == "npc_dota_hero_bloodseeker"
 		or botName == "npc_dota_hero_medusa"
 		or botName == "npc_dota_hero_razor"

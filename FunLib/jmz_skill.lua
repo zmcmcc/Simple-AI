@@ -53,63 +53,6 @@ end
 
 function X.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-	--通用写法
-	--local sSkillList = {}
-
-	--for _,Ability in pairs(nAbilityBuildList)
-	--do
-	--	table.insert(sSkillList, sAbilityList[Ability])
-	--end
-
-
-	--if #sSkillList >= 10 then
-	--	local tempskill = {}
-	--	for i = 10 , #sSkillList
-	--	do
-	--		table.insert(tempskill, sSkillList[i])
-	--	end
-	--	sSkillList[10] = sTalentList[nTalentBuildList[1]]
-	--	for i = 1 , #tempskill
-	--	do
-	--		sSkillList[10 + i] = tempskill[i]
-	--	end
-	--else
-	--	table.insert(sSkillList, sTalentList[nTalentBuildList[1]])
-	--end
-
-	--if #sSkillList >= 15 then
-	--	local tempskill = {}
-	--	for i = 15 , #sSkillList
-	--	do
-	--		table.insert(tempskill, sSkillList[i])
-	--	end
-	--	sSkillList[15] = sTalentList[nTalentBuildList[2]]
-	--	for i = 1 , #tempskill
-	--	do
-	--		sSkillList[15 + i] = tempskill[i]
-	--	end
-	--else
-	--	table.insert(sSkillList, sTalentList[nTalentBuildList[2]])
-	--end
-
-	--if #sSkillList >= 20 then
-	--	local tempskill = {}
-	--	for i = 20 , #sSkillList
-	--	do
-	--		table.insert(tempskill, sSkillList[i])
-	--	end
-	--	sSkillList[20] = sTalentList[nTalentBuildList[3]]
-	--	for i = 1 , #tempskill
-	--	do
-	--		sSkillList[20 + i] = tempskill[i]
-	--	end
-	--else
-	--	table.insert(sSkillList, sTalentList[nTalentBuildList[3]])
-	--end
-
-	--table.insert(sSkillList, sTalentList[nTalentBuildList[4]])
-
-	--限定写法（高性能）
 	local sSkillList = {
 						[1] = sAbilityList[nAbilityBuildList[1]],
 						[2] = sAbilityList[nAbilityBuildList[2]],
@@ -185,28 +128,6 @@ end
 function X.GetOutfitName(bot)
 
 	return 'item_'..string.gsub(bot:GetUnitName(),"npc_dota_hero_","")..'_outfit'
-
-end
-
--- test OnAbilityPinged
-function X.AbilityReadinessReminder(tAbility, nTime)
-
-	local bot = GetBot()
-	
-	local playid = bot:GetPlayerID();
-	local cooldownTime = nil;
-	
-	if tAbility ~= nil then
-		cooldownTime = tAbility:GetCooldownTimeRemaining()
-	end
-
-	if cooldownTime ~= nil and
-	   playid ~= nil and
-	   math.floor(cooldownTime) == nTime 
-	then
-		print(playid)
-		--tAbility:OnAbilityPinged(playid, false)
-	end
 
 end
 

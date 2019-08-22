@@ -173,7 +173,7 @@ end
 function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellList)
 
 	local bot = GetBot()
-
+	
 	if J.Role.IsUserMode() and J.Role.IsUserHero()
 	then
 		local nDirType = J.Role.GetDirType()
@@ -184,7 +184,7 @@ function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellL
 		else
 			return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
 		end
-		
+
 		if J.Chat.GetRawGameWord(BotSet['ShiFouShengXiao']) == true
 		then
 			nAbilityBuildList = BotSet['JiNeng'];
@@ -408,9 +408,6 @@ end
 function J.GetProperTarget(bot)
 	local target = bot:GetTarget();
 	if target == nil then
-		target = bot:GetAttackTarget();
-	end
-	if  target ~= nil and target:GetTeam() == bot:GetTeam() then
 		target = bot:GetAttackTarget();
 	end
 	return target;
@@ -1215,46 +1212,6 @@ function J.IsWillBeCastUnitTargetSpell(bot, nRange)
 	return false;
 end
 
-function J.IsWillBeCastUnitTargetAndLocationSpell(bot, nRange)
-	
-	if nRange > 1600 then nRange = 1600 end
-	
-	local nEnemys = bot:GetNearbyHeroes(nRange, true, BOT_MODE_NONE);
-	for _,npcEnemy in pairs(nEnemys)
-	do
-		if npcEnemy ~= nil and npcEnemy:IsAlive()
-		   and ( npcEnemy:IsCastingAbility() or npcEnemy:IsUsingAbility() )
-		   and npcEnemy:IsFacingLocation(bot:GetLocation(), 20)
-		then
-			local nAbility = npcEnemy:GetCurrentActiveAbility();
-			if nAbility ~= nil 
-				and (nAbility:GetBehavior() == ABILITY_BEHAVIOR_UNIT_TARGET or nAbility:GetBehavior() == ABILITY_BEHAVIOR_UNIT_POINT)
-			then
-				local sAbilityName = nAbility:GetName();
-				if not J.IsAllyUnitSpell(sAbilityName)
-				then				
-					if J.IsInRange(npcEnemy, bot, 330)
-						or not J.IsProjectileUnitSpell(sAbilityName)
-					then	
-						if not J.IsHumanPlayer(npcEnemy)
-						then
-							return true;
-						else
-							local nCycle = npcEnemy:GetAnimCycle();
-							local nPoint = nAbility:GetCastPoint();
-							if nCycle > 0.04 and nPoint * ( 1 - nCycle) < 0.08 --极限时机0.26
-							then
-								return true;
-							end
-						end
-					end
-				end
-			end		
-		end
-	end
-
-	return false;
-end
 
 function J.IsWillBeCastPointSpell(bot, nRange)
 	
@@ -2336,8 +2293,6 @@ function J.IsSpecialCarry(bot)
 	
 	return  botName == "npc_dota_hero_antimage"
 			or botName == "npc_dota_hero_arc_warden"
-			or botName == "npc_dota_hero_axe"
-			or botName == "npc_dota_hero_abaddon"
 			or botName == "npc_dota_hero_bloodseeker"
 			or botName == "npc_dota_hero_bristleback" 
 			or botName == "npc_dota_hero_chaos_knight" 
@@ -2357,9 +2312,6 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_sniper"
 			or botName == "npc_dota_hero_templar_assassin"
 			or botName == "npc_dota_hero_viper" 
-			or botName == "npc_dota_hero_invoker"
-			or botName == "npc_dota_hero_slardar"
-			or botName == "npc_dota_hero_queenofpain"
 		 
 end
 
@@ -2368,20 +2320,14 @@ function J.IsSpecialSupport(bot)
     
 	local botName = bot:GetUnitName();
 	
-	return  botName == "npc_dota_hero_crystal_maiden"
+	return  botName == "npc_dota_hero_crystal_maiden"	
 			or botName == "npc_dota_hero_jakiro"
 			or botName == "npc_dota_hero_lina"
 			or botName == "npc_dota_hero_necrolyte"
 			or botName == "npc_dota_hero_silencer"
 			or botName == "npc_dota_hero_skywrath_mage"
-			or botName == "npc_dota_hero_warlock"	  
-			or botName == "npc_dota_hero_zuus"
-			or botName == "npc_dota_hero_dazzle"
-			or botName == "npc_dota_hero_batrider"
-			or botName == "npc_dota_hero_puck"
-			or botName == "npc_dota_hero_shadow_demon"
-			or botName == "npc_dota_hero_disruptor"
-			or botName == "npc_dota_hero_rubick"
+			or botName == "npc_dota_hero_warlock"		  
+			or botName == "npc_dota_hero_zuus" 
 end 
 
 	
