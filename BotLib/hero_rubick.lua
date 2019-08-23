@@ -10,52 +10,47 @@ local sAbilityList = J.Skill.GetAbilityList(bot)
 local tGroupedDataList = {
 	{
 		--组合说明，不影响游戏
-		['info'] = '测试用出装',
+		['info'] = 'By Misunderstand',
 		--天赋树
 		['Talent'] = {
-			['t25'] = {10, 0},
+			['t25'] = {0, 10},
 			['t20'] = {10, 0},
-			['t15'] = {10, 0},
-			['t10'] = {0, 10},
+			['t15'] = {0, 10},
+			['t10'] = {10, 0},
 		},
 		--技能
-		['Ability'] = { 1, 3, 1, 3, 2, 6, 1, 1, 3, 3, 6, 2, 2, 2, 6 },
+		['Ability'] = { 2, 1, 2, 1, 2, 6, 3, 2, 3, 3, 6, 3, 1, 1, 6 },
 		--装备
 		['Buy'] = {
-			"item_blight_stone",
-			"item_double_tango",
-			"item_clarity",
+			"item_circlet",
+			"item_tango",
 			"item_enchanted_mango",
+			"item_clarity",
+			"item_flask",
 			"item_magic_stick",
-			"item_double_enchanted_mango",
-			"item_magic_wand",
-			"item_wind_lace",
-			"item_medallion_of_courage",
+			"item_enchanted_mango",
+			"item_clarity",
 			"item_arcane_boots",
-			"item_hand_of_midas",
-			"item_force_staff",
-			"item_guardian_greaves",
-			"item_pipe",
-			"item_solar_crest",
-			"item_necronomicon_3",
-			"item_sheepstick",
+			"item_urn_of_shadows",
+			"item_magic_wand",
+			"item_aether_lens",
+			"item_blink",
+			"item_glimmer_cape",
+			"item_ultimate_scepter",
+			"item_spirit_vessel",
 			"item_ultimate_scepter_2",
-			"item_silver_edge",
+			"item_cyclone",
+			"item_sheepstick",
+			"item_travel_boots_2",
 			"item_moon_shard",
 		},
 		--出售
 		['Sell'] = {
-			"item_aeon_disk",
+			"item_ultimate_scepter",
 			"item_magic_wand",
 
-			"item_necronomicon_3",
-			"item_force_staff",
-
-			"item_silver_edge",
-			"item_hand_of_midas",
-
-			"item_silver_edge",
-			"item_aeon_disk",
+			"item_travel_boots",
+			"item_arcane_boots",
 		},
 	}
 }

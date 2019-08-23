@@ -72,6 +72,62 @@ local tGroupedDataList = {
 			'item_quelling_blade',
 		},
 	},
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = { 1, 2, 1, 2, 1, 6, 3, 1, 2, 2, 6, 3, 3, 3, 6},
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_stout_shield",
+			"item_enchanted_mango",
+			"item_quelling_blade",
+			"item_magic_stick",
+			"item_magic_wand",
+			"item_phase_boots",
+			"item_double_enchanted_mango",
+			"item_ancient_janggo",
+			"item_medallion_of_courage",
+			"item_vladmir",
+			"item_radiance",
+			"item_spirit_vessel",
+			"item_solar_crest",
+			"item_ultimate_scepter_2",
+			"item_manta",
+			"item_heavens_halberd",
+			"item_travel_boots_2",
+			"item_moon_shard",
+		},
+		--出售
+		['Sell'] = {
+			"item_ancient_janggo",
+			"item_quelling_blade",
+
+			"item_medallion_of_courage",
+			"item_stout_shield",
+			
+			"item_radiance",
+			"item_magic_wand",
+
+			"item_manta",
+			"item_ancient_janggo",
+			
+			"item_heavens_halberd",
+			"item_vladmir",
+			
+			"item_travel_boots",
+			"item_phase_boots",
+		},
+	},
 }
 --默认数据
 local tDefaultGroupedData = {

@@ -92,6 +92,9 @@ local abilityNameList = {
     'antimage_mana_void',
     'antimage_counterspell',
     'antimage_blink',
+    'sven_gods_strength',
+    'sven_storm_bolt',
+    'sven_warcry',
 }
 
 --将英雄技能初始入变量

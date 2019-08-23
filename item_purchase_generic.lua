@@ -255,6 +255,7 @@ local lastRDCheck  = 0;
 local buyAnotherTango = false
 local switchTime = 0
 local buyWardTime = -999
+local buysmokeTime = -999
 
 local hasSelltEarlyBoots = false
 local checkBKBTime = 40 *60
@@ -312,7 +313,7 @@ function ItemPurchaseThink()
 	--Update boots availability status to make the bot start buy support item and rain drop
 	if buyBootsStatus == false and nowTime > lastBootsCheck + 2.0 then buyBootsStatus = Item.UpdateBuyBootStatus(bot); lastBootsCheck = nowTime end
 	
-	--支援项目购买，鸡眼粉小蓝
+	--支援项目购买，鸡眼粉小蓝雾
 	if bot.theRole == 'support' then
 		if nowTime < 0 and GetItemStockCount( "item_courier" ) > 0
 		then
@@ -334,6 +335,16 @@ function ItemPurchaseThink()
 		then 
 			buyWardTime = nowTime;
 			bot:ActionImmediate_PurchaseItem("item_ward_observer"); 
+		elseif GetItemStockCount( "item_smoke_of_deceit" ) >= 1
+			  and ( nowTime < 0 or ( nowTime > 0 and buyBootsStatus == true ) )
+			  and botGold >= GetItemCost( "item_smoke_of_deceit" )
+			  and Item.GetEmptyInventoryAmount(bot) >= 2
+			  and Item.GetItemCharges(bot, "item_smoke_of_deceit") < 1
+			  and bot:GetCourierValue() == 0
+			  and buysmokeTime < nowTime - 5 * 60
+		then
+			buysmokeTime = nowTime;
+			bot:ActionImmediate_PurchaseItem("item_smoke_of_deceit"); 
 		end
 	end
 	

@@ -34,9 +34,12 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
-    if castTarget ~= nil then
+	if castTarget ~= nil
+	   and not Q.setTarget
+	then
         X.Compensation()
-        bot:Action_UseAbilityOnLocation( ability, castTarget ) --使用技能
+		bot:Action_UseAbilityOnLocation( ability, castTarget ) --使用技能
+		Q.setTarget = true;
     end
 end
 

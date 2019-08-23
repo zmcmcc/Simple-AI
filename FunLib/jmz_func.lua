@@ -410,6 +410,7 @@ function J.GetProperTarget(bot)
 	if target == nil then
 		target = bot:GetAttackTarget();
 	end
+	--目标尝试修复代码
 	if  target ~= nil and target:GetTeam() == bot:GetTeam() then
 		target = bot:GetAttackTarget();
 	end

@@ -22,6 +22,8 @@ nHP = bot:GetHealth()/bot:GetMaxHealth();--目前生命值/最大生命值（生
 hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);--1600范围内敌人
 hAlleyHeroList = bot:GetNearbyHeroes(1600, false, BOT_MODE_NONE);--1600范围内队友
 
+X.setTarget = false;
+
 --获取以太棱镜施法距离加成
 local aether = J.IsItemAvailable("item_aether_lens");
 if aether ~= nil then aetherRange = 250 else aetherRange = 0 end
@@ -33,7 +35,8 @@ U.init(nLV, nMP, nHP, bot);
 function X.Release(castTarget)
     if castTarget ~= nil then
         X.Compensation()
-        bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+		bot:ActionQueue_UseAbilityOnEntity( ability, castTarget ) --使用技能
+		X.setTarget = false
     end
 end
 

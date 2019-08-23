@@ -47,6 +47,7 @@ local speelAbilityList = {
     'npc_dota_hero_bloodseeker',
     'npc_dota_hero_crystal_maiden',
     'npc_dota_hero_kunkka',
+    'npc_dota_hero_sven',
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {
@@ -88,6 +89,7 @@ local discardedAbilityList = {
     'crystal_maiden_crystal_nova',
     'kunkka_tidebringer',
     'kunkka_x_marks_the_spot',
+    'sven_warcry',
 }
 
 --敌方英雄已释放技能列表
