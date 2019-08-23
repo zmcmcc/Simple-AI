@@ -15,39 +15,175 @@ local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
 
-local tTalentTreeList = {
-						['t25'] = {0, 10},
-						['t20'] = {10, 0},
-						['t15'] = {0, 10},
-						['t10'] = {0, 10},
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 决明子',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {0, 10},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = {1,3,2,3,1,6,1,1,3,3,6,2,2,2,6},
+		--装备
+		['Buy'] = {
+			sOutfit,
+			"item_sange_and_yasha",
+			"item_diffusal_blade",
+			"item_black_king_bar",
+			"item_abyssal_blade", 
+			"item_monkey_king_bar",
+		},
+		--出售
+		['Sell'] = {
+			"item_sange_and_yasha",
+			"item_quelling_blade",
+			
+			"item_abyssal_blade",
+			"item_magic_wand",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {0, 10},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = { 1, 3, 2, 3, 3, 6, 2, 3, 2, 2, 6, 1, 1, 1, 6 },
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_stout_shield",
+			"item_quelling_blade",
+			"item_double_branches",
+			"item_magic_stick",
+			"item_wraith_band",
+			"item_magic_wand",
+			"item_phase_boots",
+			"item_blade_mail",
+			"item_sange_and_yasha",
+			"item_radiance", 
+			"item_black_king_bar",
+			"item_basher",
+			"item_butterfly",
+			"item_abyssal_blade",
+			"item_ultimate_scepter_2",
+			"item_nullifier",
+			"item_moon_shard"
+		},
+		--出售
+		['Sell'] = {
+			"item_blade_mail",     
+			"item_quelling_blade",
+
+			"item_sange_and_yasha",     
+			"item_stout_shield",
+					
+			"item_radiance",  
+			"item_wraith_band",
+
+			"item_black_king_bar",
+			"item_magic_wand",	     
+
+			"item_butterfly",
+			"item_blade_mail",
+
+			"item_nullifier", 
+			"item_sange_and_yasha"
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 1, 2, 3, 2, 2, 6, 2, 3, 3, 3, 6, 1, 1, 1, 6 },
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_stout_shield",
+			"item_quelling_blade",
+			"item_magic_stick",			
+			"item_power_treads",
+			"item_magic_wand",
+			"item_maelstrom",
+			"item_blade_mail",			
+			"item_basher",
+			"item_black_king_bar", 
+			"item_mjollnir", 			
+			"item_abyssal_blade",
+			"item_butterfly",
+			"item_silver_edge",
+			"item_bloodthorn",
+			"item_moon_shard",
+			"item_ultimate_scepter",
+			"item_ultimate_scepter_2",
+		},
+		--出售
+		['Sell'] = {
+			"item_bloodthorn",     
+			"item_power_treads",
+
+			"item_silver_edge",     
+			"item_blade_mail",
+
+			"item_basher",     
+			"item_quelling_blade",
+
+			"item_black_king_bar",     
+			"item_magic_wand",
+		},
+	},
+}
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {0, 10},
+		['t20'] = {10, 0},
+		['t15'] = {0, 10},
+		['t10'] = {0, 10},
+	},
+	--技能
+	['Ability'] = {1,3,2,3,1,6,1,1,3,3,6,2,2,2,6},
+	--装备
+	['Buy'] = {
+		sOutfit,
+		"item_sange_and_yasha",
+		"item_diffusal_blade",
+		"item_black_king_bar",
+		"item_abyssal_blade", 
+		"item_monkey_king_bar",
+	},
+	--出售
+	['Sell'] = {
+		"item_sange_and_yasha",
+		"item_quelling_blade",
+		
+		"item_abyssal_blade",
+		"item_magic_wand",
+	},
 }
 
-local tAllAbilityBuildList = {
-						{1,3,2,3,1,6,1,1,3,3,6,2,2,2,6},
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-
-X['sBuyList'] = {
-				sOutfit,
-				"item_sange_and_yasha",
-				"item_diffusal_blade",
-				"item_black_king_bar",
-				"item_abyssal_blade", 
-				"item_monkey_king_bar",
-}
-
-X['sSellList'] = {
-
-	"item_sange_and_yasha",
-	"item_quelling_blade",
-	
-	"item_abyssal_blade",
-	"item_magic_wand",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

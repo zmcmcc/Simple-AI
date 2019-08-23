@@ -15,38 +15,171 @@ local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
 
-local tTalentTreeList = {
-						['t25'] = {0, 10},
-						['t20'] = {10, 0},
-						['t15'] = {0, 10},
-						['t10'] = {0, 10},
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 决明子',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {0, 10},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = {2,3,1,2,2,6,2,3,3,3,6,1,1,1,6},
+		--装备
+		['Buy'] = {
+			sOutfit,
+			"item_crimson_guard",
+			"item_heavens_halberd",
+			"item_lotus_orb",
+			"item_assault", 
+		},
+		--出售
+		['Sell'] = {
+			"item_crimson_guard",
+			"item_quelling_blade",
+			
+			"item_lotus_orb",
+			"item_magic_wand",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 2, 3, 2, 3, 2, 6, 1, 2, 3, 3, 6, 1, 1, 1, 6},
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_stout_shield",
+			"item_enchanted_mango",
+			"item_double_branches",
+			"item_magic_stick",
+			"item_double_enchanted_mango",
+			"item_bracer",
+			"item_phase_boots",
+			"item_magic_wand",
+			"item_vanguard",
+			"item_hood_of_defiance",
+			"item_blade_mail",
+			"item_lotus_orb",  
+			"item_pipe",
+			"item_crimson_guard",
+			"item_heavens_halberd",
+			"item_ultimate_scepter_2",
+			"item_travel_boots_2",
+			"item_octarine_core"
+		},
+		--出售
+		['Sell'] = {
+			"item_blade_mail",
+			"item_bracer",
+
+			"item_lotus_orb",
+			"item_magic_wand",
+
+			"item_heavens_halberd",
+			"item_blade_mail",
+					
+			"item_travel_boots_2",
+			"item_phase_boots",
+
+			"item_octarine_core",
+			"item_heavens_halberd",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 1, 2, 3, 2, 2, 6, 2, 3, 3, 3, 6, 1, 1, 1, 6 },
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_double_enchanted_mango",
+			"item_stout_shield",
+			"item_magic_stick",
+			"item_phase_boots",
+			"item_magic_wand",
+			"item_bracer",
+			"item_vanguard",
+			"item_blade_mail", 
+			"item_lotus_orb", 
+			"item_crimson_guard", 	
+			"item_black_king_bar", 
+			"item_heart", 		
+			"item_ultimate_scepter",			
+			"item_ultimate_scepter_2",		
+			"item_travel_boots",	
+			"item_moon_shard", 		
+			"item_travel_boots_2",	
+		},
+		--出售
+		['Sell'] = {
+			"item_travel_boots",     
+			"item_magic_wand",
+
+			"item_travel_boots",
+			"item_phase_boots", 
+
+			"item_black_king_bar",
+			"item_bracer", 
+
+			"item_heart",
+			"item_magic_wand", 
+		},
+	},
+}
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {0, 10},
+		['t20'] = {10, 0},
+		['t15'] = {0, 10},
+		['t10'] = {0, 10},
+	},
+	--技能
+	['Ability'] = {2,3,1,2,2,6,2,3,3,3,6,1,1,1,6},
+	--装备
+	['Buy'] = {
+		sOutfit,
+		"item_crimson_guard",
+		"item_heavens_halberd",
+		"item_lotus_orb",
+		"item_assault", 
+	},
+	--出售
+	['Sell'] = {
+		"item_crimson_guard",
+		"item_quelling_blade",
+		
+		"item_lotus_orb",
+		"item_magic_wand",
+	},
 }
 
-local tAllAbilityBuildList = {
-						{2,3,1,2,2,6,2,3,3,3,6,1,1,1,6},
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-
-X['sBuyList'] = {
-				sOutfit,
-				"item_crimson_guard",
-				"item_heavens_halberd",
-				"item_lotus_orb",
-				"item_assault", 
---				"item_heart",
-}
-
-X['sSellList'] = {
-	"item_crimson_guard",
-	"item_quelling_blade",
-	
-	"item_lotus_orb",
-	"item_magic_wand",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

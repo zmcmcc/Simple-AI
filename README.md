@@ -49,6 +49,9 @@
 - 血魔
 - 敌法师
 - 斯温
+- 天穹守望者
+- 龙骑士
+- 卓尔游侠
 
 ### 支持自定义的技能列表
 - dazzle_poison_touch
@@ -138,6 +141,17 @@
 - sven_gods_strength
 - sven_storm_bolt
 - sven_warcry
+- arc_warden_flux
+- arc_warden_magnetic_field
+- arc_warden_scepter
+- arc_warden_spark_wraith
+- arc_warden_tempest_double
+- dragon_knight_breathe_fire
+- dragon_knight_dragon_tail
+- dragon_knight_elder_dragon_form
+- drow_ranger_frost_arrows
+- drow_ranger_trueshot
+- drow_ranger_wave_of_silence
 
 ### 额外英雄
 - 复仇之魂

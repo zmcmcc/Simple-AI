@@ -15,42 +15,190 @@ local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
 
-local tTalentTreeList = {
-						['t25'] = {0, 10},
-						['t20'] = {0, 10},
-						['t15'] = {0, 10},
-						['t10'] = {0, 10},
-}
-
-local tAllAbilityBuildList = {
-						{1,3,2,2,2,6,2,1,1,1,6,3,3,3,6},
-}
-
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-
-X['sBuyList'] = {
-				sOutfit,
-				"item_crimson_guard",
-				"item_echo_sabre",
-				"item_heavens_halberd",
-				"item_manta",
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 决明子',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {0, 10},
+			['t15'] = {0, 10},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = {1,3,2,2,2,6,2,1,1,1,6,3,3,3,6},
+		--装备
+		['Buy'] = {
+			sOutfit,
+			"item_crimson_guard",
+			"item_echo_sabre",
+			"item_heavens_halberd",
+			"item_manta",
+			"item_assault",
+		},
+		--出售
+		['Sell'] = {
+			"item_crimson_guard",
+			"item_quelling_blade",
+			
+			"item_manta",
+			"item_echo_sabre",
+			
+			"item_heavens_halberd",
+			"item_magic_wand",
+		},
+		{
+			--组合说明，不影响游戏
+			['info'] = 'By Misunderstand',
+			--天赋树
+			['Talent'] = {
+				['t25'] = {0, 10},
+				['t20'] = {10, 0},
+				['t15'] = {0, 10},
+				['t10'] = {0, 10},
+			},
+			--技能
+			['Ability'] = { 3, 1, 3, 2, 3, 6, 3, 2, 2, 2, 6, 1, 1, 1, 6 },
+			--装备
+			['Buy'] = {
+				"item_tango",
+				"item_flask",
+				"item_stout_shield",
+				"item_double_branches",
+				"item_quelling_blade",
+				"item_magic_stick",
+				"item_magic_wand",
+				"item_power_treads",
+				"item_echo_sabre", 
+				"item_armlet", 
+				"item_sange_and_yasha", 
+				"item_manta", 
+				"item_black_king_bar",
+				"item_ultimate_scepter",
+				"item_heart",
+				"item_ultimate_scepter_2",
 				"item_assault",
-			  --"item_heart",
+				"item_moon_shard",
+				"item_solar_crest"
+			},
+			--出售
+			['Sell'] = {
+				"item_echo_sabre",     
+				"item_quelling_blade",
+
+				"item_sange_and_yasha",     
+				"item_stout_shield",
+						
+				"item_manta",  
+				"item_magic_wand",	     
+
+				"item_ultimate_scepter",
+				"item_echo_sabre",
+
+				"item_assault",
+				"item_sange_and_yasha",
+
+				"item_solar_crest",
+				"item_armlet"
+			},
+		},{
+			--组合说明，不影响游戏
+			['info'] = 'By 铅笔会有猫的w',
+			--天赋树
+			['Talent'] = {
+				['t25'] = {0, 10},
+				['t20'] = {10, 0},
+				['t15'] = {0, 10},
+				['t10'] = {0, 10},
+			},
+			--技能
+			['Ability'] = { 1, 2, 3, 1, 1, 6, 1, 2, 2, 2, 6, 3, 3, 3, 6 },
+			--装备
+			['Buy'] = {
+				"item_double_enchanted_mango",
+				"item_stout_shield",
+				"item_double_branches",
+				"item_flask",
+				"item_boots",
+				"item_magic_stick",
+				"item_bracer",
+				"item_hand_of_midas", 						
+				"item_power_treads",
+				"item_magic_wand",
+				"item_armlet", 
+				"item_sange",
+				"item_heavens_halberd",
+				"item_manta",	
+				"item_skadi", 		
+				"item_assault", 		
+				"item_satanic",
+				"item_moon_shard",
+				"item_travel_boots",
+				"item_ultimate_scepter_2",
+				"item_travel_boots_2",
+			},
+			--出售
+			['Sell'] = {
+				"item_skadi",
+				"item_magic_wand",
+
+				"item_sange",     
+				"item_stout_shield",
+
+				"item_manta",     
+				"item_bracer",
+						
+				"item_travel_boots",  
+				"item_power_treads",
+						
+				"item_satanic",  
+				"item_hand_of_midas",	     
+
+				"item_assault",
+				"item_armlet", 
+			},
+		},
+	}
+}
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {0, 10},
+		['t20'] = {0, 10},
+		['t15'] = {0, 10},
+		['t10'] = {0, 10},
+	},
+	--技能
+	['Ability'] = {1,3,2,2,2,6,2,1,1,1,6,3,3,3,6},
+	--装备
+	['Buy'] = {
+		sOutfit,
+		"item_crimson_guard",
+		"item_echo_sabre",
+		"item_heavens_halberd",
+		"item_manta",
+		"item_assault",
+	},
+	--出售
+	['Sell'] = {
+		"item_crimson_guard",
+		"item_quelling_blade",
+		
+		"item_manta",
+		"item_echo_sabre",
+		
+		"item_heavens_halberd",
+		"item_magic_wand",
+	},
 }
 
-X['sSellList'] = {
-	"item_crimson_guard",
-	"item_quelling_blade",
-	
-	"item_manta",
-	"item_echo_sabre",
-	
-	"item_heavens_halberd",
-	"item_magic_wand",
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
+
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

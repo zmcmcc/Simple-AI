@@ -48,6 +48,9 @@ local speelAbilityList = {
     'npc_dota_hero_crystal_maiden',
     'npc_dota_hero_kunkka',
     'npc_dota_hero_sven',
+    'npc_dota_arc_warden',
+    'npc_dota_dragon_knight',
+    'npc_dota_drow_ranger',
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {
@@ -90,6 +93,12 @@ local discardedAbilityList = {
     'kunkka_tidebringer',
     'kunkka_x_marks_the_spot',
     'sven_warcry',
+    'drow_ranger_frost_arrows',
+    'drow_ranger_trueshot',
+    'drow_ranger_wave_of_silence',
+    'dragon_knight_elder_dragon_form',
+    'dragon_knight_breathe_fire',
+    'dragon_knight_dragon_tail',
 }
 
 --敌方英雄已释放技能列表

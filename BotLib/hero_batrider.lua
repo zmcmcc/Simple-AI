@@ -7,42 +7,93 @@ local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 
-local tTalentTreeList = {
-						['t25'] = {10, 0},
-						['t20'] = {10, 0},
-						['t15'] = {10, 0},
-						['t10'] = {10, 0},
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 1, 3, 1, 3, 1, 6, 1, 3, 2, 3, 6, 2, 2, 2, 6 },
+		--装备
+		['Buy'] = {
+			"item_gauntlets",
+			"item_double_enchanted_mango",
+			"item_double_enchanted_mango",
+			"item_double_branches",
+			"item_magic_stick",
+			"item_wind_lace",
+			"item_bracer",
+			"item_flask",
+			"item_magic_wand",
+			"item_travel_boots",
+			"item_ring_of_health",
+			"item_clarity",
+			"item_blink",
+			"item_force_staff",
+			"item_black_king_bar",
+			"item_meteor_hammer", 
+			"item_sphere",
+			"item_ultimate_scepter_2",
+			"item_hurricane_pike",
+			"item_travel_boots_2",
+			"item_moon_shard"
+		},
+		--出售
+		['Sell'] = {
+			"item_force_staff",     
+			"item_wind_lace",
+
+			"item_black_king_bar",
+			"item_bracer",     
+
+			"item_meteor_hammer",
+			"item_magic_wand"
+		},
+	},
+}
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {10, 0},
+		['t20'] = {10, 0},
+		['t15'] = {10, 0},
+		['t10'] = {10, 0},
+	},
+	--技能
+	['Ability'] = {1,3,1,2,1,6,1,3,3,3,6,2,2,2,6},
+	--装备
+	['Buy'] = {
+		"item_tango",
+		"item_flask",
+		"item_magic_wand",
+		"item_tranquil_boots",
+		"item_blink",
+		"item_force_staff",
+		"item_black_king_bar",
+		"item_cyclone",
+		"item_ultimate_scepter",
+		"item_hurricane_pike",
+		"item_octarine_core",
+	},
+	--出售
+	['Sell'] = {
+		"item_cyclone",
+		"item_magic_wand",
+	},
 }
 
-local tAllAbilityBuildList = {
-						{1,3,1,2,1,6,1,3,3,3,6,2,2,2,6},
-						{1,3,1,3,3,6,3,1,1,2,6,2,2,2,6},
-						{1,3,3,2,3,6,3,2,2,2,6,1,1,1,6},
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-
-X["sBuyList"] = {
-				"item_tango",
-				"item_flask",
-				"item_magic_wand",
-				"item_tranquil_boots",
-				"item_blink",
-				"item_force_staff",
-				"item_black_king_bar",
-				"item_cyclone",
-				"item_ultimate_scepter",
-				"item_hurricane_pike",
-				"item_octarine_core",
-}
-
-X['sSellList'] = {
-	"item_cyclone",
-	"item_magic_wand",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 
