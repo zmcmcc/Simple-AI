@@ -101,7 +101,7 @@ function X.Consider()
 	end
 	
 	local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
-	for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
+	for _,npcEnemy in pairs(tableNearbyEnemyHeroes )
 	do
 		if J.IsValidHero(npcEnemy) 
 		   and not J.IsHaveAegis(npcEnemy) 

@@ -92,6 +92,20 @@ function X.Consider()
 			return BOT_ACTION_DESIRE_MODERATE;
 		end
 	end
+
+	
+	--打断TP
+	for _,npcEnemy in pairs(tableNearbyEnemyHeroes)
+	do
+		if J.IsValid(npcEnemy)
+		   and npcEnemy:IsChanneling()
+		   and npcEnemy:HasModifier('modifier_teleporting')
+		   and J.CanCastOnNonMagicImmune(npcEnemy)
+		   and J.CanCastOnTargetAdvanced(npcEnemy)
+		then
+			return BOT_ACTION_DESIRE_HIGH;
+		end
+	end
 	
     return BOT_ACTION_DESIRE_NONE;
     
