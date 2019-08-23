@@ -10,6 +10,7 @@ local X = {}
 local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
+local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
@@ -125,7 +126,7 @@ local tGroupedDataList = {
 			"item_bracer", 
 			"item_magic_wand",
 			"item_glimmer_cape",
-			"item_force_staff", , 
+			"item_force_staff"
 			"item_silver_edge",
 			"item_black_king_bar",
 			"item_ultimate_scepter",
