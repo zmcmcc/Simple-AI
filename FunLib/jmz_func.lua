@@ -179,7 +179,7 @@ function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellL
 		local nDirType = J.Role.GetDirType()
 		local sBotDir = J.Chat.GetHeroDirName(bot, nDirType)
 		local BotSet = nil;
-		if pcall(function(loadDir) require( loadDir ) end, sBotDir) then
+		if xpcall(function(loadDir) require( loadDir ) end, function(err) print(err) end, sBotDir) then
 			BotSet = require( sBotDir )
 		else
 			return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;

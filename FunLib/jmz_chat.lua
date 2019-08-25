@@ -53,6 +53,7 @@ Chat['sExpandedList'] = {
 	'npc_dota_hero_queenofpain',
 	'npc_dota_hero_slardar',
 	'npc_dota_hero_omniknight',
+	'npc_dota_hero_rubick',
 }
 
 

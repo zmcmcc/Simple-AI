@@ -55,6 +55,32 @@ X['sSellList'] = {
 --编组技能、天赋、装备
 local tGroupedDataList = {
 	{
+		['info'] = 'By 决明子',
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		['Ability'] = {3,1,2,1,1,6,1,2,2,2,6,3,3,3,6},
+		['Buy'] = {
+			sOutfit,
+			"item_pipe",
+			"item_glimmer_cape",
+			"item_veil_of_discord",
+			"item_cyclone",
+			"item_sheepstick",
+			"item_ultimate_scepter",
+		},
+		['Sell'] = {
+			"item_cyclone",
+			"item_magic_wand",
+			
+			"item_sheepstick",
+			"item_arcane_boots",
+		}
+	},
+	{
 		['info'] = 'By 铅笔会有猫的w',
 		['Talent'] = {
 			['t25'] = {0, 10},

@@ -11,47 +11,177 @@ local bDebugMode = false;
 local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
+local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
-
-local tTalentTreeList = {
-						['t25'] = {10, 0},
-						['t20'] = {0, 10},
-						['t15'] = {10, 0},
-						['t10'] = {0, 10},
-}
-
-local tAllAbilityBuildList = {
-						{2,1,1,3,2,6,2,2,1,1,6,3,3,3,6},
-}
-
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
 local sRandomItem = RandomInt(1,9) > 4 and "item_sheepstick" or "item_lotus_orb";
 
-X['sBuyList'] = {
-				sOutfit,
-				"item_crimson_guard",
-				"item_ultimate_scepter",
-				sRandomItem,
-				"item_assault",
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 决明子',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = {2,1,1,3,2,6,2,2,1,1,6,3,3,3,6},
+		--装备
+		['Buy'] = {
+			sOutfit,
+			"item_crimson_guard",
+			"item_ultimate_scepter",
+			sRandomItem,
+			"item_assault",
+		},
+		--出售
+		['Sell'] = {
+			"item_vladmir",
+			"item_quelling_blade",
+				
+			sRandomItem,
+			"item_magic_wand",
+			
+			sRandomItem,
+			"item_hand_of_midas",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {0, 10},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 2, 1, 2, 3, 2, 6, 2, 1, 1, 1, 6, 3, 3, 3, 6 },
+		--装备
+		['Buy'] = {
+			"item_stout_shield",
+			"item_double_tango",
+			"item_enchanted_mango",
+			"item_flask",
+			"item_magic_stick",
+			"item_clarity",
+			"item_arcane_boots",
+			"item_enchanted_mango",
+			"item_flask",
+			"item_hand_of_midas",
+			"item_rod_of_atos",
+			"item_urn_of_shadows",
+			"item_aether_lens",
+			"item_spirit_vessel",
+			"item_guardian_greaves", 
+			"item_ultimate_scepter",
+			"item_ultimate_orb",
+			"item_ultimate_scepter_2",
+			"item_sheepstick",
+			"item_pipe",
+			"item_dagon_5",
+			"item_moon_shard"
+		},
+		--出售
+		['Sell'] = {
+			"item_urn_of_shadows",
+			"item_stout_shield", 
+
+			"item_aether_lens",     
+			"item_magic_stick",   
+
+			"item_pipe",
+			"item_rod_of_atos",
+
+			"item_dagon",
+			"item_hand_of_midas"
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 2, 1, 2, 1, 2, 6, 2, 3, 1, 1, 6, 3, 3, 3, 6 },
+		--装备
+		['Buy'] = {
+			"item_stout_shield",
+			"item_double_tango",
+			"item_double_enchanted_mango",	
+			"item_magic_stick",
+			"item_boots",
+			"item_double_flask",
+			"item_hand_of_midas",
+			"item_arcane_boots",	
+			"item_soul_ring",
+			"item_magic_wand",
+			"item_force_staff",
+			"item_solar_crest", 
+			"item_pipe",
+			"item_lotus_orb",
+			"item_guardian_greaves",
+			"item_sheepstick", 
+			"item_moon_shard",
+			"item_ultimate_scepter",
+			"item_ultimate_scepter_2",
+		},
+		--出售
+		['Sell'] = {
+			"item_lotus_orb",
+			"item_magic_wand",
+
+			"item_sheepstick",
+			"item_hand_of_midas",
+		},
+	},
 }
-
-X['sSellList'] = {
-
-	"item_vladmir",
-	"item_quelling_blade",
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {10, 0},
+		['t20'] = {0, 10},
+		['t15'] = {10, 0},
+		['t10'] = {0, 10},
+	},
+	--技能
+	['Ability'] = {2,1,1,3,2,6,2,2,1,1,6,3,3,3,6},
+	--装备
+	['Buy'] = {
+		sOutfit,
+		"item_crimson_guard",
+		"item_ultimate_scepter",
+		sRandomItem,
+		"item_assault",
+	},
+	--出售
+	['Sell'] = {
+		"item_vladmir",
+		"item_quelling_blade",
+			
+		sRandomItem,
+		"item_magic_wand",
 		
-	sRandomItem,
-	"item_magic_wand",
-	
-	sRandomItem,
-	"item_hand_of_midas",
+		sRandomItem,
+		"item_hand_of_midas",
+	},
 }
+
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
+
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

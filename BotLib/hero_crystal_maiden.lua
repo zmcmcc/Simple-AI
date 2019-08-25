@@ -126,7 +126,7 @@ local tGroupedDataList = {
 			"item_bracer", 
 			"item_magic_wand",
 			"item_glimmer_cape",
-			"item_force_staff"
+			"item_force_staff",
 			"item_silver_edge",
 			"item_black_king_bar",
 			"item_ultimate_scepter",
@@ -136,7 +136,7 @@ local tGroupedDataList = {
 			"item_ultimate_scepter_2",
 			"item_bloodthorn",
 			"item_moon_shard",
-			"item_travel_boots_2"
+			"item_travel_boots_2",
 		},
 		--出售
 		['Sell'] = {

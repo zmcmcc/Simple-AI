@@ -9,7 +9,52 @@ local sAbilityList = J.Skill.GetAbilityList(bot)
 
 --编组技能、天赋、装备
 local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = { 1, 3, 2, 3, 2, 6, 2, 2, 3, 3, 6, 1, 1, 1, 6 },
+		--装备
+		['Buy'] = {
+			"item_branches",
+			"item_double_mantle",
+			"item_circlet",
+			"item_tango",
+			"item_double_enchanted_mango",
+			"item_magic_wand",
+			"item_double_null_talisman",
+			"item_boots",
+			"item_cyclone",
+			"item_travel_boots", 
+			"item_bloodstone",
+			"item_black_king_bar", 
+			"item_kaya",
+			"item_shivas_guard",
+			"item_yasha_and_kaya",
+			"item_ultimate_scepter_2", 
+			"item_travel_boots_2",
+			"item_octarine_core",
+			"item_moon_shard",
+		},
+		--出售
+		['Sell'] = {
+			"item_bloodstone",
+			"item_magic_wand",
 
+			"item_kaya",
+			"item_null_talisman",
+					
+			"item_octarine_core",   
+			"item_yasha_and_kaya", 
+		},
+	}
 }
 --默认数据
 local tDefaultGroupedData = {
