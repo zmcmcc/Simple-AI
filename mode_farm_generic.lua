@@ -104,6 +104,39 @@ function GetDesire()
 			bot:ActionImmediate_Chat( sMessage, false);
 			bot:ActionImmediate_Chat( "请使用困难或疯狂难度，不要使用齐天大圣。", false);
 		end
+
+		--获取本次比赛阵容数据
+		--local nEnemysTeam = GetTeamPlayers(GetOpposingTeam());
+		--local nArreysTeam = GetTeamPlayers(GetTeam());
+		--local nEnemysName = {}
+		--local nArreysName = {};
+		--for i,Enemy in pairs( nEnemysTeam )
+		--do
+		--	nEnemysName[i]['name'] = GetSelectedHeroName(Enemy);
+		--	if IsPlayerBot(Enemy) then
+		--		nEnemysName[i]['bot'] = 'true';
+		--	else
+		--		nEnemysName[i]['bot'] = 'false';
+		--	end
+		--end
+		--for i,Arrey in pairs( nArreysTeam )
+		--do
+		--	nArreysName[i]['name'] = GetSelectedHeroName(Arrey);
+		--	if IsPlayerBot(Arrey) then
+		--		nArreysName[i]['bot'] = 'true';
+		--	else
+		--		nArreysName[i]['bot'] = 'false';
+		--	end
+		--end
+		---- 发送阵容数据
+		--CreateHTTPRequest( "GET", "http://dota.alcedogroup.com/gamedata.php?gamedata=".. ):Send( function( result )
+		--	print( "得到的回应:\n" )
+		--	for k,v in pairs( result ) do
+		--		print( string.format( "%s : %s\n", k, v ) )
+		--	end
+		--	print( "发送完成！" )
+		--end )
+
 		bPushNoticeDone = true
 	end
 
