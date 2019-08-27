@@ -623,9 +623,6 @@ function X.getApHero()
             apHeroList[botHero] = heroTeam;
         end
     else
-        if interestingSuccession == 1 then
-            bot:ActionImmediate_Chat( '当前为趣味模式：'..interestingMode, true);
-        end
         botHero = interestingList[interestingSuccession]
         interestingSuccession = interestingSuccession + 1
     end

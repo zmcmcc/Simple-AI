@@ -51,6 +51,7 @@ local speelAbilityList = {
     'npc_dota_hero_arc_warden',
     'npc_dota_hero_dragon_knight',
     'npc_dota_hero_drow_ranger',
+    'npc_dota_hero_tiny'
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {
@@ -99,6 +100,9 @@ local discardedAbilityList = {
     'dragon_knight_elder_dragon_form',
     'dragon_knight_breathe_fire',
     'dragon_knight_dragon_tail',
+    'tiny_tree_channel',
+    'tiny_craggy_exterior',
+    'tiny_toss_tree',
 }
 
 --敌方英雄已释放技能列表
