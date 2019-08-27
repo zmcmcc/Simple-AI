@@ -4,7 +4,6 @@ local allowsHeroData = require(GetScriptDirectory() .. "/AuxiliaryScript/GetAllo
 local bnUtil = require(GetScriptDirectory() .. "/AuxiliaryScript/BotNameUtility");
 local apHeroList = {}
 local banList = {}
-local interestingMode = nil
 local interestingList = {}
 local interestingSuccession = 1
 
@@ -85,6 +84,7 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_slardar',
 --'npc_dota_hero_omniknight',
 --'npc_dota_hero_rubick',
+--'npc_dota_hero_tiny',
 ----原脚本
 --'npc_dota_hero_antimage',
 --'npc_dota_hero_arc_warden',
@@ -116,6 +116,7 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_lina',
 
 X["test_hero"] = {
+    'npc_dota_hero_tiny'
 }
 
 X["onlyCM_hero"] = {
@@ -283,6 +284,16 @@ function X.AllLibraryHeroList()
         --['HeroSelect'] = HeroSelect,
         --['HeroBan'] = HeroBan,
     }
+end
+
+function IsHumanPlayerExist()
+	local Players = GetTeamPlayers(GetTeam())
+    for _,id in pairs(Players) do
+        if not IsPlayerBot(id) then
+			return true;
+        end
+    end
+	return false;
 end
 
 function IsBanBychat( sHero )
@@ -532,48 +543,85 @@ function X.getApHero()
     local heroTeam = nil;
 	local ourIds = GetTeamPlayers(GetTeam());
 	local enemyIds = GetTeamPlayers(GetOpposingTeam());
-    local botSelectHero = nil
+    local botSelectHero = nil;
     --趣味模式
-    if interestingMode == nil then
-        local randomMode = math.random(0,1000)
+    if X.interestingMode == nil  then
+        local randomMode = RandomInt(1,1000)
         if randomMode == 234 then
-            interestingMode = '拉比克大魔王'
+            X.interestingMode = '拉比克大魔王';
             interestingList = {
                 'npc_dota_hero_rubick',
                 'npc_dota_hero_rubick',
                 'npc_dota_hero_rubick',
                 'npc_dota_hero_rubick',
                 'npc_dota_hero_rubick',
-            }
+            };
         elseif randomMode == 587 then
-            interestingMode = '刺球'
+            X.interestingMode = '刺球';
             interestingList = {
                 'npc_dota_hero_bristleback',
                 'npc_dota_hero_bristleback',
                 'npc_dota_hero_bristleback',
                 'npc_dota_hero_bristleback',
                 'npc_dota_hero_bristleback',
-            }
+            };
         elseif randomMode == 724 then
-            interestingMode = '刺客联盟'
+            X.interestingMode = '刺客联盟';
             interestingList = {
                 'npc_dota_hero_phantom_assassin',
                 'npc_dota_hero_templar_assassin',
                 'npc_dota_hero_phantom_assassin',
                 'npc_dota_hero_templar_assassin',
                 'npc_dota_hero_phantom_assassin',
-            }
+            };
         elseif randomMode == 984 then
-            interestingMode = '闪电'
-            interestingList = {
-                'npc_dota_hero_arc_warden',
-                'npc_dota_hero_zuus',
-                'npc_dota_hero_razor',
-                'npc_dota_hero_disruptor',
-                'npc_dota_hero_lina',
+            X.interestingMode = '闪电';
+            local lightning = {
+                {
+                    'npc_dota_hero_arc_warden',
+                    'npc_dota_hero_arc_warden',
+                    'npc_dota_hero_arc_warden',
+                    'npc_dota_hero_arc_warden',
+                    'npc_dota_hero_arc_warden',
+                },
+                {
+                    'npc_dota_hero_zuus',
+                    'npc_dota_hero_zuus',
+                    'npc_dota_hero_zuus',
+                    'npc_dota_hero_zuus',
+                    'npc_dota_hero_zuus',
+                },
+                {
+                    'npc_dota_hero_razor',
+                    'npc_dota_hero_razor',
+                    'npc_dota_hero_razor',
+                    'npc_dota_hero_razor',
+                    'npc_dota_hero_razor',
+                },
+                {
+                    'npc_dota_hero_disruptor',
+                    'npc_dota_hero_disruptor',
+                    'npc_dota_hero_disruptor',
+                    'npc_dota_hero_disruptor',
+                    'npc_dota_hero_disruptor',
+                }
             }
+            interestingList = lightning[RandomInt(1,4)]
+        elseif randomMode == 143 then
+            X.interestingMode = '石头也疯狂';
+            interestingList = {
+                'npc_dota_hero_tiny',
+                'npc_dota_hero_tiny',
+                'npc_dota_hero_tiny',
+                'npc_dota_hero_tiny',
+                'npc_dota_hero_tiny',
+            };
         else
-            interestingMode = 'Normal'
+            X.interestingMode = false;
+        end
+
+        if IsHumanPlayerExist() then
+            X.interestingMode = false;
         end
     end
 
@@ -584,35 +632,40 @@ function X.getApHero()
 	then
 		heroTeam = TEAM_DIRE;
     end
-    
-    if interestingMode == 'Normal' then
-        for i,id in pairs(ourIds) --找出我方已选英雄
-        do
-            if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
-            then
-                if GetTeam() == TEAM_RADIANT then
-                    apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
-                else
-                    apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
-                end
-            end
-        end
 
-        for i,id in pairs(enemyIds) --找出对方已选英雄
-        do
-            if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
-            then
-                if GetTeam() == TEAM_RADIANT then
-                    apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
-                else
-                    apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
-                end
-            end
-        end
+     for i,id in pairs(ourIds) --找出我方已选英雄
+     do
+         if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
+         then
+             if GetTeam() == TEAM_RADIANT then
+                 apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
+             else
+                 apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
+             end
+         end
+     end
 
-        botSelectHero = X.IntelligentHeroListAnalysis(apHeroList); --智能库去筛选合适的英雄队列
+     for i,id in pairs(enemyIds) --找出对方已选英雄
+     do
+         if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
+         then
+             if GetTeam() == TEAM_RADIANT then
+                 apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
+             else
+                 apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
+             end
+         end
+     end
 
-        local botHero;
+     botSelectHero = X.IntelligentHeroListAnalysis(apHeroList); --智能库去筛选合适的英雄队列
+
+    local botHero;
+
+    if X.interestingMode ~= nil and X.interestingMode then
+        botHero = interestingList[interestingSuccession];
+        interestingSuccession = interestingSuccession + 1;
+        apHeroList[botHero] = heroTeam;
+    else
         if next(botSelectHero) ~= nil then
             --print('采用匹配库生成目标英雄串');
             botHero = GetNotRepeatHero(botSelectHero);
@@ -622,9 +675,6 @@ function X.getApHero()
             botHero = GetNotRepeatHero(X.OptionalHeroList()); --智能筛选都筛不出能选的，只好在全英雄可选中随便挑一个能用的了
             apHeroList[botHero] = heroTeam;
         end
-    else
-        botHero = interestingList[interestingSuccession]
-        interestingSuccession = interestingSuccession + 1
     end
 
     return botHero

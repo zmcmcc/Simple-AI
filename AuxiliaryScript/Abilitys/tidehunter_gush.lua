@@ -61,6 +61,8 @@ function X.Consider()
     local nAttackRange = bot:GetAttackRange();
     local nDamage = ability:GetLevel() * 50 + 60;
 
+    if nCastRange > 1500 then nCastRange = 1500 end
+
     local nEnemysHerosInCastRange = bot:GetNearbyHeroes(nCastRange + 80 ,true,BOT_MODE_NONE);
     local nWeakestEnemyHeroInCastRange = J.GetVulnerableWeakestUnit(true, true, nCastRange + 80, bot);
     local npcTarget = J.GetProperTarget(bot)

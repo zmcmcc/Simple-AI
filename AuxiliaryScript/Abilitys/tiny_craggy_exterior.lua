@@ -58,23 +58,40 @@ function X.Consider()
 	local nCastRange = ability:GetCastRange();
     local nSkillLV   = ability:GetLevel();
     
-    local nearbyTreesList = bot:GetNearbyTrees(nCastRange + 600);
+    local nearbyTrees = NearbyTrees(nCastRange + 600);
     if not J.IsInTeamFight(bot, 1600)
        and not J.IsGoingOnSomeone(bot)
        and not J.IsRetreating(bot)
-       and nearbyTreesList[1] ~= nil
+       and nearbyTrees ~= nil
     then
-        return BOT_ACTION_DESIRE_MODERATE, nearbyTreesList[1]
+        return BOT_ACTION_DESIRE_MODERATE, nearbyTrees
     end
-    nearbyTreesList = bot:GetNearbyTrees(nCastRange);
+    nearbyTrees = NearbyTrees(nCastRange);
     if not J.IsRetreating(bot)
-       and nearbyTreesList[1] ~= nil
+       and nearbyTrees ~= nil
     then
-        return BOT_ACTION_DESIRE_HIGH, nearbyTreesList[1]
+        return BOT_ACTION_DESIRE_HIGH, nearbyTrees
     end
 
 	return BOT_ACTION_DESIRE_NONE, 0;
 	
+end
+
+--获取最近的树
+function NearbyTrees(Range)
+    local nearbyTreesList = bot:GetNearbyTrees(Range + 600);
+    local nearestTree = nil
+    for _,tree in pairs(nearbyTreesList) do
+        if nearestTree == nil or GetUnitToLocationDistance(bot, GetTreeLocation(tree)) < GetUnitToLocationDistance(bot, GetTreeLocation(nearestTree))then
+            nearestTree = tree
+        end
+    end
+
+    if nearestTree ~= nil then
+        return nearestTree
+    end
+
+    return false
 end
 
 return X;

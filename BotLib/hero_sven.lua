@@ -99,11 +99,11 @@ local tGroupedDataList = {
 			"item_black_king_bar",
 			"item_magic_stick",
 
-			"item_black_king_bar",     
+			"item_black_king_bar",
 			"item_magic_wand",
 					
-			"item_greater_crit", 
-			"item_bracer",    
+			"item_greater_crit",
+			"item_bracer",
 
 			"item_silver_edge",
 			"item_blink"
@@ -149,20 +149,20 @@ local tGroupedDataList = {
 			"item_travel_boots",
 			"item_phase_boots",
 
-			"item_satanic",     
+			"item_satanic",
 			"item_hand_of_midas",
 
-			"item_assault",     
+			"item_assault",
 			"item_echo_sabre",
 
-			"item_heart",     
+			"item_heart",
 			"item_blink",
 
-			"item_bloodthorn",     
+			"item_bloodthorn", 
 			"item_magic_wand",
 					
 			"item_black_king_bar",
-			"item_stout_shield",	     
+			"item_stout_shield",
 		},
 	},
 }

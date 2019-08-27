@@ -84,11 +84,11 @@ local tGroupedDataList = {
 		},
 		--出售
 		['Sell'] = {
-			"item_black_king_bar",     
+			"item_black_king_bar",
 			"item_wraith_band",
 					
-			"item_nullifier",  
-			"item_bottle",	     
+			"item_nullifier",
+			"item_bottle",
 
 			"item_ultimate_scepter",
 			"item_blink",
@@ -113,14 +113,14 @@ local tGroupedDataList = {
 			"item_circlet",
 			"item_slippers",
 			"item_double_branches",
-			"item_double_tango",			
+			"item_double_tango",
 			"item_double_flask",
 			"item_wraith_band",
-			"item_power_treads",						
+			"item_power_treads",
 			"item_magic_wand",
 			"item_bottle", 
 			"item_desolator",
-			"item_dragon_lance", 			
+			"item_dragon_lance",
 			"item_black_king_bar",
 			"item_butterfly",
 			"item_monkey_king_bar",
@@ -133,20 +133,20 @@ local tGroupedDataList = {
 		},
 		--出售
 		['Sell'] = {
-			"item_travel_boots",     
+			"item_travel_boots",
 			"item_power_treads",
 
-			"item_monkey_king_bar",     
+			"item_monkey_king_bar",
 			"item_dragon_lance",
 
 			"item_butterfly",
 			"item_bottle",
 
-			"item_lesser_crit",     
+			"item_lesser_crit",
 			"item_magic_wand",
 					
-			"item_black_king_bar",  
-			"item_wraith_band",	  
+			"item_black_king_bar",
+			"item_wraith_band",
 		},
 	},
 }

@@ -46,13 +46,13 @@ local tGroupedDataList = {
 			"item_hood_of_defiance",
 			"item_bracer",
 
-			"item_solar_crest",     
+			"item_solar_crest",
 			"item_magic_stick",
 
-			"item_greater_crit",     
+			"item_greater_crit",
 			"item_soul_ring",
 					
-			"item_refresher",  
+			"item_refresher",
 			"item_hood_of_defiance",
 
 			"item_assault",

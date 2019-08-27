@@ -9,7 +9,58 @@ local sAbilityList = J.Skill.GetAbilityList(bot)
 
 --编组技能、天赋、装备
 local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 1, 2, 3, 1, 1, 6, 1, 2, 2, 2, 6, 3, 3, 3, 6},
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_double_enchanted_mango",
+			"item_gauntlets",
+			"item_magic_stick",
+			"item_crown",
+			"item_phase_boots",
+			"item_echo_sabre",
+			"item_ancient_janggo", 
+			"item_blink",
+			"item_ultimate_scepter",
+			"item_greater_crit",
+			"item_black_king_bar",
+			"item_assault",
+			"item_ultimate_scepter_2",
+			"item_satanic",
+			"item_moon_shard",
+			"item_heart",
+			"item_travel_boots_2",
+		},
+		--出售
+		['Sell'] = {
+			"item_ultimate_scepter",
+			"item_magic_stick",
 
+			"item_black_king_bar",     
+			"item_ancient_janggo",
+
+			"item_assault",
+			"item_echo_sabre",
+
+			"item_travel_boots_2",
+			"item_phase_boots",
+
+			"item_heart",
+			"item_blink",
+		},
+	},
 }
 --默认数据
 local tDefaultGroupedData = {
@@ -68,7 +119,7 @@ function X.SkillsComplement()
 	--如果当前英雄无法使用技能或英雄处于隐形状态，则不做操作。
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	--技能检查顺序
-	local order = {'Q','W','E','D'}
+	local order = {'Q','W','E','D','F'}
 	--委托技能处理函数接管
 	if ConversionMode.Skills(order) then return; end
 

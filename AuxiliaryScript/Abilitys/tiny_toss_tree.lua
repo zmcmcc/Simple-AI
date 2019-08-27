@@ -60,8 +60,13 @@ function X.Consider()
 	local nCastRange  = ability:GetCastRange()
 	local nCastPoint  = ability:GetCastPoint()
 
-    --追击时
-    if npcEnemy:GetModifierByName("modifier_shadow_demon_shadow_poison") <= 1
+	--追击时
+	local nStack = 0
+	local modIdx = npcEnemy:GetModifierByName("modifier_tiny_toss_tree_bonus");
+	if modIdx > -1 then
+		nStack = npcEnemy:GetModifierStackCount(modIdx);
+	end
+    if nStack <= 1
 	then
 		local npcTarget = bot:GetTarget();
 
