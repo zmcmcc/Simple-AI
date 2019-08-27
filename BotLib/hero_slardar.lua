@@ -14,48 +14,138 @@ local sAbilityList = J.Skill.GetAbilityList(bot) --获取当前英雄的技能�
 --	英雄加点及出装数据
 ------------------------------------------------------------------------------------------------------------
 
---英雄天赋树
-local tTalentTreeList = {
-						['t25'] = {0, 10}, --右
-						['t20'] = {10, 0}, --左
-						['t15'] = {10, 0}, --左
-						['t10'] = {10, 0}, --左
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 望天的稻草',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = {2,3,1,3,1,6,3,1,1,3,6,2,2,2,6},
+		--装备
+		['Buy'] = {
+			"item_stout_shield",
+			'item_tango',
+			'item_flask',
+			'item_quelling_blade',
+			'item_soul_ring',
+			'item_phase_boots',
+			"item_ancient_janggo",
+			"item_blink",
+			"item_echo_sabre",
+			"item_sange_and_yasha",
+			"item_black_king_bar",
+			"item_assault",
+		},
+		--出售
+		['Sell'] = {
+			"item_crimson_guard",
+			"item_abyssal_blade",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = { 3, 2, 3, 1, 3, 6, 3, 1, 1, 1, 6, 2, 2, 2, 6 },
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_gauntlets", 
+			"item_stout_shield",
+			"item_enchanted_mango",
+			"item_quelling_blade",
+			"item_magic_stick",
+			"item_flask",
+			"item_bracer",
+			"item_phase_boots",
+			"item_ancient_janggo", 
+			"item_blink",
+			"item_echo_sabre",
+			"item_black_king_bar",
+			"item_desolator", 
+			"item_assault",
+			"item_moon_shard", 
+			"item_silver_edge",
+			"item_ultimate_scepter_2",
+			"item_travel_boots",
+			"item_travel_boots_2"
+		},
+		--出售
+		['Sell'] = {
+			"item_ancient_janggo", 
+			"item_quelling_blade",
+
+			"item_echo_sabre",     
+			"item_stout_shield",
+					
+			"item_black_king_bar", 
+			"item_magic_stick",	     
+
+			"item_desolator",
+			"item_bracer",
+
+			"item_assault",
+			"item_ancient_janggo",
+
+			"item_silver_edge",
+			"item_echo_sabre",
+
+			"item_travel_boots",
+			"item_phase_boots"
+		},
+	}
+}
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {0, 10},
+		['t20'] = {10, 0},
+		['t15'] = {10, 0},
+		['t10'] = {10, 0},
+	},
+	--技能
+	['Ability'] = {2,3,1,3,1,6,3,1,1,3,6,2,2,2,6},
+	--装备
+	['Buy'] = {
+		"item_stout_shield",
+		'item_tango',
+		'item_flask',
+		'item_quelling_blade',
+		'item_soul_ring',
+		'item_phase_boots',
+		"item_ancient_janggo",
+		"item_blink",
+		"item_echo_sabre",
+		"item_sange_and_yasha",
+		"item_black_king_bar",
+		"item_assault",
+	},
+	--出售
+	['Sell'] = {
+		"item_crimson_guard",
+		"item_abyssal_blade",
+	},
 }
 
---英雄技能树
---6代表大招
---可多组，游戏时随机一组使用
-local tAllAbilityBuildList = {
-						{2,3,1,3,1,6,3,1,1,3,6,2,2,2,6},
-}
---从技能树中随机选择一套技能
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
---根据天赋树生成天赋列表
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
---出装方案
---基础出装在jmz_item.lua中编写，对应sOutfit项
-X['sBuyList'] = {
-				"item_stout_shield",
-				'item_tango',
-				'item_flask',
-				'item_quelling_blade',
-				'item_soul_ring',
-				'item_phase_boots',
-				"item_ancient_janggo",
-				"item_blink",
-				"item_echo_sabre",
-				"item_sange_and_yasha",
-				"item_black_king_bar",
-				"item_assault",
-}
---后期更换装备方案
-X['sSellList'] = {
-	"item_crimson_guard",
-	"item_abyssal_blade",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
---加载锦囊数据
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 
 --获取技能列表

@@ -9,7 +9,111 @@ local sAbilityList = J.Skill.GetAbilityList(bot)
 
 --编组技能、天赋、装备
 local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 3, 2, 3, 1, 3, 6, 3, 2, 2, 2, 6, 1, 1, 1, 6},
+		--装备
+		['Buy'] = {
+			"item_double_tango",
+			"item_flask",
+			"item_double_enchanted_mango",
+			"item_gauntlets",
+			"item_magic_stick",
+			"item_bracer",
+			"item_soul_ring",
+			"item_phase_boots",
+			"item_vladmir", 
+			"item_blink",
+			"item_hood_of_defiance",
+			"item_solar_crest", 
+			"item_greater_crit",
+			"item_refresher",
+			"item_assault",
+			"item_travel_boots_2",
+			"item_moon_shard"
+		},
+		--出售
+		['Sell'] = {
+			"item_hood_of_defiance",
+			"item_bracer",
 
+			"item_solar_crest",     
+			"item_magic_stick",
+
+			"item_greater_crit",     
+			"item_soul_ring",
+					
+			"item_refresher",  
+			"item_hood_of_defiance",
+
+			"item_assault",
+			"item_blink",
+
+			"item_travel_boots",
+			"item_phase_boots"
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 3, 2, 3, 1, 3, 6, 3, 2, 2, 2, 6, 1, 1, 1, 6},
+		--装备
+		['Buy'] = {
+			"item_double_tango",
+			"item_flask",
+			"item_double_enchanted_mango",
+			"item_gauntlets",
+			"item_magic_stick",
+			"item_bracer",
+			"item_bracer",
+			"item_arcane_boots",
+			"item_pers",
+			"item_hand_of_midas", 
+			"item_blink",
+			"item_hood_of_defiance",
+			"item_refresher",
+			"item_ultimate_scepter",
+			"item_pipe",
+			"item_shivas_guard",
+			"item_travel_boots",
+			"item_travel_boots_2",
+			"item_ultimate_scepter_2",
+			"item_moon_shard"
+		},
+		--出售
+		['Sell'] = {
+			"item_hood_of_defiance",
+			"item_bracer",
+
+			"item_blink",
+			"item_magic_stick",
+
+			"item_ultimate_scepter",     
+			"item_bracer",
+
+			"item_shivas_guard",
+			"item_hand_of_midas",
+
+			"item_travel_boots",
+			"item_arcane_boots"
+		},
+	}
 }
 --默认数据
 local tDefaultGroupedData = {

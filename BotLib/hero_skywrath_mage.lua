@@ -11,45 +11,181 @@ local bDebugMode = false
 local bot = GetBot()
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
+local ConversionMode = dofile( GetScriptDirectory()..'/AuxiliaryScript/BotlibConversion') --引入技能文件
 local Minion = dofile( GetScriptDirectory()..'/FunLib/Minion')
 local sTalentList = J.Skill.GetTalentList(bot)
 local sAbilityList = J.Skill.GetAbilityList(bot)
 local sOutfit = J.Skill.GetOutfitName(bot)
 
-local tTalentTreeList = {
-						['t25'] = {0, 10},
-						['t20'] = {10, 0},
-						['t15'] = {10, 0},
-						['t10'] = {10, 0},
+--编组技能、天赋、装备
+local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 决明子',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = {1,2,1,3,1,6,1,2,2,2,6,3,3,3,6},
+		--装备
+		['Buy'] = {
+			sOutfit,
+			--"item_soul_ring",
+			"item_rod_of_atos",
+			"item_pipe",
+			"item_glimmer_cape",
+			"item_cyclone",
+			"item_ultimate_scepter",
+			"item_sheepstick",
+		},
+		--出售
+		['Sell'] = {
+			"item_ultimate_scepter",
+			"item_magic_wand",
+			
+			"item_sheepstick",
+			"item_arcane_boots",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 1, 2, 2, 1, 3, 6, 1, 1, 3, 3, 6, 2, 3, 2, 6 },
+		--装备
+		['Buy'] = {
+			"item_double_mantle",
+			"item_double_circlet",
+			"item_magic_stick",
+			"item_double_tango",
+			"item_double_null_talisman",
+			"item_double_enchanted_mango",
+			"item_bottle",
+			"item_double_clarity",
+			"item_boots",
+			"item_kaya",
+			"item_arcane_boots",
+			"item_rod_of_atos",
+			"item_blink",
+			"item_veil_of_discord",
+			"item_ultimate_scepter",
+			"item_aether_lens",
+			"item_ultimate_scepter_2",
+			"item_sheepstick",
+			"item_cyclone",
+			"item_travel_boots",
+			"item_kaya_and_sange",
+			"item_travel_boots_2",
+		},
+		--出售
+		['Sell'] = {
+			"item_rod_of_atos",
+			"item_magic_stick",
+
+			"item_blink",
+			"item_bottle",
+					
+			"item_ultimate_scepter",
+			"item_null_talisman",
+
+			"item_cyclone",
+			"item_blink",
+
+			"item_travel_boots",
+			"item_arcane_boots"
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {0, 10},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = { 1, 2, 3, 1, 1, 6, 1, 2, 2, 2, 6, 3, 3, 3, 6 },
+		--装备
+		['Buy'] = {
+			"item_double_tango",
+			"item_double_flask",
+			"item_clarity",
+			"item_enchanted_mango",
+			"item_magic_wand",
+			"item_boots",
+			"item_double_null_talisman",
+			"item_arcane_boots",
+			"item_rod_of_atos",
+			"item_glimmer_cape",
+			"item_ultimate_scepter",			
+			"item_kaya",
+			"item_sheepstick", 
+			"item_kaya_and_sange",
+			"item_guardian_greaves",
+			"item_ultimate_scepter_2",
+			"item_lotus_orb",
+			"item_shivas_guard", 
+		},
+		--出售
+		['Sell'] = {
+			"item_shivas_guard",     
+			"item_rod_of_atos",
+
+			"item_sheepstick",     
+			"item_magic_wand",
+					
+			"item_ultimate_scepter",  
+			"item_null_talisman",	 
+		},
+	},
+}
+--默认数据
+local tDefaultGroupedData = {
+	--天赋树
+	['Talent'] = {
+		['t25'] = {0, 10},
+		['t20'] = {10, 0},
+		['t15'] = {10, 0},
+		['t10'] = {10, 0},
+	},
+	--技能
+	['Ability'] = {1,2,1,3,1,6,1,2,2,2,6,3,3,3,6},
+	--装备
+	['Buy'] = {
+		sOutfit,
+		--"item_soul_ring",
+		"item_rod_of_atos",
+		"item_pipe",
+		"item_glimmer_cape",
+		"item_cyclone",
+		"item_ultimate_scepter",
+		"item_sheepstick",
+	},
+	--出售
+	['Sell'] = {
+		"item_ultimate_scepter",
+		"item_magic_wand",
+		
+		"item_sheepstick",
+		"item_arcane_boots",
+	},
 }
 
-local tAllAbilityBuildList = {
-						{1,2,1,3,1,6,1,2,2,2,6,3,3,3,6},
-}
+--根据组数据生成技能、天赋、装备
+local nAbilityBuildList, nTalentBuildList;
 
-local nAbilityBuildList = J.Skill.GetRandomBuild(tAllAbilityBuildList)
-
-local nTalentBuildList = J.Skill.GetTalentBuild(tTalentTreeList)
-
-
-X['sBuyList'] = {
-				sOutfit,
-				--"item_soul_ring",
-				"item_rod_of_atos",
-				"item_pipe",
-				"item_glimmer_cape",
-				"item_cyclone",
-				"item_ultimate_scepter",
-				"item_sheepstick",
-}
-
-X['sSellList'] = {
-	"item_ultimate_scepter",
-	"item_magic_wand",
-	
-	"item_sheepstick",
-	"item_arcane_boots",
-}
+nAbilityBuildList, nTalentBuildList, X['sBuyList'], X['sSellList'] = ConversionMode.Combination(tGroupedDataList, tDefaultGroupedData)
 
 nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList'] = J.SetUserHeroInit(nAbilityBuildList,nTalentBuildList,X['sBuyList'],X['sSellList']);
 

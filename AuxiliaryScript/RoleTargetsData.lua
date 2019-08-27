@@ -4,6 +4,9 @@ local allowsHeroData = require(GetScriptDirectory() .. "/AuxiliaryScript/GetAllo
 local bnUtil = require(GetScriptDirectory() .. "/AuxiliaryScript/BotNameUtility");
 local apHeroList = {}
 local banList = {}
+local interestingMode = nil
+local interestingList = {}
+local interestingSuccession = 1
 
 local X = {}
 
@@ -529,50 +532,103 @@ function X.getApHero()
     local heroTeam = nil;
 	local ourIds = GetTeamPlayers(GetTeam());
 	local enemyIds = GetTeamPlayers(GetOpposingTeam());
-	local botSelectHero = nil
+    local botSelectHero = nil
+    --趣味模式
+    if interestingMode == nil then
+        local randomMode = math.random(0,1000)
+        if randomMode == 234 then
+            interestingMode = '拉比克大魔王'
+            interestingList = {
+                'npc_dota_hero_rubick',
+                'npc_dota_hero_rubick',
+                'npc_dota_hero_rubick',
+                'npc_dota_hero_rubick',
+                'npc_dota_hero_rubick',
+            }
+        elseif randomMode == 587 then
+            interestingMode = '刺球'
+            interestingList = {
+                'npc_dota_hero_bristleback',
+                'npc_dota_hero_bristleback',
+                'npc_dota_hero_bristleback',
+                'npc_dota_hero_bristleback',
+                'npc_dota_hero_bristleback',
+            }
+        elseif randomMode == 724 then
+            interestingMode = '刺客联盟'
+            interestingList = {
+                'npc_dota_hero_phantom_assassin',
+                'npc_dota_hero_templar_assassin',
+                'npc_dota_hero_phantom_assassin',
+                'npc_dota_hero_templar_assassin',
+                'npc_dota_hero_phantom_assassin',
+            }
+        elseif randomMode == 984 then
+            interestingMode = '闪电'
+            interestingList = {
+                'npc_dota_hero_arc_warden',
+                'npc_dota_hero_zuus',
+                'npc_dota_hero_razor',
+                'npc_dota_hero_disruptor',
+                'npc_dota_hero_lina',
+            }
+        else
+            interestingMode = 'Normal'
+        end
+    end
+
 	if GetTeam() == TEAM_RADIANT 
 	then
 		heroTeam = TEAM_RADIANT;
 	elseif GetTeam() == TEAM_DIRE
 	then
 		heroTeam = TEAM_DIRE;
-	end
-	for i,id in pairs(ourIds) --找出我方已选英雄
-	do
-		if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
-		then
-			if GetTeam() == TEAM_RADIANT then
-				apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
-			else
-				apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
-			end
-		end
-	end
+    end
+    
+    if interestingMode == 'Normal' then
+        for i,id in pairs(ourIds) --找出我方已选英雄
+        do
+            if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
+            then
+                if GetTeam() == TEAM_RADIANT then
+                    apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
+                else
+                    apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
+                end
+            end
+        end
 
-	for i,id in pairs(enemyIds) --找出对方已选英雄
-	do
-		if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
-		then
-			if GetTeam() == TEAM_RADIANT then
-				apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
-			else
-				apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
-			end
-		end
-	end
+        for i,id in pairs(enemyIds) --找出对方已选英雄
+        do
+            if GetSelectedHeroName(id) ~= "" or GetSelectedHeroName(id) ~= nil
+            then
+                if GetTeam() == TEAM_RADIANT then
+                    apHeroList[GetSelectedHeroName(id)] = TEAM_DIRE;
+                else
+                    apHeroList[GetSelectedHeroName(id)] = TEAM_RADIANT;
+                end
+            end
+        end
 
-    botSelectHero = X.IntelligentHeroListAnalysis(apHeroList); --智能库去筛选合适的英雄队列
+        botSelectHero = X.IntelligentHeroListAnalysis(apHeroList); --智能库去筛选合适的英雄队列
 
-	local botHero;
-	if next(botSelectHero) ~= nil then
-		--print('采用匹配库生成目标英雄串');
-		botHero = GetNotRepeatHero(botSelectHero);
-		apHeroList[botHero] = heroTeam;
-	else
-		--print('采用英雄库生成目标英雄串');
-		botHero = GetNotRepeatHero(X.OptionalHeroList()); --智能筛选都筛不出能选的，只好在全英雄可选中随便挑一个能用的了
-		apHeroList[botHero] = heroTeam;
-	end
+        local botHero;
+        if next(botSelectHero) ~= nil then
+            --print('采用匹配库生成目标英雄串');
+            botHero = GetNotRepeatHero(botSelectHero);
+            apHeroList[botHero] = heroTeam;
+        else
+            --print('采用英雄库生成目标英雄串');
+            botHero = GetNotRepeatHero(X.OptionalHeroList()); --智能筛选都筛不出能选的，只好在全英雄可选中随便挑一个能用的了
+            apHeroList[botHero] = heroTeam;
+        end
+    else
+        if interestingSuccession == 1 then
+            bot:ActionImmediate_Chat( '当前为趣味模式：'..interestingMode, true);
+        end
+        botHero = interestingList[interestingSuccession]
+        interestingSuccession = interestingSuccession + 1
+    end
 
     return botHero
 end

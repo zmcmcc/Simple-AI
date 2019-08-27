@@ -66,6 +66,52 @@ local tGroupedDataList = {
 			"item_crimson_guard",
 			"item_quelling_blade",
 		}
+	},
+	{
+		['info'] = 'By Misunderstand',
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {0, 10},
+			['t15'] = {0, 10},
+			['t10'] = {0, 10},
+		},
+		['Ability'] = { 3, 1, 3, 2, 3, 6, 3, 2, 2, 2, 6, 1, 1, 1, 6 },
+		['Buy'] = {
+			"item_flask",
+			"item_circlet",
+			"item_double_clarity",
+			"item_tango",
+			"item_wind_lace",
+			"item_null_talisman",
+			"item_double_enchanted_mango",
+			"item_magic_wand",
+			"item_clarity",
+			"item_tranquil_boots",
+			"item_aether_lens",
+			"item_force_staff",
+			"item_aeon_disk", 
+			"item_ultimate_scepter",
+			"item_mekansm", 
+			"item_glimmer_cape",
+			"item_ultimate_scepter_2",
+			"item_travel_boots",
+			"item_hurricane_pike",
+			"item_dagon_5",
+			"item_moon_shard",
+		},
+		['Sell'] = {
+			"item_ultimate_scepter",
+			"item_null_talisman",
+
+			"item_mekansm",     
+			"item_magic_wand",
+
+			"item_travel_boots",     
+			"item_tranquil_boots",
+
+			"item_dagon",
+			"item_mekansm"
+		}
 	}
 }
 --默认数据

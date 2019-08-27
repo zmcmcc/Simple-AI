@@ -48,9 +48,9 @@ local speelAbilityList = {
     'npc_dota_hero_crystal_maiden',
     'npc_dota_hero_kunkka',
     'npc_dota_hero_sven',
-    'npc_dota_arc_warden',
-    'npc_dota_dragon_knight',
-    'npc_dota_drow_ranger',
+    'npc_dota_hero_arc_warden',
+    'npc_dota_hero_dragon_knight',
+    'npc_dota_hero_drow_ranger',
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {

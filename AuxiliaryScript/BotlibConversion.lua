@@ -106,6 +106,9 @@ local abilityNameList = {
     'drow_ranger_frost_arrows',
     'drow_ranger_trueshot',
     'drow_ranger_wave_of_silence',
+    'tiny_craggy_exterior',
+    'tiny_toss_tree',
+    'tiny_tree_channel',
 }
 
 --将英雄技能初始入变量
