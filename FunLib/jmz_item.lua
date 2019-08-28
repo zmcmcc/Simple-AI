@@ -610,8 +610,6 @@ ItemModule['item_lina_outfit']             = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_brewmaster_outfit']       = { 'item_tango', 'item_tango', 'item_quelling_blade', 'item_gauntlets', 'item_stick_bracer', 'item_ring_of_basilius', 'item_phase_boots', 'item_broken_vladmir', 'item_mjollnir' , 'item_abyssal_blade' , 'item_black_king_bar' , 'item_lotus_orb' }
 
-ItemModule['item_earthshaker_outfit']      = { 'item_tango', 'item_flask', 'item_double_branches', 'item_enchanted_mango', 'item_clarity', 'item_energy_booster', 'item_recipe_magic_wand' , 'item_blink' , 'item_recipe_force_staff' , 'item_wind_lace' , 'item_blade_of_alacrity' , 'item_recipe_greater_crit' }
-
 ItemModule['item_invoker_outfit']          = { 'item_tango', 'item_flask', 'item_enchanted_mango', 'item_clarity', 'item_magic_wand' , 'item_phase_boots' , 'item_urn_of_shadows', 'item_ultimate_scepter', 'item_cyclone', 'item_force_staff', 'item_sheepstick', 'item_hurricane_pike', 'item_octarine_core', 'item_shivas_guard'}
 
 end

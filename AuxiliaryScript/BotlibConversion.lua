@@ -106,9 +106,14 @@ local abilityNameList = {
     'drow_ranger_frost_arrows',
     'drow_ranger_trueshot',
     'drow_ranger_wave_of_silence',
+    'tiny_toss',
+    'tiny_avalanche',
     'tiny_craggy_exterior',
     'tiny_toss_tree',
     'tiny_tree_channel',
+    'earthshaker_enchant_totem',
+    'earthshaker_echo_slam',
+    'earthshaker_fissure',
 }
 
 --将英雄技能初始入变量

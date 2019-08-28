@@ -52,6 +52,7 @@ local speelAbilityList = {
     'npc_dota_hero_dragon_knight',
     'npc_dota_hero_drow_ranger',
     'npc_dota_hero_tiny'
+    'npc_dota_hero_earthshaker'
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {
@@ -103,6 +104,7 @@ local discardedAbilityList = {
     'tiny_tree_channel',
     'tiny_craggy_exterior',
     'tiny_toss_tree',
+    'earthshaker_enchant_totem',
 }
 
 --敌方英雄已释放技能列表

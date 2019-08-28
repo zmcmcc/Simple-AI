@@ -11,6 +11,59 @@ local sAbilityList = J.Skill.GetAbilityList(bot)
 local tGroupedDataList = {
 	{
 		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = { 3, 1, 2, 1, 1, 6, 1, 2, 2, 2, 6, 3, 3, 3, 6},
+		--装备
+		['Buy'] = {
+			"item_flask",
+			"item_gauntlets",
+			"item_circlet",
+			"item_bottle",
+			"item_magic_stick",
+			"item_bracer",
+			"item_double_enchanted_mango",
+			"item_phase_boots",
+			"item_double_clarity",
+			"item_echo_sabre", 
+			"item_blink",
+			"item_echo_sabre", 
+			"item_greater_crit",
+			"item_bfury",
+			"item_travel_boots",
+			"item_hyperstone",
+			"item_ultimate_scepter_2",
+			"item_moon_shard",
+			"item_silver_edge",
+			"item_travel_boots_2",
+		},
+		--出售
+		['Sell'] = {
+			"item_blink",
+			"item_magic_stick",
+
+			"item_echo_sabre",     
+			"item_bracer",
+
+			"item_bfury",     
+			"item_bottle",
+					
+			"item_travel_boots",  
+			"item_phase_boots",
+
+			"item_silver_edge",
+			"item_echo_sabre",
+		},
+	},
+	{
+		--组合说明，不影响游戏
 		['info'] = 'By 铅笔会有猫的w',
 		--天赋树
 		['Talent'] = {

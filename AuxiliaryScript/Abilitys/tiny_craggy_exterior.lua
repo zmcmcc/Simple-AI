@@ -63,12 +63,14 @@ function X.Consider()
        and not J.IsGoingOnSomeone(bot)
        and not J.IsRetreating(bot)
        and nearbyTrees ~= nil
+       and nearbyTrees
     then
         return BOT_ACTION_DESIRE_MODERATE, nearbyTrees
     end
     nearbyTrees = NearbyTrees(nCastRange);
     if not J.IsRetreating(bot)
        and nearbyTrees ~= nil
+       and nearbyTrees
     then
         return BOT_ACTION_DESIRE_HIGH, nearbyTrees
     end
@@ -79,10 +81,13 @@ end
 
 --获取最近的树
 function NearbyTrees(Range)
-    local nearbyTreesList = bot:GetNearbyTrees(Range + 600);
+    local nearbyTreesList = bot:GetNearbyTrees(Range)
     local nearestTree = nil
+
     for _,tree in pairs(nearbyTreesList) do
-        if nearestTree == nil or GetUnitToLocationDistance(bot, GetTreeLocation(tree)) < GetUnitToLocationDistance(bot, GetTreeLocation(nearestTree))then
+        if nearestTree == nil 
+           or GetUnitToLocationDistance(bot, GetTreeLocation(tree)) < GetUnitToLocationDistance(bot, GetTreeLocation(nearestTree))
+        then
             nearestTree = tree
         end
     end

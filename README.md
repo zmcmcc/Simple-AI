@@ -1,4 +1,4 @@
-## Simple AI 1.1.1
+## Simple AI 1.1.4
 更加简单，快捷的构建DOTA2机器人脚本，不需要深入了解脚本制作流程，只需编写你需要的内容，脚本会自动加载。
 
 ### 说明
@@ -42,6 +42,8 @@
 - 复仇之魂
 - 帕克
 - 殁境神蚀者
+- 小小
+- 撼地者
 (以下为包含模组并未实施的英雄)
 - 杰奇洛
 - 昆卡
@@ -152,7 +154,14 @@
 - drow_ranger_frost_arrows
 - drow_ranger_trueshot
 - drow_ranger_wave_of_silence
-
+- tiny_toss
+- tiny_avalanche
+- tiny_craggy_exterior
+- tiny_toss_tree
+- tiny_tree_channel
+- earthshaker_enchant_totem
+- earthshaker_echo_slam
+- earthshaker_fissure
 ### 额外英雄
 - 复仇之魂
 - 潮汐猎人
@@ -170,6 +179,8 @@
 - 暗影恶魔
 - 痛苦女王
 - 拉比克
+- 小小
+- 撼地者
 
 群友提供的英雄
 > 望天的稻草

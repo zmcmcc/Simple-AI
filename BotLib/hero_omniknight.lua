@@ -9,6 +9,65 @@ local sAbilityList = J.Skill.GetAbilityList(bot) --获取当前英雄的技能�
 
 --编组技能、天赋、装备
 local tGroupedDataList = {
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By Misunderstand',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {0, 10},
+		},
+		--技能
+		['Ability'] = { 1, 3, 1, 2, 1, 6, 2, 2, 3, 3, 6, 3, 3, 2, 6},
+		--装备
+		['Buy'] = {
+			"item_stout_shield",
+			"item_tango",
+			"item_double_enchanted_mango",
+			"item_magic_stick",
+			"item_soul_ring",
+			"item_magic_wand",
+			"item_bracer",
+			"item_phase_boots",
+			"item_ancient_janggo",
+			"item_vanguard",
+			"item_vladmir", 
+			"item_pipe",
+			"item_sange_and_yasha",
+			"item_solar_crest",
+			"item_crimson_guard",
+			"item_ultimate_scepter_2",
+			"item_lotus_orb",
+			"item_black_king_bar",
+			"item_travel_boots_2",
+			"item_moon_shard"
+		},
+		--出售
+		['Sell'] = {
+			"item_vladmir",
+			"item_bracer",
+
+			"item_pipe",     
+			"item_soul_ring",
+
+			"item_sange_and_yasha",     
+			"item_magic_wand",
+					
+			"item_solar_crest",  
+			"item_ancient_janggo",
+
+			"item_lotus_orb",
+			"item_vladmir",
+
+			"item_black_king_bar",
+			"item_sange_and_yasha",
+
+			"item_travel_boots_2",
+			"item_phase_boots"
+		},
+	}
 }
 --默认数据
 local tDefaultGroupedData = {

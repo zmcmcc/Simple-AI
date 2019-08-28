@@ -34,7 +34,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_grimstroke",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_rubick",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_sven"] = {
   ["hero_name"] = "sven",
   ["proposal"] = {

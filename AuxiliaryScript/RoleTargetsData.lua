@@ -85,6 +85,7 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_omniknight',
 --'npc_dota_hero_rubick',
 --'npc_dota_hero_tiny',
+--'npc_dota_hero_earthshaker'
 ----原脚本
 --'npc_dota_hero_antimage',
 --'npc_dota_hero_arc_warden',
@@ -116,7 +117,8 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_lina',
 
 X["test_hero"] = {
-    'npc_dota_hero_tiny'
+    'npc_dota_hero_tiny',
+    'npc_dota_hero_earthshaker'
 }
 
 X["onlyCM_hero"] = {
