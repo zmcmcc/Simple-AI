@@ -604,12 +604,12 @@ function X.ConsiderR()
 	
 	if not abilityR:IsFullyCastable() or bot:DistanceFromFountain() < 500 then return BOT_ACTION_DESIRE_NONE end
 
-	local nNearbyAllyHeroes = bot:GetNearbyHeroes( 1600, false, BOT_MODE_NONE );
+	local nNearbyAllyHeroes = J.GetAlliesNearLoc(bot:GetLocation(), 1200);
 	local nNearbyEnemyHeroes  = bot:GetNearbyHeroes( 1600, true, BOT_MODE_NONE );
-	local nNearbyEnemyTowers = bot:GetNearbyTowers(800,true);
+	local nNearbyEnemyTowers = bot:GetNearbyTowers(700,true);
 	local nNearbyEnemyBarracks = bot:GetNearbyBarracks(400,true);
 	local nNearbyAlliedCreeps = bot:GetNearbyLaneCreeps(1000,false);
-	
+	local nCastRange = abilityW:IsFullyCastable() and 780 or 650;
 	
 	-- if #nNearbyAllyHeroes + #nNearbyEnemyHeroes >= 3
 	   -- and  #hEnemyHeroList - #nNearbyAllyHeroes <= 2
@@ -618,12 +618,12 @@ function X.ConsiderR()
 	  	-- return BOT_ACTION_DESIRE_HIGH;
 	-- end
 	
-	if J.IsGoingOnSomeone(bot) and #nNearbyAllyHeroes - #nNearbyEnemyHeroes < 3
+	if J.IsGoingOnSomeone(bot) and #nNearbyAllyHeroes - #nNearbyEnemyHeroes <= 3
 	then
-		local hBotTarget = J.GetProperTarget(bot)
+		local hBotTarget = J.GetProperTarget(bot)		 
 		if J.IsValidHero(hBotTarget)
 		   and J.CanCastOnMagicImmune(hBotTarget)
-		   and J.IsInRange(hBotTarget, bot, abilityW:IsFullyCastable() and 770 or 660 )
+		   and J.IsInRange(hBotTarget, bot,  nCastRange)
 		then
 			return BOT_ACTION_DESIRE_HIGH
 		end

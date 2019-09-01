@@ -522,7 +522,6 @@ local lastAutoTime = 0;
 function X.ConsiderQ()
 	
 	if not abilityQ:IsFullyCastable()
-		or bot:IsInvisible()
 		or bot:IsDisarmed()
 		or J.GetDistanceFromEnemyFountain(bot) < 800
 	then
@@ -546,7 +545,7 @@ function X.ConsiderQ()
 	local nInAttackRangeWeakestEnemyHero = J.GetAttackableWeakestUnit(true, true, nAttackRange, bot);
 	local nInViewWeakestEnemyHero = J.GetAttackableWeakestUnit(true, true, 800, bot);
 
-	local nAlleyLaneCreeps = bot:GetNearbyLaneCreeps(330,false);
+	local nAllyLaneCreeps = bot:GetNearbyLaneCreeps(330,false);
 	local npcTarget = J.GetProperTarget(bot)
 	local nTargetUint = nil;
 	local npcMode = bot:GetActiveMode();
@@ -566,17 +565,17 @@ function X.ConsiderQ()
 				abilityQ:ToggleAutoCast()
 	    end
 	else
-		if  abilityQ:GetAutoCastState( ) 
+		if abilityQ:GetAutoCastState( ) 
 		then
 			abilityQ:ToggleAutoCast()
 		end
 	end	
 	
-	if nLV <= 9 
-	   and not J.IsRunning(bot)
-	   and nHP > 0.55
+	if nLV <= 9 and nHP > 0.55 
+	   and ( not J.IsRunning(bot) or J.IsInRange(bot,botTarget,nAttackRange + 19) )
 	then
 		if  J.IsValidHero(npcTarget)
+			and not npcTarget:IsAttackImmune()
 			and GetUnitToUnitDistance(bot,npcTarget) < nAttackRange + 99
 		then
 			nTargetUint = npcTarget;
@@ -594,7 +593,7 @@ function X.ConsiderQ()
 			if nEnemysWeakestLaneCreepsInRangeHealth > 130
 				and nHP >= 0.6 
 				and #nEnemysLaneCreepsNearby <= 3 
-				and #nAlleyLaneCreeps >= 2
+				and #nAllyLaneCreeps >= 2
 				and not bot:WasRecentlyDamagedByCreep(1.5)
 				and not bot:WasRecentlyDamagedByAnyHero(1.5)
 			then
@@ -609,7 +608,7 @@ function X.ConsiderQ()
 			if nEnemysWeakestLaneCreepsInRangeHealth > 180
 				and nHP >= 0.7 
 				and #nEnemysLaneCreepsNearby <= 2 
-				and #nAlleyLaneCreeps >= 3
+				and #nAllyLaneCreeps >= 3
 				and not bot:WasRecentlyDamagedByCreep(1.5)
 				and not bot:WasRecentlyDamagedByAnyHero(1.5)
 				and not bot:WasRecentlyDamagedByTower(1.5)

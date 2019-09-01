@@ -69,7 +69,7 @@ if gTime == nil then gTime = 0 end
 ---------------------------通过文件使用的
 --]]
 local sDota2Version= '7.22d'
-local sDebugVersion= '20190810ver1.2a'
+local sDebugVersion= '20190901ver1.3a'
 local nPrintTime   = 9999
 local nDebugTime   = 9999
 local bDebugMode   = false
@@ -173,32 +173,32 @@ end
 function J.SetUserHeroInit(nAbilityBuildList, nTalentBuildList, sBuyList, sSellList)
 
 	local bot = GetBot()
-
+	
 	if J.Role.IsUserMode() and J.Role.IsUserHero()
 	then
 		local nDirType = J.Role.GetDirType()
 		local sBotDir = J.Chat.GetHeroDirName(bot, nDirType)
-		local BotSet = nil;
-		if xpcall(function(loadDir) require( loadDir ) end, function(err) print(err) end, sBotDir) then
-			BotSet = require( sBotDir )
-		else
-			return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
+		
+		if xpcall(function(loadDir) require( loadDir ) end, function(err) print(err) end, sBotDir)
+		then
+			local BotSet = require( sBotDir );
+			if J.Chat.GetRawGameWord(BotSet['ShiFouShengXiao']) == true
+			then
+				nAbilityBuildList = BotSet['JiNeng'];
+				nTalentBuildList = J.Chat.GetTalentBuildList(BotSet['TianFu'])
+				sBuyList = J.Chat.GetItemBuildList(BotSet['ChuZhuang'])
+				sSellList = J.Chat.GetItemBuildList(BotSet['GuoDuZhuang'])
+				if J.Chat.GetRawGameWord(BotSet['ShiFouDaFuZhu']) == true
+				then J.Role.SetUserSup(bot) end
+			end
 		end
 		
-		if J.Chat.GetRawGameWord(BotSet['ShiFouShengXiao']) == true
-		then
-			nAbilityBuildList = BotSet['JiNeng'];
-			nTalentBuildList = J.Chat.GetTalentBuildList(BotSet['TianFu'])
-			sBuyList = J.Chat.GetItemBuildList(BotSet['ChuZhuang'])
-			sSellList = J.Chat.GetItemBuildList(BotSet['GuoDuZhuang'])
-			if J.Chat.GetRawGameWord(BotSet['ShiFouDaFuZhu']) == true
-			then J.Role.SetUserSup(bot) end
-		end
 	end
 
 	return nAbilityBuildList, nTalentBuildList, sBuyList, sSellList;
 	
 end
+
 
 --在这里更新全局变量
 function J.ConsiderUpdateEnvironment(bot)
@@ -257,25 +257,6 @@ function J.CanNotUseAbility(bot)
 end
 
 
-function J.GetVulnerableWeakestUnit(bHero, bEnemy, nRadius, bot)
-	local units = {};
-	local weakest = nil;
-	local weakestHP = 10000;
-	if bHero then
-		units = bot:GetNearbyHeroes(nRadius, bEnemy, BOT_MODE_NONE);
-	else
-		units = bot:GetNearbyLaneCreeps(nRadius, bEnemy);
-	end
-	for _,u in pairs(units) do
-		if u:GetHealth() < weakestHP 
-		   and J.CanCastOnNonMagicImmune(u) 
-		then
-			weakest = u;
-			weakestHP = u:GetHealth();
-		end
-	end
-	return weakest;
-end
 
 
 --友军生物数量
@@ -355,20 +336,47 @@ function J.GetAttackTargetEnemyCreepCount(target, nRange)
 end
 
 
+function J.GetVulnerableWeakestUnit(bHero, bEnemy, nRadius, bot)
+	local units = {};
+	local weakest = nil;
+	local weakestHP = 10000;
+	if bHero then
+		units = bot:GetNearbyHeroes(nRadius, bEnemy, BOT_MODE_NONE);
+	else
+		units = bot:GetNearbyLaneCreeps(nRadius, bEnemy);
+	end
+	for _,u in pairs(units) do
+		if u:GetHealth() < weakestHP 
+		   and J.CanCastOnNonMagicImmune(u) 
+		then
+			weakest = u;
+			weakestHP = u:GetHealth();
+		end
+	end
+	return weakest;
+end
+
+
 function J.GetVulnerableUnitNearLoc(bHero, bEnemy, nCastRange, nRadius, vLoc, bot)
 	local units = {};
 	local weakest = nil;
+	local weakestHP = 10000;
 	if bHero then
 		units = bot:GetNearbyHeroes(nCastRange, bEnemy, BOT_MODE_NONE);
 	else
 		units = bot:GetNearbyLaneCreeps(nCastRange, bEnemy);
 	end
+	
 	for _,u in pairs(units) do
-		if GetUnitToLocationDistance(u, vLoc) < nRadius and J.CanCastOnNonMagicImmune(u) then
+		if GetUnitToLocationDistance(u, vLoc) < nRadius 
+		   and u:GetHealth() < weakestHP 
+		   and J.CanCastOnNonMagicImmune(u) 
+		then
 			weakest = u;
-			break;
+			weakestHP = u:GetHealth();
 		end
 	end
+	
 	return weakest;
 end
 
@@ -406,14 +414,21 @@ end
 
 
 function J.GetProperTarget(bot)
+	
 	local target = bot:GetTarget();
-	if target == nil then
+	
+	if target == nil 
+	then
 		target = bot:GetAttackTarget();
 	end
-	--目标尝试修复代码
-	if  target ~= nil and target:GetTeam() == bot:GetTeam() then
-		target = bot:GetAttackTarget();
+	
+	if target ~= nil 
+	   and target:IsHero()
+	   and target:GetTeam() == bot:GetTeam()
+	then
+		target = nil;
 	end
+	
 	return target;
 end
 
@@ -473,8 +488,7 @@ function J.IsOtherAllyCanKillTarget(bot, target)
 			local allyTarget = J.GetProperTarget(ally);
 			if allyTarget == nil or allyTarget == target or J.IsHumanPlayer(ally)
 			then
-				local allyDamageTime = 2.8;
-				if J.IsHumanPlayer(ally) then allyDamageTime = 8.2 end;
+				local allyDamageTime = J.IsHumanPlayer(ally) and 6.2 or 2.6 ;
 				nTotalDamage = nTotalDamage + ally:GetEstimatedDamageToTarget(true, target, allyDamageTime, DAMAGE_TYPE_PHYSICAL);
 			end
 		end
@@ -726,6 +740,13 @@ function J.CanCastOnTargetAdvanced( npcTarget )
 
 	if npcTarget:GetUnitName() == 'npc_dota_hero_antimage'
 	then
+	
+		if npcTarget:HasModifier( "modifier_antimage_spell_shield" )
+		   and J.GetModifierTime( npcTarget,"modifier_antimage_spell_shield" ) > 0.27
+		then
+			return false;
+		end	
+	
 		if npcTarget:IsSilenced()
 		   or npcTarget:IsStunned()
 		   or npcTarget:IsHexed()
@@ -748,6 +769,7 @@ function J.CanCastOnTargetAdvanced( npcTarget )
 			and not npcTarget:HasModifier("modifier_item_lotus_orb_active")
 			and not npcTarget:HasModifier("modifier_item_aeon_disk_buff")
 			and not npcTarget:HasModifier("modifier_dazzle_shallow_grave")
+			and not npcTarget:HasModifier( "modifier_antimage_spell_shield" )
 end
 
 
@@ -772,11 +794,11 @@ function J.CanKillTarget(npcTarget, dmg, dmgType)
 end
 
 
-function J.WillKillTarget(npcTarget, dmg, dmgType, dTime)
+function J.WillKillTarget(npcTarget, dmg, dmgType, nDelay)
 	
-	local targetHealth = npcTarget:GetHealth() + npcTarget:GetHealthRegen() * dTime + 1;
+	local targetHealth = npcTarget:GetHealth() + npcTarget:GetHealthRegen() * nDelay + 1;
 	
-	local nRealBonus = J.GetTotalAttackWillRealDamage(npcTarget, dTime);
+	local nRealBonus = J.GetTotalAttackWillRealDamage(npcTarget, nDelay);
 	
 	local nTotalDamage = npcTarget:GetActualIncomingDamage( dmg, dmgType ) + nRealBonus;
 
@@ -986,6 +1008,12 @@ function J.IsLaning(bot)
 end
 
 
+function J.IsDoingRoshan(bot)
+	local mode = bot:GetActiveMode();
+	return mode == BOT_MODE_ROSHAN
+end
+
+
 function J.IsFarming(bot)
 	local mode = bot:GetActiveMode();
 	local nTarget = J.GetProperTarget(bot);
@@ -1099,24 +1127,17 @@ end
 function J.IsAllyUnitSpell(sAbilityName)
 
 	local sSpellList = {
-						"bloodseeker_bloodrage", 
-						"omniknight_purification", 
-						"omniknight_repel", 
-						"medusa_mana_shield", 
-						"grimstroke_spirit_walk", 
-						"dazzle_shallow_grave", 
-						"ogre_magi_bloodlust", 
-						"lich_frost_shield", 
+						["bloodseeker_bloodrage"] = true, 
+						["omniknight_purification"] = true, 
+						["omniknight_repel"] = true, 
+						["medusa_mana_shield"] = true, 
+						["grimstroke_spirit_walk"] = true, 
+						["dazzle_shallow_grave"] = true, 
+						["ogre_magi_bloodlust"] = true, 
+						["lich_frost_shield"] = true, 
 						};
-	for _,name in pairs(sSpellList) --此处可优化排序算法
-	do
-		if sAbilityName == name
-		then
-			return true;
-		end
-	end
 
-	return false;
+	return sSpellList[sAbilityName] == true;
 	
 end
 
@@ -1124,29 +1145,21 @@ end
 function J.IsProjectileUnitSpell(sAbilityName)
 
 	local sSpellList = {
-						"chaos_knight_chaos_bolt", 
-						"grimstroke_ink_creature", 
-						"lich_chain_frost", 
-						"medusa_mystic_snake", 
-						"phantom_assassin_stifling_dagger", 
-						"phantom_lancer_spirit_lance",
-						"skeleton_king_hellfire_blast", 
-						"skywrath_mage_arcane_bolt", 
-						"sven_storm_bolt", 
-						"vengefulspirit_magic_missile",
-						"viper_viper_strike", 
-						"witch_doctor_paralyzing_cask", 
+						["chaos_knight_chaos_bolt"] = true, 
+						["grimstroke_ink_creature"] = true, 
+						["lich_chain_frost"] = true, 
+						["medusa_mystic_snake"] = true, 
+						["phantom_assassin_stifling_dagger"] = true, 
+						["phantom_lancer_spirit_lance"] = true,
+						["skeleton_king_hellfire_blast"] = true, 
+						["skywrath_mage_arcane_bolt"] = true, 
+						["sven_storm_bolt"] = true, 
+						["vengefulspirit_magic_missile"] = true,
+						["viper_viper_strike"] = true, 
+						["witch_doctor_paralyzing_cask"] = true, 
 						};
 					
-	for _,name in pairs(sSpellList) --此处可优化排序算法
-	do
-		if sAbilityName == name
-		then
-			return true;
-		end
-	end
-
-	return false;
+	return sSpellList[sAbilityName] == true;
 
 
 end
@@ -1155,22 +1168,14 @@ end
 function J.IsOnlyProjectileSpell(sAbilityName)
 
 	local sSpellList = {
-					"necrolyte_death_pulse", 
-					"arc_warden_spark_wraith", 
-					"tinker_heat_seeking_missile", 
-					"skywrath_mage_concussive_shot", 
-					"rattletrap_battery_assault", 
+					["necrolyte_death_pulse"] = true, 
+					["arc_warden_spark_wraith"] = true, 
+					["tinker_heat_seeking_missile"] = true, 
+					["skywrath_mage_concussive_shot"] = true, 
+					["rattletrap_battery_assault"] = true, 
 					};
-					
-	for _,name in pairs(sSpellList) --此处可优化排序算法
-	do
-		if sAbilityName == name
-		then
-			return true;
-		end
-	end
 
-	return false;
+	return sSpellList[sAbilityName] == true;
 
 end
 
@@ -1492,29 +1497,29 @@ function J.GetAttackProjectileDamageByRange(nUnit, nRange)
 end
 
 
-function J.GetCorrectLoc(target, delay)
+function J.GetCorrectLoc(npcTarget, fDelay)
+
+	local nStability = npcTarget:GetMovementDirectionStability()
 	
-	-- if target:GetMovementDirectionStability() < 0.6 
-	-- then
-		-- return target:GetExtrapolatedLocation(delay *0.38);
-	-- elseif target:GetMovementDirectionStability() < 0.9 
-		-- then
-			-- return target:GetExtrapolatedLocation(delay *0.62);
-	-- else
-		-- return target:GetExtrapolatedLocation(delay);	
-	-- end
+	local vFirst = npcTarget:GetLocation()
+	local vFuture = npcTarget:GetExtrapolatedLocation(fDelay)
+	local vMidFutrue = ( vFirst + vFuture ) *0.5
+	local vLowFutrue = ( vFirst + vMidFutrue ) *0.5
+	local vHighFutrue = ( vFuture + vMidFutrue ) *0.5
 	
-	if target:GetMovementDirectionStability() < 0.6 
+	
+	if nStability < 0.5 
 	then
-		return (target:GetLocation() + target:GetExtrapolatedLocation(delay *0.68))/2;
-	elseif target:GetMovementDirectionStability() < 0.95 
+		return vLowFutrue;
+	elseif nStability < 0.8 
 		then
-			return (target:GetLocation() + target:GetExtrapolatedLocation(delay *0.88))/2;
-	else
-		return target:GetExtrapolatedLocation(delay);	
+			return vMidFutrue;
+	elseif nStability < 0.93 
+		then
+			return vHighFutrue;	
 	end
 	
-	return target:GetExtrapolatedLocation(delay);
+	return vFuture;
 end
 
 
@@ -1704,11 +1709,11 @@ end
 
 function J.GetLocationToLocationDistance(fLoc, sLoc)
 	
-	local x1=fLoc.x
-	local x2=sLoc.x
-	local y1=fLoc.y
-	local y2=sLoc.y
-	return math.sqrt(math.pow((y2-y1), 2)+math.pow((x2-x1), 2))
+	local x1 = fLoc.x
+	local x2 = sLoc.x
+	local y1 = fLoc.y
+	local y2 = sLoc.y
+	return math.sqrt(math.pow((y2-y1), 2) + math.pow((x2-x1), 2))
 
 end
 
@@ -1825,9 +1830,10 @@ function J.SetReportMotive(bDebugFile, sMotive)
 	
 	if bDebugMode and bDebugTeam and bDebugFile and sMotive ~= nil
 	then
-		GetBot():ActionImmediate_Chat(sMotive, true);
-		local nowTime = J.GetOne(DotaTime()/10)*10;
-		print(J.Chat.GetNormName(GetBot()).."  "..(J.GetOne(nowTime/600)*10)..":"..(nowTime%60).."  "..sMotive)
+		local nTime = J.GetOne(DotaTime()/10)*10;
+		local sTime = (J.GetOne(nTime/600)*10)..":"..(nTime%60)
+		GetBot():ActionImmediate_Chat(sTime.."_"..sMotive, true);
+		print(J.Chat.GetNormName(GetBot()).."  "..sTime.."  "..sMotive)
 	end
 
 end
@@ -1996,11 +2002,12 @@ end
 function J.IsOtherAllysTarget(unit)
 	local bot = GetBot();
 	local hAllyList = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
-	for _,ally in pairs(hAllyList) do
+	for _,ally in pairs(hAllyList) 
+	do
 		if J.IsValid(ally)
 		    and ally ~= bot 
 			and ( J.GetProperTarget(ally) == unit 
-					or ally:IsFacingLocation(unit:GetLocation(), 12) )
+				or ( not ally:IsBot() and ally:IsFacingLocation(unit:GetLocation(), 12) ) )
 		then
 			return true;
 		end
@@ -2105,14 +2112,14 @@ function J.IsAttacking(bot)
 end
 
 
-function J.GetModifierTime(bot, nMoName)
+function J.GetModifierTime(bot, nModifierName)
 	
-	if not bot:HasModifier(nMoName) then return 0; end
+	if not bot:HasModifier(nModifierName) then return 0; end
 
 	local npcModifier = bot:NumModifiers();
 	for i = 0, npcModifier 
 	do
-		if bot:GetModifierName(i) == nMoName 
+		if bot:GetModifierName(i) == nModifierName 
 		then
 			return bot:GetModifierRemainingDuration(i);
 		end
@@ -2369,14 +2376,14 @@ function J.IsSpecialSupport(bot)
     
 	local botName = bot:GetUnitName();
 	
-	return  botName == "npc_dota_hero_crystal_maiden"
+	return  botName == "npc_dota_hero_crystal_maiden"	
 			or botName == "npc_dota_hero_jakiro"
 			or botName == "npc_dota_hero_lina"
 			or botName == "npc_dota_hero_necrolyte"
 			or botName == "npc_dota_hero_silencer"
 			or botName == "npc_dota_hero_skywrath_mage"
-			or botName == "npc_dota_hero_warlock"	  
-			or botName == "npc_dota_hero_zuus"
+			or botName == "npc_dota_hero_warlock"		  
+			or botName == "npc_dota_hero_zuus" 
 			or botName == "npc_dota_hero_dazzle"
 			or botName == "npc_dota_hero_batrider"
 			or botName == "npc_dota_hero_puck"
@@ -3649,6 +3656,7 @@ J.IsInLocRange(npcTarget, nLoc, nCastRange)
 J.IsInTeamFight(bot, range)
 J.IsRetreating(bot)
 J.IsGoingOnSomeone(bot)
+J.IsDoingRoshan(bot)
 J.IsDefending(bot)
 J.IsPushing(bot)
 J.IsLaning(bot)

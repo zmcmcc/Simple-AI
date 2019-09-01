@@ -18,6 +18,7 @@ local X = {}
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local role = require( GetScriptDirectory()..'/FunLib/jmz_role')
 
+
 local botName = bot:GetUnitName();
 local cAbility = nil;
 local distance = 2500; --吃锅距离
@@ -36,8 +37,10 @@ local towerCreepTime = 0;
 local roamMode = false
 --end
 
-local beSpecialSupport = J.IsSpecialSupport(bot);
-local beSpecialCarry = J.IsSpecialCarry(bot)
+
+local beInitDone = false;
+local beSpecialSupport = false;
+local beSpecialCarry = false;
 
 local droppedCheck = -90;
 local cheeseCheck = -90;
@@ -45,9 +48,17 @@ local refShardCheck = -90;
 local pickedItem = nil;
 local lastBootSlotCheck = -90;
 
---可优化补充捡物品的逻辑在这里,移动换物品的逻辑到物品购买里
 
+--可优化补充捡物品的逻辑在这里,移动换物品的逻辑到物品购买里
 function GetDesire()
+
+	if not beInitDone 
+	then
+		beInitDone = true
+		beSpecialCarry = X.IsSpecialCarry(bot);
+		beSpecialSupport = X.IsSpecialSupport(bot);		
+	end
+
 	
 	if not bot:IsAlive() or bot:GetCurrentActionType() == BOT_ACTION_TYPE_DELAY then
 		targetShrine = nil;
@@ -188,6 +199,7 @@ function GetDesire()
 		targetShrine = X.GetClosestShrine();
 		if targetShrine ~= nil 
 		   and bot:GetActiveMode() ~= BOT_MODE_RUNE
+		   and botName ~= 'npc_dota_hero_huskar'
 		   and not bot:HasModifier("modifier_arc_warden_tempest_double") 
 		then
 			local enemies = bot:GetNearbyHeroes(1000, true, BOT_MODE_NONE);
@@ -242,29 +254,8 @@ function GetDesire()
 		end
 	end
 	
-	if false and--暂时取消功能
-	   bot:IsAlive() and
-	   J.IsSpecialSupport(bot) and
-	   DotaTime() > 60 and
-	   DotaTime() < 600 and
-	   healthP > 0.4
-	then
-		pulltargetUnit, pulltargetLoc= X.PullAWild()
-		if pulltargetUnit ~= nil or pulltargetLoc ~= nil then
-			pullAWildMod = true
-			return BOT_MODE_DESIRE_ABSOLUTE *0.9;
-		else
-			pullAWildMod = false
-		end
-	end
 
-	local TeamRoamDesire = GetTeamRoamDesire()
-
-	if TeamRoamDesire > 0 then
-		roamMode = true
-		return TeamRoamDesire
-	end
-
+	
 	return 0.0;
 	
 end
@@ -283,14 +274,6 @@ function OnEnd()
 	towerTime = 0;
 	towerCreepMode = false;
 	bot:SetTarget(nil);
-	pullAWildMod = false
-	pulltargetUnit = nil
-	pulltargetLoc = nil
-	bot.TeamRoam=false
-	bot.TeamRoamState=nil
-	bot.TeamRoamTargetID=nil
-	bot.TeamRoamLeader=nil
-	bot.TeamRoamTimer=nil
 	
 end
 
@@ -303,27 +286,6 @@ function Think()
 	end
 	
 	if J.CanNotUseAction(bot) then return end
-
-	if pullAWildMod then
-
-		if pulltargetUnit ~= nil then
-			print('勾怪'..bot:GetAnimActivity())
-			bot:ActionPush_AttackUnit(pulltargetUnit, true);
-			if bot:GetAnimActivity() == 1504 then
-				pulltargetUnit = nil; --判断勾到了怪
-			end
-		elseif pulltargetLoc ~= nil then
-
-				print('拉野'..GetUnitToLocationDistance(bot, pulltargetLoc))
-				bot:Action_MoveToLocation(pulltargetLoc);
-
-			if GetUnitToLocationDistance(bot, pulltargetLoc) < 50 then
-				pulltargetLoc = nil
-			end
-		end
-
-		return;
-	end
 	
 	if towerCreepMode then
 		bot:Action_AttackUnit( towerCreep, true );
@@ -415,10 +377,6 @@ function Think()
 	then
 		bot:Action_AttackUnit( targetUnit, true );
 		return;	
-	end
-
-	if roamMode then
-		TeamRoamThink()
 	end
 	
 end
@@ -1409,12 +1367,12 @@ function X.GetNearbyLastHitCreep(ignorAlly, bEnemy, nDamage, nRadius, bot)
 		nDamage = nDamage * bonusPer;
 	end
 	
-	if botName == "npc_dota_hero_templar_assassin" and not bEnemy
+	if botName == "npc_dota_hero_templar_assassin" and bEnemy --V bug
 		and bot:HasModifier("modifier_templar_assassin_refraction_damage")
 	then
 		local cAbility = bot:GetAbilityByName( "templar_assassin_refraction" );
 		local bonusPer = cAbility:GetSpecialValueInt( 'bonus_damage' );
-		nDamage = nDamage - bonusPer;
+		nDamage = nDamage + bonusPer;
 	end
 
 	for _,nCreep in pairs(nNearbyCreeps)
@@ -1764,7 +1722,8 @@ function X.ShouldNotRetreat(bot)
 	end
 	
 	local nAttackAlly = bot:GetNearbyHeroes(800,false,BOT_MODE_ATTACK);
-	if  bot:HasModifier("modifier_item_mask_of_madness_berserk")
+	if  ( bot:HasModifier("modifier_item_mask_of_madness_berserk")
+			or bot:HasModifier("modifier_oracle_false_promise_timer") )
 		and ( #nAttackAlly >= 1 or J.GetHPR(bot) > 0.6 )
 	then
 		return true;
@@ -1885,8 +1844,10 @@ function X.ShouldAttackTowerCreep(bot)
 		and nTowers[1]:GetAttackTarget() ~= nil
 	then
 		local towerTarget = nTowers[1]:GetAttackTarget();		
+		local hAllyCreepList = bot:GetNearbyLaneCreeps(500,false);
 		if not towerTarget:IsHero()
 			and X.CanBeAttacked(towerTarget)
+			and #hAllyCreepList == 0
 			and not X.IsCreepTarget(towerTarget)
 			and GetUnitToUnitDistance(bot,towerTarget) < bot:GetAttackRange() + 100
 		then
@@ -1925,549 +1886,52 @@ function X.UpdateCommonCamp(creep, AvailableCamp)
 	end
 	return AvailableCamp;
 end
--- 拉线野测试程序
-function X.PullAWild()
-	local lTOPWildLoc =      Vector(-2500.000000, 4800.000000, 0.000000);
-	local lBOTWildLoc =      Vector(4800.000000, -4200.000000, 0.000000);
-	local lTOPWildCreepLoc = Vector(-3300.000000, 5800.000000, 0.000000);
-	local lBOTWildCreepLoc = Vector(6200.000000, -3000.000000, 0.000000);
 
-	local tTOPPullTime = 19;
-	local tBOTPullTime = 15;
-
-	local tNowTime = math.fmod( DotaTime(), 60 )
-
-	if GetTeam() == TEAM_RADIANT then
-		lTOPWildLoc =      Vector(-4250.000000, 3500.000000, 0.000000);
-		lBOTWildLoc =      Vector(3300.000000, -4500.000000, 0.000000);
-		lTOPWildCreepLoc = Vector(-5850.000000, 3000.000000, 0.000000);
-		lBOTWildCreepLoc = Vector(3600.000000, -6000.000000, 0.000000);
-		tTOPPullTime = 15;
-		tBOTPullTime = 19;
-	end
-
-	local TOPDistance = GetUnitToLocationDistance(bot, lTOPWildLoc)
-	local BOTDistance = GetUnitToLocationDistance(bot, lBOTWildLoc)
-
-	local nAttackRange = bot:GetAttackRange() + 300
-	local goTOPTime = tTOPPullTime - (TOPDistance / bot:GetBaseMovementSpeed())
-	local goBOTTime = tBOTPullTime - (BOTDistance / bot:GetBaseMovementSpeed())
+function X.IsSpecialCarry(bot)
+    
+	local botName = bot:GetUnitName();
 	
-	local enemyHeros = bot:GetNearbyHeroes(1000, true, BOT_MODE_NONE);
-	
-	if TOPDistance > 3200 and BOTDistance > 3200 and enemyHeros ~= nil then
-		return nil, nil;
-	end
-
-	--勾怪 ok
-	if pullAWildMod then
-		if lTOPWildLoc ~= nil and
-		IsLocationVisible(lTOPWildLoc) and
-		nAttackRange > TOPDistance and
-		tNowTime - tTOPPullTime <= 1
-		then
-			local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
-			local nArrey =bot:GetNearbyHeroes(50,false,BOT_MODE_NONE);
-
-			if nCreeps[1] ~= nil 
-			--   and nArrey == nil
-			then
-				
-				return nCreeps[1], lTOPWildCreepLoc;
-			else
-				return nil, nil;
-			end
-		end
-
-		if lBOTWildLoc ~= nil and
-		IsLocationVisible(lBOTWildLoc) and
-		nAttackRange > BOTDistance and
-		tNowTime - tBOTPullTime <= 1
-		then
-			local nCreeps = bot:GetNearbyNeutralCreeps (nAttackRange)
-
-			if nCreeps[1] ~= nil then
-				return nCreeps[1], lBOTWildCreepLoc;
-			else
-				return nil, nil;
-			end
-		end
-	end
-
-	--移动到目标 OK
-	if not pullAWildMod then 
-		local TOPCreepsDistance = TOPDistance
-		local BOTCreepsDistance = BOTDistance
-		if TOPCreepsDistance > 1600 then TOPCreepsDistance = 1600 end
-		if BOTCreepsDistance > 1600 then BOTCreepsDistance = 1600 end
-
-		local onTOPCreeps = bot:GetNearbyLaneCreeps(TOPCreepsDistance, true)
-		local onBOTCreeps = bot:GetNearbyLaneCreeps(BOTCreepsDistance, true)
-
-		if TOPDistance ~= nil and
-		   TOPDistance < 3200 and
-		   --        到达目标地点误差2秒              第二波固定拉野
-		   ((tNowTime - goTOPTime) < 2 or (DotaTime() > 120 and DotaTime() < 138) )and
-		   onTOPCreeps[1] ~= nil and
-		   GetUnitToLocationDistance(onTOPCreeps[1], lTOPWildLoc) < TOPDistance
-		then
-			return nil, lTOPWildLoc;
-		end
-
-		if BOTDistance ~= nil and
-		   BOTDistance < 3200 and
-		   ((tNowTime - goBOTTime) < 2 or (DotaTime() > 120 and DotaTime() < 138) )and
-		   onBOTCreeps[1] ~= nil and
-		   GetUnitToLocationDistance(onBOTCreeps[1], lBOTWildLoc) > BOTDistance
-		then
-			return nil, lBOTWildLoc;
-		end
-	end
-
-	if pullAWildMod then
-		return pulltargetUnit, pulltargetLoc;
-	end
-
-	return nil, nil;
-
+	return  botName == "npc_dota_hero_antimage"
+			or botName == "npc_dota_hero_arc_warden"
+			or botName == "npc_dota_hero_bloodseeker"
+			or botName == "npc_dota_hero_bristleback" 
+			or botName == "npc_dota_hero_chaos_knight" 
+			or botName == "npc_dota_hero_dragon_knight"
+			or botName == "npc_dota_hero_drow_ranger"
+			or botName == "npc_dota_hero_huskar"
+			or botName == "npc_dota_hero_kunkka"
+			or botName == "npc_dota_hero_luna"
+			or botName == "npc_dota_hero_medusa"
+			or botName == "npc_dota_hero_nevermore"
+			or botName == "npc_dota_hero_omniknight"
+			or botName == "npc_dota_hero_ogre_magi"
+			or botName == "npc_dota_hero_phantom_assassin"
+			or botName == "npc_dota_hero_phantom_lancer"
+			or botName == "npc_dota_hero_razor"
+			or botName == "npc_dota_hero_skeleton_king"
+			or botName == "npc_dota_hero_sven"
+			or botName == "npc_dota_hero_sniper"
+			or botName == "npc_dota_hero_templar_assassin"
+			or botName == "npc_dota_hero_viper" 
+		 
 end
---开雾抓人程序移植
---获取团队抓人欲望
-function GetTeamRoamDesire()
-	if CheckTimer==nil 
-	   or CheckTimer>DotaTime()
-	then
-		CheckTimer=DotaTime()
-	end
 
-	if DotaTime() - CheckTimer > 5 
-	   and bot.TeamRoam ~= true 
-	   and bot.TeamRoamTimer == nil
-	then
-		ConsiderTeamRoam()
-		CheckTimer = DotaTime()
-	end
 
-	if bot.TeamRoam == true
-	then
-		return 0.7
-	end
-
-	return 0
-end
---考虑进行团队抓人
-function ConsiderTeamRoam()
-	local item_smoke = J.IsItemAvailable("item_smoke_of_deceit")
+function X.IsSpecialSupport(bot)
+    
+	local botName = bot:GetUnitName();
 	
-	if item_smoke~=nil 
-	   and GetAllyFactor(bot) >= 0.7
-	then
-		local factor, target, allys = FindTarget()
-		if factor > 0.7
-		then
-			local nearBuilding = GetNearestBuilding(GetTeam(), bot:GetLocation())
-			local location = GetUnitsTowardsLocation(nearBuilding, GetAncient(GetTeam()), 600)
-			bot.TeamRoamAssemblyPoint = location
-			bot:ActionImmediate_Chat("走起，Gank "..string.gsub(target:GetUnitName(),"npc_dota_hero_","").."! ",false)
-			bot:ActionImmediate_Ping(location.x, location.y, true)
+	return  botName == "npc_dota_hero_crystal_maiden"	
+			or botName == "npc_dota_hero_jakiro"
+			or botName == 'npc_dota_hero_lich'
+			or botName == "npc_dota_hero_lina"
+			or botName == "npc_dota_hero_necrolyte"
+			or botName == "npc_dota_hero_oracle"
+			or botName == "npc_dota_hero_silencer"
+			or botName == "npc_dota_hero_skywrath_mage"
+			or botName == "npc_dota_hero_warlock"		  
+			or botName == "npc_dota_hero_witch_doctor"		  
+			or botName == "npc_dota_hero_zuus" 
 			
-			for _,npcAlly in pairs(allys)
-			do
-				local factor2 = GetAllyFactor(npcAlly)
-				if factor2 > 0.7
-				then
-					npcAlly.TeamRoam = true
-					npcAlly.TeamRoamState = "Assemble"
-					npcAlly.TeamRoamTargetID = target:GetPlayerID()
-					npcAlly.TeamRoamLeader = bot
-					npcAlly.TeamRoamTimer = DotaTime()
-					npcAlly:SetTarget(target)
-					bot:ActionImmediate_Chat(string.gsub(npcAlly:GetUnitName(),"npc_dota_hero_","").." come to Gank! Factor:"..factor2,false)			
-				end
-
-			end
-		end
-	end
-end
-
---获取盟友因素
-function GetAllyFactor(npcAlly)
-	local front = bot:GetLocation()
-	local distance = GetUnitToLocationDistance( npcAlly, front )
-	local nearBuilding = GetNearestBuilding(GetTeam(), front)
-	local distBuilding = GetUnitToLocationDistance( nearBuilding, front )
-	local distFactor = 0
-	local StateFactor=GetFactor(npcAlly)/2
-	local powerFactor=math.min(npcAlly:GetOffensivePower()/npcAlly:GetMaxHealth(),1)
-	
-	local enemys=npcAlly:GetNearbyHeroes(1200,true,BOT_MODE_NONE)
-	if (
-		npcAlly:GetAssignedLane() == LANE_MID 
-		or role.IsCarry(npcAlly:GetUnitName()
-	   ) 
-	   or role.IsSupport(npcAlly:GetUnitName()) == false) 
-	   and npcAlly:GetLevel() <= 6
-	then
-		return 0
-	end
-	
-	if(#enemys>0)
-	then
-		return 0
-	end
-	
-	local tp = J.IsItemAvailable("item_tpscroll")
-	if tp then
-		tp = tp:IsFullyCastable()
-	end
-	tp=nil
-	local travel = J.IsItemAvailable("item_travel_boots")
-	if travel then
-		travel = travel:IsFullyCastable()
-	end
-
-	if distance <= 1000 then
-		distFactor = 1
-	elseif distance >= 6000 then
-		distFactor = 0
-	else
-		distFactor = (6000-distance) / 6000
-	end
-
-	local factor = StateFactor * 0.7 + distFactor * 0.3
-	return factor
-end
---找到目标
-function FindTarget()
-	local allys2 = GetUnitList(UNIT_LIST_ALLIED_HEROES)
-	local allys = {}
-
-	for i,npcAlly in pairs(allys2)
-	do
-		local factor = GetAllyFactor(npcAlly)
-		if factor >= 0.70
-		then
-			table.insert(allys, npcAlly)
-		end
-	end
-
-	if #allys == 0 
-	then
-		return 0, 0
-	end
-
-	local MaxFactor = 0
-	local BestTarget
-	local BestAllys = {}
-	local enemys= GetUnitList(UNIT_LIST_ENEMY_HEROES)
-	for _,npcEnemy in pairs(enemys)
-	do
-		local factor, suitableallys= GetEnemyFactor(npcEnemy,allys)
-		if factor > MaxFactor
-		then
-			MaxFactor = factor
-			BestTarget = npcEnemy
-			BestAllys = suitableallys
-		end
-	end
-	
-	return MaxFactor, BestTarget,BestAllys
-
-end
---获取敌方因素
-function GetEnemyFactor(npcEnemy,allys)
-	if GetUnitToUnitDistance(bot, npcEnemy) >= 3000
-	then
-		local TowersCount = 0
-		local AllysCount = #allys
-		local EnemysCount = 0
-		local damageFactor = 0
-		local distance = GetUnitToUnitDistance(bot, npcEnemy)
-		local distFactor = math.max(0, (6000 - distance) / 6000)
-
-		for j = 0, 8, 1 do
-			local tower= GetTower(GetOtherTeam(), j);
-			if NotNilOrDead(tower) 
-			   and GetUnitToUnitDistance(npcEnemy, tower) < 1600 
-			then
-				TowersCount = TowersCount + 1;
-			end
-		end
-
-		local enemys2 = npcEnemy:GetNearbyHeroes(1600, false, BOT_MODE_NONE)
-
-		for _,enemy in pairs (enemys2)
-		do
-			if GetFactor(enemy) >= 1.0
-			then
-				EnemysCount = EnemysCount + 1
-			end
-		end
-	
-		if TowersCount > 0
-		   or EnemysCount - AllysCount >= 1
-		then
-			return 0,0
-		end
-		
-		local sumdamage = 0
-		local suitableallys = {}
-		local allys3 = npcEnemy:GetNearbyHeroes( 1600, true, BOT_MODE_NONE );
-		for i,npcAlly in pairs(allys3)
-		do
-			local IsIn = false
-			for i,npcAlly2 in pairs(allys)
-			do
-				if npcAlly:GetPlayerID() == npcAlly2:GetPlayerID()
-				then
-					IsIn = true
-				end
-			end
-			if IsIn == false
-			then
-				table.insert(allys,npcAlly)
-			end
-		end
-		
-		for i,npcAlly in pairs(allys)
-		do
-			if GetUnitToUnitDistance(npcAlly, npcEnemy) >= 1600
-			then
-				table.insert(suitableallys, npcAlly)
-			end
-			sumdamage = sumdamage + npcAlly:GetEstimatedDamageToTarget(true, npcEnemy, 5.0, DAMAGE_TYPE_ALL)
-		end
-		
-		damageFactor = math.min(sumdamage / npcEnemy:GetHealth(), 1.25) / 1.25
-		local factor= damageFactor * 0.7 + distFactor * 0.3
-		if npcEnemy:IsBot() == false
-		then
-			factor = factor * 1.2
-		end
-		return math.min(1.0, factor), suitableallys
-	end
-	return 0,0
-end
---抓人程序
-function TeamRoamThink()
-	local towers = bot:GetNearbyTowers(1000,true)
-
-	if bot.TeamRoam == true
-	then
-		if IsHeroAlive(bot.TeamRoamTargetID) == false 
-		   or DotaTime() - bot.TeamRoamTimer >= 40 
-		   or #towers >= 1
-		then
-			bot.TeamRoam = false
-			return
-		end
-	end
-
-	if bot.TeamRoamState == "Assemble"
-	then
-		if bot.TeamRoamLeader:GetUnitName() == bot:GetUnitName()
-		then
-			local enemys = bot:GetNearbyHeroes(1000, true, BOT_MODE_NONE)
-			local ready = true
-			
-			if #enemys > 0
-			then
-				ready=false
-				bot.TeamRoamAssemblyPoint = GetLocationTowardsLocation(bot.TeamRoamAssemblyPoint, GetAncient(GetTeam()):GetLocation(),100)
-			end
-			
-			for _,npcAlly in pairs (GetUnitList(UNIT_LIST_ALLIED_HEROES ))
-			do
-				if IsPlayerBot(npcAlly:GetPlayerID()) == true 
-				   and npcAlly.TeamRoam == true
-				then
-					if GetUnitToUnitDistance(bot,npcAlly) > 1000
-					then
-						ready=false
-					end
-				end
-			end
-
-			if ready == true
-			then
-				local item_smoke = J.IsItemAvailable("item_smoke_of_deceit")
-				if bot:HasModifier("modifier_smoke_of_deceit") == false
-				then
-					bot:Action_UseAbility(item_smoke)
-				end
-			else
-				bot:Action_MoveToLocation(bot.TeamRoamAssemblyPoint)
-			end
-		else
-			if GetUnitToUnitDistance(bot,bot.TeamRoamLeader) > 300
-			then
-				bot:Action_MoveToLocation(bot.TeamRoamLeader:GetLocation())
-			end
-		end
-
-		if bot:HasModifier("modifier_smoke_of_deceit")
-		then
-			bot.TeamRoamState = "Roaming"
-			bot.TeamRoamTimer = DotaTime()
-		end
-
-	elseif bot.TeamRoamState == "Roaming"
-	then
-		local enemys3 = GetUnitList(UNIT_LIST_ENEMY_HEROES)
-		local target
-		for _,enemy in pairs(enemys3)
-		do
-			if enemy:GetPlayerID() == bot.TeamRoamTargetID
-			then
-				target = enemy
-			end
-		end
-
-		local seeninfo = GetHeroLastSeenInfo(bot.TeamRoamTargetID)
-		if seeinfo ~= nil
-		then
-			local seenpoint = seeninfo[1].location
-			seenpoint = GetLocationTowardsLocation(seenpoint, GetAncient(GetOtherTeam()):GetLocation(),1000)
-			local seentime = seeninfo[1].time_since_seen
-
-			if seentime > 5 
-			   and bot.TeamRoamLeader:GetUnitName() == bot:GetUnitName()
-			then
-				local factor,target2,ChangedAllys=FindTarget()
-				if factor > 0.6
-				then
-					bot.TeamRoamTargetID = target2:GetPlayerID()
-					for i,npcAlly in pairs(ChangedAllys)
-					do
-						npcAlly.TeamRoamTargetID = target2:GetPlayerID()
-					end
-					bot:ActionImmediate_Chat("改变目标，去抓 "..string.gsub(target2:GetUnitName(),"npc_dota_hero_",""),false)
-				else
-					bot.TeamRoam = false
-					for i,npcAlly in pairs(GetUnitList(UNIT_LIST_ALLIED_HEROES))
-					do
-						npcAlly.TeamRoam = false
-					end
-					bot:ActionImmediate_Chat("目标不见了",false)
-				end
-			end
-
-			if GetUnitToLocationDistance(bot, seenpoint) <= 1200
-			then
-				if target~=nil
-				then
-					bot:SetTarget(target)
-					bot:Action_AttackUnit(target,false)
-				else
-					bot:Action_AttackMove(seenpoint)
-				end
-			else
-				local ready=true
-				for _,npcAlly in pairs (GetUnitList(UNIT_LIST_ALLIED_HEROES ))
-				do
-					if IsPlayerBot(npcAlly:GetPlayerID()) == true
-					   and npcAlly.TeamRoam == true
-					then
-						if GetUnitToUnitDistance(bot,bot.TeamRoamLeader) > 500
-						then
-							ready = false
-						end
-					end
-				end
-
-				if ready == true
-				then
-					bot:Action_MoveToLocation(seenpoint)
-				else
-					bot:Action_MoveToLocation(bot.TeamRoamLeader:GetLocation())
-				end
-			end
-		end
-	end
-end
-
-
---额外函数
-function GetNearestBuilding(team, location)
-	local buildings = GetAllBuilding( team )
-	local minDist = 16000 ^ 2
-	local nearestBuilding = nil
-	for _,v in pairs(buildings) do
-		local dist = PointToPointDistance(location, v:GetLocation())^2
-		if dist < minDist then
-			minDist = dist
-			nearestBuilding = v
-		end
-	end
-	return nearestBuilding
-end
-
-function PointToPointDistance(a,b)
-	local x1=a.x
-	local x2=b.x
-	local y1=a.y
-	local y2=b.y
-	return math.sqrt(math.pow((y2-y1),2)+math.pow((x2-x1),2))
-end
-
-function GetAllBuilding( team )
-	local buildings = {}
-	for i=0,10 do
-		local tower = GetTower(team,i)
-		if NotNilOrDead(tower) then
-			table.insert(buildings,tower)
-		end
-	end
-
-	for i=0,5 do
-		local barrack = GetBarracks( team, i )
-		if NotNilOrDead(barrack) then
-			table.insert(buildings,barrack)
-		end
-	end
-
-	for i=0,4 do
-		local shrine = GetShrine(team, i)
-		if NotNilOrDead(shrine) then
-			table.insert(buildings,shrine)
-		end
-	end
-
-	local ancient = GetAncient( team )
-	table.insert(buildings,ancient)
-	return buildings
-end
-
-function NotNilOrDead(unit)
-	if unit == nil or unit:IsNull() then
-		return false;
-	end
-	if unit:IsAlive() then
-		return true;
-	end
-	return false;
-end
-
-function GetOtherTeam()
-	if GetTeam()==TEAM_RADIANT then
-		return TEAM_DIRE;
-	else
-		return TEAM_RADIANT;
-	end
-end
-
-function GetFactor(unit)
-	return unit:GetHealth() / unit:GetMaxHealth() + unit:GetMana() / unit:GetMaxMana()
-end
-
-function GetUnitsTowardsLocation(unit,target, nUnits)
-	local vMyLocation,vTargetLocation=unit:GetLocation(),target:GetLocation()
-	local tempvector = (vTargetLocation - vMyLocation) / PointToPointDistance(vMyLocation, vTargetLocation)
-	return vMyLocation+nUnits * tempvector
-end
-
-function GetLocationTowardsLocation(vMyLocation,vTargetLocation, nUnits)
-	local tempvector= (vTargetLocation - vMyLocation) / PointToPointDistance(vMyLocation, vTargetLocation)
-	return vMyLocation+nUnits * tempvector
-end
+end 
 -- dota2jmz@163.com QQ:2462331592

@@ -8,11 +8,10 @@
 ----------------------------------------------------------------------------------------------------
 
 
---计划添加撤退时的物品使用逻辑
 local X = {};
 local bot = GetBot();
 
-if bot:IsInvulnerable() or bot:IsHero() == false or bot:IsIllusion() or not bot:IsHero()
+if bot:IsInvulnerable() or not bot:IsHero() or bot:IsIllusion() 
 then
 	return;
 end
@@ -302,7 +301,7 @@ local function CourierUsageComplement()
 	   and nowTime > nReturnTime + protectCourierCD  
 	then 
 		
-		if cState == COURIER_STATE_AT_BASE and courierPHP < 1.0 then
+		if cState == COURIER_STATE_AT_BASE and courierPHP < 0.96 then
 			return;
 		end
 		
@@ -371,7 +370,7 @@ end
 
 function X.IsValueToUseCourier(bot)
 	
-	if DotaTime() < 89
+	if DotaTime() < 90
 		and bot:GetStashValue() > 0
 	then
 		return true;
@@ -537,7 +536,11 @@ function X.IsTargetedByUnit(courier)
 	do 
 		if GetUnitToUnitDistance(enemy,courier) <= 700 + botLV * 15
 		then
-			return true;
+			local nNearCourierAllyList = J.GetAlliesNearLoc(courier:GetLocation(),600);
+			if #nNearCourierAllyList == 0
+			then
+				return true;
+			end
 		end
 		
 		if enemy:GetUnitName() == 'npc_dota_hero_sniper' 
@@ -550,21 +553,26 @@ function X.IsTargetedByUnit(courier)
 	local nEnemysHeroes = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
 	for _,enemy in pairs(nEnemysHeroes)
 	do 
-		if GetUnitToUnitDistance(enemy,courier) <= 700 + botLV * 15
-		then
-			return true ;
-		end
-	end
-	
-	local nAllEnemyCreeps = GetUnitList(UNIT_LIST_ENEMY_CREEPS);
-	for _,creep in pairs(nAllEnemyCreeps)
-	do
-		if  GetUnitToUnitDistance(courier,creep) <= 800
-			and ( creep:GetAttackTarget() == courier or botLV > 10 )
+		local nNearCourierAllyList = J.GetAlliesNearLoc(courier:GetLocation(),600);
+		if #nNearCourierAllyList == 0
 		then
 			return true;
 		end
 	end
+	
+	local nAllEnemyCreeps = GetUnitList(UNIT_LIST_ENEMY_CREEPS);
+	local nNearCourierAllyList = J.GetAlliesNearLoc(courier:GetLocation(),1500);
+	local nNearCourierAllyCount = #nNearCourierAllyList;
+	for _,creep in pairs(nAllEnemyCreeps)
+	do
+		if  GetUnitToUnitDistance(courier,creep) <= 800
+			and ( creep:GetAttackTarget() == courier or botLV > 10 )
+			and ( nNearCourierAllyCount == 0 or creep:GetAttackTarget() == courier )
+		then
+			return true;
+		end
+	end
+	
 	
 	
 	return false;
@@ -830,7 +838,7 @@ function X.ShouldTP()
 		return false,nil;
 	end	
 	
-	if bot:GetHealth() < 300
+	if bot:GetHealth() < 240
 	then
 		local nProDamage = J.GetAttackProjectileDamageByRange(bot, 1600);
 		if bot:GetHealth() < bot:GetActualIncomingDamage(nProDamage,DAMAGE_TYPE_PHYSICAL)
@@ -933,6 +941,7 @@ function X.ShouldTP()
 				and enemies <= 1 and allies <= 2
 				and ifl == nil
 				and bot:GetAttackTarget() == nil
+				and bot:GetUnitName() ~= 'npc_dota_hero_huskar'
 				and not  bot:HasModifier("modifier_flask_healing")
 				and not  bot:HasModifier("modifier_clarity_potion")
 				and not  bot:HasModifier("modifier_item_urn_heal")
@@ -1071,6 +1080,7 @@ local function UnImplementedItemUsage()
 		   and J.CanCastOnMagicImmune(npcTarget)
 		then
 			if not J.IsInRange(bot, npcTarget, 1800)
+			   and J.IsInRange(bot, npcTarget, 2600)
 			then
 				local hEnemyCreepList = bot:GetNearbyLaneCreeps(800,false);
 				if #hEnemyCreepList == 0 and #hNearbyEnemyHeroList == 0
@@ -1544,7 +1554,8 @@ local function UnImplementedItemUsage()
 		then
 			local hNearbyEnemyHeroList = bot:GetNearbyHeroes( 1600, true, BOT_MODE_NONE );
 			local trees = bot:GetNearbyTrees(1000);
-			if trees[1] ~= nil  and ( IsLocationVisible(GetTreeLocation(trees[1])) or IsLocationPassable(GetTreeLocation(trees[1])) )
+			if trees[1] ~= nil 
+			   and ( IsLocationVisible(GetTreeLocation(trees[1])) or IsLocationPassable(GetTreeLocation(trees[1])) )
 			   and #hNearbyEnemyHeroList == 0 
 			then
 				bot:Action_UseAbilityOnTree(its, trees[1]);
@@ -3307,6 +3318,22 @@ local function UnImplementedItemUsage()
 			bot:Action_UseAbility(buckler);
 		    return;	
 		end
+	end
+	
+	local janggo = X.IsItemAvailable("item_ancient_janggo");
+	if janggo ~= nil and janggo:IsFullyCastable()
+		and janggo:GetCurrentCharges() >= 1
+	then
+		if J.IsGoingOnSomeone(bot)
+		then
+			if J.IsValidHero(npcTarget)
+				and J.CanCastOnMagicImmune(npcTarget)
+				and J.IsInRange(bot,npcTarget,600)
+			then
+				bot:Action_UseAbility(janggo);
+				return;
+			end
+		end	
 	end
 	
 	

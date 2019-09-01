@@ -36,6 +36,10 @@ Chat['sExpandedList'] = {
 	'npc_dota_hero_phantom_lancer',
 	'npc_dota_hero_razor',
 	'npc_dota_hero_lina',
+	'npc_dota_hero_huskar',
+	'npc_dota_hero_oracle',
+	'npc_dota_hero_lich',
+	'npc_dota_hero_witch_doctor',
 	'npc_dota_hero_vengefulspirit',
 	'npc_dota_hero_shadow_demon',
 	'npc_dota_hero_tidehunter',
@@ -3073,7 +3077,7 @@ Chat['tHeroNameList'] = {
 
 	--040
 	['npc_dota_hero_arc_warden'] = {
-		['sNormName'] = '弧光',
+		['sNormName'] = '电 狗',
 		['sShortName'] = 'arc',
 		['sCnName'] = '天穹守望者',
 		['sEnName'] = 3,
@@ -3489,7 +3493,7 @@ Chat['tHeroNameList'] = {
 
 	--072
 	['npc_dota_hero_vengefulspirit'] = {
-		['sNormName'] = '复仇',
+		['sNormName'] = 'VS',
 		['sShortName'] = 'vs',
 		['sCnName'] = '复仇之魂',
 		['sEnName'] = 1,
@@ -4142,14 +4146,14 @@ function Chat.GetRawHeroName(sName)
 	
 	for _,s in pairs(Chat['sExpandedList'])
 	do
-		local sTempCnName = Chat['tHeroNameList'][s][sRawLanguage]
-		if sTempCnName == sName
+		local sTempName = Chat['tHeroNameList'][s][sRawLanguage]
+		if sTempName == sName
 		then
 			return s
 		end	
 	end
 	
-	return 'npc_dota_hero_crystal_maiden'  --如果是重复或未拓展的英雄,则返回冰女
+	return 'npc_dota_hero_crystal_maiden'  --如果是未拓展的英雄,则返回冰女
 	
 end
 

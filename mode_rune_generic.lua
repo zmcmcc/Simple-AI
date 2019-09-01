@@ -198,7 +198,7 @@ function Think()
 		then  
 			if not hasPingAndSay and bot:GetAssignedLane()== LANE_TOP
 			then
-				bot:ActionImmediate_Ping( bot:GetLocation().x, bot:GetLocation().y, false );				
+				bot:ActionImmediate_Ping( bot:GetLocation().x, bot:GetLocation().y, false );
 				local nMessage = "我不能直接分享物品，眼就丢这里了ヾ(•ω•`)o"
 				bot:ActionImmediate_Chat(nMessage,false);
 				hasPingAndSay = true;
