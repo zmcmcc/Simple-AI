@@ -60,11 +60,9 @@ function X.Consider()
 	local nDamage    = bot:GetAttackDamage()+ (( ability:GetSpecialValueInt( 'damage_increase_pct' ) / 100 ) * bot:GetAttackDamage());
 	
 	local npcTarget = J.GetProperTarget(bot);
-	local bBotMagicImune = J.CanCastOnNonMagicImmune(bot);
 	
 	--对线期提高补刀
 	if   bot:GetActiveMode() == BOT_MODE_LANING  
-		 and bBotMagicImune
 	     and not bot:HasModifier('modifier_bloodseeker_bloodrage')
 	then
 		local tableNearbyEnemyCreeps = bot:GetNearbyLaneCreeps( 1000, true );
@@ -84,7 +82,7 @@ function X.Consider()
 	end	
 	
 	--打野时吸血
-	if  J.IsValid(npcTarget) and npcTarget:GetTeam() == TEAM_NEUTRAL and bBotMagicImune
+	if  J.IsValid(npcTarget) and npcTarget:GetTeam() == TEAM_NEUTRAL 
 	    and not bot:HasModifier('modifier_bloodseeker_bloodrage')
 	then
 		local tableNearbyCreeps = bot:GetNearbyCreeps( 1000, true );
@@ -121,7 +119,6 @@ function X.Consider()
 	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN  ) 
 	then
 		if not bot:HasModifier('modifier_bloodseeker_bloodrage')
-		   and bBotMagicImune
 		then
 			return BOT_ACTION_DESIRE_HIGH, bot;
 		end	
@@ -183,7 +180,6 @@ function X.Consider()
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcTarget;
 			elseif not bot:HasModifier('modifier_bloodseeker_bloodrage') 
-				   and bBotMagicImune
 			    then 
 				    return BOT_ACTION_DESIRE_HIGH, bot;
 			end

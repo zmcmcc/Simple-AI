@@ -51,6 +51,53 @@ local tGroupedDataList = {
 			"item_phase_boots"
 		}
 	},
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		['Ability'] = { 3, 2, 3, 1, 3, 6, 3, 2, 2, 2, 6, 1, 1, 1, 6},
+		['Buy'] = {
+			"item_tango",
+			"item_flask",
+			"item_double_enchanted_mango",
+			"item_stout_shield",
+			"item_gauntlets",
+			"item_magic_stick",
+			"item_bracer",
+			"item_magic_wand",
+			"item_phase_boots",
+			"item_vanguard",
+			"item_hood_of_defiance", 
+			"item_blink",
+			"item_solar_crest",
+			"item_crimson_guard",
+			"item_ultimate_scepter",
+			"item_pipe",
+			"item_heart",
+			"item_ultimate_scepter_2",
+			"item_shivas_guard",
+			"item_travel_boots_2",
+			"item_moon_shard"
+		},
+		['Sell'] = {
+			"item_crimson_guard",
+			"item_bracer",
+
+			"item_ultimate_scepter",
+			"item_magic_stick",
+
+			"item_ultimate_scepter",     
+			"item_bracer",
+
+			"item_travel_boots_2",
+			"item_phase_boots"
+		}
+	},
 }
 --默认数据
 local tDefaultGroupedData = {

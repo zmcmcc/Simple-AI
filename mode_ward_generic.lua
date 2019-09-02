@@ -13,9 +13,7 @@ end
 
 local role = require( GetScriptDirectory()..'/FunLib/jmz_role')
 local Site = require( GetScriptDirectory()..'/FunLib/jmz_site')
-local additionlF = require(GetScriptDirectory() .. "/AuxiliaryScript/AdditionalFunction")
 local N = require( GetScriptDirectory()..'/AuxiliaryScript/Comicdialogue')
-local bot = GetBot();
 local bot = GetBot();
 local X = {}
 local AvailableSpots = {};

@@ -53,7 +53,89 @@ local tGroupedDataList = {
 			"item_silver_edge",
 			"item_aeon_disk",
 		}
-	}
+	},
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w 1',
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {0, 10},
+			['t10'] = {10, 0},
+		},
+		['Ability'] = { 1, 3, 1, 3, 1, 6, 1, 2, 3, 3, 6, 2, 2, 2, 6},
+		['Buy'] = {
+			"item_tango",
+			"item_clarity",
+			"item_double_enchanted_mango",
+			"item_magic_stick",
+			"item_boots",
+			"item_magic_wand",
+			"item_urn_of_shadows",
+			"item_arcane_boots",
+			"item_glimmer_cape",
+			"item_urn_of_shadows", 
+			"item_octarine_core",
+			"item_lotus_orb",
+			"item_guardian_greaves",
+			"item_ultimate_scepter_2",
+			"item_sheepstick",
+			"item_moon_shard"
+		},
+		['Sell'] = {
+			"item_sheepstick",
+			"item_force_staff",
+
+			"item_octarine_core",
+			"item_magic_stick",
+		}
+	},
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w 2',
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = {1,3,1,3,1,6,1,2,3,3,6,2,2,2,6},
+		--装备
+		['Buy'] = {
+			"item_tango",
+			"item_faerie_fire",
+			"item_flask",
+			"item_magic_stick",
+			"item_boots",
+			"item_blight_stone",
+			"item_power_treads",
+			"item_medallion_of_courage",
+			"item_hand_of_midas",
+			"item_desolator",
+			"item_solar_crest",
+			"item_sphere",
+			"item_bloodthorn",
+			"item_sheepstick",
+			"item_desolator",
+			"item_solar_crest",
+			"item_sphere",
+			"item_moon_shard",
+			"item_ultimate_scepter_2",
+			"item_travel_boots_2",
+		},
+		--出售
+		['Sell'] = {
+			"item_sphere",
+			"item_magic_stick",
+			
+			"item_travel_boots_2",
+			"item_power_treads",
+			
+			'item_sheepstick',
+			'item_hand_of_midas',
+		},
+	},
 }
 --默认数据
 local tDefaultGroupedData = {

@@ -57,6 +57,42 @@ local tGroupedDataList = {
 			"item_magic_wand"
 		},
 	},
+	{
+		--组合说明，不影响游戏
+		['info'] = 'By 铅笔会有猫的w',
+		['Talent'] = {
+			['t25'] = {10, 0},
+			['t20'] = {0, 10},
+			['t15'] = {0, 10},
+			['t10'] = {0, 10},
+		},
+		['Ability'] = { 1, 3, 3, 1, 3, 6, 2, 3, 1, 1, 6, 2, 2, 2, 6},
+		['Buy'] = {
+			"item_double_tango",
+			"item_flask",
+			"item_double_enchanted_mango",
+			"item_crown",
+			"item_magic_stick",
+			"item_boots",
+			"item_ancient_janggo",
+			"item_blink",
+			"item_force_staff",
+			"item_aether_lens", 
+			"item_travel_boots",
+			"item_black_king_bar",
+			"item_ultimate_scepter_2",
+			"item_shivas_guard",
+			"item_travel_boots_2",
+			"item_moon_shard"
+		},
+		['Sell'] = {
+			"item_black_king_bar",
+			"item_magic_stick",
+
+			"item_shivas_guard",
+			"item_ancient_janggo",
+		}
+	},
 }
 --默认数据
 local tDefaultGroupedData = {
