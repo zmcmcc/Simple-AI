@@ -300,7 +300,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_phantom_assassin",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_sniper",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_alchemist"] = {
   ["hero_name"] = "alchemist",
   ["proposal"] = {
@@ -1960,7 +1960,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_tusk",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_huskar",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_techies"] = {
   ["hero_name"] = "techies",
   ["proposal"] = {

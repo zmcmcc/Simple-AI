@@ -116,6 +116,9 @@ local abilityNameList = {
     'earthshaker_enchant_totem',
     'earthshaker_echo_slam',
     'earthshaker_fissure',
+    'razor_eye_of_the_storm',
+    'razor_plasma_field',
+    'razor_static_link',
 }
 
 --将英雄技能初始入变量

@@ -17,22 +17,36 @@ local enemyKills = 0;
 
 --嘲讽列表
 local killMocking = {
-    '击杀嘲讽'
+    '你气不气？',
+    '头部撞击',
+    '猢狲把戏',
+    '好走，不送',
+    '不好意思'
 }
 local teamMocking = {
-    '团战嘲讽'
+    '你气不气？',
+    '头部撞击',
+    '猢狲把戏'
+
 }
 local wipeMocking = {
-    '团灭嘲讽'
+    '人群叹息',
+    '头部撞击',
+    '猢狲把戏',
+    '这波不亏666'
 }
 local horseAndHorseMocking = {
-    '旗鼓相当'
+    '玩不了啦！',
+    '这游戏好难玩'
 }
 local perishTogetherMocking = {
-    '同归于尽'
+    '啊，队友呢?队友呢?队友呢?队友呢?',
+    '头部撞击'
 }
 local warMocking = {
-    '大战嘲讽'
+    '你气不气？',
+    '相当精彩的比赛',
+    '头部撞击'
 }
 
 function C.GameLive(countCD)
@@ -62,24 +76,24 @@ function C.GameLive(countCD)
         --[[
             说明：
                 以下均为死亡数小于击杀数的情况
-                4秒内没有再次击杀或死亡且总计击杀数量等于1【击杀嘲讽】
-                10秒内没有再次击杀或死亡且总计击杀数量大于等于3则判断为当前团战结束【团战嘲讽】
-                14秒内没有再次击杀或死亡且击杀数大于等于5【团灭嘲讽】
+                3秒内没有再次击杀或死亡且总计击杀数量等于1【击杀嘲讽】
+                3秒内没有再次击杀或死亡且总计击杀数量大于等于3则判断为当前团战结束【团战嘲讽】
+                4秒内没有再次击杀或死亡且击杀数大于等于5【团灭嘲讽】
                 以下为死亡数等于击杀数的情况
                 5秒没没有再次击杀或死亡且击杀数等于1【同归于尽嘲讽】
-                10秒内没有再次击杀或死亡且击杀数大于等于5【大战嘲讽】
+                5秒内没有再次击杀或死亡且击杀数大于等于5【大战嘲讽】
                 击杀情况
-                10秒内没有再次击杀或死亡且总计击杀数量大于等于3则判断为当前团战结束，死亡数大于等于3【旗鼓相当嘲讽】
+                5秒内没有再次击杀或死亡且总计击杀数量大于等于3则判断为当前团战结束，死亡数大于等于3【旗鼓相当嘲讽】
         ]]
 
         if not speechRestrictions then
             if killCount > dieCount then
                 if killCount >= 5 
-                   and DotaTime() - killInTime <= 14
+                   and DotaTime() - killInTime <= 4
                 then
                     speech(true, wipeMocking)
                 elseif killCount >= 3 
-                   and DotaTime() - killInTime <= 10
+                   and DotaTime() - killInTime <= 3
                 then
                     speech(true, teamMocking)
                 elseif killCount == 1 
@@ -90,7 +104,7 @@ function C.GameLive(countCD)
                 
             elseif killCount == dieCount then
                 if killCount >= 5
-                   and DotaTime() - killInTime <= 10
+                   and DotaTime() - killInTime <= 5
                 then
                     speech(true, warMocking)
                 elseif killCount == 1
@@ -101,7 +115,7 @@ function C.GameLive(countCD)
                 
             else
                 if killCount >= 3 
-                   and DotaTime() - killInTime <= 10
+                   and DotaTime() - killInTime <= 5
                    and killCount <= dieCount
                    and dieCount < killCount + 1
                 then

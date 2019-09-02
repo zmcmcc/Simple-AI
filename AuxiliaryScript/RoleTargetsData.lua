@@ -551,8 +551,8 @@ function X.getApHero()
     local botSelectHero = nil;
     --趣味模式
     if X.interestingMode == nil  then
-        local randomMode = RandomInt(1,1000)
-        if randomMode == 234 then
+        local randomMode = RandomInt(1,200)
+        if randomMode == 48 then
             X.interestingMode = '拉比克大魔王';
             interestingList = {
                 'npc_dota_hero_rubick',
@@ -561,7 +561,7 @@ function X.getApHero()
                 'npc_dota_hero_rubick',
                 'npc_dota_hero_rubick',
             };
-        elseif randomMode == 587 then
+        elseif randomMode == 104 then
             X.interestingMode = '刺球';
             interestingList = {
                 'npc_dota_hero_bristleback',
@@ -570,7 +570,7 @@ function X.getApHero()
                 'npc_dota_hero_bristleback',
                 'npc_dota_hero_bristleback',
             };
-        elseif randomMode == 724 then
+        elseif randomMode == 67 then
             X.interestingMode = '刺客联盟';
             interestingList = {
                 'npc_dota_hero_phantom_assassin',
@@ -579,7 +579,7 @@ function X.getApHero()
                 'npc_dota_hero_templar_assassin',
                 'npc_dota_hero_phantom_assassin',
             };
-        elseif randomMode == 984 then
+        elseif randomMode == 155 or randomMode == 174 or randomMode == 14 or randomMode == 199 then
             X.interestingMode = '闪电';
             local lightning = {
                 {
@@ -612,7 +612,7 @@ function X.getApHero()
                 }
             }
             interestingList = lightning[RandomInt(1,4)]
-        elseif randomMode == 143 then
+        elseif randomMode == 31 then
             X.interestingMode = '石头也疯狂';
             interestingList = {
                 'npc_dota_hero_tiny',

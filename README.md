@@ -1,4 +1,4 @@
-## Simple AI 1.1.4
+## Simple AI 1.1.5
 更加简单，快捷的构建DOTA2机器人脚本，不需要深入了解脚本制作流程，只需编写你需要的内容，脚本会自动加载。
 
 ### 说明
@@ -54,6 +54,7 @@
 - 天穹守望者
 - 龙骑士
 - 卓尔游侠
+- 剃刀
 
 ### 支持自定义的技能列表
 - dazzle_poison_touch
@@ -162,6 +163,9 @@
 - earthshaker_enchant_totem
 - earthshaker_echo_slam
 - earthshaker_fissure
+- razor_eye_of_the_storm
+- razor_plasma_field
+- razor_static_link
 ### 额外英雄
 - 复仇之魂
 - 潮汐猎人
