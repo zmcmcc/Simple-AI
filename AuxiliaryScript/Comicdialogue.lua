@@ -1,3 +1,5 @@
+--趣味消息
+
 local N = {}
 
 local nEnemysTeam = GetTeamPlayers(GetOpposingTeam());
@@ -121,11 +123,6 @@ function N.ComicDialogue()
     if heroName == 'npc_dota_hero_batrider' then
         --火女
         if IsHaveHero('npc_dota_hero_crystal_maiden', true) then
-            bot:ActionImmediate_Chat( '丽娜，做我的压寨夫人怎么样。', true);
-            return true
-        end
-        --小黑
-        if IsHaveHero('npc_dota_hero_drow_ranger', true) then
             bot:ActionImmediate_Chat( '丽娜，做我的压寨夫人怎么样。', true);
             return true
         end

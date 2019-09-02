@@ -1,3 +1,5 @@
+--英雄技能及装备处理
+
 local X = {}
 local bot = GetBot()
 
@@ -281,6 +283,89 @@ function X.Skills(order)
     end
 
     return false;
+end
+
+--技能组合           s技能组  n欲望信息 b联合行动
+function SkillsCombo(skill, consider, joint)
+    local ComboConsider = nil
+
+    if joint then
+
+        local nArreysTeam = GetTeamMember(GetTeam());  
+        local nArreysAbility = {};--所有队友（包括自己）的技能数据
+        local nskillList = {};--技能组合数据
+
+        for i,Arrey in pairs(nArreysTeam)
+        do
+            local heroId = Arrey:GetPlayerID()
+            local heroName = GetSelectedHeroName(heroId)
+            local heroAbility = J.Skill.GetAbilityList(Arrey)
+
+            nArreysAbility[i] = {
+                ['hero'] = Arrey,
+                ['player'] = heroId,
+                ['name'] = heroName,
+                ['abilitys'] = heroAbility,
+                ['bot'] = IsPlayerBot(heroId),
+            }
+        end
+
+        for _,ability in pairs(skill)
+        do
+            local multiple = string.find(ability, ':')
+            local jointHero = string.sub(ability, 1, multiple - 1)
+            local jointability = string.sub(ability, multiple + 1)
+            local jointabilitys = nil
+            local jointbot = nil
+
+            for _,arreyAbility in pairs(nArreysAbility)
+            do
+                if arreyAbility['name'] == jointHero and arreyAbility['bot'] then
+                    jointabilitys = arreyAbility['abilitys']
+                    jointbot = arreyAbility['hero']
+                end
+            end
+
+            if jointabilitys ~= nil then
+                if jointability == 'Q' then
+                    jointability = jointabilitys[1]
+                elseif jointability == 'W' then
+                    jointability = jointabilitys[2]
+                elseif jointability == 'E' then
+                    jointability = jointabilitys[3]
+                elseif jointability == 'D' then
+                    jointability = jointabilitys[4]
+                elseif jointability == 'F' then
+                    jointability = jointabilitys[5]
+                elseif jointability == 'R' then
+                    jointability = jointabilitys[6]
+                end
+            end
+            --jointability此时为技能名
+            if jointbot ~= nil then
+                nskillList[ability] = {
+                    ['ability'] = jointability,--释放的技能
+                    ['bot'] = jointbot--由谁来释放
+                }
+            end
+
+        end
+        
+        --此时nskillList中包含组合释放的技能、技能释放人和技能释放顺序，如果技能释放人为玩家控制，则跳过该技能
+        
+        if xpcall(function(loadAbility) require( GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..loadAbility ) end, function(err) if errc(err) then print(err) end end, consider) then
+            ComboConsider = require(GetScriptDirectory()..'/AuxiliaryScript/Abilitys/'..consider)
+        else
+            ComboConsider = nil
+        end
+
+        if ComboConsider ~= nil then
+            --欲望和释放怎么写啊%￥&*……￥
+        end
+
+
+    end
+
 end
 
 --装备组处理

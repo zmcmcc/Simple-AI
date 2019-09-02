@@ -13,7 +13,7 @@ local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 --前置技能
 
 --初始数据
-local ability = bot:GetAbilityByName('tiny_toss_tree')
+local ability = bot:GetAbilityByName('tiny_tree_channel')
 local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 local goTrees = nil
 

@@ -1,3 +1,5 @@
+--额外功能函数
+
 --初始化
 local bot = GetBot();
 

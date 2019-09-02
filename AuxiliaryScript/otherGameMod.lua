@@ -1,3 +1,5 @@
+--游戏模式
+
 ------------------------------------------CAPTAIN'S GAME MODE-------------------------------------------
 
 local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")

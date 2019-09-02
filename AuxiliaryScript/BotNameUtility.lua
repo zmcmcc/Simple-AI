@@ -1,3 +1,5 @@
+--电脑名称处理
+
 local U = {}
 
 local allowsHeroData = require(GetScriptDirectory() .. "/AuxiliaryScript/GetAllowHeroData")

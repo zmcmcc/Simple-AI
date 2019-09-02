@@ -1,3 +1,5 @@
+--额外通用功能
+
 local U = {}
 
 local bot, nLV, nMP, nHP

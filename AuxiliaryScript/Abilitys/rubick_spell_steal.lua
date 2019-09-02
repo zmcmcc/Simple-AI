@@ -51,8 +51,8 @@ local speelAbilityList = {
     'npc_dota_hero_arc_warden',
     'npc_dota_hero_dragon_knight',
     'npc_dota_hero_drow_ranger',
-    'npc_dota_hero_tiny'
-    'npc_dota_hero_earthshaker'
+    'npc_dota_hero_tiny',
+    'npc_dota_hero_earthshaker',
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {

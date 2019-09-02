@@ -1,5 +1,6 @@
 --  英雄阵容搭配和克制库
 --  电脑可选英雄在推荐列表中建议增加权重，针对阵容同理
+
 local allowsHeroData = require(GetScriptDirectory() .. "/AuxiliaryScript/GetAllowHeroData")
 local bnUtil = require(GetScriptDirectory() .. "/AuxiliaryScript/BotNameUtility");
 local apHeroList = {}
