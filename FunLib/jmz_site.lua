@@ -364,41 +364,47 @@ function Site.IsVaildCreep(nUnit)
 end
 
 
+local tFarmerList = {
+	["npc_dota_hero_nevermore"] = true,
+	["npc_dota_hero_medusa"] = true,
+	["npc_dota_hero_razor"] = true,
+	["npc_dota_hero_luna"] = true,
+	["npc_dota_hero_sven"] = true,
+	["npc_dota_hero_antimage"] = true,
+	["npc_dota_hero_phantom_assassin"] = true,
+	["npc_dota_hero_phantom_lancer"] = true,
+	["npc_dota_hero_templar_assassin"] = true,
+}
 function Site.IsSpecialFarmer(bot)
+
 	local botName = bot:GetUnitName();
 
-	return     botName == "npc_dota_hero_nevermore"
-			or botName == "npc_dota_hero_medusa"
-			or botName == "npc_dota_hero_razor"
-			or botName == "npc_dota_hero_luna"
-			or botName == 'npc_dota_hero_sven'
-			or botName == 'npc_dota_hero_antimage'
-			or botName == 'npc_dota_hero_abaddon'
-			or botName == 'npc_dota_hero_phantom_assassin'
-			or botName == "npc_dota_hero_phantom_lancer"
-			or botName == "npc_dota_hero_templar_assassin"
+	return tFarmerList[botName] == true
+	
 end
 
 
+local tFarmHeroList = {
+	["npc_dota_hero_nevermore"] = true,
+	["npc_dota_hero_drow_ranger"] = true,
+	["npc_dota_hero_luna"] = true,
+	["npc_dota_hero_sven"] = true,
+	["npc_dota_hero_axe"] = true,
+	["npc_dota_hero_antimage"] = true,
+	["npc_dota_hero_arc_warden"] = true,
+	["npc_dota_hero_bloodseeker"] = true,
+	["npc_dota_hero_medusa"] = true,
+	["npc_dota_hero_razor"] = true,
+	["npc_dota_hero_phantom_assassin"] = true,
+	["npc_dota_hero_phantom_lancer"] = true,
+	["npc_dota_hero_templar_assassin"] = true,
+	["npc_dota_hero_huskar"] = true,
+}
 function Site.IsShouldFarmHero(bot)
 
 	local botName = bot:GetUnitName();
-	
-	return botName == "npc_dota_hero_nevermore"
-		or botName == "npc_dota_hero_drow_ranger"
-		or botName == "npc_dota_hero_luna"
-		or botName == 'npc_dota_hero_sven'
-		or botName == 'npc_dota_hero_axe'
-		or botName == 'npc_dota_hero_antimage'
-		or botName == "npc_dota_hero_arc_warden"
-		or botName == 'npc_dota_hero_omniknight'
-		or botName == 'npc_dota_hero_vengefulspirit'
-		or botName == "npc_dota_hero_bloodseeker"
-		or botName == "npc_dota_hero_medusa"
-		or botName == "npc_dota_hero_razor"
-		or botName == 'npc_dota_hero_phantom_assassin'
-		or botName == "npc_dota_hero_phantom_lancer"
-		or botName == "npc_dota_hero_templar_assassin"
+		
+	return tFarmHeroList[botName] == true
 		
 end
 
@@ -615,6 +621,7 @@ function Site.FindFarmNeutralTarget(Creeps)
 	   or botName == "npc_dota_hero_viper"
 	   or botName == "npc_dota_hero_razor"
 	   or botName == "npc_dota_hero_ogre_magi"
+	   or botName == "npc_dota_hero_huskar"
 	   or ( botName == "npc_dota_hero_medusa"
 			and bot:GetLevel() >= 8  )
 	   or ( botName == "npc_dota_hero_luna"
@@ -677,14 +684,6 @@ function Site.GetFarmLaneTarget(Creeps,bStrongest)
 		
 		return hTarget;
 	end
-	
-	
-	if not bStrongest
-	   and botName == "npc_dota_hero_drow_ranger"
-	   and bot:GetLevel() >= 6
-	then
-		bStrongest = true;
-	end	
 	
 	
 	if bStrongest 
@@ -810,6 +809,34 @@ function Site.IsTimeToFarm(bot)
 	end
 	
 	local botName =  bot:GetUnitName();
+	
+	if bot:GetActiveMode() == BOT_MODE_PUSH_TOWER_BOT
+		or bot:GetActiveMode() == BOT_MODE_PUSH_TOWER_MID
+		or bot:GetActiveMode() == BOT_MODE_PUSH_TOWER_TOP
+	then
+		local enemyAncient = GetAncient(GetOpposingTeam());
+		local allies       = bot:GetNearbyHeroes(800,false,BOT_MODE_NONE);
+		local enemyAncientDistance = GetUnitToUnitDistance(bot,enemyAncient);
+		if  enemyAncientDistance < 2800
+		    and enemyAncientDistance > 1000
+			and bot:GetActiveModeDesire() < BOT_MODE_DESIRE_HIGH
+			and #allies < 2
+		then
+			return  true;
+		end
+		
+		if Site.IsShouldFarmHero(bot)
+		then
+			if  bot:GetActiveModeDesire() < BOT_MODE_DESIRE_MODERATE 
+				and enemyAncientDistance > 1000
+				and enemyAncientDistance < 5800
+				and #allies < 2
+			then
+				return  true;
+			end
+		end
+	
+	end
 		
 	if botName == "npc_dota_hero_bloodseeker"
 	then
@@ -899,7 +926,7 @@ function Site.IsTimeToFarm(bot)
 		local botKills = GetHeroKills(bot:GetPlayerID());
 		local botDeaths = GetHeroDeaths(bot:GetPlayerID());
 		local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
-		if botKills - 3 >=  botDeaths
+		if botKills >=  botDeaths + 3
 		   and botDeaths <= 3
 		then
 			return false;
@@ -914,7 +941,7 @@ function Site.IsTimeToFarm(bot)
 		
 		if bot:GetLevel() > 20
 		   and #allies < 2
-		   and bot:GetNetWorth() < 21111
+		   and bot:GetNetWorth() < 18888
 		then 
 			return true;
 		end
@@ -940,10 +967,12 @@ function Site.IsTimeToFarm(bot)
 			then
 				return true;
 			end
-		end		
+		end
+
 	end
 	
 	if botName == "npc_dota_hero_luna"
+	   or botName == "npc_dota_hero_huskar"
 	then
 		if DotaTime() > 9 *60
 			and bot:GetLevel() < 25
@@ -964,6 +993,17 @@ function Site.IsTimeToFarm(bot)
 				return true;
 			end
 		end		
+		
+		if bot:GetLevel() > 20
+		   and bot:GetNetWorth() < 23333
+		then 
+			local allies = bot:GetNearbyHeroes(1600,false,BOT_MODE_NONE);
+			if #allies < 2
+			then
+				return true;
+			end
+		end
+		
 	end
 	
 	if botName == "npc_dota_hero_templar_assassin"
@@ -1175,7 +1215,7 @@ function Site.IsTimeToFarm(bot)
 		end
 		
 		if Site.IsHaveItem(bot,"item_mask_of_madness")
-			and bot:GetNetWorth() < 7000
+			and bot:GetNetWorth() < 9999
 		then
 			return true;
 		end
@@ -1234,34 +1274,6 @@ function Site.IsTimeToFarm(bot)
 		then 
 			return true;
 		end
-	end
-	
-	if bot:GetActiveMode() == BOT_MODE_PUSH_TOWER_BOT
-		or bot:GetActiveMode() == BOT_MODE_PUSH_TOWER_MID
-		or bot:GetActiveMode() == BOT_MODE_PUSH_TOWER_TOP
-	then
-		local enemyAncient = GetAncient(GetOpposingTeam());
-		local allies       = bot:GetNearbyHeroes(800,false,BOT_MODE_NONE);
-		local enemyAncientDistance = GetUnitToUnitDistance(bot,enemyAncient);
-		if  enemyAncientDistance < 2800
-		    and enemyAncientDistance > 1000
-			and bot:GetActiveModeDesire() < BOT_MODE_DESIRE_HIGH
-			and #allies < 2
-		then
-			return  true;
-		end
-		
-		if Site.IsShouldFarmHero(bot)
-		then
-			if  bot:GetActiveModeDesire() < BOT_MODE_DESIRE_MODERATE 
-				and enemyAncientDistance > 1000
-				and enemyAncientDistance < 5800
-				and #allies < 2
-			then
-				return  true;
-			end
-		end
-	
 	end
 	
 	

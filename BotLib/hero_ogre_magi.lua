@@ -244,7 +244,6 @@ local nKeepMana,nMP,nHP,nLV,hEnemyList,hAllyList,botTarget,sMotive;
 local aetherRange = 0
 local talent8Damage = 0
 
-local hAllyList = nil
 
 function X.SkillsComplement()
 
@@ -1001,10 +1000,7 @@ function X.ConsiderD()
 			and J.IsInRange(botTarget, bot, nCastRange +50) 
 			and not J.IsDisabled(true, botTarget)
 		then
-			if nSkillLV >= 3 or nMP > 0.78 or J.GetHPR(botTarget) < 0.38
-			then
-				return BOT_ACTION_DESIRE_HIGH, botTarget,'D打架'..J.Chat.GetNormName(botTarget)
-			end
+			return BOT_ACTION_DESIRE_HIGH, botTarget,'D打架'..J.Chat.GetNormName(botTarget)
 		end
 	end
 	

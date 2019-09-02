@@ -262,6 +262,7 @@ ItemModule['tCarryOutfit'] = {
 	'item_antimage_outfit',
 	'item_luna_outfit',
 	'item_bloodseeker_outfit',
+	'item_huskar_outfit',
 }
 
 ItemModule['tCoreOutfit'] = {  
@@ -282,6 +283,9 @@ ItemModule['tSupportOutfit'] = {
 	'item_warlock_outfit',
 	'item_skywrath_mage_outfit',
 	'item_lina_outfit',
+	'item_oracle_outfit',
+	'item_lich_outfit',
+	'item_witch_doctor_outfit',
 }
 
 ItemModule['tConsumableList'] = {
@@ -318,7 +322,7 @@ ItemModule['item_bloodstone']			 = { 'item_point_booster', 'item_vitality_booste
 
 ItemModule['item_bloodthorn']			 = { 'item_orchid',  'item_lesser_crit',  'item_recipe_bloodthorn' }
 
-ItemModule['item_bracer']				 = {  'item_circlet', 'item_gauntlets', 'item_recipe_bracer' }
+ItemModule['item_bracer']				 = {  'item_gauntlets', 'item_circlet', 'item_recipe_bracer' }
 
 ItemModule['item_buckler']				 = { 'item_branches', 'item_chainmail', 'item_recipe_buckler' }
 
@@ -564,19 +568,21 @@ ItemModule['item_nevermore_outfit']        = { 'item_tango', 'item_faerie_fire',
 
 ItemModule['item_templar_assassin_outfit'] = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn', 'item_magic_stick', 'item_recipe_magic_wand', 'item_blight_stone',}
 
-ItemModule['item_luna_outfit']             = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop' } 
+ItemModule['item_luna_outfit']             = { 'item_tango', 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop' } 
 
 ItemModule['item_antimage_outfit']         = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi' }
 
-ItemModule['item_drow_ranger_outfit']      = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop',}
+ItemModule['item_drow_ranger_outfit']      = { 'item_tango', 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop',}
 
 ItemModule['item_phantom_assassin_outfit'] = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_blight_stone', 'item_recipe_magic_wand', 'item_power_treads_agi' } 
 
 ItemModule['item_phantom_lancer_outfit']   = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi' }
 
+ItemModule['item_huskar_outfit']           = { 'item_tango', 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_bracer', 'item_boots', 'item_bracer', 'item_recipe_magic_wand', 'item_blades_of_attack', 'item_chainmail' }
+
 ItemModule['item_bloodseeker_outfit']  	   = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi' }
 
-ItemModule['item_arc_warden_outfit']       = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop' }
+ItemModule['item_arc_warden_outfit']       = { 'item_tango', 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop' }
 
 ItemModule['item_sven_outfit']             = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_magic_stick', 'item_double_branches', 'item_bracer', 'item_recipe_magic_wand', 'item_phase_boots' }
 
@@ -592,21 +598,27 @@ ItemModule['item_kunkka_outfit']           = { 'item_tango', 'item_flask', 'item
 
 ItemModule['item_skeleton_king_outfit']    = { 'item_tango', 'item_flask', 'item_stout_shield', 'item_quelling_blade', 'item_double_branches', 'item_magic_stick', 'item_bracer', 'item_recipe_magic_wand', 'item_ring_of_basilius', 'item_power_treads_str', 'item_broken_vladmir', 'item_broken_crimson_guard' }
 
-ItemModule['item_silencer_outfit']         = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_silencer_outfit']         = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_necrolyte_outfit']        = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_necrolyte_outfit']        = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_warlock_outfit']          = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_oracle_outfit']		   = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_jakiro_outfit']           = { 'item_tango', 'item_flask', 'item_double_branches', 'item_branches', 'item_magic_stick', 'item_crown', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_lich_outfit'] 		       = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_crystal_maiden_outfit']   = { 'item_tango', 'item_flask', 'item_double_branches', 'item_branches', 'item_magic_stick', 'item_crown', 'item_power_treads_int', 'item_recipe_magic_wand' }
+ItemModule['item_witch_doctor_outfit']     = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_zuus_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_warlock_outfit']          = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_skywrath_mage_outfit']    = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_jakiro_outfit']           = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_branches', 'item_crown', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
-ItemModule['item_lina_outfit']             = { 'item_tango', 'item_flask', 'item_double_branches', 'item_magic_stick', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
+ItemModule['item_crystal_maiden_outfit']   = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_branches', 'item_crown', 'item_power_treads_int', 'item_recipe_magic_wand' }
+
+ItemModule['item_zuus_outfit']             = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
+
+ItemModule['item_skywrath_mage_outfit']    = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
+
+ItemModule['item_lina_outfit']             = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
 ItemModule['item_brewmaster_outfit']       = { 'item_tango', 'item_tango', 'item_quelling_blade', 'item_gauntlets', 'item_stick_bracer', 'item_ring_of_basilius', 'item_phase_boots', 'item_broken_vladmir', 'item_mjollnir' , 'item_abyssal_blade' , 'item_black_king_bar' , 'item_lotus_orb' }
 

@@ -116,6 +116,10 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_phantom_lancer',
 --'npc_dota_hero_ogre_magi',
 --'npc_dota_hero_lina',
+--'npc_dota_hero_huskar',
+--'npc_dota_hero_oracle',
+--'npc_dota_hero_lich',
+--'npc_dota_hero_witch_doctor',
 
 X["test_hero"] = {
     'npc_dota_hero_tiny',

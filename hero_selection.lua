@@ -250,6 +250,7 @@ local sThirdList = {
 	"npc_dota_hero_bloodseeker",
 	"npc_dota_hero_phantom_assassin",
 	"npc_dota_hero_phantom_lancer",
+	"npc_dota_hero_huskar",
 }
 
 local sFourthList = {
@@ -264,6 +265,9 @@ local sFifthList = {
 	"npc_dota_hero_silencer",
 	"npc_dota_hero_warlock",
 	"npc_dota_hero_necrolyte",
+	"npc_dota_hero_oracle",
+	--"npc_dota_hero_witch_doctor",
+	--"npc_dota_hero_lich",
 }				
 
 
@@ -315,14 +319,14 @@ end
 
 --For Random LineUp-------------
 local sTempList = sSelectList;
-nRand = RandomInt(1,(#tAllLineUpList) *1.4 ); 
+nRand = RandomInt(1,(#tAllLineUpList) *2.3 ); 
 if nRand <= #tAllLineUpList and not bDebugMode
 then 
 	sSelectList = tAllLineUpList[nRand];
 	print(tostring(GetTeam())..tostring(nRand/100));
 end
 
-if RandomInt(1,#tAllLineUpList) < #tAllLineUpList *0.4 
+if RandomInt(1,#tAllLineUpList) < #tAllLineUpList *0.5 
 then
 	nRand = RandomInt(1,5);
 	sSelectList[nRand] = sTempList[nRand];	
@@ -720,7 +724,7 @@ function Think()
 	end
 end
 
-function AllPickLogic()
+function AllPickLogic()	
 	if GameTime() < 3.0
 	   or fLastSlectTime > GameTime() - fLastRand
 	   or X.IsHumanNotReady(GetTeam()) 

@@ -16,10 +16,10 @@ local Site = require( GetScriptDirectory()..'/FunLib/jmz_site')
 local additionlF = require(GetScriptDirectory() .. "/AuxiliaryScript/AdditionalFunction")
 local N = require( GetScriptDirectory()..'/AuxiliaryScript/Comicdialogue')
 local bot = GetBot();
+local bot = GetBot();
 local X = {}
 local AvailableSpots = {};
 local nWardCastRange = 500;
-local wt = nil;
 local itemWard = nil;
 local targetLoc = nil;
 local wardCastTime = -90;
@@ -148,12 +148,7 @@ function GetDesire()
 	end	
 	
 	if itemWard ~= nil  then
-		--在玩家ping的位置插眼
-		pinged, wt = additionlF.IsPingedByHumanPlayer(bot);
-		if pinged then	
-			return RemapValClamped(GetUnitToUnitDistance(bot, wt), 1000, 0, BOT_MODE_DESIRE_HIGH, BOT_MODE_DESIRE_VERYHIGH);
-		end
-		--在插眼位置插眼
+		
 		AvailableSpots = Site.GetAvailableSpot(bot);
 		targetLoc, targetDist = Site.GetClosestSpot(bot, AvailableSpots);
 		if targetLoc ~= nil and DotaTime() > wardCastTime + 1.0 then
@@ -185,7 +180,6 @@ function OnEnd()
 	AvailableSpots = {};
 	bot.steal = false;
 	itemWard = nil;
-	wt = nil;
 	walkMode = false;
 end
 
@@ -195,11 +189,6 @@ function Think()
 		return;
 	end
 	
-	if wt ~= nil then
-		bot:Action_UseAbilityOnEntity(itemWard, wt);
-		return
-	end
-
 
 	if walkMode then
 		local nCreep = bot:GetNearbyLaneCreeps(1000,true);
@@ -223,7 +212,6 @@ function Think()
 		if targetDist <= nWardCastRange then
 			if  DotaTime() > bot.lastSwapWardTime + 6.1 then
 				bot:Action_UseAbilityOnLocation(itemWard, targetLoc);
-				--print(GetTeam()..bot:GetUnitName()..'插眼:('..targetLoc.x..','..targetLoc.y..')')
 				wardCastTime = DotaTime();	
 				return
 			else

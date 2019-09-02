@@ -11,8 +11,8 @@ local X = {}
 
 local sBotVersion = "New";
 --local sBotVersion = "Mid";
-local sVersionDate = " 1.1.4"
-local sABAVersionDate = sBotVersion.." 7.22,2019/08/10."
+local sVersionDate = " 1.1.5"
+local sVersionDate = sBotVersion.." 7.22,2019/09/01."
 
 function X.GetBotVersion()
 	return sBotVersion,sVersionDate,sABAVersionDate;
@@ -1939,6 +1939,8 @@ local sGaoHeroList = {
 	'npc_dota_hero_phantom_lancer',
 	'npc_dota_hero_razor',
 	'npc_dota_hero_lina',
+	'npc_dota_hero_lich',
+	'npc_dota_hero_witch_doctor',
 }
 
 function X.IsUserHero()

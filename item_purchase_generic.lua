@@ -51,10 +51,10 @@ local courier = nil;
 local t3AlreadyDamaged = false;
 local t3Check = -90;
 
---一般项目采购
+--General item BotBuild logis
 local function GeneralPurchase()
 
-	--当要购买的最后一项不等于要购买的当前项组件时，缓存所有需要的项属性
+	--Cache all needed item properties when the last item to buy not equal to current item component to buy
 	if lastItemToBuy ~= bot.currentComponentToBuy then
 		lastItemToBuy = bot.currentComponentToBuy;
 		bot:SetNextItemPurchaseValue( GetItemCost( bot.currentComponentToBuy ) );
@@ -205,7 +205,7 @@ end
 
 --Turbo Mode General item BotBuild logis
 local function TurboModeGeneralPurchase()
-	--当要购买的最后一项不等于要购买的当前项组件时，缓存所有需要的项属性
+	--Cache all needed item properties when the last item to buy not equal to current item component to buy
 	if lastItemToBuy ~= bot.currentComponentToBuy then
 		lastItemToBuy = bot.currentComponentToBuy;
 		bot:SetNextItemPurchaseValue( GetItemCost( bot.currentComponentToBuy ) );
@@ -313,7 +313,7 @@ function ItemPurchaseThink()
 	--Update boots availability status to make the bot start buy support item and rain drop
 	if buyBootsStatus == false and nowTime > lastBootsCheck + 2.0 then buyBootsStatus = Item.UpdateBuyBootStatus(bot); lastBootsCheck = nowTime end
 	
-	--支援项目购买，鸡眼粉小蓝雾
+	--buy flying courier and support item
 	if bot.theRole == 'support' then
 		if nowTime < 0 and GetItemStockCount( "item_courier" ) > 0
 		then
@@ -336,19 +336,19 @@ function ItemPurchaseThink()
 			buyWardTime = nowTime;
 			bot:ActionImmediate_PurchaseItem("item_ward_observer"); 
 		elseif GetItemStockCount( "item_smoke_of_deceit" ) >= 1
-			  and ( nowTime < 0 or ( nowTime > 0 and buyBootsStatus == true ) )
-			  and botGold >= GetItemCost( "item_smoke_of_deceit" )
-			  and Item.GetEmptyInventoryAmount(bot) >= 2
-			  and Item.GetItemCharges(bot, "item_smoke_of_deceit") < 1
-			  and bot:GetCourierValue() == 0
-			  and buysmokeTime < nowTime - 5 * 60
+			and ( nowTime < 0 or ( nowTime > 0 and buyBootsStatus == true ) )
+			and botGold >= GetItemCost( "item_smoke_of_deceit" )
+			and Item.GetEmptyInventoryAmount(bot) >= 2
+			and Item.GetItemCharges(bot, "item_smoke_of_deceit") < 1
+			and bot:GetCourierValue() == 0
+			and buysmokeTime < nowTime - 5 * 60
 		then
 			buysmokeTime = nowTime;
 			bot:ActionImmediate_PurchaseItem("item_smoke_of_deceit"); 
 		end
 	end
 	
-	--BotBuild courier when no support in team
+	--buy courier when no support in team
 	if nowTime > -65 and nowTime < 600 and botGold >= 50 
 	   and GetItemStockCount( "item_courier" ) > 0 
 	   and bot:DistanceFromFountain() < 200
@@ -358,7 +358,7 @@ function ItemPurchaseThink()
 		return;
 	end
 	
-	--BotBuild raindrop
+	--buy raindrop
 	if buyRD == false
 	   and nowTime > 3 *60
 	   and nowTime < 20 *60
@@ -414,7 +414,7 @@ function ItemPurchaseThink()
 		return;
 	end	 
 
-	--死后买眼
+	--buy ward when die
 	if botGold >= 50 
 	   and bot:IsAlive()
 	   and bot.theRole == 'support'
@@ -471,7 +471,7 @@ function ItemPurchaseThink()
 				
 		local nEnemyHeroes = bot:GetNearbyHeroes(1400,true,BOT_MODE_NONE)
 		
-		--附近没有敌人把小斧头换上来替换盾牌和小魔棒
+		--No enemy nearby then swap shield , blade or stick
 		if (nEnemyHeroes[1] == nil)
 		   and (blade >= 6 and blade <= 8)
 		then
@@ -489,7 +489,7 @@ function ItemPurchaseThink()
 			end
 		end
 		 
-		--附近有敌人把小斧头换下去替换盾牌
+		--there be enemy then swap shield and blade
 		if (nEnemyHeroes[1] ~= nil)
 		   and (blade >= 0 and blade <= 5)
 		then
@@ -686,7 +686,7 @@ function ItemPurchaseThink()
 	end
 	
 	--Add travelboots,moonshare,bkb to buy when in very late
-	if #bot.itemToBuy == 0 
+	if #bot.itemToBuy == 0 and not Role.IsUserMode() --there be bug
 	then
 
 		if addTravelBoots == false
@@ -734,7 +734,7 @@ function ItemPurchaseThink()
 		end
 	end
 	
-	--有飞鞋时额外购买便宜的补给
+	--Sell cheapie when have travel_boots
 	if  nowTime > 50 *60 --and #bot.itemToBuy == 0 
 		and ( bot:GetItemInSlot(7) ~= nil or bot:GetItemInSlot(8) ~= nil )
 		and ( Item.HasItem(bot, 'item_travel_boots') or Item.HasItem(bot, 'item_travel_boots_2'))
