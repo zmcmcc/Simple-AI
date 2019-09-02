@@ -15,6 +15,7 @@ local bDebugMode = (bot:GetUnitName() == "npc_dota_hero_medusa")
 local X = {}
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
+local C = require( GetScriptDirectory() .. "/AuxiliaryScript/Chatwheel")
 local RB = Vector(-7174.000000, -6671.00000,  0.000000)
 local DB = Vector(7023.000000, 6450.000000, 0.000000)
 local botName = bot:GetUnitName();
@@ -295,7 +296,9 @@ function GetDesire()
 			end
 		end
 	end
-	
+
+	C.GameLive(1.0)
+
 	if DotaTime() > countTime + countCD
 	then
 		countTime  = DotaTime();
