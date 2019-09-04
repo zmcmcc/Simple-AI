@@ -119,6 +119,10 @@ local abilityNameList = {
     'razor_eye_of_the_storm',
     'razor_plasma_field',
     'razor_static_link',
+    'silencer_curse_of_the_silent',
+    'silencer_glaives_of_wisdom',
+    'silencer_global_silence',
+    'silencer_last_word',
 }
 
 --将英雄技能初始入变量

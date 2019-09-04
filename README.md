@@ -55,6 +55,7 @@
 - 龙骑士
 - 卓尔游侠
 - 剃刀
+- 沉默术士
 
 ### 支持自定义的技能列表
 - dazzle_poison_touch
@@ -166,6 +167,10 @@
 - razor_eye_of_the_storm
 - razor_plasma_field
 - razor_static_link
+- silencer_curse_of_the_silent
+- silencer_glaives_of_wisdom
+- silencer_global_silence
+- silencer_last_word
 ### 额外英雄
 - 复仇之魂
 - 潮汐猎人
