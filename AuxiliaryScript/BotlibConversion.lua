@@ -123,6 +123,21 @@ local abilityNameList = {
     'silencer_glaives_of_wisdom',
     'silencer_global_silence',
     'silencer_last_word',
+    'undying_tombstone',
+    'undying_soul_rip',
+    'undying_flesh_golem',
+    'undying_decay',
+    'riki_tricks_of_the_trade',
+    'riki_smoke_screen',
+    'riki_blink_strike',
+    'phantom_assassin_stifling_dagger',
+    'phantom_assassin_phantom_strike',
+    'phantom_assassin_blur',
+    'dark_willow_terrorize',
+    'dark_willow_shadow_realm',
+    'dark_willow_cursed_crown',
+    'dark_willow_bramble_maze',
+    'dark_willow_bedlam',
 }
 
 --将英雄技能初始入变量
