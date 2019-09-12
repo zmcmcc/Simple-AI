@@ -15,11 +15,10 @@
   自定义函数或模块命名用大驼峰法, 即将各单词首字母大写连接构成, 尽量只使用已有的函数开头词, 如:Is, Has, Can, Should, Will, Get, Print, Set, Consider  
 2, 各类运算符添加空格风格要统一(循环头特殊), 
   比如说' = '及其他赋值或关系或逻辑运算符的两边, ', '后面有内容时的右边, 
-  ' -'及其他算术运算符左边, '- '及其他算术运算符与非数字的右边, 
-  能不用双引号尽量不用双引号, 能不用分号尽量不用分号, 
+  ' - '及其他算术运算符两边, 能不用双引号尽量不用双引号, 能不用分号尽量不用分号, 
   '( () )'多重括号嵌套的外层括号内侧.
 3, 需要使用循环逻辑时尽量不用除 for 语句外的关键字, 
-  需要进行多个条件逻辑运算时, 每个条件块单独一行.
+   需要进行多个条件逻辑运算时, 每个条件块单独一行.
 4, 函数参数中包含了 bot(句柄) 的话, 尽量将其放在第一位
 如有遗漏或矛盾的情况以文件内同类代码的主流规范为准.
 附: 常用词汇  放最后: 表示布尔值 bDone bError bSuccess bFound  bReady  如: bUpdateDone
@@ -33,17 +32,6 @@
 冗余代码分类整合计划正在进行中...
 将同类型的函数分类
 将功能类似的函数整合
---]]
-
---[[计划三:
-同义词合并计划正在进行中...
-将所有表达同一个意思的变量名字统一
---]]
-
---[[计划四:
-队列行动替换计划正在进行中...
-将动作尽量用队列的形式来执行
-例如 原来是 bot:Action_UseAbility(hAbility) 改为 bot:ActionQueue_UseAbility(hAbility)
 --]]
 
 
@@ -69,10 +57,10 @@ if gTime == nil then gTime = 0 end
 ---------------------------通过文件使用的
 --]]
 local sDota2Version= '7.22d'
-local sDebugVersion= '20190901ver1.3a'
+local sDebugVersion= '20190912ver1.4'
 local nPrintTime   = 9999
 local nDebugTime   = 9999
-local bDebugMode   = false
+local bDebugMode   = true
 local bDebugTeam   = (GBotTeam == TEAM_RADIANT)
 local sDebugHero   = 'npc_dota_hero_luna'
 local tAllyIDList  = GetTeamPlayers(GBotTeam)
@@ -255,7 +243,6 @@ function J.CanNotUseAbility(bot)
 		   or bot:HasModifier("modifier_doom_bringer_doom")
 		   or bot:HasModifier('modifier_item_forcestaff_active')
 end
-
 
 
 
@@ -754,12 +741,15 @@ function J.CanCastOnTargetAdvanced( npcTarget )
 		   or J.IsTaunted(npcTarget) 
 		   or npcTarget:GetMana() < 45
 		   or ( npcTarget:HasModifier( "modifier_antimage_spell_shield" )
-				and J.GetModifierTime( npcTarget,"modifier_antimage_spell_shield" ) < 0.27 )
+				and J.GetModifierTime( npcTarget,"modifier_antimage_spell_shield" ) < 0.26 )
 		then
-			return not npcTarget:HasModifier("modifier_item_sphere_target")
+			if not npcTarget:HasModifier("modifier_item_sphere_target")
 			   and not npcTarget:HasModifier("modifier_item_lotus_orb_active")
 			   and not npcTarget:HasModifier("modifier_item_aeon_disk_buff")
 			   and not npcTarget:HasModifier("modifier_dazzle_shallow_grave")
+			then
+				return true
+			end
 		end
 		
 		return false;
@@ -1511,10 +1501,10 @@ function J.GetCorrectLoc(npcTarget, fDelay)
 	if nStability < 0.5 
 	then
 		return vLowFutrue;
-	elseif nStability < 0.8 
+	elseif nStability < 0.7 
 		then
 			return vMidFutrue;
-	elseif nStability < 0.93 
+	elseif nStability < 0.9 
 		then
 			return vHighFutrue;	
 	end
@@ -1879,7 +1869,7 @@ function J.GetDelayCastLocation(bot, npcTarget, nCastRange, nRadius, nTime)
 	local nFutureLoc = J.GetCorrectLoc(npcTarget, nTime);
 	local nDistance = GetUnitToLocationDistance(bot, nFutureLoc);
 	
-	if nDistance > nCastRange + nRadius - 32
+	if nDistance > nCastRange + nRadius - 16
 	then
 		return nil;
 	end
@@ -2019,7 +2009,8 @@ end
 function J.IsAllysTarget(unit)
 	local bot = GetBot();
 	local hAllyList = bot:GetNearbyHeroes(800, false, BOT_MODE_NONE);
-	for _,ally in pairs(hAllyList) do
+	for _,ally in pairs(hAllyList) 
+	do
 		if  J.IsValid(ally)
 			and ( J.GetProperTarget(ally) == unit 
 					or ally:IsFacingLocation(unit:GetLocation(), 12) )
@@ -2344,8 +2335,6 @@ function J.IsSpecialCarry(bot)
 	
 	return  botName == "npc_dota_hero_antimage"
 			or botName == "npc_dota_hero_arc_warden"
-			or botName == "npc_dota_hero_axe"
-			or botName == "npc_dota_hero_abaddon"
 			or botName == "npc_dota_hero_bloodseeker"
 			or botName == "npc_dota_hero_bristleback" 
 			or botName == "npc_dota_hero_chaos_knight" 
@@ -2355,7 +2344,6 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_luna"
 			or botName == "npc_dota_hero_medusa"
 			or botName == "npc_dota_hero_nevermore"
-			or botName == "npc_dota_hero_omniknight"
 			or botName == "npc_dota_hero_ogre_magi"
 			or botName == "npc_dota_hero_phantom_assassin"
 			or botName == "npc_dota_hero_phantom_lancer"
@@ -2364,10 +2352,14 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_sven"
 			or botName == "npc_dota_hero_sniper"
 			or botName == "npc_dota_hero_templar_assassin"
-			or botName == "npc_dota_hero_viper" 
+			or botName == "npc_dota_hero_viper"
+			or botName == "npc_dota_hero_axe"
+			or botName == "npc_dota_hero_abaddon"
+			or botName == "npc_dota_hero_omniknight"
 			or botName == "npc_dota_hero_invoker"
 			or botName == "npc_dota_hero_slardar"
 			or botName == "npc_dota_hero_queenofpain"
+			or botName == "npc_dota_hero_undying"
 		 
 end
 
@@ -2390,6 +2382,7 @@ function J.IsSpecialSupport(bot)
 			or botName == "npc_dota_hero_shadow_demon"
 			or botName == "npc_dota_hero_disruptor"
 			or botName == "npc_dota_hero_rubick"
+			or botName == "npc_dota_hero_dark_willow"
 end 
 
 	
@@ -2777,57 +2770,68 @@ function J.GetNumOfTeamTotalKills(bEnemy)
 end
 
 
-local dismantleForMkbCheckTime = 600;
-local lifestealForMkbDismantleDone = false;
-local staffForMkbDismantleDone = false;
 function J.ConsiderForMkbDisassembleMask(bot)
 	
-	if staffForMkbDismantleDone then return; end
+	if bot.maskDismantleDone == nil then bot.maskDismantleDone = false end
+	if bot.staffUnlockDone == nil then bot.staffUnlockDone = false end
+	if bot.lifestealUnlockDone == nil then bot.lifestealUnlockDone = false end
+	if bot.dismantleCheckTime == nil then bot.dismantleCheckTime = 600 end
 	
-	if dismantleForMkbCheckTime < DotaTime() + 1.0
+	if bot.staffUnlockDone then return end
+	
+	if bot.dismantleCheckTime < DotaTime() + 1.0
 	then
-		dismantleForMkbCheckTime = DotaTime();	
+		bot.dismantleCheckTime = DotaTime();	
 		
 		local mask     = bot:FindItemSlot("item_mask_of_madness");
 		local claymore = bot:FindItemSlot("item_claymore");
 		local reaver   = bot:FindItemSlot("item_reaver");
 						
-		if bot:GetItemInSlot(6) == nil
-			or bot:GetItemInSlot(7) == nil
-			or bot:GetItemInSlot(8) == nil
+		if not bot.maskDismantleDone
+		   and ( bot:GetItemInSlot(6) == nil or bot:GetItemInSlot(7) == nil or bot:GetItemInSlot(8) == nil )
 		then
 						
 			if mask >= 0 and mask <= 8
 			   and ( ( reaver >= 0 and reaver <= 8 ) or ( claymore >= 0 and claymore <= 8 ))
 			   and ( bot:GetGold() >= 1400 or bot:GetStashValue() >= 1400 or bot:GetCourierValue() >= 1400 )
 			then
+				if bDebugMode then print(bot:GetUnitName().."  mask Dismantle1") end
+				bot.maskDismantleDone = true;
 				bot:ActionImmediate_DisassembleItem( bot:GetItemInSlot(mask) );
 				return;
 			end
 			
 			if mask >= 0 and mask <= 8
-			   and claymore >= 0 and claymore <= 8
-			   and reaver >= 0 and reaver <= 8
+			   and claymore >= 0 and reaver >= 0 
 			then
+				if bDebugMode then print(bot:GetUnitName().."  mask Dismantle2") end
+				bot.maskDismantleDone = true;
 				bot:ActionImmediate_DisassembleItem( bot:GetItemInSlot(mask) );
 				return;
 			end
 		end
 		
+		if not bot.maskDismantleDone then return end
+		
 		local lifesteal = bot:FindItemSlot("item_lifesteal");
 		local staff = bot:FindItemSlot("item_quarterstaff");
 		
-		if lifesteal >= 0 then -- and not lifestealForMkbDismantleDone then
+		if lifesteal >= 0 
+			and not bot.lifestealUnlockDone 
+		then
+			if bDebugMode then print(bot:GetUnitName().."  lifestealUnlockDone") end
+			bot.lifestealUnlockDone = true;
 			bot:ActionImmediate_SetItemCombineLock( bot:GetItemInSlot(lifesteal), false );
---			lifestealForMkbDismantleDone = true;
 			return;
 		end
 		
 		local satanic  = bot:FindItemSlot("item_satanic");
 				
-		if satanic >= 0 and staff >= 0 and not staffForMkbDismantleDone then
+		if satanic >= 0 and staff >= 0 and not bot.staffUnlockDone 
+		then
+			if bDebugMode then print(bot:GetUnitName().."  staffUnlockDone") end
+			bot.staffUnlockDone = true;	
 			bot:ActionImmediate_SetItemCombineLock( bot:GetItemInSlot(staff), false );
-			staffForMkbDismantleDone = true;	
 			return;
 		end
 		

@@ -254,12 +254,10 @@ local boostRange = 0
 function X.SkillsComplement()
 	
 	
-	
 	if J.CanNotUseAbility(bot) 
 	   or bot:IsInvisible()
 	   or bot:HasModifier('modifier_phantom_lancer_phantom_edge_boost')
 	then return end
-	
 	
 	
 	nKeepMana = 400
@@ -273,13 +271,11 @@ function X.SkillsComplement()
 	hAllyList = J.GetAlliesNearLoc(bot:GetLocation(), 1600);
 	
 	
-	
 	if abilityE:IsTrained() then boostRange = abilityE:GetSpecialValueInt("max_distance") end
 	if talent4:IsTrained() then talent4Damage = talent4:GetSpecialValueInt("value") end
 	if talent5:IsTrained() then boostRange = boostRange + talent5:GetSpecialValueInt("value") end
 	local aether = J.IsItemAvailable("item_aether_lens");
 	if aether ~= nil then aetherRange = 250 end	
-	if #hEnemyList <= 1 then aetherRange = aetherRange + 200 end
 	
 	
 	castQDesire, castQTarget, sMotive = X.ConsiderQ();
@@ -314,6 +310,9 @@ function X.ConsiderQ()
 	
 	local nSkillLV    = abilityQ:GetLevel(); 
 	local nCastRange  = abilityQ:GetCastRange() + aetherRange
+	
+	if #hEnemyList <= 1 then nCastRange = nCastRange + 200 end
+	
 	local nCastPoint  = abilityQ:GetCastPoint()
 	local nManaCost   = abilityQ:GetManaCost()
 	local nDamage     = abilityQ:GetSpecialValueInt('lance_damage') + talent4Damage

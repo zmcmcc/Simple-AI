@@ -289,13 +289,13 @@ function X.ConsiderQ()
 	
 	if not abilityQ:IsFullyCastable() or bot:IsRooted() then return BOT_ACTION_DESIRE_NONE end
 	
-	local nCastRange = abilityQ:GetCastRange( ) + 50;
-	local nCastPoint = abilityQ:GetCastPoint( );
+	local nCastRange = abilityQ:GetCastRange();
+	local nCastPoint = abilityQ:GetCastPoint();
 	local nSkillLV   = abilityQ:GetLevel( );
 	local nDamage    = 30 + nSkillLV*30 + 120 * 0.38;
 	
-	local nEnemysHeroesInCastRange = bot:GetNearbyHeroes(nCastRange, true, BOT_MODE_NONE);	
-	local nEnemysHeroesInView      = bot:GetNearbyHeroes(800, true, BOT_MODE_NONE);
+	local nEnemysHeroesInCastRange = bot:GetNearbyHeroes(nCastRange +99, true, BOT_MODE_NONE);	
+	local nEnemysHeroesInView      = bot:GetNearbyHeroes(880, true, BOT_MODE_NONE);
 	
 	--击杀
 	if #nEnemysHeroesInCastRange > 0 then
@@ -328,7 +328,7 @@ function X.ConsiderQ()
 	
 	--团战
 	if J.IsInTeamFight(bot, 1200)
-	   and  DotaTime() > 6*60
+	   and DotaTime() > 6*60
 	then
 		local npcMostDangerousEnemy = nil;
 		local nMostDangerousDamage = 0;
@@ -340,7 +340,7 @@ function X.ConsiderQ()
 				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
 				and not npcEnemy:IsDisarmed()
-				and not npcEnemy:HasModifier("modifier_chaos_knight_reality_rift_debuff")
+				--and not npcEnemy:HasModifier("modifier_chaos_knight_reality_rift_debuff")
 			then
 				local npcEnemyDamage = npcEnemy:GetEstimatedDamageToTarget( false, bot, 3.0, DAMAGE_TYPE_ALL );
 				if ( npcEnemyDamage > nMostDangerousDamage )
@@ -409,14 +409,13 @@ function X.ConsiderQ()
 		   and not nEnemysHeroesInCastRange[1]:IsDisarmed()
 		   and GetUnitToUnitDistance(bot,nEnemysHeroesInCastRange[1]) <= nCastRange - 60 
 		then
-			
 			return BOT_ACTION_DESIRE_HIGH, nEnemysHeroesInCastRange[1];
 		end
 	end
 	
 	
 	if bot:GetActiveMode() == BOT_MODE_ROSHAN 
-		and  bot:GetMana() > 400
+		and bot:GetMana() > 400
 	then
 		local target =  bot:GetAttackTarget();
 		

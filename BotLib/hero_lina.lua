@@ -523,7 +523,7 @@ function X.ConsiderW()
 	local nManaCost   = abilityW:GetManaCost()
 	local nDamage     = abilityW:GetSpecialValueInt('light_strike_array_damage') + talent4Damage
 	local nDamageType = DAMAGE_TYPE_MAGICAL
-	local nRadius 	  = abilityW:GetSpecialValueInt( "light_strike_array_aoe" );
+	local nRadius 	  = abilityW:GetSpecialValueInt("light_strike_array_aoe");
 	
 	local nInRangeEnemyList = bot:GetNearbyHeroes(nCastRange + nRadius *0.5, true, BOT_MODE_NONE)
 	
@@ -549,7 +549,7 @@ function X.ConsiderW()
 			--击杀
 			if J.WillMagicKillTarget(bot,npcEnemy,nDamage,nCastPoint)
 			then
-				nTargetLocation = J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius,nCastPoint);
+				nTargetLocation = J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius,nCastPoint +0.2);
 				if nTargetLocation ~= nil
 				then
 					return BOT_ACTION_DESIRE_HIGH,nTargetLocation,"W击杀"..J.Chat.GetNormName(npcEnemy)
@@ -591,7 +591,7 @@ function X.ConsiderW()
 			and J.CanCastOnNonMagicImmune(botTarget) 
 			and J.IsInRange(botTarget, bot, nCastRange -30) 
 		then
-			nTargetLocation = J.GetDelayCastLocation(bot,botTarget,nCastRange,nRadius,nCastPoint);
+			nTargetLocation = J.GetDelayCastLocation(bot,botTarget,nCastRange,nRadius,nCastPoint +0.3);
 			if nTargetLocation ~= nil
 			then
 				return BOT_ACTION_DESIRE_HIGH,nTargetLocation,"W打架"..J.Chat.GetNormName(botTarget)
@@ -616,7 +616,7 @@ function X.ConsiderW()
 			   and J.CanCastOnNonMagicImmune(npcEnemy) 
 			   and ( bot:WasRecentlyDamagedByHero( npcEnemy, 4.0 ) or bot:GetActiveModeDesire() > BOT_ACTION_DESIRE_VERYHIGH ) 
 			then
-				nTargetLocation = J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius,nCastPoint);
+				nTargetLocation = J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius,nCastPoint +0.3);
 				if nTargetLocation ~= nil
 				then
 					return BOT_ACTION_DESIRE_HIGH,nTargetLocation,"W撤退2"..J.Chat.GetNormName(npcEnemy)
@@ -637,7 +637,7 @@ function X.ConsiderW()
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 				
 				and bot:IsFacingLocation(npcEnemy:GetLocation(),45)
 			then
-				nTargetLocation = J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius -30,nCastPoint);
+				nTargetLocation = J.GetDelayCastLocation(bot,npcEnemy,nCastRange,nRadius -30,nCastPoint +0.3);
 				if nTargetLocation ~= nil
 				then
 					return BOT_ACTION_DESIRE_HIGH,nTargetLocation,"W自保"..J.Chat.GetNormName(npcEnemy)
@@ -712,8 +712,15 @@ function X.ConsiderW()
 	if J.IsAllowedToSpam(bot,200) 
 	   and #hEnemyList == 0 and bot:DistanceFromFountain() > 1200
 	   and abilityE:GetLevel() == 4 and not talent7:IsTrained()
+	   and bot:GetMana() > abilityR:GetManaCost() + 200
 	   and J.GetModifierTime(bot,'modifier_lina_fiery_soul') < nCastPoint -0.3
 	then
+		local nAoe = bot:FindAoELocation(true, false, bot:GetLocation(), nCastRange, nRadius, 0, 0)
+		if nAoe.count >= 1
+		then
+			return BOT_ACTION_DESIRE_HIGH, nAoe.targetloc,'Wbuff:'..(nAoe.count)
+		end
+	
 		return BOT_ACTION_DESIRE_HIGH, J.GetFaceTowardDistanceLocation(bot,nCastRange),'Wbuff'
 	end
 	

@@ -225,8 +225,6 @@ function X.SkillsComplement()
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	
-	--J.Skill.AbilityReadinessReminder(abilityR, 5);
-	
 	nKeepMana = 400
 	aetherRange = 0
 	talentDamage = 0
@@ -238,17 +236,12 @@ function X.SkillsComplement()
 	nHealthPercentage = bot:GetHealth()/bot:GetMaxHealth();
 	hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
 	
-	
-	
 	local aether = J.IsItemAvailable("item_aether_lens");
 	if aether ~= nil then aetherRange = 250 end	
 	if talent7:IsTrained() then aetherRange = aetherRange + talent7:GetSpecialValueInt("value") end
 	if abilityE:IsTrained() then abilityEBonus = abilityE:GetSpecialValueInt("damage_health_pct")/100 end
-	if talent4:IsTrained() then abilityEBonus = abilityEBonus + talent4:GetSpecialValueInt("value")/100 end
+	if talent4:IsTrained() then abilityEBonus = abilityEBonus + talent4:GetSpecialValueFloat("value")/100 end
 	if talent8:IsTrained() then talentDamage = talentDamage + talent8:GetSpecialValueInt("value") end
-	
-	
-	
 	
 	castRDesire = X.ConsiderR();
 	if ( castRDesire > 0 ) 
@@ -261,7 +254,6 @@ function X.SkillsComplement()
 	
 	end
 	
-	
 	castWDesire, castWTarget = X.ConsiderW();
 	if ( castWDesire > 0 ) 
 	then
@@ -271,7 +263,6 @@ function X.SkillsComplement()
 		bot:ActionQueue_UseAbilityOnEntity( abilityW, castWTarget )
 		return;
 	end
-	
 	
 	castW2Desire, castWLocation = X.ConsiderW2();
 	if ( castW2Desire > 0 ) 
@@ -283,7 +274,6 @@ function X.SkillsComplement()
 		return;
 	end
 	
-	
 	castQDesire, castQTarget = X.ConsiderQ();
 	if ( castQDesire > 0 ) 
 	then
@@ -293,7 +283,6 @@ function X.SkillsComplement()
 		bot:ActionQueue_UseAbilityOnEntity( abilityQ, castQTarget )
 		return;
 	end
-	
 	
 	castDDesire, castDLocation = X.ConsiderD();
 	if ( castDDesire > 0 ) 
@@ -398,7 +387,7 @@ end
 
 function X.ConsiderW()
 	
-	if not abilityW:IsFullyCastable() then	return BOT_ACTION_DESIRE_NONE, nil end
+	if not abilityW:IsFullyCastable() then return BOT_ACTION_DESIRE_NONE, nil end
 	
 	local nCastRange = abilityW:GetCastRange();
 	local nCastPoint = abilityW:GetCastPoint();
@@ -427,7 +416,6 @@ function X.ConsiderW()
 	
 	local targetRanged = X.GetRanged(bot,nCastRange);
 	if targetRanged ~= nil
-		and targetRanged:GetHealth() > bot:GetAttackDamage()
 		and targetRanged:GetHealth() < targetRanged:GetActualIncomingDamage(nDamage + targetRanged:GetHealth() * abilityEBonus , DAMAGE_TYPE_MAGICAL)
 	then
 		return BOT_ACTION_DESIRE_HIGH, targetRanged;
@@ -649,7 +637,7 @@ end
 
 function X.GetRanged(bot,nRadius)
 	local mode = bot:GetActiveMode();
-	local enemys = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
+	local enemys = bot:GetNearbyHeroes(1400,true,BOT_MODE_NONE);
 	local allies = bot:GetNearbyHeroes(800,false,BOT_MODE_NONE);
 	
 	if  mode == BOT_MODE_TEAM_ROAM 
@@ -671,29 +659,30 @@ function X.GetRanged(bot,nRadius)
 		then
 			local nTowerTarget = nTowers[1]:GetAttackTarget();
 			if J.IsValid(nTowerTarget)
-				and GetUnitToUnitDistance(nTowerTarget,bot) <= 1400
+				and not nTowerTarget:HasModifier('modifier_fountain_glyph')
 				and J.IsKeyWordUnit("ranged",nTowerTarget)
-				and not nTowerTarget:WasRecentlyDamagedByAnyHero(1.0)
+				and GetUnitToUnitDistance(nTowerTarget,bot) <= 1400
+				and not J.IsAllysTarget(nTowerTarget)
 			then
 				return nTowerTarget;
 			end
 		end
 		
-		if nManaPercentage > 0.7 and bot:GetMana() > 500
+		if nManaPercentage > 0.4 and bot:GetMana() > 400
 		then
-			local nLaneCreeps = bot:GetNearbyLaneCreeps(800,true);
+			local nLaneCreeps = bot:GetNearbyLaneCreeps(990,true);
 			for _,creep in pairs(nLaneCreeps)
 			do
 				if J.IsValid(creep)
 					and J.IsKeyWordUnit("ranged",creep)
-					and not creep:WasRecentlyDamagedByAnyHero(1.0)
+					and not creep:HasModifier('modifier_fountain_glyph')
+					and not J.IsAllysTarget(creep)
+					and creep:GetHealth() < bot:GetAttackDamage()
 				then
 					return creep;
-				end
-			
+				end			
 			end
-		end
-		
+		end		
 	end
 
 	return nil;

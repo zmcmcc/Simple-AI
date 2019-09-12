@@ -267,7 +267,6 @@ function X.SkillsComplement()
 	local aether = J.IsItemAvailable("item_aether_lens");
 	if aether ~= nil then aetherRange = 250 end	
 	if talent2:IsTrained() then aetherRange = aetherRange + talent2:GetSpecialValueInt("value") end
-	if #hEnemyList <= 1 then aetherRange = aetherRange + 200 end
 	if talent8:IsTrained() then talent8Damage = talent8Damage + talent8:GetSpecialValueInt("value") end
 	
 	
@@ -326,6 +325,9 @@ function X.ConsiderQ()
 	
 	local nSkillLV    = abilityQ:GetLevel(); 
 	local nCastRange  = abilityQ:GetCastRange() + aetherRange
+	
+	if #hEnemyList <= 1 then nCastRange = nCastRange + 200 end
+	
 	local nCastPoint  = abilityQ:GetCastPoint()
 	local nManaCost   = abilityQ:GetManaCost()
 	local nDamage     = abilityQ:GetSpecialValueInt("fireblast_damage") + talent8Damage
@@ -545,6 +547,7 @@ function X.ConsiderQ()
 		for _,npcEnemy in pairs( nInRangeEnemyList )
 		do
 			if  J.IsValid(npcEnemy)
+				and J.IsInRange(bot,npcEnemy,600)
 			    and J.CanCastOnNonMagicImmune(npcEnemy)
 				and J.CanCastOnTargetAdvanced(npcEnemy)				
 				and not J.IsDisabled(true, npcEnemy)			
@@ -690,19 +693,20 @@ function X.ConsiderW()
 	    and J.IsAllowedToSpam(bot, nManaCost *0.32)
 		and (bot:GetAttackDamage() < 200 or nMP > 0.8)
 		and nSkillLV >= 2 and DotaTime() > 8 *60
+		and #hAllyList <= 2
 	then
 		local nLaneCreepsInView = bot:GetNearbyLaneCreeps(1600,true);
 		if #nLaneCreepsInView >= 3 
 		then
 			local nLaneCreeps = bot:GetNearbyLaneCreeps(nCastRange +50,true);
-			local nAllyCreeps = bot:GetNearbyLaneCreeps(1600,false);
+			local nAllyCreeps = bot:GetNearbyLaneCreeps(1000,false);
 			local keyWord = "ranged"
 			for _,creep in pairs(nLaneCreeps)
 			do
 				if J.IsValid(creep)
 					and ( J.IsKeyWordUnit(keyWord,creep) or #nAllyCreeps == 0 )
 					and not creep:HasModifier("modifier_fountain_glyph")
-					and not J.CanKillTarget(creep,bot:GetAttackDamage() *1.88,DAMAGE_TYPE_PHYSICAL)
+					and not J.CanKillTarget(creep,bot:GetAttackDamage() *1.68,DAMAGE_TYPE_PHYSICAL)
 				then
 					return BOT_ACTION_DESIRE_HIGH, creep,'W带线'
 				end
@@ -736,7 +740,6 @@ end
 --"modifier_ogre_magi_bloodlust"
 function X.ConsiderE()
 
-
 	if not abilityE:IsFullyCastable() then return 0 end
 	
 	local nSkillLV    = abilityE:GetLevel()
@@ -748,7 +751,7 @@ function X.ConsiderE()
 	
 	local nInRangeCreepList = bot:GetNearbyCreeps(nCastRange +100, false)
 	local nInRangeTowerList = bot:GetNearbyTowers(nCastRange +50, false)
-	local nInRangeAllyList = J.GetAlliesNearLoc(bot:GetLocation(),nCastRange +32)
+	local nInRangeAllyList = J.GetAlliesNearLoc(bot:GetLocation(),nCastRange +52)
 	
 	local bestTarget = nil
 	local nMaxDamage = 0	
@@ -819,7 +822,7 @@ function X.ConsiderE()
 	if nLV >= 6
 	then
 		local bestAlly = nil
-		local maxDamage = 0
+		local maxDamage = 108
 	
 		for _,ally in pairs(nInRangeAllyList)
 		do
@@ -878,6 +881,7 @@ function X.ConsiderE()
 					
 					--给远程兵带线
 					if J.IsKeyWordUnit('ranged',creep) 
+					   and J.GetHPR(creep) > 0.8
 					   and nLV >= 12
 					   and #hEnemyList == 0 and #hAllyList == 1
 					then
@@ -903,10 +907,13 @@ end
 function X.ConsiderD()
 
 
-	if not abilityD:IsFullyCastable() or not bot:HasScepter() then return 0 end
+	if abilityQ:IsFullyCastable() or not abilityD:IsFullyCastable() or not bot:HasScepter() then return 0 end
 	
 	local nSkillLV    = abilityD:GetLevel()
 	local nCastRange  = abilityD:GetCastRange() + aetherRange
+	
+	if #hEnemyList <= 1 then nCastRange = nCastRange + 200 end
+	
 	local nCastPoint  = abilityD:GetCastPoint()
 	local nManaCost   = abilityD:GetManaCost()
 	local nDamage     = abilityD:GetSpecialValueInt("fireblast_damage")
@@ -916,9 +923,7 @@ function X.ConsiderD()
 	local nInRangeEnemyList = bot:GetNearbyHeroes(nCastRange +50, true, BOT_MODE_NONE);
 	local nInBonusEnemyList = bot:GetNearbyHeroes(nCastRange + 200,true,BOT_MODE_NONE);
 	
-	if nManaCost/bot:GetMaxMana() > 0.5 and nHP > 0.2 then return 0 end
-	
-	if abilityQ:IsFullyCastable() then return 0 end
+	if nManaCost/bot:GetMaxMana() > 0.45 and nHP > 0.25 then return 0 end
 	
 	--打断和击杀
 	for _,npcEnemy in pairs( nInBonusEnemyList )
@@ -1083,11 +1088,12 @@ function X.ConsiderD()
 	if (#hEnemyList > 0 or bot:WasRecentlyDamagedByAnyHero(3.0)) 
 		and ( bot:GetActiveMode() ~= BOT_MODE_RETREAT or #hAllyList >= 2 )
 		and #nInRangeEnemyList >= 1
-		and nLV >= 18
+		and nLV >= 15
 	then
 		for _,npcEnemy in pairs( nInRangeEnemyList )
 		do
 			if  J.IsValid(npcEnemy)
+				and J.IsInRange(bot,npcEnemy,600)
 			    and J.CanCastOnNonMagicImmune(npcEnemy) 
 				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)			

@@ -250,8 +250,6 @@ function X.SkillsComplement()
 	hEnemyHeroList = bot:GetNearbyHeroes(1600, true, BOT_MODE_NONE);
 	
 	
-	
-	
 	castQDesire, castQTarget = X.ConsiderQ();
 	if ( castQDesire > 0 ) 
 	then
@@ -424,6 +422,7 @@ function X.ConsiderQ()
 		local targetCreep = J.GetMostHpUnit(nCreeps);
 		
 		if J.IsValid(targetCreep)
+			and bot:IsFacingLocation(targetCreep:GetLocation(),46)
 			and ( #nCreeps >= 2 or GetUnitToUnitDistance(targetCreep,bot) <= 400 )
 			and not J.IsRoshan(targetCreep)
 			and not J.IsOtherAllysTarget(targetCreep)

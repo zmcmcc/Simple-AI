@@ -23,13 +23,13 @@ local tGroupedDataList = {
 		['info'] = 'By 决明子',
 		--天赋树
 		['Talent'] = {
-			['t25'] = {10, 0},
+			['t25'] = {0, 10},
 			['t20'] = {10, 0},
-			['t15'] = {0, 10},
-			['t10'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
 		},
 		--技能
-		['Ability'] = {2,3,3,1,3,6,3,1,1,1,6,2,2,2,6},
+		['Ability'] = {1,2,1,3,1,6,1,2,2,2,6,3,3,3,6},
 		--装备
 		['Buy'] = {
 			sOutfit,
@@ -44,118 +44,141 @@ local tGroupedDataList = {
 		},
 		--出售
 		['Sell'] = {
-			"item_hurricane_pike",
-			"item_urn_of_shadows",
+			"item_ultimate_scepter",
+			"item_magic_wand",
 			
-			'item_satanic',
-			'item_magic_wand',
+			"item_sheepstick",
+			"item_arcane_boots",
+		},
+	},{
+		--组合说明，不影响游戏
+		['info'] = 'By 决明子2',
+		--天赋树
+		['Talent'] = {
+			['t25'] = {0, 10},
+			['t20'] = {10, 0},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
+		},
+		--技能
+		['Ability'] = {1,2,1,3,1,6,1,2,2,2,6,3,3,3,6},
+		--装备
+		['Buy'] = {
+			sOutfit,
+			"item_dragon_lance",
+			'item_hand_of_midas',
+			"item_maelstrom",
+			"item_hurricane_pike",
+			"item_skadi",
+			"item_black_king_bar",	
+			"item_monkey_king_bar",
+			"item_mjollnir",
+		},
+		--出售
+		['Sell'] = {
+			"item_ultimate_scepter",
+			"item_magic_wand",
+			
+			"item_sheepstick",
+			"item_arcane_boots",
 		},
 	},{
 		--组合说明，不影响游戏
 		['info'] = 'By Misunderstand',
 		--天赋树
 		['Talent'] = {
-			['t25'] = {0, 10},
+			['t25'] = {10, 0},
 			['t20'] = {10, 0},
-			['t15'] = {0, 10},
-			['t10'] = {0, 10},
+			['t15'] = {10, 0},
+			['t10'] = {10, 0},
 		},
 		--技能
-		['Ability'] = { 1, 3, 1, 2, 1, 6, 3, 1, 3, 3, 6, 2, 2, 2, 6 },
+		['Ability'] = { 1, 2, 2, 1, 3, 6, 1, 1, 3, 3, 6, 2, 3, 2, 6 },
 		--装备
 		['Buy'] = {
-			"item_faerie_fire",
-			"item_double_slippers",
-			"item_circlet",
-			"item_tango",
-			"item_flask",
-			"item_magic_wand",
-			"item_enchanted_mango",
-			"item_double_wraith_band",
-			"item_power_treads",
-			"item_mask_of_madness",
-			"item_dragon_lance",
-			"item_maelstrom",
-			"item_mjollnir", 
-			"item_black_king_bar",
-			"item_greater_crit",
-			"item_moon_shard",
-			"item_monkey_king_bar",
-			"item_satanic",
-			"item_silver_edge",
-			"item_travel_boots",
+			"item_double_mantle",
+			"item_double_circlet",
+			"item_magic_stick",
+			"item_double_tango",
+			"item_double_null_talisman",
+			"item_double_enchanted_mango",
+			"item_bottle",
+			"item_double_clarity",
+			"item_boots",
+			"item_kaya",
+			"item_arcane_boots",
+			"item_rod_of_atos",
+			"item_blink",
+			"item_veil_of_discord",
+			"item_ultimate_scepter",
+			"item_aether_lens",
 			"item_ultimate_scepter_2",
-			"item_travel_boots_2"
+			"item_sheepstick",
+			"item_cyclone",
+			"item_travel_boots",
+			"item_kaya_and_sange",
+			"item_travel_boots_2",
 		},
 		--出售
 		['Sell'] = {
-			"item_black_king_bar",     
-			"item_wraith_band",
+			"item_rod_of_atos",
+			"item_magic_stick",
+
+			"item_blink",
+			"item_bottle",
 					
-			"item_greater_crit",  
-			"item_magic_wand",	     
+			"item_ultimate_scepter",
+			"item_null_talisman",
 
-			"item_monkey_king_bar",
-			"item_dragon_lance",
-
-			"item_satanic",
-			"item_mask_of_madness",
+			"item_cyclone",
+			"item_blink",
 
 			"item_travel_boots",
-			"item_power_treads"
+			"item_arcane_boots"
 		},
 	},{
 		--组合说明，不影响游戏
 		['info'] = 'By 铅笔会有猫的w',
 		--天赋树
 		['Talent'] = {
-			['t25'] = {0, 10},
-			['t20'] = {0, 10},
+			['t25'] = {10, 0},
+			['t20'] = {10, 0},
 			['t15'] = {0, 10},
-			['t10'] = {0, 10},
+			['t10'] = {10, 0},
 		},
 		--技能
-		['Ability'] = { 1, 3, 1, 2, 1, 6, 3, 1, 3, 3, 6, 2, 2, 2, 6 },
+		['Ability'] = { 1, 2, 3, 1, 1, 6, 1, 2, 2, 2, 6, 3, 3, 3, 6 },
 		--装备
 		['Buy'] = {
-			"item_faerie_fire",
-			"item_double_slippers",
-			"item_circlet",
-			"item_tango",
-			"item_flask",
-			"item_magic_wand",
+			"item_double_tango",
+			"item_double_flask",
+			"item_clarity",
 			"item_enchanted_mango",
-			"item_double_wraith_band",
-			"item_blight_stone",
-			"item_power_treads",
-			"item_hand_of_midas",
-			"item_desolator", 
-			"item_mjollnir", 
-			"item_lesser_crit",
-			"item_silver_edge",
-			"item_greater_crit",
-			"item_satanic",
-			"item_moon_shard",
+			"item_magic_wand",
+			"item_boots",
+			"item_double_null_talisman",
+			"item_arcane_boots",
+			"item_rod_of_atos",
+			"item_glimmer_cape",
+			"item_ultimate_scepter",			
+			"item_kaya",
+			"item_sheepstick", 
+			"item_kaya_and_sange",
+			"item_guardian_greaves",
 			"item_ultimate_scepter_2",
-			"item_travel_boots",
-			"item_travel_boots_2"
+			"item_lotus_orb",
+			"item_shivas_guard", 
 		},
 		--出售
 		['Sell'] = {
-			"item_mjollnir",  
-			"item_wraith_band",
-					
-			"item_satanic",  
-			"item_hand_of_midas",	     
+			"item_shivas_guard",     
+			"item_rod_of_atos",
 
-			"item_lesser_crit",
+			"item_sheepstick",     
 			"item_magic_wand",
-
-			"item_invis_sword",
-			"item_dragon_lance",
-
-			"item_travel_boots",
-			"item_power_treads"
+					
+			"item_ultimate_scepter",  
+			"item_null_talisman",	 
 		},
 	},
 }
@@ -163,32 +186,31 @@ local tGroupedDataList = {
 local tDefaultGroupedData = {
 	--天赋树
 	['Talent'] = {
-		['t25'] = {10, 0},
+		['t25'] = {0, 10},
 		['t20'] = {10, 0},
-		['t15'] = {0, 10},
-		['t10'] = {0, 10},
+		['t15'] = {10, 0},
+		['t10'] = {10, 0},
 	},
 	--技能
-	['Ability'] = {2,3,3,1,3,6,3,1,1,1,6,2,2,2,6},
+	['Ability'] = {1,2,1,3,1,6,1,2,2,2,6,3,3,3,6},
 	--装备
 	['Buy'] = {
 		sOutfit,
-		"item_dragon_lance",
-		'item_mask_of_madness',
-		"item_maelstrom",
-		"item_hurricane_pike",
-		"item_skadi",
-		"item_broken_satanic",	
-		"item_monkey_king_bar",
-		"item_mjollnir",
+		--"item_soul_ring",
+		"item_rod_of_atos",
+		"item_pipe",
+		"item_glimmer_cape",
+		"item_cyclone",
+		"item_ultimate_scepter",
+		"item_sheepstick",
 	},
 	--出售
 	['Sell'] = {
-		"item_hurricane_pike",
-		"item_urn_of_shadows",
+		"item_ultimate_scepter",
+		"item_magic_wand",
 		
-		'item_satanic',
-		'item_magic_wand',
+		"item_sheepstick",
+		"item_arcane_boots",
 	},
 }
 
@@ -233,20 +255,13 @@ function X.SkillsComplement()
 	X.ConsiderTarget();
 	J.ConsiderForMkbDisassembleMask(bot);
 	
-	
-	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
-	
-	
 	
 	nKeepMana = 280; 
 	nMP = bot:GetMana()/bot:GetMaxMana();
 	nHP = bot:GetHealth()/bot:GetMaxHealth();
 	nLV = bot:GetLevel();
 	hEnemyHeroList = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
-	
-	
-	
 	
 	castRDesire, castRTarget   = X.ConsiderR();
 	if ( castRDesire > 0 ) 
@@ -332,7 +347,7 @@ function X.ConsiderQ()
 	local nCanHurtCreepsLocationAoE = bot:FindAoELocation( true, false, botLocation, nCastRange, nRadius, 0.8, 0);
 	local nCanHurtCreepCount = nCanHurtCreepsLocationAoE.count;
 	if nCanHurtCreepsLocationAoE == nil
-       or  J.GetInLocLaneCreepCount(bot, 1600, nRadius, nCanHurtCreepsLocationAoE.targetloc) <= 2        --检查半径内是否真的有小兵
+       or J.GetInLocLaneCreepCount(bot, 1600, nRadius, nCanHurtCreepsLocationAoE.targetloc) <= 2   --检查半径内是否真的有小兵
 	then
 	     nCanHurtCreepCount = 0
 	end
@@ -449,9 +464,9 @@ function X.ConsiderQ()
 		and bot:GetActiveMode( ) ~= BOT_MODE_LANING
 		and bot:GetMana() >= nKeepMana
 		and #nEnemysLaneCreepsInSkillRange >= 2
-		and nCanHurtCreepCount >= 6
-		and ( nLV < 25 or nCanHurtCreepCount >= 8 )
-		and ( nLV < 20 or GetUnitToLocationDistance(bot,nCanHurtCreepsLocationAoE.targetloc) >= 1300 )
+		and nCanHurtCreepCount >= 5
+		and ( nLV < 25 or nCanHurtCreepCount >= 7 )
+		and ( nLV < 20 or GetUnitToLocationDistance(bot,nCanHurtCreepsLocationAoE.targetloc) >= 1100 )
 		and not X.IsAbiltyQCastedHere(nCanHurtCreepsLocationAoE.targetloc,nRadius)
 	then
 		return BOT_ACTION_DESIRE_HIGH,nCanHurtCreepsLocationAoE.targetloc;
@@ -616,7 +631,7 @@ end
 function X.IsAbiltyQCastedHere(nLoc,nRadius)
 
     if lastAbilityQTime < DotaTime() -10 
-	   or J.GetLocationToLocationDistance(lastAbilityQLocation,nLoc) > nRadius *1.28
+	   or J.GetLocationToLocationDistance(lastAbilityQLocation,nLoc) > nRadius *1.14
 	then
 		return false;
 	end

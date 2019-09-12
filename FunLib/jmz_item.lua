@@ -199,7 +199,6 @@ ItemModule['tEarlyItem'] = {
 	 'item_tango',  
 	 'item_flask', 
 	 'item_infused_raindrop',
-	 'item_branches',
 	 'item_magic_stick',
 	 'item_orb_of_venom',
 	 'item_bracer',
@@ -211,6 +210,7 @@ ItemModule['tEarlyItem'] = {
 	 'item_ancient_janggo',
 	 'item_refresher_shard',
 	 'item_cheese',
+--	 'item_branches',
 --   'item_quelling_blade',
 --	 'item_stout_shield',
 --	 'item_dust',
@@ -556,17 +556,17 @@ ItemModule['item_six_refresher']        	= { 'item_refresher', 'item_refresher',
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 
-ItemModule['item_viper_outfit']            = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn', 'item_magic_stick', 'item_recipe_magic_wand', }
+ItemModule['item_viper_outfit']            = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_wraith_band', 'item_circlet', 'item_flask', 'item_magic_stick', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_broken_urn', }
 
-ItemModule['item_sniper_outfit']           = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn', 'item_magic_stick', 'item_recipe_magic_wand', }
+ItemModule['item_sniper_outfit']           = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_wraith_band', 'item_circlet', 'item_flask', 'item_magic_stick', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_broken_urn', }
 
-ItemModule['item_razor_outfit']            = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn', 'item_magic_stick', 'item_recipe_magic_wand', }
+ItemModule['item_razor_outfit']            = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_wraith_band', 'item_circlet', 'item_flask', 'item_magic_stick', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_broken_urn', }
 
-ItemModule['item_medusa_outfit']           = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn', 'item_magic_stick', 'item_recipe_magic_wand', 'item_infused_raindrop', }
+ItemModule['item_medusa_outfit']           = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_wraith_band', 'item_circlet', 'item_flask', 'item_magic_stick', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_broken_urn', 'item_infused_raindrop', }
 
-ItemModule['item_nevermore_outfit']        = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn',  'item_magic_stick', 'item_recipe_magic_wand', 'item_infused_raindrop',}
+ItemModule['item_nevermore_outfit']        = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_wraith_band', 'item_circlet', 'item_flask', 'item_magic_stick', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_broken_urn',  'item_infused_raindrop',}
 
-ItemModule['item_templar_assassin_outfit'] = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_circlet', 'item_wraith_band', 'item_flask', 'item_power_treads_agi', 'item_broken_urn', 'item_magic_stick', 'item_recipe_magic_wand', 'item_blight_stone',}
+ItemModule['item_templar_assassin_outfit'] = { 'item_tango', 'item_faerie_fire', 'item_double_branches', 'item_wraith_band', 'item_circlet', 'item_flask', 'item_magic_stick', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_broken_urn',  'item_blight_stone',}
 
 ItemModule['item_luna_outfit']             = { 'item_tango', 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_wraith_band', 'item_recipe_magic_wand', 'item_power_treads_agi', 'item_infused_raindrop' } 
 
@@ -668,7 +668,7 @@ function ItemModule.IsItemInHero(sItemName)
 	if string.find(sItemName, '_outfit') ~= nil 
 	then
 		if ItemModule.IsExistInTable(sItemName, ItemModule['tMidOutfit']) 
-		then return ItemModule.IsItemInHero('item_magic_wand') end
+		then return ItemModule.IsItemInHero('item_urn_of_shadows') end
 		
 		if ItemModule.IsExistInTable(sItemName, ItemModule['tCarryOutfit']) 
 		then 
@@ -689,9 +689,11 @@ function ItemModule.IsItemInHero(sItemName)
 	
 	if sItemName == 'item_ultimate_scepter_2' then return bot:HasModifier('modifier_item_ultimate_scepter_consumed') end
 	
+	if sItemName == 'item_tpscroll' then return bot:FindItemSlot(sItemName) >= 0 end
+	
 	local nItemSolt = bot:FindItemSlot(sItemName)
 	
-	return (nItemSolt >= 0 and nItemSolt <= 8) or nItemSolt == 15 
+	return nItemSolt >= 0 and nItemSolt <= 8
 
 end
 

@@ -204,6 +204,26 @@ function X.MinionThink(hMinionUnit)
 
 end
 
+
+--[[
+
+"Ability1"		"antimage_mana_break"
+"Ability2"		"antimage_blink"
+"Ability3"		"antimage_counterspell"
+"Ability4"		"generic_hidden"
+"Ability5"		"generic_hidden"
+"Ability6"		"antimage_mana_void"
+"Ability10"		"special_bonus_strength_10"
+"Ability11"		"special_bonus_attack_speed_20"
+"Ability12"		"special_bonus_unique_antimage_3"
+"Ability13"		"special_bonus_agility_15"
+"Ability14"		"special_bonus_unique_antimage_5"
+"Ability15"		"special_bonus_unique_antimage"
+"Ability16"		"special_bonus_unique_antimage_4"
+"Ability17"		"special_bonus_unique_antimage_2"
+
+--]]
+
 local abilityW = bot:GetAbilityByName( sAbilityList[2] );
 local abilityE = bot:GetAbilityByName( sAbilityList[3] );
 local abilityR = bot:GetAbilityByName( sAbilityList[6] );

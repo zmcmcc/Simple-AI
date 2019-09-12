@@ -203,6 +203,26 @@ function X.MinionThink(hMinionUnit)
 
 end
 
+--[[
+
+"Ability1"		"kunkka_torrent"
+"Ability2"		"kunkka_tidebringer"
+"Ability3"		"kunkka_x_marks_the_spot"
+"Ability4"		"generic_hidden"
+"Ability5"		"generic_hidden"
+"Ability6"		"kunkka_ghostship"
+"Ability7"		"kunkka_return"
+"Ability10"		"special_bonus_attack_damage_40"
+"Ability11"		"special_bonus_armor_6"
+"Ability12"		"special_bonus_hp_regen_12"
+"Ability13"		"special_bonus_unique_kunkka_2"
+"Ability14"		"special_bonus_unique_kunkka"
+"Ability15"		"special_bonus_strength_25"
+"Ability16"		"special_bonus_unique_kunkka_3"
+"Ability17"		"special_bonus_unique_kunkka_4"
+
+--]]
+
 local abilityQ  = bot:GetAbilityByName( sAbilityList[1] )
 local abilityW  = bot:GetAbilityByName( sAbilityList[2] )
 local abilityE  = bot:GetAbilityByName( sAbilityList[3] )
@@ -241,8 +261,6 @@ function X.SkillsComplement()
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 		
-	--J.Skill.AbilityReadinessReminder(abilityR, 5);
-	
 	
 	nKeepMana = 240
 	nMP = bot:GetMana()/bot:GetMaxMana();

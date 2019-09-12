@@ -280,7 +280,7 @@ function X.ConsiderQ()
 	local nAllies =  bot:GetNearbyHeroes(1200,false,BOT_MODE_NONE);
 	
 	local nEnemysHerosInView  = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
-	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange + 50,true,BOT_MODE_NONE);
+	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange + 32,true,BOT_MODE_NONE);
 	local nEnemysHerosInBonus = bot:GetNearbyHeroes(nCastRange + 300,true,BOT_MODE_NONE);
 		
 	
@@ -296,8 +296,8 @@ function X.ConsiderQ()
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
 			
-			if  GetUnitToUnitDistance(bot,npcEnemy) <= nCastRange + 80
-				and J.CanKillTarget(npcEnemy,nDamage,nDamageType)
+			if  J.IsInRange(bot,npcEnemy,nCastRange +80)
+				and J.WillMagicKillTarget(bot,npcEnemy,nDamage,nCastPoint)
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy;
 			end
@@ -336,7 +336,6 @@ function X.ConsiderQ()
 	--受到伤害时保护自己
 	if bot:WasRecentlyDamagedByAnyHero(3.0) 
 		and bot:GetActiveMode() ~= BOT_MODE_RETREAT
-		and not bot:IsInvisible()
 		and #nEnemysHerosInRange >= 1
 		and nLV >= 10
 	then
@@ -347,7 +346,7 @@ function X.ConsiderQ()
 				and J.CanCastOnTargetAdvanced(npcEnemy)
 				and not J.IsDisabled(true, npcEnemy)
                 and not npcEnemy:IsDisarmed()				
-				and bot:IsFacingLocation(npcEnemy:GetLocation(),45)
+				and bot:IsFacingLocation(npcEnemy:GetLocation(),75)
 			then
 				return BOT_ACTION_DESIRE_HIGH, npcEnemy
 			end
@@ -356,13 +355,13 @@ function X.ConsiderQ()
 	
 	
 	--打架时先手	
-	if J.IsGoingOnSomeone(bot) and nLV >= 5
+	if J.IsGoingOnSomeone(bot) and ( nLV >= 5 or nMP > 0.62 )
 	then
 	    local npcTarget = J.GetProperTarget(bot);
 		if J.IsValidHero(npcTarget) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
 			and J.CanCastOnTargetAdvanced(npcTarget)
-			and J.IsInRange(npcTarget, bot, nCastRange +50) 
+			and J.IsInRange(npcTarget, bot, nCastRange +32) 
 			and not J.IsDisabled(true, npcTarget)
 			and not npcTarget:IsDisarmed()
 		then
@@ -375,7 +374,6 @@ function X.ConsiderQ()
 	
 	--撤退时保护自己
 	if J.IsRetreating(bot) 
-		and not bot:IsInvisible()
 		and #nEnemysHerosInBonus <= 2
 	then
 		for _,npcEnemy in pairs( nEnemysHerosInRange )
@@ -410,7 +408,7 @@ function X.ConsiderQ()
 		end
 		
 		if nSkillLV >= 2
-			and ( bot:GetMana() > 350 or nMP > 0.95 )
+			and ( bot:GetMana() > 330 or nMP > 0.95 )
 		then
 			local keyWord = "melee";
 			for _,creep in pairs(nLaneCreeps)
@@ -536,7 +534,7 @@ function X.ConsiderR()
 	local npcTarget = J.GetProperTarget(bot);		
 	if J.IsValidHero(npcTarget) 
 		and J.CanCastOnNonMagicImmune(npcTarget) 
-		and ( GetUnitToUnitDistance(npcTarget,bot) <= 350
+		and ( GetUnitToUnitDistance(npcTarget,bot) <= 450
 				or ( J.GetHPR(npcTarget) < 0.38 and  GetUnitToUnitDistance(npcTarget,bot) <= 650 ) )
 		and npcTarget:GetHealth() > 600
 	then

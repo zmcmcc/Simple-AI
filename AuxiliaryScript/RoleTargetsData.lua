@@ -86,7 +86,9 @@ X["allows_hero"] = allowsHeroData.hero--[[{
 --'npc_dota_hero_omniknight',
 --'npc_dota_hero_rubick',
 --'npc_dota_hero_tiny',
---'npc_dota_hero_earthshaker'
+--'npc_dota_hero_earthshaker',
+--'npc_dota_hero_dark_willow',
+--'npc_dota_hero_undying',
 ----原脚本
 --'npc_dota_hero_antimage',
 --'npc_dota_hero_arc_warden',
@@ -552,7 +554,7 @@ function X.getApHero()
     local botSelectHero = nil;
     --趣味模式
     if X.interestingMode == nil  then
-        local randomMode = RandomInt(1,200)
+        local randomMode = RandomInt(1,400)
         if randomMode == 48 then
             X.interestingMode = '拉比克大魔王';
             interestingList = {

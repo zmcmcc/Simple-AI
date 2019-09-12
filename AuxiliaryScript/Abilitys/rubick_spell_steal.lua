@@ -55,6 +55,11 @@ local speelAbilityList = {
     'npc_dota_hero_earthshaker',
     'npc_dota_hero_razor',
     'npc_dota_hero_silencer',
+    'npc_dota_hero_undying',
+    'npc_dota_hero_dark_willow',
+    'npc_dota_hero_lich',
+    'npc_dota_hero_phantom_assassin',
+    'npc_dota_hero_riki',
 }
 --需舍弃的垃圾技能
 local discardedAbilityList = {

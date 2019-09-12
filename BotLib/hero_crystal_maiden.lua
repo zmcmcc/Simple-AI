@@ -225,8 +225,6 @@ function X.SkillsComplement()
 	
 	if J.CanNotUseAbility(bot) or bot:IsInvisible() then return end
 	
-	--J.Skill.AbilityReadinessReminder(abilityR, 5);
-	
 	nKeepMana = 220 
 	aetherRange = 0
 	nMP = bot:GetMana()/bot:GetMaxMana()
@@ -899,7 +897,7 @@ function X.ConsiderR()
 		end
 	end
 	if bot:GetActiveMode() ~= BOT_MODE_RETREAT 
-	   or (bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() <= 0.75 ) 
+	   or (bot:GetActiveMode() == BOT_MODE_RETREAT and bot:GetActiveModeDesire() <= 0.85 ) 
 	then
 		if ( #nEnemysHeroesInRange >= 3 or aoeCanHurtCount >= 2) 
 		then
@@ -914,12 +912,11 @@ function X.ConsiderR()
 		if J.IsValidHero(npcTarget) 
 			and J.CanCastOnNonMagicImmune(npcTarget) 
 			and ( J.IsDisabled(true, npcTarget) or J.IsInRange(bot,npcTarget,280) )
-			and npcTarget:GetHealth() <= npcTarget:GetActualIncomingDamage(bot:GetOffensivePower(),DAMAGE_TYPE_MAGICAL)
+			and npcTarget:GetHealth() <= npcTarget:GetActualIncomingDamage(bot:GetOffensivePower() *1.5,DAMAGE_TYPE_MAGICAL)
 			and GetUnitToUnitDistance(npcTarget,bot) <= nRadius
 			and npcTarget:GetHealth( ) > 400
 			and #nAllies <= 2 
 		then
---			J.PrintAndReport('进攻时尝试放大,队友数量:',#nAllies);
 			return BOT_ACTION_DESIRE_HIGH
 		end
 	end
@@ -935,7 +932,6 @@ function X.ConsiderR()
 		   and not abilityW:IsFullyCastable()
 		   and nHP > 0.38 * #nEnemysHeroesFurther
 		then
---			J.PrintAndReport('撤退时尝试放大,附近敌人:',#nEnemysHeroesFurther);
 			return BOT_ACTION_DESIRE_HIGH;
 		end	
 	end	

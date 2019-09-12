@@ -507,7 +507,7 @@ function X.IsTargetedByUnit(courier)
 		return true;
 	end;
 	
-	if courier:DistanceFromFountain() < 2000 then return false end
+	if courier:DistanceFromFountain() < 1600 then return false end
 	
 	for i = 0, 10 do
 	local tower = GetTower(GetOpposingTeam(), i)
@@ -536,7 +536,7 @@ function X.IsTargetedByUnit(courier)
 	do 
 		if GetUnitToUnitDistance(enemy,courier) <= 700 + botLV * 15
 		then
-			local nNearCourierAllyList = J.GetAlliesNearLoc(courier:GetLocation(),600);
+			local nNearCourierAllyList = J.GetAlliesNearLoc(enemy:GetLocation(),600);
 			if #nNearCourierAllyList == 0
 			then
 				return true;
@@ -548,13 +548,26 @@ function X.IsTargetedByUnit(courier)
 		then
 			return true;
 		end
+		
+		if GetUnitToUnitDistance(enemy,courier) <= enemy:GetAttackRange() +88
+		then
+			return true;
+		end
 	end
 	
 	local nEnemysHeroes = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
 	for _,enemy in pairs(nEnemysHeroes)
 	do 
-		local nNearCourierAllyList = J.GetAlliesNearLoc(courier:GetLocation(),600);
-		if #nNearCourierAllyList == 0
+		if GetUnitToUnitDistance(enemy,courier) <= 700 + botLV * 15
+		then
+			local nNearCourierAllyList = J.GetAlliesNearLoc(enemy:GetLocation(),800);
+			if #nNearCourierAllyList == 0
+			then
+				return true;
+			end
+		end
+		
+		if GetUnitToUnitDistance(enemy,courier) <= enemy:GetAttackRange() +100
 		then
 			return true;
 		end
@@ -924,7 +937,6 @@ function X.ShouldTP()
 		   and not bot:HasModifier("modifier_flask_healing")
 		   and bot:DistanceFromFountain() > tpThreshold - 200
 		then
-			J.Print("感觉快要死了:",bot:GetUnitName());
 			tpLoc = J.GetTeamFountain();
 		elseif bot:GetHealth() < 0.35*bot:GetMaxHealth() 
 		       and bot:WasRecentlyDamagedByAnyHero(8.0) 
@@ -933,7 +945,6 @@ function X.ShouldTP()
 			   and not bot:HasModifier("modifier_flask_healing")
 			   and bot:DistanceFromFountain() > tpThreshold - 200
 			then
-			   J.Print("尝试逃跑:",bot:GetUnitName());
 			   tpLoc = J.GetTeamFountain();
 		elseif  (bot:GetHealth()/bot:GetMaxHealth() < 0.25 or bot:GetHealth()/bot:GetMaxHealth() + bot:GetMana() /bot:GetMaxMana() < 0.3)
 				and X.CanJuke() == true 
@@ -950,7 +961,6 @@ function X.ShouldTP()
 				and not  bot:HasModifier("modifier_bottle_regeneration")
 				and not  bot:HasModifier("modifier_tango_heal")
 			then
-				J.Print("撤退了回家补血补蓝:",bot:GetUnitName());
 				tpLoc = J.GetTeamFountain();
 		    end	
 	elseif mode == BOT_MODE_FARM 
@@ -1006,10 +1016,8 @@ function X.ShouldTP()
 			and not bot:HasModifier("modifier_bottle_regeneration")
 			and not bot:HasModifier("modifier_tango_heal")
 		then
-			J.Print("状态不好回家补血补蓝:",bot:GetUnitName());
 			tpLoc = J.GetTeamFountain();
 	elseif X.IsFarmingAlways(bot) then
-			J.Print("不打野了马上回家:",bot:GetUnitName());
 			tpLoc = GetAncient(GetTeam()):GetLocation()
 	elseif J.IsStuck(bot) and enemies == 0 then
 		bot:ActionImmediate_Chat("I'm using tp while stuck.", true);
@@ -1082,7 +1090,7 @@ local function UnImplementedItemUsage()
 			if not J.IsInRange(bot, npcTarget, 1800)
 			   and J.IsInRange(bot, npcTarget, 2600)
 			then
-				local hEnemyCreepList = bot:GetNearbyLaneCreeps(800,false);
+				local hEnemyCreepList = bot:GetNearbyLaneCreeps(800,true);
 				if #hEnemyCreepList == 0 and #hNearbyEnemyHeroList == 0
 				then
 					bot:Action_UseAbility(se);
@@ -1394,7 +1402,7 @@ local function UnImplementedItemUsage()
 					   and not ally:HasModifier("modifier_arc_warden_tempest_double")
 					   and ally:GetUnitName() ~= "npc_dota_hero_meepo"
 					   and X.GetItemCount(ally, "item_tango_single") == 0 
-					   and ally:GetItemInSlot(5) == nil
+					   and J.Item.GetEmptyInventoryAmount(ally) >= 4
 					then
 						bot:Action_UseAbilityOnEntity(itg, ally);
 						giveTime = DotaTime();
@@ -1693,7 +1701,8 @@ local function UnImplementedItemUsage()
 		     and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH 
 			 and bot:DistanceFromFountain() > 300 
 			 and ( bot:GetHealth() / bot:GetMaxHealth() ) < 0.15 ) 
-		   or DotaTime() > 10 *60
+		     or ( DotaTime() > 10 *60 and bot:GetItemInSlot(6) ~= nil
+				and bot:GetMaxHealth() - bot:GetHealth() > 160 )
 		then
 			bot:Action_UseAbility(ff);
 			return;
@@ -1782,7 +1791,7 @@ local function UnImplementedItemUsage()
 			if J.IsValidHero(npcTarget)
 				and J.CanCastOnNonMagicImmune(npcTarget)
 				and J.CanCastOnTargetAdvanced(npcTarget)
-				and GetUnitToUnitDistance(npcTarget, bot) < nCastRange 
+				and J.IsInRange(bot,npcTarget,nCastRange) 
 			then
 			    bot:Action_UseAbilityOnEntity(eb,npcTarget);
 				return
@@ -1872,7 +1881,8 @@ local function UnImplementedItemUsage()
 	
 	local hood = X.IsItemAvailable("item_hood_of_defiance");
     if hood ~= nil and hood:IsFullyCastable() 
-	   and bot:GetHealth()/bot:GetMaxHealth()< 0.8 and not bot:HasModifier('modifier_item_pipe_barrier')
+	   and bot:GetHealth()/bot:GetMaxHealth()< 0.8 
+	   and not bot:HasModifier('modifier_item_pipe_barrier')
 	then
 		if hNearbyEnemyHeroList ~= nil and #hNearbyEnemyHeroList > 0 
 		then
@@ -2062,7 +2072,7 @@ local function UnImplementedItemUsage()
 	then
 		
 		if bot:GetAttackTarget() == nil 
-		   or bot:GetHealth() < 400 
+		   or bot:GetHealth() < 500 
 		then
 			for _,npcEnemy in pairs(hNearbyEnemyHeroList)
 			do
@@ -2115,7 +2125,7 @@ local function UnImplementedItemUsage()
 		local nCastRange = 800;
 		local nAllies = bot:GetNearbyHeroes(nCastRange,false,BOT_MODE_NONE)
 		
-		--Use at ally who BeTargeted
+		--use at ally who be targeted
 		for _,ally in pairs(nAllies)
 		do 
 			if  J.IsValidHero(ally)
@@ -2136,6 +2146,7 @@ local function UnImplementedItemUsage()
 	
 	
 		if J.IsValidHero(npcTarget) 
+			and J.IsInRange(bot,npcTarget,2200)
 		then			
 			if J.IsValidHero(nAllies[2])
 			then
@@ -2393,7 +2404,7 @@ local function UnImplementedItemUsage()
 		then			
 			if  J.IsValidHero(npcTarget) 
                 and J.CanCastOnNonMagicImmune(npcTarget)	
-				and J.CanCastOnTargetAdvanced(npcTarget)				
+				--and J.CanCastOnTargetAdvanced(npcTarget)				
 				and J.IsInRange(bot, npcTarget, nCastRange)
 			then
 			    bot:Action_UseAbilityOnEntity(dagon, npcTarget);
@@ -2459,7 +2470,7 @@ local function UnImplementedItemUsage()
 			if J.IsValid(npcEnemy)
 			   and (npcEnemy:IsChanneling() or npcEnemy:IsCastingAbility())
 			   and J.CanCastOnNonMagicImmune(npcEnemy)
-			   and J.CanCastOnTargetAdvanced(npcEnemy)
+			   --and J.CanCastOnTargetAdvanced(npcEnemy)
 			then
 				bot:Action_UseAbilityOnEntity(sheep,npcEnemy);
 				return
@@ -2502,7 +2513,7 @@ local function UnImplementedItemUsage()
 			if J.IsValid(npcEnemy)
 			   and (npcEnemy:IsChanneling() or npcEnemy:IsCastingAbility())
 			   and J.CanCastOnMagicImmune(npcEnemy)
-			   and J.CanCastOnTargetAdvanced(npcEnemy)
+			   --and J.CanCastOnTargetAdvanced(npcEnemy)
 			then
 				bot:Action_UseAbilityOnEntity(abyssal,npcEnemy);
 				return
@@ -2524,7 +2535,7 @@ local function UnImplementedItemUsage()
 		then		
 			if  J.IsValidHero(npcTarget)
 				and J.CanCastOnMagicImmune(npcTarget) 
-				and J.CanCastOnTargetAdvanced(npcTarget)
+				--and J.CanCastOnTargetAdvanced(npcTarget)
 				and not X.IsDisabled(npcTarget)			
 				and GetUnitToUnitDistance(npcTarget, bot) < nCastRange +50
 			then
@@ -2548,7 +2559,7 @@ local function UnImplementedItemUsage()
 			if J.IsValid(npcEnemy)
 			   and (npcEnemy:IsChanneling() or npcEnemy:IsCastingAbility())
 			   and J.CanCastOnNonMagicImmune(npcEnemy)
-			   and J.CanCastOnTargetAdvanced(npcEnemy)
+			   --and J.CanCastOnTargetAdvanced(npcEnemy)
 			then
 				bot:Action_UseAbilityOnEntity(bt,npcEnemy);
 				return
@@ -2571,7 +2582,7 @@ local function UnImplementedItemUsage()
 			if  J.IsValidHero(npcTarget)
 				and not X.IsDisabled(npcTarget)
                 and J.CanCastOnNonMagicImmune(npcTarget)	
-				and J.CanCastOnTargetAdvanced(npcTarget)				
+				--and J.CanCastOnTargetAdvanced(npcTarget)				
 				and GetUnitToUnitDistance(npcTarget, bot) < nCastRange
 			then
 			    bot:Action_UseAbilityOnEntity(bt,npcTarget);
@@ -3253,7 +3264,7 @@ local function UnImplementedItemUsage()
 			if bot:IsRooted()
 			   or ( bot:IsSilenced() and bot:GetMana() > 80 and not bot:HasModifier("modifier_item_mask_of_madness_berserk") )
 			   or J.IsNotAttackProjectileIncoming(bot, 400) 
-			   or J.IsWillBeCastUnitTargetSpell(bot,1200) --可以额外加入秀一下的考虑
+			   or J.IsWillBeCastUnitTargetSpell(bot,1200) 
 			   or J.IsWillBeCastPointSpell(bot,1200)
 			then
 				J.PrintAndReport("主动开BKB:",#tableEnemyHeroesInView);
@@ -3352,7 +3363,7 @@ local function UnImplementedItemUsage()
 					and bot:WasRecentlyDamagedByHero( npcEnemy, 4.0 )
 					and npcEnemy:GetCurrentMovementSpeed() > 200
 					and J.CanCastOnNonMagicImmune(npcEnemy) 
-					and J.CanCastOnTargetAdvanced(npcEnemy)
+					--and J.CanCastOnTargetAdvanced(npcEnemy)
 					and not J.IsDisabled(true, npcEnemy) 					
 				then
 					bot:Action_UseAbilityOnEntity(db,npcEnemy);
@@ -3506,7 +3517,7 @@ local function UnImplementedItemUsage()
 		then	
 			if J.IsValidHero(npcTarget) 
 			   and J.CanCastOnNonMagicImmune(npcTarget) 
-			   and J.CanCastOnTargetAdvanced(npcTarget)
+			   --and J.CanCastOnTargetAdvanced(npcTarget)
 			   and J.IsInRange(npcTarget, bot, 800) 
 			   and npcTarget:HasModifier("modifier_item_nullifier_mute") == false 
 			then

@@ -3165,7 +3165,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_jakiro",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_lion"] = {
   ["hero_name"] = "lion",
   ["proposal"] = {
@@ -3232,7 +3232,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_enigma"] = {
   ["hero_name"] = "enigma",
   ["proposal"] = {

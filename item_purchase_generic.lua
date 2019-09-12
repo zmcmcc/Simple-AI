@@ -321,7 +321,7 @@ function ItemPurchaseThink()
 		elseif nowTime < 0 and botGold >= GetItemCost( "item_clarity" ) and Item.HasItem(bot, "item_clarity") == false 
 		then
 			bot:ActionImmediate_PurchaseItem("item_clarity");	
-		elseif nowTime > 60 and Role['invisEnemyExist'] == true and buyBootsStatus == true and botGold >= GetItemCost( "item_dust" ) 
+		elseif botLevel >= 5 and Role['invisEnemyExist'] == true and buyBootsStatus == true and botGold >= GetItemCost( "item_dust" ) 
 			and Item.GetEmptyInventoryAmount(bot) >= 2 and Item.GetItemCharges(bot, "item_dust") < 1 and bot:GetCourierValue() == 0   
 		then
 			bot:ActionImmediate_PurchaseItem("item_dust"); 
@@ -574,7 +574,7 @@ function ItemPurchaseThink()
 							slotToSell = itemSlot;
 							break;
 						end
-					elseif  item == "item_branches" 
+					elseif  item == "item_branches" and botWorth > 7000
 						then
 							if  ( bot.theRole ~= 'support' and bot:GetPrimaryAttribute() ~= ATTRIBUTE_STRENGTH )
 								or botWorth > 15000

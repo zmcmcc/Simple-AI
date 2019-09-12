@@ -208,6 +208,8 @@ local castRQDesire,castRQTarget = 0;
 local nKeepMana,nMP,nHP,nLV,hEnemyHeroList;
 local talentBonusDamage = 0;
 
+local lastRQTime = 0;
+
 function X.SkillsComplement()
 
 	
@@ -229,8 +231,10 @@ function X.SkillsComplement()
 	castRQDesire, castRQTarget = X.ConsiderRQ();
 	if ( castRQDesire > 0 )
 	then
-		print("使用RQ,目标是:"..castRQTarget:GetUnitName());
-		J.SetQueuePtToINT(bot, false)
+		print("使用RQ,目标是:"..J.Chat.GetNormName(castRQTarget));
+		lastRQTime = DotaTime();
+		
+		J.SetQueuePtToINT(bot, true)
 		
 		bot:ActionQueue_UseAbilityOnEntity( abilityR, castRQTarget )
 		bot:ActionQueue_UseAbilityOnEntity( abilityQ, castRQTarget )
@@ -243,7 +247,7 @@ function X.SkillsComplement()
 	if ( castRDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(bot, false)
+		J.SetQueuePtToINT(bot, true)
 	
 		bot:ActionQueue_UseAbilityOnEntity( abilityR, castRTarget )
 		return;
@@ -253,7 +257,7 @@ function X.SkillsComplement()
 	if ( castWDesire > 0 ) 
 	then
 	
-		J.SetQueuePtToINT(bot, false)
+		J.SetQueuePtToINT(bot, true)
 	
 		bot:ActionQueue_UseAbilityOnLocation( abilityW, castWLocation )
 		return;
@@ -278,6 +282,7 @@ function X.ConsiderRQ()
 	if not abilityQ:IsFullyCastable() 
 	   or not abilityR:IsFullyCastable() 
 	   or bot:HasScepter()
+	   or lastRQTime > DotaTime() - 10
 	then return 0 end
 	
 	if bot:GetMana() < abilityQ:GetManaCost() + abilityR:GetManaCost() then return 0 end
@@ -300,13 +305,14 @@ function X.ConsiderRQ()
 			if J.IsValidHero(npcTarget)                        
 			then
 				if J.IsInRange(npcTarget, bot, nCastRange + 80)   
-					and J.CanCastOnMagicImmune(npcTarget)
+					and J.CanCastOnNonMagicImmune(npcTarget)
 					and J.CanCastOnTargetAdvanced(npcTarget)
 					and not npcTarget:IsAttackImmune()
 				then					
 					return BOT_ACTION_DESIRE_HIGH,npcTarget;
 				else
 					if not nWeakestEnemyHeroInCastRange:IsAttackImmune()
+					   and not nWeakestEnemyHeroInCastRange:IsMagicImmune()
 					   and J.CanCastOnTargetAdvanced(nWeakestEnemyHeroInCastRange)
 					then
 						return BOT_ACTION_DESIRE_HIGH,nWeakestEnemyHeroInCastRange;
@@ -315,7 +321,7 @@ function X.ConsiderRQ()
 			end	
 		end
 		
-		if J.CanCastOnMagicImmune(nEnemysHerosInCastRange[1])
+		if J.CanCastOnNonMagicImmune(nEnemysHerosInCastRange[1])
 		   and J.CanCastOnTargetAdvanced(nEnemysHerosInCastRange[1])
 		   and not nEnemysHerosInCastRange[1]:IsAttackImmune()
 		then

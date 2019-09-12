@@ -87,19 +87,13 @@ function GetDesire()
 	   and DotaTime() < 0
 	   and bot:GetGold() < 300 
 	   and bot == GetTeamMember(5)
-	   and (GetTeam() ~= TEAM_DIRE 
-	         or nPushNoticeTime == nil
-			 or nPushNoticeTime +3 < DotaTime())
+	   and (GetTeam() ~= TEAM_DIRE
+			   or nPushNoticeTime == nil
+			   or nPushNoticeTime + 3 < DotaTime() )
 	then
-		local fMessage, sMessage ;
-		if sBotVersion ~= "1V5"
-		then
-			fMessage = "Simple AI "..sVersionDate;
-			sMessage = "This script is adapted from A Beginner AI: "..sABAVersionDate;
-		else 
-			fMessage, sMessage = 'null','null'
-		end
-	    
+		local fMessage = "Simple AI: "..sVersionDate;
+		local sMessage = "This script is adapted from A Beginner AI: "..sABAVersionDate;
+	
 		bot:ActionImmediate_Chat( fMessage, true);
 		if U.interestingMode then
 			bot:ActionImmediate_Chat( '娱乐模式：'..U.interestingMode, true);
@@ -107,7 +101,10 @@ function GetDesire()
 		if bAllNotice
 		then
 			bot:ActionImmediate_Chat( sMessage, false);
-			bot:ActionImmediate_Chat( "请使用困难或疯狂难度，不要使用齐天大圣。", false);
+			bot:ActionImmediate_Chat( "QQ交流群:632117330",true);
+		elseif not J.Role.IsUserMode() and RandomInt(1,9) > 6
+			then
+				bot:ActionImmediate_Chat("新增设置AI策略的功能,加群了解一下.",true);
 		end
 		bPushNoticeDone = true
 	end
@@ -673,7 +670,9 @@ function Think()
 					end					
 				end
 				
-				if hLaneCreepList[1] ~= nil and hLaneCreepList[1]:IsAlive()
+				if hLaneCreepList[1] ~= nil 
+				   and not hLaneCreepList[1]:IsNull() 
+				   and hLaneCreepList[1]:IsAlive() 
 				then
 					bot:Action_MoveToLocation( hLaneCreepList[1]:GetLocation() );
 					return;
@@ -1258,7 +1257,6 @@ function X.IsNormalFarmer(bot)
 		 or botName == "npc_dota_hero_ogre_magi"
 		 or botName == "npc_dota_hero_bristleback" 
 		 or botName == "npc_dota_hero_skeleton_king"
-		 or botName == "npc_dota_hero_abaddon"
 		 or botName == "npc_dota_hero_kunkka"
 		 or botName == "npc_dota_hero_sniper"
 		 or botName == "npc_dota_hero_viper" 
@@ -1266,6 +1264,7 @@ function X.IsNormalFarmer(bot)
 		 or botName == "npc_dota_hero_shadow_demon"
 		 or botName == "npc_dota_hero_vengefulspirit"
 		 or botName == "npc_dota_hero_omniknight"
+		 or botName == "npc_dota_hero_abaddon"
 end
 
 
@@ -1279,7 +1278,6 @@ function X.IsHighFarmer(bot)
 		or botName == "npc_dota_hero_phantom_lancer"
 		or botName == "npc_dota_hero_drow_ranger"
 		or botName == "npc_dota_hero_luna"
-		or botName == "npc_dota_hero_axe"
 		or botName == "npc_dota_hero_antimage"
 		or botName == "npc_dota_hero_arc_warden"
 		or botName == "npc_dota_hero_bloodseeker"
@@ -1289,6 +1287,7 @@ function X.IsHighFarmer(bot)
 		or botName == "npc_dota_hero_grimstroke"
 		or botName == "npc_dota_hero_dazzle"
 		or botName == "npc_dota_hero_batrider"
+		or botName == "npc_dota_hero_axe"
 		
 end
 

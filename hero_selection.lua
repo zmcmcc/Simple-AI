@@ -259,6 +259,7 @@ local sFourthList = {
 	"npc_dota_hero_jakiro",
 	"npc_dota_hero_skywrath_mage",
 	"npc_dota_hero_lina",
+	--'npc_dota_hero_pugna',
 }
 
 local sFifthList = {
@@ -266,8 +267,9 @@ local sFifthList = {
 	"npc_dota_hero_warlock",
 	"npc_dota_hero_necrolyte",
 	"npc_dota_hero_oracle",
-	--"npc_dota_hero_witch_doctor",
-	--"npc_dota_hero_lich",
+	"npc_dota_hero_witch_doctor",
+	"npc_dota_hero_lich",
+	--'npc_dota_hero_death_prophet',
 }				
 
 
@@ -290,6 +292,7 @@ sSelectList = {
 
 
 if BotsInit["ABATiYanMa"] ~= nil
+	and pcall(function(i) require( "game/赛季体验码" ) end,1)
 then 
 	bUserMode = true
 
@@ -318,20 +321,25 @@ then
 end
 
 --For Random LineUp-------------
-local sTempList = sSelectList;
 nRand = RandomInt(1,(#tAllLineUpList) *2.3 ); 
 if nRand <= #tAllLineUpList and not bDebugMode
 then 
+	local sTempList = sSelectList;
 	sSelectList = tAllLineUpList[nRand];
 	print(tostring(GetTeam())..tostring(nRand/100));
+	
+	for i=1,5
+	do
+		if RandomInt(1,3) < 2
+		then
+			sSelectList[i] = sTempList[i];	
+			print(tostring(GetTeam())..':'..sTempList[i]);
+		end
+	end
+	
 end
 
-if RandomInt(1,#tAllLineUpList) < #tAllLineUpList *0.5 
-then
-	nRand = RandomInt(1,5);
-	sSelectList[nRand] = sTempList[nRand];	
-	print(tostring(GetTeam())..sTempList[nRand]);
-end
+
 
 ------------------------------------------------
 ---Finish Lineup---------------------------------
@@ -665,40 +673,44 @@ function X.GetRandNameList(sStarList)
 	return sNameList;
 end
 
+function X.SetTestSelection()
+
+	sSelectList={ 
+	"npc_dota_hero_necrolyte",
+	"npc_dota_hero_jakiro",
+	"npc_dota_hero_phantom_assassin",
+	"npc_dota_hero_skeleton_king",
+	"npc_dota_hero_templar_assassin",
+	}
+
+	if GetTeam() == TEAM_DIRE then
+	sSelectList={ 
+	"npc_dota_hero_warlock",
+	"npc_dota_hero_zuus",
+	"npc_dota_hero_antimage",
+	"npc_dota_hero_dragon_knight",
+	"npc_dota_hero_viper",
+	}
+	end
+	
+	local IDs = GetTeamPlayers(GetTeam());
+	for i,id in pairs(IDs) 
+	do
+		if IsPlayerBot(id) 
+		then
+			SelectHero(id,sSelectList[i]);
+		end
+	end
+
+end
+
 
 function Think()
 
 
---###############################
---[[---For Test-------------------
-	-- sSelectList={ 
-	-- "npc_dota_hero_necrolyte",
-	-- "npc_dota_hero_jakiro",
-	-- "npc_dota_hero_phantom_assassin",
-	-- "npc_dota_hero_skeleton_king",
-	-- "npc_dota_hero_templar_assassin",
-	-- }
-
-	-- if GetTeam() == TEAM_DIRE then
-	-- sSelectList={ 
-	-- "npc_dota_hero_warlock",
-	-- "npc_dota_hero_zuus",
-	-- "npc_dota_hero_antimage",
-	-- "npc_dota_hero_dragon_knight",
-	-- "npc_dota_hero_viper",
-	-- }
-	-- end
-	
-	-- local IDs = GetTeamPlayers(GetTeam());
-	-- for i,id in pairs(IDs) 
-	-- do
-		-- if IsPlayerBot(id) then
-			-- SelectHero(id,sSelectList[i]);
-			--SelectHero(id,'npc_dota_hero_antimage')
-		-- end
-	-- end
---##############################]]--
---------------------------------------------
+----For Test-------------------
+--	if bDebugMode then X.SetTestSelection() return end
+-------------------------------
 
 	if not bInitLineUpDone then X.SetLaneUpInit() return end
 
@@ -725,6 +737,7 @@ function Think()
 end
 
 function AllPickLogic()	
+
 	if GameTime() < 3.0
 	   or fLastSlectTime > GameTime() - fLastRand
 	   or X.IsHumanNotReady(GetTeam()) 
@@ -767,7 +780,7 @@ function AllPickLogic()
 			--end
 			--新版英雄选择策略
 			sSelectHero = targetdata.getApHero();
-			
+
 			fLastSlectTime = GameTime();
 			fLastRand = RandomFloat(0.8,2.8);
 			SelectHero(id,sSelectHero);
@@ -792,14 +805,14 @@ local sBotVersion = Role.GetBotVersion()
 if bUserMode or sBotVersion == 'Mid'
 then
 
-function UpdateLaneAssignments()  
+function UpdateLaneAssignments()
 
 	if  GetGameMode() == GAMEMODE_AP or GetGameMode() == GAMEMODE_CM or GetGameMode() == GAMEMODE_TM or GetGameMode() == GAMEMODE_SD then
 		return tLaneAssignList;
 	elseif GetGameMode() == GAMEMODE_MO then
-		return otherGameMod.MOLaneAssignment()	
+		return otherGameMod.MOLaneAssignment()
 	elseif GetGameMode() == GAMEMODE_1V1MID then
-		return otherGameMod.OneVsOneLaneAssignment()			
+		return otherGameMod.OneVsOneLaneAssignment()
 	end
 	
 end

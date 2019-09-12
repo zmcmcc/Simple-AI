@@ -14,30 +14,35 @@ local tGroupedDataList = {
 --默认数据
 local tDefaultGroupedData = {
 	['Talent'] = {
-		['t25'] = {10, 0},
-		['t20'] = {0, 10},
+		['t25'] = {0, 10},
+		['t20'] = {10, 0},
 		['t15'] = {0, 10},
-		['t10'] = {10, 0},
+		['t10'] = {0, 10},
 	},
-	['Ability'] = {1,3,1,2,2,6,1,2,1,2,6,3,3,3,6},
+	['Ability'] = {3,2,1,2,3,6,3,3,2,2,6,1,1,1,6},
 	['Buy'] = {
 		"item_tango",
-		"item_flask",
-		"item_double_branches",
 		"item_enchanted_mango",
+		"item_double_branches",
 		"item_clarity",
+		"item_tranquil_boots",
 		"item_magic_wand" ,
-		"item_boots",
-		"item_veil_of_discord",
-		"item_blink",
-		"item_cyclone",
+		"item_urn_of_shadows",
+		"item_rod_of_atos",
+		"item_glimmer_cape",
+		"item_force_staff",
+		"item_ancient_janggo",
 		"item_ultimate_scepter",
 		"item_sheepstick",
-		"item_octarine_core",
+		"item_ultimate_scepter_2",
+		"item_lotus_orb",
 	},
 	['Sell'] = {
-		"item_travel_boots_1",
-		"item_boots",
+		"item_spirit_vessel",
+		"item_urn_of_shadows",
+
+		"item_hurricane_pike",
+		"item_force_staff",
 	}
 }
 

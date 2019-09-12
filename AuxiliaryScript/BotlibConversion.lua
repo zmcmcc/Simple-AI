@@ -138,6 +138,10 @@ local abilityNameList = {
     'dark_willow_cursed_crown',
     'dark_willow_bramble_maze',
     'dark_willow_bedlam',
+    'lich_frost_nova',
+    'lich_frost_shield',
+    'lich_sinister_gaze',
+    'lich_chain_frost',
 }
 
 --将英雄技能初始入变量
