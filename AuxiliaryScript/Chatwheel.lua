@@ -26,7 +26,8 @@ local killMocking = {
 local teamMocking = {
     '你气不气？',
     '头部撞击',
-    '猢狲把戏'
+    '猢狲把戏',
+    'what are you cooking？boom！'
 
 }
 local wipeMocking = {
@@ -41,12 +42,14 @@ local horseAndHorseMocking = {
 }
 local perishTogetherMocking = {
     '啊，队友呢?队友呢?队友呢?队友呢?',
-    '头部撞击'
+    '头部撞击',
+    'what are you cooking？boom！'
 }
 local warMocking = {
     '你气不气？',
     '相当精彩的比赛',
-    '头部撞击'
+    '头部撞击',
+    'what are you cooking？boom！'
 }
 
 function C.GameLive(countCD)
