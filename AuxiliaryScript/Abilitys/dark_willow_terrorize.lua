@@ -1,8 +1,8 @@
 -----------------
 --英雄：邪影芳灵
---技能：作祟
+--技能：恐吓
 --键位：R
---类型：无目标
+--类型：指向地点
 --作者：Halcyon
 -----------------
 local X = {}
@@ -34,7 +34,10 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
-	bot:ActionQueue_UseAbility( ability ) --使用技能
+	if castTarget ~= nil then
+        X.Compensation()
+        bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
+    end
 end
 
 --补偿功能
@@ -53,57 +56,60 @@ function X.Consider()
 		return BOT_ACTION_DESIRE_NONE; --没欲望
 	end
     
-    local nSkillLV    = ability:GetLevel(); 
-	local nCastRange  = 500
-	local nCastPoint  = ability:GetCastPoint();
-	local nManaCost   = ability:GetManaCost();
-	local nDamage     = ability:GetAbilityDamage()
-	local nDamageType = DAMAGE_TYPE_PHYSICAL
-	local nInRangeEnemyList = bot:GetNearbyHeroes(nCastRange, true, BOT_MODE_NONE);
-	local nDamageCount = 0;
+    local nCastRange = GetProperCastRange(false, bot, 500);
+	local nCastPoint = ability:GetCastPoint();
+	local manaCost  = ability:GetManaCost();
+	local nRadius   = ability:GetSpecialValueInt( "destination_radius" );
 	
-	for _,npcEnemy in pairs(nInRangeEnemyList)
-	do
-		if J.IsValidHero(npcEnemy)
-		   and J.CanCastOnMagicImmune(npcEnemy)
+	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
+	if J.IsRetreating(bot)
+	then
+		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
+		if ( bot:WasRecentlyDamagedByAnyHero( 2.0 ) and #tableNearbyEnemyHeroes >= 2 ) 
 		then
-			nDamageCount = nDamageCount +1;
+			local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
+			if ( locationAoE.count >= 2 ) 
+			then
+				return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
+			end
 		end
 	end
 	
-	
-	if nDamageCount >= 2 
+	if J.IsInTeamFight(bot, 1200)
 	then
-	    return BOT_ACTION_DESIRE_HIGH
-	end	
-	
-	
-	if J.IsGoingOnSomeone(bot)
-	   and J.IsValidHero(botTarget)
-	   and J.IsInRange(bot,botTarget,nCastRange)
-	   and J.CanCastOnMagicImmune(botTarget)
-	   and ( J.GetProperTarget(botTarget) ~= nil or J.IsInRange(bot,botTarget,nCastRange *0.6) )
-	   and J.GetAllyCount(bot,1600) - J.GetEnemyCount(bot,1600) < 2
-	then
-		return BOT_ACTION_DESIRE_HIGH
-	end
-	
-	
-	if J.IsRetreating(bot)
-	then
-		for _,npcEnemy in pairs(nInRangeEnemyList)
-		do
-			if J.IsValidHero(npcEnemy)
-			   and J.CanCastOnMagicImmune(npcEnemy)
-			   and ( bot:WasRecentlyDamagedByHero(npcEnemy,2.0) or bot:GetActiveModeDesire() > BOT_MODE_DESIRE_VERYHIGH )
+		local tableNearbyAllyHeroes = bot:GetNearbyHeroes( nCastRange, false, BOT_MODE_NONE );
+		local nDisabledAllies = 0;
+		for _,unit in pairs(tableNearbyAllyHeroes) do
+			if J.IsDisabled(false, unit) then
+				nDisabledAllies = nDisabledAllies + 1;
+			end
+		end
+		if nDisabledAllies >= 2 then
+			local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
+			if ( locationAoE.count >= 2 ) 
 			then
-				return BOT_ACTION_DESIRE_HIGH
+				return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
 			end
 		end
 	end
 
-	return BOT_ACTION_DESIRE_NONE;
+	return BOT_ACTION_DESIRE_NONE, 0;
 
+end
+
+function GetProperCastRange(bIgnore, hUnit, abilityCR)
+	local attackRng = hUnit:GetAttackRange();
+	if bIgnore then
+		return abilityCR;
+	elseif abilityCR <= attackRng then
+		return attackRng + 200;
+	elseif abilityCR + 200 <= 1600 then
+		return abilityCR + 200;
+	elseif abilityCR > 1600 then
+		return 1600;
+	else
+		return abilityCR;
+	end
 end
 
 return X;

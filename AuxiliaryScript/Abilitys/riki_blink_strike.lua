@@ -59,6 +59,10 @@ function X.Consider()
 	local nDamageType = DAMAGE_TYPE_MAGICAL;
 	
 	local nAllies =  bot:GetNearbyHeroes(1200,false,BOT_MODE_NONE);
+
+	if nCastRange > 1300 then
+		nCastRange = 1300 
+	end
 	
 	local nEnemysHerosInView  = bot:GetNearbyHeroes(1600,true,BOT_MODE_NONE);
 	local nEnemysHerosInRange = bot:GetNearbyHeroes(nCastRange +50,true,BOT_MODE_NONE);

@@ -2025,7 +2025,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_oracle",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_bloodseeker",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_axe"] = {
   ["hero_name"] = "axe",
   ["proposal"] = {
@@ -2445,7 +2445,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_morphling",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_magnataur"] = {
   ["hero_name"] = "magnataur",
   ["proposal"] = {

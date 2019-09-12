@@ -1,8 +1,8 @@
 -----------------
 --英雄：邪影芳灵
---技能：恐吓
+--技能：作祟
 --键位：D
---类型：指向地点
+--类型：无目标
 --作者：Halcyon
 -----------------
 local X = {}
@@ -13,10 +13,7 @@ local U = require( GetScriptDirectory()..'/AuxiliaryScript/Generic')
 
 --初始数据
 local ability = bot:GetAbilityByName('dark_willow_bedlam')
-local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange, abilities;
-local sAbilityList = J.Skill.GetAbilityList(bot)
-
-abilities = sAbilityList[1]
+local nKeepMana, nMP, nHP, nLV, hEnemyHeroList, hAlleyHeroList, aetherRange;
 
 nKeepMana = 400 --魔法储量
 nLV = bot:GetLevel(); --当前英雄等级
@@ -34,10 +31,7 @@ U.init(nLV, nMP, nHP, bot);
 
 --技能释放功能
 function X.Release(castTarget)
-    if castTarget ~= nil then
-        X.Compensation()
-        bot:ActionQueue_UseAbilityOnLocation( ability, castTarget ) --使用技能
-    end
+    bot:ActionQueue_UseAbility( ability ) --使用技能
 end
 
 --补偿功能
@@ -51,67 +45,62 @@ function X.Consider()
 	-- 确保技能可以使用
     if ability == nil
 	   or ability:IsNull()
-	   or not ability:IsTrained() 
 	   or not ability:IsFullyCastable()
-	   or not ability:IsHidden()
 	then 
 		return BOT_ACTION_DESIRE_NONE, 0; --没欲望
 	end
 	
-	local nCastRange = GetProperCastRange(false, bot, abilities:GetCastRange());
-	local nCastPoint = ability:GetCastPoint();
-	local manaCost  = ability:GetManaCost();
-	local nRadius   = ability:GetSpecialValueInt( "destination_radius" );
+	local nSkillLV    = ability:GetLevel(); 
+	local nCastRange  = 500
+	local nCastPoint  = ability:GetCastPoint();
+	local nManaCost   = ability:GetManaCost();
+	local nDamage     = ability:GetAbilityDamage()
+	local nDamageType = DAMAGE_TYPE_PHYSICAL
+	local nInRangeEnemyList = bot:GetNearbyHeroes(nCastRange, true, BOT_MODE_NONE);
+	local nDamageCount = 0;
 	
-	-- If we're seriously retreating, see if we can land a stun on someone who's damaged us recently
+	for _,npcEnemy in pairs(nInRangeEnemyList)
+	do
+		if J.IsValidHero(npcEnemy)
+		   and J.CanCastOnMagicImmune(npcEnemy)
+		then
+			nDamageCount = nDamageCount +1;
+		end
+	end
+	
+	
+	if nDamageCount >= 2 
+	then
+	    return BOT_ACTION_DESIRE_HIGH
+	end	
+	
+	
+	if J.IsGoingOnSomeone(bot)
+	   and J.IsValidHero(botTarget)
+	   and J.IsInRange(bot,botTarget,nCastRange)
+	   and J.CanCastOnMagicImmune(botTarget)
+	   and ( J.GetProperTarget(botTarget) ~= nil or J.IsInRange(bot,botTarget,nCastRange *0.6) )
+	   and J.GetAllyCount(bot,1600) - J.GetEnemyCount(bot,1600) < 2
+	then
+		return BOT_ACTION_DESIRE_HIGH
+	end
+	
+	
 	if J.IsRetreating(bot)
 	then
-		local tableNearbyEnemyHeroes = bot:GetNearbyHeroes( nCastRange, true, BOT_MODE_NONE );
-		if ( bot:WasRecentlyDamagedByAnyHero( 2.0 ) and #tableNearbyEnemyHeroes >= 2 ) 
-		then
-			local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
-			if ( locationAoE.count >= 2 ) 
+		for _,npcEnemy in pairs(nInRangeEnemyList)
+		do
+			if J.IsValidHero(npcEnemy)
+			   and J.CanCastOnMagicImmune(npcEnemy)
+			   and ( bot:WasRecentlyDamagedByHero(npcEnemy,2.0) or bot:GetActiveModeDesire() > BOT_MODE_DESIRE_VERYHIGH )
 			then
-				return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
+				return BOT_ACTION_DESIRE_HIGH
 			end
 		end
 	end
 	
-	if J.IsInTeamFight(bot, 1200)
-	then
-		local tableNearbyAllyHeroes = bot:GetNearbyHeroes( nCastRange, false, BOT_MODE_NONE );
-		local nDisabledAllies = 0;
-		for _,unit in pairs(tableNearbyAllyHeroes) do
-			if J.IsDisabled(false, unit) then
-				nDisabledAllies = nDisabledAllies + 1;
-			end
-		end
-		if nDisabledAllies >= 2 then
-			local locationAoE = bot:FindAoELocation( true, true, bot:GetLocation(), nCastRange, nRadius, 0, 0 );
-			if ( locationAoE.count >= 2 ) 
-			then
-				return BOT_ACTION_DESIRE_LOW, locationAoE.targetloc;
-			end
-		end
-	end
+	return BOT_ACTION_DESIRE_NONE;
 	
-	return BOT_ACTION_DESIRE_NONE, 0;
-	
-end
-
-function GetProperCastRange(bIgnore, hUnit, abilityCR)
-	local attackRng = hUnit:GetAttackRange();
-	if bIgnore then
-		return abilityCR;
-	elseif abilityCR <= attackRng then
-		return attackRng + 200;
-	elseif abilityCR + 200 <= maxGetRange then
-		return abilityCR + 200;
-	elseif abilityCR > maxGetRange then
-		return maxGetRange;
-	else
-		return abilityCR;
-	end
 end
 
 return X;
