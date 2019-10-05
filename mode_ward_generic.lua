@@ -122,7 +122,7 @@ function GetDesire()
 	then
 		return BOT_MODE_DESIRE_NONE;
 	end
-
+	
 	if DotaTime() < 0 then
 		local enemies = bot:GetNearbyHeroes(500, true, BOT_MODE_NONE)
 		if ( (GetTeam() == TEAM_RADIANT and bot:GetAssignedLane() == LANE_TOP) 
@@ -139,7 +139,7 @@ function GetDesire()
 	else	
 		bot.steal = false;
 	end
-	
+
 	if DotaTime() < 60 + nStartTime
 	then
 		return BOT_MODE_DESIRE_NONE;
@@ -236,13 +236,13 @@ function Think()
 		local stealCount = CountStealingUnit();
 		smoke = HasItem('item_smoke_of_deceit');
 		local loc = nil;
-		
+	
 		if smoke ~= nil and chat == false then
 			chat = true;
 			bot:ActionImmediate_Chat("走起，偷符ヾ(≧▽≦*)o",false);
 			return
 		end
-		
+	
 		if smoke ~= nil and smoke:IsFullyCastable() and not bot:HasModifier('modifier_smoke_of_deceit') then
 			bot:Action_UseAbility(smoke);
 			return
@@ -286,7 +286,7 @@ function Think()
 				table.remove(route2,1);
 			end
 		end
-		
+
 	end
 
 end
@@ -373,4 +373,4 @@ function X.IsIBecameTheTarget(units)
 	return false;
 end
 
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

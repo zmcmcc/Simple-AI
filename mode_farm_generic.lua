@@ -15,7 +15,7 @@ local bDebugMode = (bot:GetUnitName() == "npc_dota_hero_medusa")
 local X = {}
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
 local U = require( GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
-local C = require( GetScriptDirectory() .. "/AuxiliaryScript/Chatwheel")
+local C = require( GetScriptDirectory() .. "/AuxiliaryScript/GameLive")
 local RB = Vector(-7174.000000, -6671.00000,  0.000000)
 local DB = Vector(7023.000000, 6450.000000, 0.000000)
 local botName = bot:GetUnitName();
@@ -87,13 +87,13 @@ function GetDesire()
 	   and DotaTime() < 0
 	   and bot:GetGold() < 300 
 	   and bot == GetTeamMember(5)
-	   and (GetTeam() ~= TEAM_DIRE
-			   or nPushNoticeTime == nil
-			   or nPushNoticeTime + 3 < DotaTime() )
+	   and (GetTeam() ~= TEAM_DIRE 
+	         or nPushNoticeTime == nil
+			 or nPushNoticeTime +3 < DotaTime())
 	then
 		local fMessage = "Simple AI: "..sVersionDate;
 		local sMessage = "This script is adapted from A Beginner AI: "..sABAVersionDate;
-	
+		C.init()
 		bot:ActionImmediate_Chat( fMessage, true);
 		if U.interestingMode then
 			bot:ActionImmediate_Chat( '娱乐模式：'..U.interestingMode, true);
@@ -102,13 +102,19 @@ function GetDesire()
 		then
 			bot:ActionImmediate_Chat( sMessage, false);
 			bot:ActionImmediate_Chat( "QQ交流群:632117330",true);
-		elseif not J.Role.IsUserMode() and RandomInt(1,9) > 6
+		elseif not J.Role.IsUserMode() and RandomInt(1,9) > 2
 			then
-				bot:ActionImmediate_Chat("新增设置AI策略的功能,加群了解一下.",true);
+				if RandomInt(1,9) > 5
+				then				
+					bot:ActionImmediate_Chat("支持设置AI策略的功能,加群了解一下.",true);
+				else
+					bot:ActionImmediate_Chat("和车队一起玩超疯狂AI,加群体验一下.",true);
+				end
 		end
 		bPushNoticeDone = true
 	end
 
+	C.Update()
 	-------------#############---------
 	--if true then return 0 end
 	-----------------------------------
@@ -260,8 +266,6 @@ function GetDesire()
 			end
 		end
 	end
-
-	C.GameLive(1.0)
 
 	if DotaTime() > countTime + countCD
 	then
@@ -728,7 +732,6 @@ function Think()
 				
 				bot:SetTarget(nil);
 				
-				if bDebugMode and #neutralCreeps > 0 then print(GetTeam()..': Maybe Farming Bug') end
 				if cDist > 200 then bot:Action_MoveToLocation(targetFarmLoc + RandomVector(200)) return end
 			end
 		end			
@@ -1305,4 +1308,4 @@ function X.IsVeryHighFarmer(bot)
 		
 end
 
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

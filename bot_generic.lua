@@ -8,9 +8,8 @@ if GetBot():IsInvulnerable() or not GetBot():IsHero() or not string.find(GetBot(
 	return;
 end
 
-dofile( GetScriptDirectory().."/bot_test")
-
 local BotBuild = dofile(GetScriptDirectory() .. "/BotLib/" .. string.gsub(GetBot():GetUnitName(), "npc_dota_", ""));
+
 if BotBuild == nil then return end
 
 function MinionThink(hMinionUnit)
@@ -18,4 +17,4 @@ function MinionThink(hMinionUnit)
 	BotBuild.MinionThink(hMinionUnit)
 	
 end
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

@@ -286,6 +286,8 @@ ItemModule['tSupportOutfit'] = {
 	'item_oracle_outfit',
 	'item_lich_outfit',
 	'item_witch_doctor_outfit',
+	'item_death_prophet_outfit',
+	'item_pugna_outfit',
 }
 
 ItemModule['tConsumableList'] = {
@@ -608,6 +610,8 @@ ItemModule['item_lich_outfit'] 		       = { 'item_tango', 'item_flask', 'item_ma
 
 ItemModule['item_witch_doctor_outfit']     = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
+ItemModule['item_death_prophet_outfit']     = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
+
 ItemModule['item_warlock_outfit']          = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_circlet', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
 ItemModule['item_jakiro_outfit']           = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_branches', 'item_crown', 'item_arcane_boots', 'item_recipe_magic_wand' }
@@ -619,6 +623,8 @@ ItemModule['item_zuus_outfit']             = { 'item_tango', 'item_flask', 'item
 ItemModule['item_skywrath_mage_outfit']    = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
 ItemModule['item_lina_outfit']             = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_null_talisman', 'item_arcane_boots', 'item_recipe_magic_wand' }
+
+ItemModule['item_pugna_outfit']            = { 'item_tango', 'item_flask', 'item_magic_stick', 'item_double_branches', 'item_branches', 'item_crown', 'item_arcane_boots', 'item_recipe_magic_wand' }
 
 ItemModule['item_brewmaster_outfit']       = { 'item_tango', 'item_tango', 'item_quelling_blade', 'item_gauntlets', 'item_stick_bracer', 'item_ring_of_basilius', 'item_phase_boots', 'item_broken_vladmir', 'item_mjollnir' , 'item_abyssal_blade' , 'item_black_king_bar' , 'item_lotus_orb' }
 
@@ -679,8 +685,8 @@ function ItemModule.IsItemInHero(sItemName)
 		if ItemModule.IsExistInTable(sItemName, ItemModule['tCoreOutfit']) 
 		then return ItemModule.IsItemInHero('item_crimson_guard') end
 		
-		if ItemModule.IsExistInTable(sItemName, ItemModule['tSupportOutfit']) 
-		then return ItemModule.IsItemInHero('item_magic_wand') end
+		--if ItemModule.IsExistInTable(sItemName, ItemModule['tSupportOutfit']) 
+		--then return ItemModule.IsItemInHero('item_magic_wand') end
 		
 		return ItemModule.IsItemInHero('item_magic_wand') 
 	end	
@@ -882,4 +888,4 @@ end
 
 
 return ItemModule;
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

@@ -53,7 +53,7 @@ end
 
 function X.GetSkillList(sAbilityList, nAbilityBuildList, sTalentList, nTalentBuildList)
 
-		--通用写法
+			--通用写法
 	--local sSkillList = {}
 
 	--for _,Ability in pairs(nAbilityBuildList)
@@ -188,28 +188,6 @@ function X.GetOutfitName(bot)
 
 end
 
--- test OnAbilityPinged
-function X.AbilityReadinessReminder(tAbility, nTime)
-
-	local bot = GetBot()
-	
-	local playid = bot:GetPlayerID();
-	local cooldownTime = nil;
-	
-	if tAbility ~= nil then
-		cooldownTime = tAbility:GetCooldownTimeRemaining()
-	end
-
-	if cooldownTime ~= nil and
-	   playid ~= nil and
-	   math.floor(cooldownTime) == nTime 
-	then
-		print(playid)
-		--tAbility:OnAbilityPinged(playid, false)
-	end
-
-end
-
 
 return X
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

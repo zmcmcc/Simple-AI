@@ -1328,3 +1328,4 @@ function Site.IsHaveItem(bot,item_name)
 end
 
 return Site;
+-- dota2jmz@163.com QQ:2462331592.

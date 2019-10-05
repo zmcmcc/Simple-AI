@@ -575,7 +575,9 @@ end
 function X.ConsiderR()
 
 
-	if not abilityR:IsFullyCastable() then return 0 end
+	if not abilityR:IsFullyCastable()
+		or bot:HasModifier('modifier_razor_eye_of_the_storm')
+	then return 0 end
 	
 	local nSkillLV    = abilityR:GetLevel(); 
 	local nCastRange  = 500

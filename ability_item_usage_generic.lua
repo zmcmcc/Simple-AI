@@ -1701,7 +1701,7 @@ local function UnImplementedItemUsage()
 		     and bot:GetActiveModeDesire() >= BOT_MODE_DESIRE_HIGH 
 			 and bot:DistanceFromFountain() > 300 
 			 and ( bot:GetHealth() / bot:GetMaxHealth() ) < 0.15 ) 
-		     or ( DotaTime() > 10 *60 and bot:GetItemInSlot(6) ~= nil
+		   or ( DotaTime() > 10 *60 and bot:GetItemInSlot(6) ~= nil
 				and bot:GetMaxHealth() - bot:GetHealth() > 160 )
 		then
 			bot:Action_UseAbility(ff);
@@ -3668,4 +3668,4 @@ function AbilityLevelUpThink()
 	AbilityLevelUpComplement();
 
 end
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

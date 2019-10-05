@@ -5,11 +5,6 @@
 --- Link:http://steamcommunity.com/sharedfiles/filedetails/?id=1627071163
 ---------------------------------------------------------------------------
 ------------------------------
---Hello,Friends:
---I'm the author of this file,but other file is based on BOT EXPERIMENT Credit:FURIOUSPUPPY.
---As you know,I'm come from china,and I'm studing English.
---My E-mail:dota2jmz@163.come,just have fun!  \o(∩_∩)o /
--------------------------------
 local targetdata = require(GetScriptDirectory() .. "/AuxiliaryScript/RoleTargetsData")
 local otherGameMod = require(GetScriptDirectory() .. "/AuxiliaryScript/OtherGameMod");
 
@@ -26,12 +21,15 @@ local tLaneAssignList = {};
 local bInitLineUpDone = false;
 
 local bUserMode = false;
+local bLaneAssignActive = false;
+local bLineupActive = false;
+local bLineupReserve = false;
 
-local BotsInit = require( "game/botsinit" );
 
 local Role = require( GetScriptDirectory()..'/FunLib/jmz_role')
 local Chat = require( GetScriptDirectory()..'/FunLib/jmz_chat')
 local HeroSet = nil
+local sUserKeyDir = Chat.GetUserKeyDir()
 
 local tAllLineUpList = {	
 				[1]={	"npc_dota_hero_viper",
@@ -259,7 +257,7 @@ local sFourthList = {
 	"npc_dota_hero_jakiro",
 	"npc_dota_hero_skywrath_mage",
 	"npc_dota_hero_lina",
-	--'npc_dota_hero_pugna',
+	'npc_dota_hero_pugna',
 }
 
 local sFifthList = {
@@ -269,7 +267,7 @@ local sFifthList = {
 	"npc_dota_hero_oracle",
 	"npc_dota_hero_witch_doctor",
 	"npc_dota_hero_lich",
-	--'npc_dota_hero_death_prophet',
+	'npc_dota_hero_death_prophet',
 }				
 
 
@@ -291,13 +289,14 @@ sSelectList = {
 }
 
 
-if BotsInit["ABATiYanMa"] ~= nil
-	and pcall(function(i) require( "game/赛季体验码" ) end,1)
+if pcall(function(sDir) require(sDir) end, sUserKeyDir)
 then 
 	bUserMode = true
+	
+	local sABATiYanMa = require(sUserKeyDir)
 
 	--设置全局语种环境
-	Chat.SetRawLanguage(BotsInit["ABATiYanMa"]);
+	Chat.SetRawLanguage(sABATiYanMa)
 	
 	--初始策略位置
 	if GetTeam() ~= TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(1))..(Chat.GetLocalWord(5)) ) end
@@ -306,18 +305,25 @@ then
 	--修改策略位置
 	if Chat.GetRawGameWord(HeroSet['QiYongKeChang']) == true 
 	then
-		Role["bHostSet"] = false;
+		Role["bHostSet"] = false
 		if GetTeam() ~= TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(2))..(Chat.GetLocalWord(5)) ) end
 		if GetTeam() == TEAM_DIRE then HeroSet = require( (Chat.GetLocalWord(4))..(Chat.GetLocalWord(6)) ) end
 	end
 	
 	--根据策略内容决定模式
-	Role["nUserMode"] = Chat.GetRawGameWord(HeroSet['JiHuoCeLue']) == true and Role.GetUserLV(BotsInit["ABATiYanMa"]) or 0
-	Role["sUserName"] = HeroSet['ZhanDuiJunShi'];
+	Role["nUserMode"] = Chat.GetRawGameWord(HeroSet['JiHuoCeLue']) == true and Role.GetUserLV(sABATiYanMa) or 0
+	Role["sUserName"] = HeroSet['ZhanDuiJunShi']
 	
 	if Chat.GetRawGameWord(HeroSet['ShuBuQi']) ~= false then Role["nUserMode"] = -1 end
-
+	
 	if Role["nUserMode"] <= 0 then bUserMode = false end
+	
+	if bUserMode 
+	then
+		if Chat.GetRawGameWord(HeroSet['FenLuShengXiao']) == true then bLaneAssignActive = true end
+		if Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true then bLineupActive = true end	
+		if Chat.GetRawGameWord(HeroSet['NeiBuTiaoXuan']) == true then bLineupReserve = true end
+	end
 end
 
 --For Random LineUp-------------
@@ -327,7 +333,6 @@ then
 	local sTempList = sSelectList;
 	sSelectList = tAllLineUpList[nRand];
 	print(tostring(GetTeam())..tostring(nRand/100));
-	
 	for i=1,5
 	do
 		if RandomInt(1,3) < 2
@@ -340,7 +345,6 @@ then
 end
 
 
-
 ------------------------------------------------
 ---Finish Lineup---------------------------------
 --初始阵容和英雄池
@@ -349,22 +353,19 @@ tSelectPoolList = { tSelectPoolList[5], tSelectPoolList[4], tSelectPoolList[3], 
 ------------------------------------------------
 ------------------------------------------------
 
-------For Random LaneAssig-------
+------For Random LaneAssign-------------
 function X.GetRandomChangeLane(tLane)
 
 	if bDebugMode then return tLane end
 
-	local temp;
-	if RandomInt(1,9) < 4 then
-		temp = tLane[1];
-		tLane[1] = tLane[2];
-		tLane[2] = temp;
+	if RandomInt(1,9) < 4 
+	then
+		tLane[1], tLane[2] = tLane[2], tLane[1];
 	end 
 
-	if RandomInt(1,9) < 4 then
-		temp = tLane[3];
-		tLane[3] = tLane[4];
-		tLane[4] = temp;
+	if RandomInt(1,9) < 4 
+	then
+		tLane[3], tLane[4] = tLane[4], tLane[3];
 	end 
 
 	return tLane;
@@ -398,34 +399,23 @@ end
 --根据用户配置初始列表
 --根据人类玩家数量初始化英雄池,英雄表,英雄分路
 --tSelectPoolList, sSelectList, tLaneAssignList
-function X.SetLaneUpInit()
+function X.SetLineUpInit()
 
 	if bInitLineUpDone then return end
 	
-	if bUserMode 
-	then 
-		if Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
-		then
-			sSelectList = Chat.GetHeroSelectList(HeroSet['ZhenRong'])
-		end
+	if bLineupActive then sSelectList = Chat.GetHeroSelectList(HeroSet['ZhenRong'])	end
+	if bLaneAssignActive then tLaneAssignList = Chat.GetLaneAssignList(HeroSet['FenLu']) end
 		
-		if Chat.GetRawGameWord(HeroSet['FenLuShengXiao']) == true
-		then
-			tLaneAssignList = Chat.GetLaneAssignList(HeroSet['FenLu']) 
-		end
-	end
-
-	local IDs = GetTeamPlayers(GetTeam());
+	local IDs = GetTeamPlayers(GetTeam())
 	for i,id in pairs(IDs) do
 		if not IsPlayerBot(id) 
 		then
-			nHumanCount = nHumanCount + 1;
+			nHumanCount = nHumanCount + 1
 			tSelectPoolList = X.GetMoveTable(tSelectPoolList);
 			sSelectList = X.GetMoveTable(sSelectList);
 			tLaneAssignList = X.GetMoveTable(tLaneAssignList);
 		end
 	end
-
 	
 	bInitLineUpDone = true;
 	
@@ -446,8 +436,8 @@ end
 
 
 function X.IsHumanNotReady(team)
-	
-	if GameTime() > 40 then return false end
+		
+	if GameTime() > 20 then return false end
 
 	local humanCount,readyCount = 0, 0;
 	local IDs = GetTeamPlayers(team);
@@ -478,25 +468,25 @@ function X.GetNotRepeatHero(nTable)
 	local sHero = nTable[1];
 	local maxCount = #nTable ;
 	local nRand = 0;
-	local BeRepeated = false;
+	local bRepeated = false;
 	
 	for count = 1, maxCount
 	do
 		nRand = RandomInt(1, #nTable);
 		sHero = nTable[nRand];
-		BeRepeated = false;
+		bRepeated = false;
 		for id = 0, 20
 		do
 			if ( IsTeamPlayer(id) and GetSelectedHeroName(id) == sHero )
 				or ( IsCMBannedHero(sHero) )
 				or ( X.IsBanByChat(sHero) )
 			then
-				BeRepeated = true;
+				bRepeated = true;
 				table.remove(nTable,nRand);
 				break;
 			end
 		end
-		if not BeRepeated then break; end
+		if not bRepeated then break; end
 	end		
 	
 	return sHero;		
@@ -519,6 +509,11 @@ function X.IsRepeatHero(sHero)
 
 end
 
+
+if bUserMode and HeroSet['JinYongAI'] ~= nil
+then
+	sBanList = Chat.GetHeroSelectList(HeroSet['JinYongAI']);
+end
 
 function X.SetChatHeroBan( sChatText )
 	
@@ -661,9 +656,10 @@ local sDiStarsList =
 
 function X.GetRandNameList(sStarList)
 	
-	local sNameList = {};
+	local sNameList = {sStarList[1]};
+	table.remove(sStarList,1);	
 	
-	for i=1,5
+	for i=1,4
 	do
 	    local nRand = RandomInt(1, #sStarList);
 		table.insert(sNameList,sStarList[nRand]);
@@ -671,48 +667,14 @@ function X.GetRandNameList(sStarList)
 	end
 	
 	return sNameList;
-end
-
-function X.SetTestSelection()
-
-	sSelectList={ 
-	"npc_dota_hero_necrolyte",
-	"npc_dota_hero_jakiro",
-	"npc_dota_hero_phantom_assassin",
-	"npc_dota_hero_skeleton_king",
-	"npc_dota_hero_templar_assassin",
-	}
-
-	if GetTeam() == TEAM_DIRE then
-	sSelectList={ 
-	"npc_dota_hero_warlock",
-	"npc_dota_hero_zuus",
-	"npc_dota_hero_antimage",
-	"npc_dota_hero_dragon_knight",
-	"npc_dota_hero_viper",
-	}
-	end
 	
-	local IDs = GetTeamPlayers(GetTeam());
-	for i,id in pairs(IDs) 
-	do
-		if IsPlayerBot(id) 
-		then
-			SelectHero(id,sSelectList[i]);
-		end
-	end
-
 end
 
 
 function Think()
 
 
-----For Test-------------------
---	if bDebugMode then X.SetTestSelection() return end
--------------------------------
-
-	if not bInitLineUpDone then X.SetLaneUpInit() return end
+	if not bInitLineUpDone then X.SetLineUpInit() return end
 
 	if GetGameMode() == GAMEMODE_AP then
 		if GetGameState() == GAME_STATE_HERO_SELECTION then
@@ -745,20 +707,33 @@ function AllPickLogic()
 	then return end;
 	
 	if nDelayTime == nil then nDelayTime = GameTime(); fLastRand = RandomFloat(1.2,3.4); end
-	if nDelayTime ~= nil and nDelayTime > GameTime() - fLastRand then return; end
-	
+	if nDelayTime ~= nil and nDelayTime > GameTime() - fLastRand then return; end	
 	----------------------------------------------------------------------------------------
 	------设置挑选延迟完毕------------------------------------------------------------------
 	----------------------------------------------------------------------------------------
 	
 	--自定义挑选逻辑
-	if bUserMode and Chat.GetRawGameWord(HeroSet['ZhenRongShengXiao']) == true
+	if bLineupActive
 	then
 		local IDs = GetTeamPlayers(GetTeam());
 		for i,id in pairs(IDs) 
 		do
-			if IsPlayerBot(id) then
-				SelectHero(id,sSelectList[i]);
+			if ( IsPlayerBot(id) or bLineupReserve ) 
+				and ( GetSelectedHeroName(id) == "" )
+			then
+				sSelectHero = sSelectList[i];
+				
+				if sSelectHero == "sRandomHero" 
+				then 
+					sSelectHero = X.GetNotRepeatHero(tSelectPoolList[i]); 
+					if not IsPlayerBot(id) then sSelectHero = Chat['sAllHeroList'][RandomInt(2,118)] end
+				end
+				
+				SelectHero(id,sSelectHero);
+				
+				fLastSlectTime = GameTime();
+				fLastRand = RandomFloat(0.3,0.9);
+				break;
 			end
 		end
 		return;
@@ -768,8 +743,7 @@ function AllPickLogic()
 	local IDs = GetTeamPlayers(GetTeam());
 	for i,id in pairs(IDs) 
 	do
-		if IsPlayerBot(id) 
-		   and ( GetSelectedHeroName(id) == "" or GetSelectedHeroName(id) == nil )
+		if IsPlayerBot(id) and GetSelectedHeroName(id) == ""
 		then
 			--原版英雄选择策略
 			--if not X.IsRepeatHero(sSelectList[i])
@@ -780,10 +754,10 @@ function AllPickLogic()
 			--end
 			--新版英雄选择策略
 			sSelectHero = targetdata.getApHero();
-
+			SelectHero(id,sSelectHero);
+			
 			fLastSlectTime = GameTime();
 			fLastRand = RandomFloat(0.8,2.8);
-			SelectHero(id,sSelectHero);
 			break;
 		end
 	end
@@ -802,10 +776,10 @@ end
 
 
 local sBotVersion = Role.GetBotVersion()
-if bUserMode or sBotVersion == 'Mid'
+if bLaneAssignActive or sBotVersion == 'Mid'
 then
 
-function UpdateLaneAssignments()
+function UpdateLaneAssignments()  
 
 	if  GetGameMode() == GAMEMODE_AP or GetGameMode() == GAMEMODE_CM or GetGameMode() == GAMEMODE_TM or GetGameMode() == GAMEMODE_SD then
 		return tLaneAssignList;
@@ -819,4 +793,4 @@ end
 
 end
 
---dota2jmz@163.com QQ:2462331592.
+--dota2jmz@163.com QQ:2462331592..

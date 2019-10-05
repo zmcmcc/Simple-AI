@@ -582,7 +582,25 @@ function X.getApHero()
                 'npc_dota_hero_templar_assassin',
                 'npc_dota_hero_phantom_assassin',
             };
-        elseif randomMode == 155 or randomMode == 174 or randomMode == 14 or randomMode == 199 then
+        elseif randomMode == 344 then
+            X.interestingMode = '猴子成群';
+            interestingList = {
+                'npc_dota_hero_phantom_lancer',
+                'npc_dota_hero_phantom_lancer',
+                'npc_dota_hero_phantom_lancer',
+                'npc_dota_hero_phantom_lancer',
+                'npc_dota_hero_phantom_lancer',
+            };
+        elseif randomMode == 199 then
+            X.interestingMode = '雷霆';
+            interestingList = {
+                'npc_dota_hero_zuus',
+                'npc_dota_hero_zuus',
+                'npc_dota_hero_zuus',
+                'npc_dota_hero_zuus',
+                'npc_dota_hero_zuus',
+            };
+        elseif randomMode == 155 or randomMode == 174 or randomMode == 14 then
             X.interestingMode = '闪电';
             local lightning = {
                 {
@@ -591,13 +609,6 @@ function X.getApHero()
                     'npc_dota_hero_arc_warden',
                     'npc_dota_hero_arc_warden',
                     'npc_dota_hero_arc_warden',
-                },
-                {
-                    'npc_dota_hero_zuus',
-                    'npc_dota_hero_zuus',
-                    'npc_dota_hero_zuus',
-                    'npc_dota_hero_zuus',
-                    'npc_dota_hero_zuus',
                 },
                 {
                     'npc_dota_hero_razor',

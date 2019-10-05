@@ -378,6 +378,7 @@ function X.ConsiderQ()
 	
 	--打钱
 	if J.IsFarming(bot) and nLV > 5
+		and J.IsAllowedToSpam(bot, 30)
 	then
 		if J.IsValid(botTarget)
 		   and J.IsInRange(bot,botTarget,nCastRange)

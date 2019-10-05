@@ -255,7 +255,6 @@ local lastRDCheck  = 0;
 local buyAnotherTango = false
 local switchTime = 0
 local buyWardTime = -999
-local buysmokeTime = -999
 
 local hasSelltEarlyBoots = false
 local checkBKBTime = 40 *60
@@ -335,16 +334,6 @@ function ItemPurchaseThink()
 		then 
 			buyWardTime = nowTime;
 			bot:ActionImmediate_PurchaseItem("item_ward_observer"); 
-		elseif GetItemStockCount( "item_smoke_of_deceit" ) >= 1
-			and ( nowTime < 0 or ( nowTime > 0 and buyBootsStatus == true ) )
-			and botGold >= GetItemCost( "item_smoke_of_deceit" )
-			and Item.GetEmptyInventoryAmount(bot) >= 2
-			and Item.GetItemCharges(bot, "item_smoke_of_deceit") < 1
-			and bot:GetCourierValue() == 0
-			and buysmokeTime < nowTime - 5 * 60
-		then
-			buysmokeTime = nowTime;
-			bot:ActionImmediate_PurchaseItem("item_smoke_of_deceit"); 
 		end
 	end
 	
@@ -811,4 +800,4 @@ function ItemPurchaseThink()
 	end
 
 end
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

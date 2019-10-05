@@ -57,10 +57,9 @@ if gTime == nil then gTime = 0 end
 ---------------------------通过文件使用的
 --]]
 local sDota2Version= '7.22d'
-local sDebugVersion= '20190912ver1.4'
-local nPrintTime   = 9999
-local nDebugTime   = 9999
-local bDebugMode   = true
+local sDebugVersion= '20190930ver1.4b'
+local nDebugTime   = 99999
+local bDebugMode   = false
 local bDebugTeam   = (GBotTeam == TEAM_RADIANT)
 local sDebugHero   = 'npc_dota_hero_luna'
 local tAllyIDList  = GetTeamPlayers(GBotTeam)
@@ -410,8 +409,8 @@ function J.GetProperTarget(bot)
 	end
 	
 	if target ~= nil 
-	   and target:IsHero()
-	   and target:GetTeam() == bot:GetTeam()
+	    and target:GetTeam() == bot:GetTeam()
+		and (target:IsHero() or target:IsBuilding())
 	then
 		target = nil;
 	end
@@ -725,7 +724,7 @@ end
 
 function J.CanCastOnTargetAdvanced( npcTarget )
 
-	if npcTarget:GetUnitName() == 'npc_dota_hero_antimage'
+	if npcTarget:GetUnitName() == 'npc_dota_hero_antimage' and npcTarget:IsBot()
 	then
 	
 		if npcTarget:HasModifier( "modifier_antimage_spell_shield" )
@@ -738,15 +737,16 @@ function J.CanCastOnTargetAdvanced( npcTarget )
 		   or npcTarget:IsStunned()
 		   or npcTarget:IsHexed()
 		   or npcTarget:IsNightmared() 
+		   or npcTarget:IsChanneling()
 		   or J.IsTaunted(npcTarget) 
 		   or npcTarget:GetMana() < 45
 		   or ( npcTarget:HasModifier( "modifier_antimage_spell_shield" )
-				and J.GetModifierTime( npcTarget,"modifier_antimage_spell_shield" ) < 0.26 )
+				and J.GetModifierTime( npcTarget,"modifier_antimage_spell_shield" ) < 0.27 )
 		then
 			if not npcTarget:HasModifier("modifier_item_sphere_target")
 			   and not npcTarget:HasModifier("modifier_item_lotus_orb_active")
 			   and not npcTarget:HasModifier("modifier_item_aeon_disk_buff")
-			   and not npcTarget:HasModifier("modifier_dazzle_shallow_grave")
+			   and not ( npcTarget:HasModifier("modifier_dazzle_shallow_grave") and npcTarget:GetHealth() < 200 )
 			then
 				return true
 			end
@@ -756,10 +756,11 @@ function J.CanCastOnTargetAdvanced( npcTarget )
 	end
 
 	return  not npcTarget:HasModifier("modifier_item_sphere_target")
+			and not npcTarget:HasModifier( "modifier_antimage_spell_shield" )
 			and not npcTarget:HasModifier("modifier_item_lotus_orb_active")
 			and not npcTarget:HasModifier("modifier_item_aeon_disk_buff")
-			and not npcTarget:HasModifier("modifier_dazzle_shallow_grave")
-			and not npcTarget:HasModifier( "modifier_antimage_spell_shield" )
+			and not ( npcTarget:HasModifier("modifier_dazzle_shallow_grave") and npcTarget:GetHealth() < 200 )
+			
 end
 
 
@@ -1732,7 +1733,7 @@ end
 
 local PrintTime = {};
 function J.PrintMessage(nMessage, nNumber, n, nIntevel)
-	if PrintTime[n] == nil then PrintTime[n] = nPrintTime end;
+	if PrintTime[n] == nil then PrintTime[n] = nDebugTime end;
 	if PrintTime[n] < DotaTime() - nIntevel
 	then
 		PrintTime[n] = DotaTime();	
@@ -1745,7 +1746,7 @@ function J.PrintMessage(nMessage, nNumber, n, nIntevel)
 end
 
 
-local PrTime = nPrintTime;
+local PrTime = nDebugTime;
 function J.Print(nMessage, nNumber)
 	if PrTime < DotaTime() - 3.0
 	then
@@ -2352,7 +2353,7 @@ function J.IsSpecialCarry(bot)
 			or botName == "npc_dota_hero_sven"
 			or botName == "npc_dota_hero_sniper"
 			or botName == "npc_dota_hero_templar_assassin"
-			or botName == "npc_dota_hero_viper"
+			or botName == "npc_dota_hero_viper" 
 			or botName == "npc_dota_hero_axe"
 			or botName == "npc_dota_hero_abaddon"
 			or botName == "npc_dota_hero_omniknight"
@@ -3782,3 +3783,4 @@ J.GetMagicToPhysicalDamage(bot, nUnit, nMagicDamage)
 
 
 --]]
+-- dota2jmz@163.com QQ:2462331592.

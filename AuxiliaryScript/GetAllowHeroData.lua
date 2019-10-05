@@ -3384,7 +3384,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_undying",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_clinkz",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_pugna"] = {
   ["hero_name"] = "pugna",
   ["proposal"] = {
@@ -3417,7 +3417,7 @@ D.hero = {
          {["hero"] = "npc_dota_hero_luna",["weight"] = 3,},
          {["hero"] = "npc_dota_hero_weaver",["weight"] = 3,},
   },["orientation"] = { ["core"] = true, ["durable"] = true,},["attribute"] = { ["type"] = "Agile", },
-  ["evaluation"] = "", ["bot"] = false,},
+  ["evaluation"] = "", ["bot"] = true,},
 ["npc_dota_hero_dazzle"] = {
   ["hero_name"] = "dazzle",
   ["proposal"] = {

@@ -198,9 +198,9 @@ function Think()
 		then  
 			if not hasPingAndSay and bot:GetAssignedLane()== LANE_TOP
 			then
-				bot:ActionImmediate_Ping( bot:GetLocation().x, bot:GetLocation().y, false );
 				local nMessage = "我不能直接分享物品，眼就丢这里了ヾ(•ω•`)o"
-				bot:ActionImmediate_Chat(nMessage,false);
+				if RandomInt(1,9) > 8 then bot:ActionImmediate_Chat(nMessage,false) end
+				bot:ActionImmediate_Ping( bot:GetLocation().x, bot:GetLocation().y, false );				
 				hasPingAndSay = true;
 			end
 			
@@ -620,4 +620,4 @@ function X.GetWaitRuneLocation(nRune)
 	return vNearestLoc;
 
 end
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

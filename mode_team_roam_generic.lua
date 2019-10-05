@@ -16,7 +16,6 @@ local bDebugMode = (bot:GetUnitName() == "npc_dota_hero_medusa")
 local X = {}
 
 local J = require( GetScriptDirectory()..'/FunLib/jmz_func')
-local role = require( GetScriptDirectory()..'/FunLib/jmz_role')
 
 
 local botName = bot:GetUnitName();
@@ -32,8 +31,6 @@ local towerCreepMode = false;
 local towerCreep = nil;
 local towerTime =  0;
 local towerCreepTime = 0;
-
-
 
 local beInitDone = false;
 local beSpecialSupport = false;
@@ -55,7 +52,6 @@ function GetDesire()
 		beSpecialCarry = X.IsSpecialCarry(bot);
 		beSpecialSupport = X.IsSpecialSupport(bot);		
 	end
-
 	
 	if not bot:IsAlive() or bot:GetCurrentActionType() == BOT_ACTION_TYPE_DELAY then
 		targetShrine = nil;
@@ -206,6 +202,14 @@ function GetDesire()
 				return BOT_MODE_DESIRE_ABSOLUTE *0.98;
 			end
 		end		
+	end
+	
+	if botName == "npc_dota_hero_pugna" 
+	then
+		if cAbility == nil then cAbility = bot:GetAbilityByName( "pugna_life_drain" ) end;
+		if cAbility:IsInAbilityPhase() or bot:IsChanneling() then
+			return BOT_MODE_DESIRE_ABSOLUTE;
+		end	
 	end
 	
 	if beSpecialSupport
@@ -1799,17 +1803,20 @@ function X.IsSpecialSupport(bot)
 	local botName = bot:GetUnitName();
 	
 	local tSpecialSupportList = {
-		["npc_dota_hero_crystal_maiden"] = true,	
+		["npc_dota_hero_crystal_maiden"] = true,
+		["npc_dota_hero_death_prophet"] = true, 		
 		["npc_dota_hero_jakiro"] = true,
 		["npc_dota_hero_lich"] = true,
 		["npc_dota_hero_lina"] = true,
 		["npc_dota_hero_necrolyte"] = true,
 		["npc_dota_hero_oracle"] = true,
+		["npc_dota_hero_pugna"] = true,
 		["npc_dota_hero_silencer"] = true,
 		["npc_dota_hero_skywrath_mage"] = true,
 		["npc_dota_hero_warlock"] = true,		  
 		["npc_dota_hero_witch_doctor"] = true,		  
 		["npc_dota_hero_zuus"] = true, 
+		
 	}
 	
 	return tSpecialSupportList[botName] == true
@@ -1974,4 +1981,4 @@ function X.ShouldNotRetreat(bot)
 	return false;
 end
 
--- dota2jmz@163.com QQ:2462331592
+-- dota2jmz@163.com QQ:2462331592.

@@ -11,8 +11,8 @@ local X = {}
 
 local sBotVersion = "New";
 --local sBotVersion = "Mid";
-local sVersionDate = " 1.1.6"
-local sABAVersionDate = sBotVersion.." 7.22,2019/09/12."
+local sVersionDate = " 1.1.7"
+local sABAVersionDate = sBotVersion.." 7.22,2019/09/30."
 
 function X.GetBotVersion()
 	return sBotVersion,sVersionDate,sABAVersionDate;
@@ -1442,10 +1442,10 @@ X["bottle"] = {
 	["npc_dota_hero_pudge"] = 1;
 	["npc_dota_hero_ember_spirit"] = 1;
 	["npc_dota_hero_lina"] = 1;
---	["npc_dota_hero_zuus"] = 1;
---	["npc_dota_hero_queenofpain"] = 1;
---	["npc_dota_hero_templar_assassin"] = 1;
---	["npc_dota_hero_nevermore"] = 1;
+	["npc_dota_hero_zuus"] = 1;
+	["npc_dota_hero_queenofpain"] = 1;
+	["npc_dota_hero_templar_assassin"] = 1;
+	["npc_dota_hero_nevermore"] = 1;
 	["npc_dota_hero_mirana"] = 1;
 	["npc_dota_hero_puck"] = 1;
 	["npc_dota_hero_magnataur"] = 1;
@@ -1676,7 +1676,6 @@ X['supp'] = {
 	'npc_dota_hero_lina',
 	'npc_dota_hero_lion',
 	'npc_dota_hero_nyx_assassin',
---	'npc_dota_hero_ogre_magi',
 	'npc_dota_hero_oracle',
 	'npc_dota_hero_phoenix',
 	'npc_dota_hero_pudge',
@@ -1695,7 +1694,9 @@ X['supp'] = {
 	'npc_dota_hero_wisp',
 	'npc_dota_hero_necrolyte',
 	'npc_dota_hero_witch_doctor',
-	'npc_dota_hero_zuus'
+	'npc_dota_hero_zuus',
+	'npc_dota_hero_pugna',
+	'npc_dota_hero_death_prophet',
 	
 }
 
@@ -2040,4 +2041,4 @@ end
 
 
 return X
--- aaxxxxop@163.com QQ:2462331592.
+-- aaxxxxop@163.com QQ:2462331592..

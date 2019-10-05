@@ -607,11 +607,11 @@ function X.ConsiderW()
 		end
 	end
 	
-	if nLV <= 9 
-	   and not J.IsRunning(bot)
-	   and nHP > 0.55
+	if nLV <= 9 and nHP > 0.55 
+	   and ( not J.IsRunning(bot) or J.IsInRange(bot,botTarget,nAttackRange + 19) )
 	then
 		if  J.IsValidHero(npcTarget)
+			and not npcTarget:IsAttackImmune()
 			and GetUnitToUnitDistance(bot,npcTarget) < nAttackRange + 99
 		then
 			nTargetUint = npcTarget;
@@ -732,12 +732,14 @@ function X.ConsiderW()
 	if J.IsGoingOnSomeone(bot) 
 	then
 		if J.IsValidHero(npcTarget) 
+			and not npcTarget:IsAttackImmune()
 			and J.CanCastOnNonMagicImmune(npcTarget)
 			and J.IsInRange(npcTarget, bot, nAttackRange + 80)
 		then
 			return BOT_ACTION_DESIRE_MODERATE, npcTarget;
 		end
 	end
+	
 	
 	if ( bot:GetActiveMode() == BOT_MODE_ROSHAN and not abilityW:GetAutoCastState() ) 
 	then

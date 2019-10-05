@@ -7,29 +7,124 @@
 local Chat = {}
 local sRawLanguage = 'sCnName'
 
-Chat['sExpandedList'] = {
+Chat['sAllHeroList'] = {
+	'sRandomHero',
+	'npc_dota_hero_abaddon',
+	'npc_dota_hero_abyssal_underlord',
+	'npc_dota_hero_alchemist',
+	'npc_dota_hero_ancient_apparition',
 	'npc_dota_hero_antimage',
 	'npc_dota_hero_arc_warden',
+	'npc_dota_hero_axe',
+	'npc_dota_hero_bane',
+	'npc_dota_hero_batrider',
+	'npc_dota_hero_beastmaster',
 	'npc_dota_hero_bloodseeker',
+	'npc_dota_hero_bounty_hunter',
+	'npc_dota_hero_brewmaster',
 	'npc_dota_hero_bristleback',
+	'npc_dota_hero_broodmother',
+	'npc_dota_hero_centaur',
 	'npc_dota_hero_chaos_knight',
+	'npc_dota_hero_chen',
+	'npc_dota_hero_clinkz',
 	'npc_dota_hero_crystal_maiden',
+	'npc_dota_hero_dark_seer',
+	'npc_dota_hero_dark_willow',
+	'npc_dota_hero_dazzle',
+	'npc_dota_hero_disruptor',
+	'npc_dota_hero_death_prophet',
+	'npc_dota_hero_doom_bringer',
 	'npc_dota_hero_dragon_knight',
 	'npc_dota_hero_drow_ranger',
+	'npc_dota_hero_earth_spirit',
+	'npc_dota_hero_earthshaker',
+	'npc_dota_hero_elder_titan',
+	'npc_dota_hero_ember_spirit',
+	'npc_dota_hero_enchantress',
+	'npc_dota_hero_enigma',
+	'npc_dota_hero_faceless_void',
+	'npc_dota_hero_furion',
+	'npc_dota_hero_grimstroke',
+	'npc_dota_hero_gyrocopter',
+	'npc_dota_hero_huskar',
+	'npc_dota_hero_invoker',
 	'npc_dota_hero_jakiro',
+	'npc_dota_hero_juggernaut',
+	'npc_dota_hero_keeper_of_the_light',
 	'npc_dota_hero_kunkka',
+	'npc_dota_hero_legion_commander',
+	'npc_dota_hero_leshrac',
+	'npc_dota_hero_lich',
+	'npc_dota_hero_life_stealer',
+	'npc_dota_hero_lina',
+	'npc_dota_hero_lion',
+	'npc_dota_hero_lone_druid',
 	'npc_dota_hero_luna',
+	'npc_dota_hero_lycan',
+	'npc_dota_hero_magnataur',
+	'npc_dota_hero_mars',
 	'npc_dota_hero_medusa',
+	'npc_dota_hero_meepo',
+	'npc_dota_hero_mirana',
+	'npc_dota_hero_morphling',
+	'npc_dota_hero_monkey_king',
+	'npc_dota_hero_naga_siren',
 	'npc_dota_hero_necrolyte',
 	'npc_dota_hero_nevermore',
+	'npc_dota_hero_night_stalker',
+	'npc_dota_hero_nyx_assassin',
+	'npc_dota_hero_obsidian_destroyer',
+	'npc_dota_hero_ogre_magi',
+	'npc_dota_hero_omniknight',
+	'npc_dota_hero_oracle',
+	'npc_dota_hero_pangolier',
+	'npc_dota_hero_phantom_lancer',
 	'npc_dota_hero_phantom_assassin',
+	'npc_dota_hero_phoenix',
+	'npc_dota_hero_puck',
+	'npc_dota_hero_pudge',
+	'npc_dota_hero_pugna',
+	'npc_dota_hero_queenofpain',
+	'npc_dota_hero_rattletrap',
+	'npc_dota_hero_razor',
+	'npc_dota_hero_riki',
+	'npc_dota_hero_rubick',
+	'npc_dota_hero_sand_king',
+	'npc_dota_hero_shadow_demon',
+	'npc_dota_hero_shadow_shaman',
+	'npc_dota_hero_shredder',
 	'npc_dota_hero_silencer',
 	'npc_dota_hero_skeleton_king',
+	'npc_dota_hero_skywrath_mage',
+	'npc_dota_hero_slardar',
+	'npc_dota_hero_slark',
 	'npc_dota_hero_sniper',
+	'npc_dota_hero_spectre',
+	'npc_dota_hero_spirit_breaker',
+	'npc_dota_hero_storm_spirit',
 	'npc_dota_hero_sven',
+	'npc_dota_hero_techies',
+	'npc_dota_hero_terrorblade',
 	'npc_dota_hero_templar_assassin',
+	'npc_dota_hero_tidehunter',
+	'npc_dota_hero_tinker',
+	'npc_dota_hero_tiny',
+	'npc_dota_hero_treant',
+	'npc_dota_hero_troll_warlord',
+	'npc_dota_hero_tusk',
+	'npc_dota_hero_undying',
+	'npc_dota_hero_ursa',
+	'npc_dota_hero_vengefulspirit',
+	'npc_dota_hero_venomancer',
 	'npc_dota_hero_viper',
+	'npc_dota_hero_visage',
 	'npc_dota_hero_warlock',
+	'npc_dota_hero_weaver',
+	'npc_dota_hero_windrunner',
+	'npc_dota_hero_winter_wyvern',
+	'npc_dota_hero_wisp',
+	'npc_dota_hero_witch_doctor',
 	'npc_dota_hero_zuus',
 	'npc_dota_hero_skywrath_mage',
 	'npc_dota_hero_ogre_magi',
@@ -103,6 +198,11 @@ Chat['tLanguageNameList'] = {
 		['sRawName'] = 'sEsName',
 		['sLocalName'] = 'Испанский',
 	},
+	
+	[8] = {
+		['sRawName'] = 0,
+		['sLocalName'] = 0,
+	},
 
 
 
@@ -120,7 +220,7 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
@@ -133,7 +233,7 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 
@@ -146,7 +246,7 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[4] = {
@@ -158,7 +258,7 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[5] = {
@@ -170,7 +270,7 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[6] = {
@@ -182,7 +282,7 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[7] = {
@@ -194,13 +294,15 @@ Chat['tGameWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 }
 
 	
 Chat['tSpWordList'] = {
+
+	[0] = 'game/赛季体验码',
 
 	[1] = {
 		['sSp1Name'] = 1,
@@ -211,7 +313,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
@@ -224,7 +326,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 
@@ -237,7 +339,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
@@ -250,7 +352,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[5] = {
@@ -262,7 +364,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[6] = {
@@ -274,7 +376,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[7] = {
@@ -286,7 +388,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
@@ -299,7 +401,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
@@ -312,7 +414,7 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
@@ -325,20 +427,32 @@ Chat['tSpWordList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	
 	[11] = {
-		['sSp1Name'] = 0,
-		['sSp2Name'] = '',
-		['sCnName'] = '新词汇',
+		['sSp1Name'] = 11,
+		['sSp2Name'] = '新词汇1',
+		['sCnName'] = '',
 		['sEnName'] = 0,
 		['sFrName'] = 0,
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
+	},
+	
+	[12] = {
+		['sSp1Name'] = 12,
+		['sSp2Name'] = '',
+		['sCnName'] = '新词汇2',
+		['sEnName'] = 0,
+		['sFrName'] = 0,
+		['sDeName'] = 0,
+		['sRuName'] = 0,
+		['sJpName'] = 0,
+		['sEsName'] = 0,
 	},
 
 }
@@ -356,7 +470,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[2] = {
@@ -368,7 +482,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[3] = {
@@ -380,7 +494,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[4] = {
@@ -392,7 +506,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[5] = {
@@ -404,7 +518,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[6] = {
@@ -416,7 +530,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[7] = {
@@ -428,7 +542,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[8] = {
@@ -440,7 +554,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[9] = {
@@ -452,7 +566,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[10] = {
@@ -464,7 +578,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[11] = {
@@ -476,7 +590,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[12] = {
@@ -488,7 +602,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[13] = {
@@ -500,7 +614,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[14] = {
@@ -512,7 +626,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[15] = {
@@ -524,7 +638,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[16] = {
@@ -536,7 +650,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[17] = {
@@ -548,7 +662,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[18] = {
@@ -560,7 +674,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[19] = {
@@ -572,7 +686,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[20] = {
@@ -584,7 +698,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[21] = {
@@ -596,7 +710,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[22] = {
@@ -608,7 +722,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[23] = {
@@ -620,7 +734,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[24] = {
@@ -632,7 +746,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[25] = {
@@ -644,7 +758,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[26] = {
@@ -656,7 +770,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[27] = {
@@ -668,7 +782,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[28] = {
@@ -680,7 +794,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[29] = {
@@ -692,7 +806,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[30] = {
@@ -704,7 +818,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[31] = {
@@ -716,7 +830,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[32] = {
@@ -728,7 +842,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[33] = {
@@ -740,7 +854,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[34] = {
@@ -752,7 +866,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[35] = {
@@ -764,7 +878,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[36] = {
@@ -776,7 +890,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[37] = {
@@ -788,7 +902,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[38] = {
@@ -800,7 +914,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[39] = {
@@ -812,7 +926,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[40] = {
@@ -824,7 +938,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[41] = {
@@ -836,7 +950,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[42] = {
@@ -848,7 +962,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[43] = {
@@ -860,7 +974,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[44] = {
@@ -872,7 +986,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[45] = {
@@ -884,7 +998,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[46] = {
@@ -896,7 +1010,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[47] = {
@@ -908,7 +1022,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[48] = {
@@ -920,7 +1034,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[49] = {
@@ -932,7 +1046,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[50] = {
@@ -944,7 +1058,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[51] = {
@@ -956,7 +1070,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[52] = {
@@ -968,7 +1082,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[53] = {
@@ -980,7 +1094,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[54] = {
@@ -992,7 +1106,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[55] = {
@@ -1004,7 +1118,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[56] = {
@@ -1016,7 +1130,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[57] = {
@@ -1028,7 +1142,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[58] = {
@@ -1040,7 +1154,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[59] = {
@@ -1052,7 +1166,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[60] = {
@@ -1064,7 +1178,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[61] = {
@@ -1076,7 +1190,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[62] = {
@@ -1088,7 +1202,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[63] = {
@@ -1100,7 +1214,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[64] = {
@@ -1112,7 +1226,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[65] = {
@@ -1124,7 +1238,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[66] = {
@@ -1136,7 +1250,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[67] = {
@@ -1148,7 +1262,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[68] = {
@@ -1160,7 +1274,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[69] = {
@@ -1172,7 +1286,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[70] = {
@@ -1184,7 +1298,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[71] = {
@@ -1196,7 +1310,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[72] = {
@@ -1208,7 +1322,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[73] = {
@@ -1220,7 +1334,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[74] = {
@@ -1232,7 +1346,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[75] = {
@@ -1244,7 +1358,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[76] = {
@@ -1256,7 +1370,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[77] = {
@@ -1268,7 +1382,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[78] = {
@@ -1280,7 +1394,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[79] = {
@@ -1292,7 +1406,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[80] = {
@@ -1304,7 +1418,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[81] = {
@@ -1316,7 +1430,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[82] = {
@@ -1328,7 +1442,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[83] = {
@@ -1340,7 +1454,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[84] = {
@@ -1352,7 +1466,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[85] = {
@@ -1364,7 +1478,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[86] = {
@@ -1376,7 +1490,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[87] = {
@@ -1388,7 +1502,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[88] = {
@@ -1400,7 +1514,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[89] = {
@@ -1412,7 +1526,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[90] = {
@@ -1424,7 +1538,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[91] = {
@@ -1436,7 +1550,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[92] = {
@@ -1448,7 +1562,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[93] = {
@@ -1460,7 +1574,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[94] = {
@@ -1472,7 +1586,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[95] = {
@@ -1484,7 +1598,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[96] = {
@@ -1496,7 +1610,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[97] = {
@@ -1508,7 +1622,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[98] = {
@@ -1520,7 +1634,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[99] = {
@@ -1532,7 +1646,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[100] = {
@@ -1544,7 +1658,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[101] = {
@@ -1556,7 +1670,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[102] = {
@@ -1568,7 +1682,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[103] = {
@@ -1580,7 +1694,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[104] = {
@@ -1592,7 +1706,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[105] = {
@@ -1604,7 +1718,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[106] = {
@@ -1616,7 +1730,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[107] = {
@@ -1628,7 +1742,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[108] = {
@@ -1640,7 +1754,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[109] = {
@@ -1652,7 +1766,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[110] = {
@@ -1664,7 +1778,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[111] = {
@@ -1676,7 +1790,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[112] = {
@@ -1688,7 +1802,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[113] = {
@@ -1700,7 +1814,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[114] = {
@@ -1712,7 +1826,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[115] = {
@@ -1724,7 +1838,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[116] = {
@@ -1736,7 +1850,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[117] = {
@@ -1748,7 +1862,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[118] = {
@@ -1760,7 +1874,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[119] = {
@@ -1772,7 +1886,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[120] = {
@@ -1784,7 +1898,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[121] = {
@@ -1796,7 +1910,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[122] = {
@@ -1808,7 +1922,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[123] = {
@@ -1820,7 +1934,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[124] = {
@@ -1832,7 +1946,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[125] = {
@@ -1844,7 +1958,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[126] = {
@@ -1856,7 +1970,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[127] = {
@@ -1868,7 +1982,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[128] = {
@@ -1880,7 +1994,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[129] = {
@@ -1892,7 +2006,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[130] = {
@@ -1904,7 +2018,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[131] = {
@@ -1916,7 +2030,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[132] = {
@@ -1928,7 +2042,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[133] = {
@@ -1940,7 +2054,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[134] = {
@@ -1952,7 +2066,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[135] = {
@@ -1964,7 +2078,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[136] = {
@@ -1976,7 +2090,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[137] = {
@@ -1988,7 +2102,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[138] = {
@@ -2000,7 +2114,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[139] = {
@@ -2012,7 +2126,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[140] = {
@@ -2024,7 +2138,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[141] = {
@@ -2036,7 +2150,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[142] = {
@@ -2048,7 +2162,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[143] = {
@@ -2060,7 +2174,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[144] = {
@@ -2072,7 +2186,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[145] = {
@@ -2084,7 +2198,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[146] = {
@@ -2096,7 +2210,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[147] = {
@@ -2108,7 +2222,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[148] = {
@@ -2120,7 +2234,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[149] = {
@@ -2132,7 +2246,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[150] = {
@@ -2144,7 +2258,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[151] = {
@@ -2156,7 +2270,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[152] = {
@@ -2168,7 +2282,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[153] = {
@@ -2180,7 +2294,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[154] = {
@@ -2192,7 +2306,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[155] = {
@@ -2204,7 +2318,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[156] = {
@@ -2216,7 +2330,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[157] = {
@@ -2228,7 +2342,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[158] = {
@@ -2240,7 +2354,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[159] = {
@@ -2252,7 +2366,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[160] = {
@@ -2264,7 +2378,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[161] = {
@@ -2276,7 +2390,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[162] = {
@@ -2288,7 +2402,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[163] = {
@@ -2300,7 +2414,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[164] = {
@@ -2312,7 +2426,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[165] = {
@@ -2324,7 +2438,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[166] = {
@@ -2336,7 +2450,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[167] = {
@@ -2348,7 +2462,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[168] = {
@@ -2360,7 +2474,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[169] = {
@@ -2372,7 +2486,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[170] = {
@@ -2384,7 +2498,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[171] = {
@@ -2396,7 +2510,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[172] = {
@@ -2408,7 +2522,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[173] = {
@@ -2420,7 +2534,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[174] = {
@@ -2432,7 +2546,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[175] = {
@@ -2444,7 +2558,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[176] = {
@@ -2456,7 +2570,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[177] = {
@@ -2468,7 +2582,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[178] = {
@@ -2480,7 +2594,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[179] = {
@@ -2492,7 +2606,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[180] = {
@@ -2504,7 +2618,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[181] = {
@@ -2516,7 +2630,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[182] = {
@@ -2528,7 +2642,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[183] = {
@@ -2540,7 +2654,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[184] = {
@@ -2552,7 +2666,7 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	[185] = {
@@ -2564,13 +2678,26 @@ Chat['tItemNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 }
 
 
 Chat['tHeroNameList'] = {
+
+	--000
+	['sRandomHero'] = {
+		['sNormName'] = '随机',
+		['sShortName'] = 'random',
+		['sCnName'] = '随机英雄',
+		['sEnName'] = 0,
+		['sFrName'] = 0,
+		['sDeName'] = 0,
+		['sRuName'] = 0,
+		['sJpName'] = 0,
+		['sEsName'] = 0,
+	},
 
 	--001
 	['npc_dota_hero_abaddon'] = {
@@ -2582,7 +2709,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--002
@@ -2595,7 +2722,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--003
@@ -2608,7 +2735,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--004
@@ -2621,7 +2748,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--005
@@ -2634,7 +2761,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--006
@@ -2647,7 +2774,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--007
@@ -2660,7 +2787,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--008
@@ -2673,7 +2800,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--009
@@ -2686,7 +2813,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--010
@@ -2699,7 +2826,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--011
@@ -2712,7 +2839,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--012
@@ -2725,7 +2852,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--013
@@ -2738,7 +2865,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--014
@@ -2751,7 +2878,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--015
@@ -2764,7 +2891,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--016
@@ -2777,7 +2904,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--017
@@ -2790,7 +2917,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--018
@@ -2803,7 +2930,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--019
@@ -2816,7 +2943,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--020
@@ -2829,7 +2956,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--021
@@ -2842,7 +2969,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--022
@@ -2855,7 +2982,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--023
@@ -2868,7 +2995,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--024
@@ -2881,7 +3008,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--025
@@ -2894,7 +3021,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--026
@@ -2907,7 +3034,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--027
@@ -2920,7 +3047,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--028
@@ -2933,7 +3060,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--029
@@ -2946,7 +3073,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--030
@@ -2959,7 +3086,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--031
@@ -2972,7 +3099,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--032
@@ -2985,7 +3112,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--033
@@ -2998,7 +3125,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--034
@@ -3011,7 +3138,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--035
@@ -3024,7 +3151,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--036
@@ -3037,7 +3164,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--037
@@ -3050,7 +3177,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--038
@@ -3063,7 +3190,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--039
@@ -3076,7 +3203,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--040
@@ -3089,7 +3216,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--041
@@ -3102,7 +3229,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--042
@@ -3115,7 +3242,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--043
@@ -3128,7 +3255,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--044
@@ -3141,7 +3268,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--045
@@ -3154,7 +3281,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--046
@@ -3167,7 +3294,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--047
@@ -3180,7 +3307,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--048
@@ -3193,7 +3320,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--049
@@ -3206,7 +3333,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--050
@@ -3219,7 +3346,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--051
@@ -3232,7 +3359,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--052
@@ -3245,7 +3372,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--053
@@ -3258,7 +3385,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--054
@@ -3271,7 +3398,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--055
@@ -3284,7 +3411,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--056
@@ -3297,7 +3424,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--057
@@ -3310,7 +3437,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--058
@@ -3323,7 +3450,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--059
@@ -3336,7 +3463,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--060
@@ -3349,7 +3476,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--061
@@ -3362,7 +3489,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--062
@@ -3375,7 +3502,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--063
@@ -3388,7 +3515,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--064
@@ -3401,7 +3528,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--065
@@ -3414,7 +3541,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--066
@@ -3427,7 +3554,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--067
@@ -3440,7 +3567,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--068
@@ -3453,7 +3580,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--069
@@ -3466,7 +3593,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--070
@@ -3479,7 +3606,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--071
@@ -3492,7 +3619,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--072
@@ -3505,7 +3632,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--073
@@ -3518,7 +3645,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--074
@@ -3531,7 +3658,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--075
@@ -3544,7 +3671,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--076
@@ -3557,7 +3684,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--077
@@ -3570,7 +3697,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--078
@@ -3583,7 +3710,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--079
@@ -3596,7 +3723,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--080
@@ -3609,7 +3736,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--081
@@ -3622,7 +3749,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--082
@@ -3635,7 +3762,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--083
@@ -3648,7 +3775,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--084
@@ -3661,7 +3788,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--085
@@ -3674,7 +3801,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--086
@@ -3687,7 +3814,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--087
@@ -3700,7 +3827,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--088
@@ -3713,7 +3840,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--089
@@ -3726,7 +3853,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--090
@@ -3739,7 +3866,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--091
@@ -3752,7 +3879,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--092
@@ -3765,7 +3892,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--093
@@ -3778,7 +3905,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--094
@@ -3791,7 +3918,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--095
@@ -3804,7 +3931,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--096
@@ -3817,7 +3944,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--097
@@ -3830,7 +3957,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--098
@@ -3843,7 +3970,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--099
@@ -3856,7 +3983,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--100
@@ -3869,7 +3996,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--101
@@ -3882,7 +4009,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--102
@@ -3895,7 +4022,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--103
@@ -3908,7 +4035,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--104
@@ -3921,7 +4048,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--105
@@ -3934,7 +4061,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--106
@@ -3947,7 +4074,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--107
@@ -3960,7 +4087,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--108
@@ -3973,7 +4100,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--109
@@ -3986,7 +4113,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--110
@@ -4025,7 +4152,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--113
@@ -4038,7 +4165,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--114
@@ -4051,7 +4178,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--115
@@ -4064,7 +4191,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 	
 	--116
@@ -4077,7 +4204,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	},
 
 	--117
@@ -4090,7 +4217,7 @@ Chat['tHeroNameList'] = {
 		['sDeName'] = 0,
 		['sRuName'] = 0,
 		['sJpName'] = 0,
-		['sEsName'] = 0
+		['sEsName'] = 0,
 	}
 }
 
@@ -4138,8 +4265,16 @@ end
 --简化中文名
 function Chat.GetNormName(npcBot)
 
-	
 	local tBotName = Chat['tHeroNameList'][npcBot:GetUnitName()]
+	
+	return tBotName ~= nil and tBotName['sNormName'] or '大神' 
+	
+end
+
+--获取中文名
+function Chat.GetCnName(npcNeme)
+
+	local tBotName = Chat['tHeroNameList'][npcNeme]
 	
 	return tBotName ~= nil and tBotName['sNormName'] or '大神' 
 	
@@ -4148,16 +4283,15 @@ end
 --由本地名获得英雄代码名
 function Chat.GetRawHeroName(sName)
 	
-	for _,s in pairs(Chat['sExpandedList'])
+	for _,s in pairs(Chat['sAllHeroList'])
 	do
-		local sTempName = Chat['tHeroNameList'][s][sRawLanguage]
-		if sTempName == sName
+		if sName == Chat['tHeroNameList'][s][sRawLanguage]
 		then
 			return s
 		end	
 	end
 	
-	return 'npc_dota_hero_crystal_maiden'  --如果是未拓展的英雄,则返回冰女
+	return 'npc_dota_hero_crystal_maiden'  --默认的情况,返回冰女
 	
 end
 
@@ -4280,6 +4414,12 @@ function Chat.GetLocalWord(nType)
 	local sString = Chat['tSpWordList'][nType][sRawLanguage]
 	
 	return sString	
+
+end
+
+function Chat.GetUserKeyDir()
+
+	return Chat['tSpWordList'][0]
 
 end
 
@@ -4449,3 +4589,4 @@ Eul的神圣法杖  item_cyclone  item_recipe_cyclone
 风灵之纹 item_wind_lace
 
 --]]
+-- dota2jmz@163.com QQ:2462331592.
