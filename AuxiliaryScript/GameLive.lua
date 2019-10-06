@@ -170,7 +170,7 @@ function L.Update()
                 --data['hero']:ActionImmediate_Chat('小心了，敌人的装备比我们强大！', false)
                 bot:ActionImmediate_Chat('小心了，敌人的装备比我们强大！', false)
             end
-            for _,eData in pairs(nEnemysData) do
+            for _,eData in pairs(nArreysData) do
                 if eData['itemCost'] / (situation['enemyItemCost'] / 5) > 0.5
                     and  eData['itemCost'] > situation['arreyItemCost'] / 5 
                 then
